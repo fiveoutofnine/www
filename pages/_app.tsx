@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
 import type { FC } from 'react';
 
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { DefaultSeo } from 'next-seo';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
@@ -85,7 +85,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       `}</style>
 
       <WagmiConfig client={client}>
-        <RainbowKitProvider modalSize="compact" chains={chains}>
+        <RainbowKitProvider modalSize="compact" chains={chains} theme={darkTheme()}>
           <main className={inter.variable}>
             <Component {...pageProps} />
           </main>
