@@ -14,7 +14,7 @@ const ContainerLayout: FC<ContainerLayoutProps> = ({ className, children, ...res
     <div
       className={twMerge(
         clsx(
-          'mx-auto w-full max-w-[90rem] grow px-3 pb-6 pt-3 lg:px-20 lg:pb-16 lg:pt-12',
+          'mx-auto w-full max-w-[60rem] grow px-3 pb-6 pt-3 lg:px-20 lg:pb-16 lg:pt-12',
           className,
         ),
       )}
