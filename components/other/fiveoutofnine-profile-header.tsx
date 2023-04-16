@@ -14,7 +14,7 @@ const FiveoutofnineProfileHeader: FC = () => {
         {/* Avatar (mobile) */}
         <FiveoutofnineAvatar className="mr-2 md:hidden" size={40} />
         <div>
-          <div className="text-base font-semibold md:text-2xl">5/9</div>
+          <div className="text-base font-semibold md:text-2xl">fiveoutofnine</div>
           <span className="mt-0.5 text-sm text-gray-11 md:mt-1 md:text-base">
             Working on{' '}
             <a
@@ -41,7 +41,7 @@ const FiveoutofnineProfileHeader: FC = () => {
 
       {/* Links (desktop) */}
       <div className="hidden space-x-2 md:flex">
-        <Button href="https://twitter.com/fiveoutofnine" intent="primary" leftIcon={<Twitter />}>
+        <Button intent="primary" href="https://twitter.com/fiveoutofnine" leftIcon={<Twitter />}>
           Twitter
         </Button>
         <Button href="https://github.com/fiveoutofnine" leftIcon={<Github />}>
@@ -51,7 +51,7 @@ const FiveoutofnineProfileHeader: FC = () => {
       {/* Links (mobile) */}
       <div className="mt-4 flex w-full space-x-2 md:hidden">
         <Button
-          size="sm"
+          size="md"
           intent="primary"
           className="w-full"
           href="https://twitter.com/fiveoutofnine"
@@ -60,7 +60,7 @@ const FiveoutofnineProfileHeader: FC = () => {
           Twitter
         </Button>
         <Button
-          size="sm"
+          size="md"
           className="w-full"
           href="https://github.com/fiveoutofnine"
           leftIcon={<Github />}
