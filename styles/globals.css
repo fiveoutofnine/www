@@ -2,26 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+html,
+body,
+main {
+  font-weight: 300;
+  background: var(--gray1);
+  text: var(--gray12);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+div#__next,
+div#__next > div,
+div#__next > div > main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    height: -webkit-fill-available;
+  }
+  .h-screen {
+    height: -webkit-fill-available;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+pre code {
+  overflow-x: auto;
+  padding: 0 !important;
+
+  -webkit-text-size-adjust: none;
+}
+
+:root {
+  --hljs-selection: rgba(224, 146, 58, 0.35);
+  --hljs-background: rgba(212, 212, 212, 0.3);
+  --hljs-text: #d4d4d4;
+  --hljs-function-title: #dcdcaa;
+  --hljs-string: #ce9178;
+  --hljs-number: #b5cea8;
+  --hljs-title: #4ec9b0;
+  --hljs-built_in: #c586c0;
+  --hljs-keyword: #569cd6;
+  --hljs-function: #569cd6;
+  --hljs-params: #4ec9b0;
+  --hljs-comment: #6a9955;
+}
+
+pre code *::selection,
+.hljs::selection {
+  background: var(--hljs-selection) !important;
+}
+
+.hljs {
+  color: var(--hljs-text);
+}
+
+.hljs-string {
+  color: var(--hljs-string);
+}
+
+.hljs-number {
+  color: var(--hljs-number) !important;
+}
+
+.hljs-title {
+  color: var(--hljs-title) !important;
+}
+
+.hljs-built_in {
+  color: var(--hljs-built_in) !important;
+}
+
+.hljs-keyword {
+  color: var(--hljs-keyword) !important;
+}
+
+.hljs-function > .hljs-keyword {
+  color: var(--hljs-function) !important;
+}
+
+.hljs-function > .hljs-title {
+  color: var(--hljs-function-title) !important;
+}
+
+.hljs-params {
+  color: var(--hljs-params);
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--hljs-comment) !important;
+  font-style: normal !important;
 }

@@ -1,5 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { fontFamily } = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
@@ -7,12 +11,23 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      zIndex: {
+        base: '0',
+        dropdown: '80',
+        overlay: '90',
+        popover: '100',
+      },
+      fontFamily: {
+        sans: ['var(--inter-font)', ...fontFamily.sans],
       },
     },
   },
-  plugins: [],
-}
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('tailwindcss-percentage-width'),
+    require('tailwindcss-animate'),
+    require('windy-radix-palette'),
+  ],
+};
