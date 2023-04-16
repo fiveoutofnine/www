@@ -2,10 +2,34 @@ import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
 import type { FC } from 'react';
 
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { DefaultSeo } from 'next-seo';
+import { configureChains, createClient, WagmiConfig } from 'wagmi';
+import { goerli, mainnet } from 'wagmi/chains';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { publicProvider } from 'wagmi/providers/public';
 
 import '@/styles/globals.css';
+
+/* Config */
+const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID;
+
+const { chains, provider } = configureChains(
+  [mainnet, goerli],
+  [alchemyProvider({ apiKey: alchemyId }), publicProvider()],
+);
+
+const { connectors } = getDefaultWallets({
+  appName: 'Flywheel',
+  chains: [...chains],
+});
+
+export const client = createClient({
+  autoConnect: true,
+  connectors,
+  provider,
+});
 
 /* Initialize Fonts */
 const inter = Inter({
@@ -60,9 +84,13 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         }
       `}</style>
 
-      <main className={inter.variable}>
-        <Component {...pageProps} />
-      </main>
+      <WagmiConfig client={client}>
+        <RainbowKitProvider modalSize="compact" chains={chains}>
+          <main className={inter.variable}>
+            <Component {...pageProps} />
+          </main>
+        </RainbowKitProvider>
+      </WagmiConfig>
     </>
   );
 };

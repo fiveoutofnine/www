@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 
 import { NextSeo } from 'next-seo';
 
-import { Button } from '@/components/ui';
+import BaseLayout from '@/components/layouts/base';
 
 const HomePage: NextPage = () => {
   return (
@@ -16,7 +16,8 @@ const HomePage: NextPage = () => {
           handle: '@fiveoutofnine',
         }}
       />
-      <Button>Button</Button>
+
+      <BaseLayout name="Home" pageSlug="/"></BaseLayout>
     </>
   );
 };
