@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { type FC, Fragment } from 'react';
 
+import Logo from './logo';
 import clsx from 'clsx';
 
 import { NAVBAR_PAGES } from '@/lib/constants/site';
@@ -27,12 +27,7 @@ const NavBar: FC<NavBarProps> = ({ selected }) => {
 const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
   return (
     <nav className="sticky top-0 z-popover hidden h-12 items-center border-b border-gray-6 bg-black px-4 md:flex">
-      <Link
-        className="text-lg font-semibold text-gray-12 transition-opacity hover:opacity-75"
-        href="/"
-      >
-        5/9
-      </Link>
+      <Logo />
       {NAVBAR_PAGES.map((page) => {
         const pageSelected = selected === page.slug;
 
@@ -57,12 +52,7 @@ const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
 const MobileNavBar: FC<NavBarProps> = ({ selected }) => {
   return (
     <nav className="sticky top-0 z-popover flex h-12 items-center border-b border-gray-6 bg-black px-4 md:hidden">
-      <Link
-        className="flex h-8 w-8 items-center justify-center rounded bg-gray-12 font-black text-gray-1 transition-opacity hover:opacity-80"
-        href="/"
-      >
-        5/9
-      </Link>
+      <Logo />
       {NAVBAR_PAGES.map((page) => {
         const pageSelected = selected === page.slug;
 
