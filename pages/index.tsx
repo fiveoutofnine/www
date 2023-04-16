@@ -2,6 +2,8 @@ import type { NextPage } from 'next';
 
 import { NextSeo } from 'next-seo';
 
+import { Button } from '@/components/ui';
+
 const HomePage: NextPage = () => {
   return (
     <>
@@ -14,8 +16,7 @@ const HomePage: NextPage = () => {
           handle: '@fiveoutofnine',
         }}
       />
-
-      <div className="text-gray-12">hi</div>
+      <Button>Button</Button>
     </>
   );
 };
