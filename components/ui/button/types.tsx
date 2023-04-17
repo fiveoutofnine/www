@@ -12,4 +12,5 @@ export type ButtonProps = JSX.IntrinsicElements['button'] &
     href?: string;
     leftIcon?: ReactNode;
     rightIcon?: ReactNode;
+    newTab?: boolean;
   };

@@ -4,7 +4,8 @@ import { NextSeo } from 'next-seo';
 
 import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
-import FiveoutofnineProfileHeader from '@/components/other/fiveoutofnine-profile-header';
+import FeaturedWorks from '@/components/pages/home/featured-works';
+import FiveoutofnineHeader from '@/components/pages/home/header';
 
 const HomePage: NextPage = () => {
   return (
@@ -21,7 +22,8 @@ const HomePage: NextPage = () => {
 
       <BaseLayout name="Home" pageSlug="/">
         <ContainerLayout className="flex flex-col space-y-4">
-          <FiveoutofnineProfileHeader />
+          <FiveoutofnineHeader />
+          <FeaturedWorks />
         </ContainerLayout>
       </BaseLayout>
     </>

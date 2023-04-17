@@ -17,6 +17,8 @@ const Button = forwardRef(
       href,
       leftIcon,
       rightIcon,
+      newTab,
+      onClick,
       children,
       ...rest
     }: ButtonProps,
@@ -34,10 +36,11 @@ const Button = forwardRef(
       'aria-disabled': disabled,
       disabled,
       ref,
+      onClick: newTab && href ? () => window.open(href, '_blank') : onClick,
       ...rest,
     };
 
-    if (href) {
+    if (href && !newTab) {
       return (
         <Link href={href} passHref legacyBehavior>
           <button {...props}>

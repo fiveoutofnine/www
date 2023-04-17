@@ -1,11 +1,11 @@
 import type { FC } from 'react';
 
-import FiveoutofnineAvatar from '../common/fiveoutofnine-avatar';
 import { Github, Twitter } from 'lucide-react';
 
+import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import { Button } from '@/components/ui';
 
-const FiveoutofnineProfileHeader: FC = () => {
+const FiveoutofnineHeader: FC = () => {
   return (
     <div className="flex flex-col items-center rounded-xl border border-gray-6 bg-gray-2 p-3 md:flex-row md:justify-between md:rounded-2xl md:p-6">
       <div className="flex w-full items-center">
@@ -72,6 +72,6 @@ const FiveoutofnineProfileHeader: FC = () => {
   );
 };
 
-FiveoutofnineProfileHeader.displayName = 'FiveoutofnineProfileHeader';
+FiveoutofnineHeader.displayName = 'FiveoutofnineHeader';
 
-export default FiveoutofnineProfileHeader;
+export default FiveoutofnineHeader;
