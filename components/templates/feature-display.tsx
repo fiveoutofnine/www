@@ -4,32 +4,35 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 /* Props */
-type FeatureDisplayMinimalProps = {
+type FeatureDisplayProps = {
   className?: string;
   name: string;
   description: string;
   symbol: ReactNode;
+  tags?: ReactNode[];
   button: ReactNode;
+  children: ReactNode;
 };
 
 /* Component */
-const FeatureDisplayMinimal: FC<FeatureDisplayMinimalProps> = ({
+const FeatureDisplay: FC<FeatureDisplayProps> = ({
   className,
   name,
   description,
   symbol,
+  tags,
   button,
+  children,
 }) => {
   return (
     <div
       className={twMerge(
-        clsx(
-          'flex h-[4.5rem] items-center justify-between rounded-xl border border-gray-6 bg-gray-2 px-4',
-        ),
+        clsx('flex h-64 w-64 flex-col rounded-xl border border-gray-6 bg-gray-2'),
         className,
       )}
     >
-      <div className="flex items-center space-x-2.5">
+      {/* Header */}
+      <div className="flex h-[4.5rem] items-center space-x-2.5 border-b border-gray-7 px-4">
         {/* Symbol */}
         <div className="flex h-10 w-10 items-center justify-center rounded border border-gray-6 bg-gray-3 text-gray-11">
           <div className="flex h-6 w-6 items-center justify-center">{symbol}</div>
@@ -41,10 +44,19 @@ const FeatureDisplayMinimal: FC<FeatureDisplayMinimalProps> = ({
         </div>
       </div>
 
-      {/* Button */}
-      {button}
+      {/* Body */}
+      <div className="w-full grow">{children}</div>
+
+      {/* Footer */}
+      <div className="flex h-10 items-center justify-between border-t border-gray-6 p-2">
+        {/* Tags */}
+        <div className="flex items-center space-x-1">{tags ? tags.map((tag) => tag) : null}</div>
+
+        {/* Button */}
+        {button}
+      </div>
     </div>
   );
 };
 
-export default FeatureDisplayMinimal;
+export default FeatureDisplay;
