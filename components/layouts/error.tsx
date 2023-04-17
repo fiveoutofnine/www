@@ -24,7 +24,7 @@ const ErrorLayout: FC<ErrorLayoutProps> = ({ statusCode, children }) => {
           </pre>
         </h1>
         <a
-          className="mt-2 text-center font-mono text-base text-red-9 hover:underline md:mt-4 md:text-xl"
+          className="mt-2 text-center font-mono text-base font-medium text-red-9 hover:underline md:mt-4 md:text-xl"
           href={`https://sig.eth.samczsun.com/api/v1/signatures?all=true&function=${message}`}
           target="_blank"
           rel="noopener noreferrer"
