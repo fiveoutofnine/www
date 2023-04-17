@@ -14,7 +14,7 @@ const FiveoutofnineProfileHeader: FC = () => {
         {/* Avatar (mobile) */}
         <FiveoutofnineAvatar className="mr-2 md:hidden" size={40} />
         <div>
-          <div className="text-base font-semibold md:text-2xl">fiveoutofnine</div>
+          <div className="text-base font-semibold md:text-2xl">5/9</div>
           <span className="mt-0.5 text-sm text-gray-11 md:mt-1 md:text-base">
             Working on{' '}
             <a
