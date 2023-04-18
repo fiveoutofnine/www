@@ -38,7 +38,7 @@ const TypingFeatureDetail: FC = () => {
   const lastCharTypedRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const SAMPLE_TEXT = 'what do you think about this doubt life powerhouse';
+  const SAMPLE_TEXT = 'what do you think about this';
   const FIVEOUTOFNINE_WPM = 297;
   const FIVEOUTOFNINE_TIME = 1.1;
   const textWords = useMemo(() => SAMPLE_TEXT.split(' '), [SAMPLE_TEXT]);
@@ -106,6 +106,7 @@ const TypingFeatureDetail: FC = () => {
     setStartTime(undefined);
     setEndTime(undefined);
     setWpm(undefined);
+    setInputIsFocused(false);
     inputRef.current?.focus();
   };
 
@@ -156,17 +157,18 @@ const TypingFeatureDetail: FC = () => {
           const currentWord = typedWords[wordIndex] || '';
           const wordAdjusted = `${word}${
             currentWord.length > word.length ? currentWord.substring(word.length) : ''
-          }${wordIndex < textWords.length ? ' ' : ''}`;
+          }${wordIndex < textWords.length - 1 ? ' ' : ''}`;
 
           return wordAdjusted.split('').map((char, charIndex) => {
             const charTyped = typedWords.length > wordIndex && currentWord.length > charIndex;
             const charCorrect =
               charTyped && charIndex < word.length && char === currentWord[charIndex];
             const lastCharTyped =
-              typedWords.length - 1 === wordIndex &&
-              (currentWord.length > word.length
-                ? charIndex === currentWord.length - 1
-                : charIndex === typedWords[typedWords.length - 1].length - 1);
+              (typedWords.length - 1 === wordIndex &&
+                (currentWord.length > word.length
+                  ? charIndex === currentWord.length - 1
+                  : charIndex === typedWords[typedWords.length - 1].length - 1)) ||
+              (typedWords.length - 2 === wordIndex && wordAdjusted.endsWith(' '));
 
             return (
               <span
