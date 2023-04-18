@@ -7,6 +7,7 @@ import { ChevronRight, ExternalLink, Keyboard, RotateCw } from 'lucide-react';
 import { SHORT_QUOTES } from '@/lib/constants/typing';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
+import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
 import { Button, IconButton } from '@/components/ui';
 
@@ -27,6 +28,7 @@ const TypingFeature: FC = () => {
           Watch
         </Button>
       }
+      tags={[<CategoryTag key={0} category="Web" />]}
     >
       <TypingFeatureDetail />
     </FeatureDisplay>
