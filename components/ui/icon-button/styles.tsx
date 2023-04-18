@@ -12,7 +12,16 @@ export const iconButtonIconVariants = cva(['flex', 'items-center', 'justify-cent
 });
 
 export const iconButtonVariants = cva(
-  ['rounded', 'flex', 'justify-center', 'items-center', 'transition-colors'],
+  [
+    'rounded',
+    'flex',
+    'justify-center',
+    'items-center',
+    'transition-colors',
+    'focus-visible:outline-none',
+    'focus-visible:ring-2',
+    'focus-visible:ring-blue-9',
+  ],
   {
     variants: {
       size: {

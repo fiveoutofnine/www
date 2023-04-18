@@ -20,6 +20,9 @@ export const buttonVariants = cva(
     'items-center',
     'font-medium',
     'transition-colors',
+    'focus-visible:outline-none',
+    'focus-visible:ring-2',
+    'focus-visible:ring-blue-9',
   ],
   {
     variants: {
