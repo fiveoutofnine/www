@@ -27,7 +27,7 @@ const TypingFeature: FC = () => {
 
 const TypingFeatureDetail: FC = () => {
   const [typedLocked, setTypedLocked] = useState<string>('');
-  const [lastTypedWord, setLastTypedWord] = useState<string>('');
+  const [typedPending, setTypedPending] = useState<string>('');
   const [startTime, setStartTime] = useState<Date>();
   const [endTime, setEndTime] = useState<Date>();
   const [timePassed, setTimePassed] = useState<number>();
@@ -42,14 +42,14 @@ const TypingFeatureDetail: FC = () => {
 
   // Every typed word so far.
   const typed = useMemo(
-    () => `${typedLocked}${typedLocked.length > 0 ? ' ' : ''}${lastTypedWord}`,
-    [typedLocked, lastTypedWord],
+    () => `${typedLocked}${typedLocked.length > 0 ? ' ' : ''}${typedPending}`,
+    [typedLocked, typedPending],
   );
   // In array form.
   const typedWords = useMemo(() => typed.split(' '), [typed]);
   // Number of correct characters.
   // TODO: ideally, we want to memoize the computation of this on `typedLocked`
-  // and only compute this for `lastTypedWord` (then add it to the first value).
+  // and only compute this for `typedPending` (then add it to the first value).
   const numCorrectChars = useMemo(() => {
     let res = typedWords.length - 1;
 
@@ -73,7 +73,7 @@ const TypingFeatureDetail: FC = () => {
     // the last word is typed and a space is pressed.
     if (
       typedWords.length >= textWords.length &&
-      (lastTypedWord.length + 1 >= lastWord.length || value.endsWith(' '))
+      (typedPending.length + 1 >= lastWord.length || value.endsWith(' '))
     ) {
       setEndTime(new Date());
     }
@@ -82,23 +82,23 @@ const TypingFeatureDetail: FC = () => {
 
     // If the last word is typed and a space is pressed, lock the typed words
     // and reset the last typed word.
-    if (value.endsWith(' ') && lastTypedWord === currentCorrectWord) {
+    if (value.endsWith(' ') && typedPending === currentCorrectWord) {
       setTypedLocked(typed);
-      setLastTypedWord('');
+      setTypedPending('');
     } else if (
       // If a typed word is more than 10 characters longer than its
       // corresponding word, disallow further typing.
       typedWords[typedWords.length - 1].length < currentCorrectWord.length + 10 ||
       value.endsWith(' ')
     ) {
-      setLastTypedWord(value);
+      setTypedPending(value);
     }
   };
 
   // Reset test.
   const resetTest = () => {
     setTypedLocked('');
-    setLastTypedWord('');
+    setTypedPending('');
     setStartTime(undefined);
     setEndTime(undefined);
     setTimePassed(undefined);
@@ -182,7 +182,7 @@ const TypingFeatureDetail: FC = () => {
         })}
         <textarea
           className="absolute left-0 top-0 flex h-full w-full resize-none items-start border-0 p-0 font-mono text-sm opacity-0 focus:outline-none focus:ring-0"
-          value={lastTypedWord}
+          value={typedPending}
           ref={inputRef}
           onChange={onChange}
           disabled={!!endTime}
