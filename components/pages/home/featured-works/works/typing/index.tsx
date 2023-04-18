@@ -2,7 +2,9 @@ import { type ChangeEvent, type FC, useEffect, useMemo, useRef, useState } from 
 
 import TypingFeatureDetailTimer from './timer';
 import clsx from 'clsx';
-import { ChevronRight, Keyboard, RotateCw } from 'lucide-react';
+import { ChevronRight, ExternalLink, Keyboard, RotateCw } from 'lucide-react';
+
+import { SHORT_QUOTES } from '@/lib/constants/typing';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import FeatureDisplay from '@/components/templates/feature-display';
@@ -16,8 +18,13 @@ const TypingFeature: FC = () => {
       description="I type fast (try racing me)"
       symbol={<Keyboard />}
       button={
-        <Button size="sm" href="/typing" rightIcon={<ChevronRight />} disabled>
-          Race me
+        <Button
+          size="sm"
+          href="https://twitter.com/fiveoutofnine/status/1557037492830089217"
+          rightIcon={<ExternalLink />}
+          newTab
+        >
+          Watch
         </Button>
       }
     >
@@ -27,6 +34,7 @@ const TypingFeature: FC = () => {
 };
 
 const TypingFeatureDetail: FC = () => {
+  const [quote, setQuote] = useState<(typeof SHORT_QUOTES)[0]>(SHORT_QUOTES[0]);
   const [typedLocked, setTypedLocked] = useState<string>('');
   const [typedPending, setTypedPending] = useState<string>('');
   const [startTime, setStartTime] = useState<Date>();
@@ -38,10 +46,7 @@ const TypingFeatureDetail: FC = () => {
   const lastCharTypedRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const SAMPLE_TEXT = 'what do you think about this';
-  const FIVEOUTOFNINE_WPM = 297;
-  const FIVEOUTOFNINE_TIME = 1.1;
-  const textWords = useMemo(() => SAMPLE_TEXT.split(' '), [SAMPLE_TEXT]);
+  const textWords = useMemo(() => quote.text.split(' '), [quote.text]);
   const lastWord = useMemo(() => textWords[textWords.length - 1], [textWords]);
 
   // Every typed word so far.
@@ -99,6 +104,11 @@ const TypingFeatureDetail: FC = () => {
     }
   };
 
+  // Randomly select a test.
+  const getRandomQuote = () => {
+    return SHORT_QUOTES[Math.floor(Math.random() * SHORT_QUOTES.length)];
+  };
+
   // Reset test.
   const resetTest = () => {
     setTypedLocked('');
@@ -109,6 +119,17 @@ const TypingFeatureDetail: FC = () => {
     setInputIsFocused(false);
     inputRef.current?.focus();
   };
+
+  // Randomly select a quote that isn't the current one.
+  const changeQuote = () => {
+    let newQuote = getRandomQuote();
+    while (newQuote.text === quote.text) newQuote = getRandomQuote();
+    setQuote(newQuote);
+    resetTest();
+  };
+
+  // Randomize text on page load.
+  useEffect(() => setQuote(getRandomQuote()), []);
 
   // Timer to update WPM.
   useEffect(() => {
@@ -223,13 +244,13 @@ const TypingFeatureDetail: FC = () => {
                 className={clsx(
                   'text-[0.625rem] transition-colors',
                   endTime
-                    ? wpm && wpm > FIVEOUTOFNINE_WPM
+                    ? wpm && wpm > quote.wpm
                       ? 'text-red-9'
                       : 'text-green-9'
                     : 'text-gray-11',
                 )}
               >
-                {FIVEOUTOFNINE_WPM}
+                {quote.wpm}
               </div>
             </div>
           </div>
@@ -237,7 +258,7 @@ const TypingFeatureDetail: FC = () => {
           <TypingFeatureDetailTimer
             startTime={startTime}
             endTime={endTime}
-            fiveoutofnineTime={FIVEOUTOFNINE_TIME}
+            fiveoutofnineTime={quote.time}
           />
         </div>
 
@@ -246,7 +267,7 @@ const TypingFeatureDetail: FC = () => {
           <IconButton size="sm" disabled={typed.length === 0} onClick={resetTest}>
             <RotateCw />
           </IconButton>
-          <IconButton size="sm">
+          <IconButton size="sm" onClick={changeQuote}>
             <ChevronRight />
           </IconButton>
         </div>
