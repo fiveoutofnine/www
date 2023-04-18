@@ -39,7 +39,7 @@ const inter = Inter({
 
 /* Component */
 const App: FC<AppProps> = ({ Component, pageProps }) => {
-  const DESCRIPTION = '5/9 personal website';
+  const DESCRIPTION = 'personal website';
 
   return (
     <>
@@ -54,7 +54,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           locale: 'en_US',
           description: DESCRIPTION,
           url: 'https://fiveoutofnine.com',
-          site_name: '5/9',
+          site_name: 'fiveoutofnine',
         }}
         twitter={{
           handle: '@fiveoutofnine',
