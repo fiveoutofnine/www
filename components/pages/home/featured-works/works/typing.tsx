@@ -63,6 +63,10 @@ const TypingFeatureDetail: FC = () => {
     return res;
   }, [textWords, typedWords]);
 
+  /* const lastCharBoundingBox = document
+    .querySelector('[data-last-char="true"]')
+    ?.getBoundingClientRect(); */
+
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     // Start a new test if no typed characters.
     if (typed.length === 0) setStartTime(new Date());
@@ -160,26 +164,35 @@ const TypingFeatureDetail: FC = () => {
       <div className="relative w-full font-mono text-sm">
         {textWords.map((word, wordIndex) => {
           const currentWord = typedWords[wordIndex] || '';
-          const wordAdjusted =
-            word +
-            (currentWord.length > word.length ? currentWord.substring(word.length) : '') +
-            (wordIndex < textWords.length ? ' ' : '');
+          const wordAdjusted = `${word}${
+            currentWord.length > word.length ? currentWord.substring(word.length) : ''
+          }${wordIndex < textWords.length ? ' ' : ''}`;
 
           return wordAdjusted.split('').map((char, charIndex) => {
             const charTyped = typedWords.length > wordIndex && currentWord.length > charIndex;
             const charCorrect =
               charTyped && charIndex < word.length && char === currentWord[charIndex];
+            const lastCharTyped =
+              typedWords.length - 1 === wordIndex &&
+              (currentWord.length > word.length
+                ? charIndex === currentWord.length - 1
+                : charIndex === typedWords[typedWords.length - 1].length - 1);
 
             return (
               <span
                 key={`${wordIndex}-${charIndex}`}
-                className={charCorrect ? 'text-gray-12' : charTyped ? 'text-red-9' : 'text-gray-10'}
+                className={clsx(
+                  charCorrect ? 'text-gray-12' : charTyped ? 'text-red-9' : 'text-gray-10',
+                  lastCharTyped ? 'underline' : '',
+                )}
               >
                 {char}
               </span>
             );
           });
         })}
+
+        {/* Input */}
         <textarea
           className="absolute left-0 top-0 flex h-full w-full resize-none items-start border-0 p-0 font-mono text-sm opacity-0 focus:outline-none focus:ring-0"
           value={typedPending}
@@ -202,7 +215,7 @@ const TypingFeatureDetail: FC = () => {
               <FiveoutofnineAvatar size={12} />
               <div
                 className={clsx(
-                  'text-[0.625rem]',
+                  'text-[0.625rem] transition-colors',
                   endTime
                     ? wpm && wpm > FIVEOUTOFNINE_WPM
                       ? 'text-red-9'
@@ -222,7 +235,7 @@ const TypingFeatureDetail: FC = () => {
               <FiveoutofnineAvatar size={12} />
               <div
                 className={clsx(
-                  'text-[0.625rem]',
+                  'text-[0.625rem] transition-colors',
                   endTime
                     ? timePassed && timePassed < FIVEOUTOFNINE_TIME
                       ? 'text-red-9'
@@ -238,7 +251,7 @@ const TypingFeatureDetail: FC = () => {
 
         {/* Buttons */}
         <div className="flex space-x-1">
-          <IconButton size="sm" disabled={!timePassed} onClick={resetTest}>
+          <IconButton size="sm" disabled={typed.length === 0} onClick={resetTest}>
             <RotateCw />
           </IconButton>
           <IconButton size="sm">
