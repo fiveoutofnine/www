@@ -75,16 +75,19 @@ const TypingFeatureDetail: FC = () => {
   }, [textWords, typedWords]);
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+
+    if ((typed.length === 0 && value === ' ') || (typed.endsWith(' ') && value.endsWith(' ')))
+      return;
+
     // Start a new test if no typed characters.
     if (typed.length === 0) setStartTime(new Date());
-
-    const value = e.target.value;
 
     // End the test if typed length of last word exceeds last word length or if
     // the last word is typed and a space is pressed.
     if (
       typedWords.length >= textWords.length &&
-      (typedPending.length + 1 >= lastWord.length || value.endsWith(' '))
+      (typedWords[typedWords.length - 1].length + 1 >= lastWord.length || value.endsWith(' '))
     ) {
       setEndTime(new Date());
     }
