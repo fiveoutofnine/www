@@ -137,22 +137,23 @@ const TypingFeatureDetail: FC = () => {
     return () => clearInterval(interval);
   }, [startTime, endTime, typed.length, numCorrectChars]);
 
+  // Identify nodes for rendering the user caret.
   const wrapperNode = wrapperRef.current?.getBoundingClientRect();
   const lastCharTypedNode = lastCharTypedRef.current?.getBoundingClientRect();
 
-  const left =
+  const userCaretLeft =
     wrapperNode && lastCharTypedNode && typed.length > 0
       ? lastCharTypedNode.left - wrapperNode.left + lastCharTypedNode.width
       : 0;
-  const top =
+  const userCaretTop =
     wrapperNode && lastCharTypedNode && typed.length > 0
       ? lastCharTypedNode.top - wrapperNode.top
       : 2;
 
   return (
-    <div className="flex h-full w-full flex-col justify-between bg-gray-3 p-2">
+    <div className="flex h-full w-full flex-col justify-between space-y-2 bg-gray-3 p-2">
       {/* Typing input */}
-      <div className="relative w-full font-mono text-sm" ref={wrapperRef}>
+      <div className="relative h-full w-full font-mono text-sm" ref={wrapperRef}>
         {textWords.map((word, wordIndex) => {
           const currentWord = typedWords[wordIndex] || '';
           const wordAdjusted = `${word}${
@@ -189,7 +190,7 @@ const TypingFeatureDetail: FC = () => {
           className="absolute left-0 top-0 transition-all"
           style={{
             opacity: !endTime && inputIsFocused ? 100 : 0,
-            transform: `translate(${left}px, ${top}px)`,
+            transform: `translate(${userCaretLeft}px, ${userCaretTop}px)`,
           }}
         >
           <div className="h-4 w-[1.5px] animate-pulse rounded-full bg-gray-11" />
