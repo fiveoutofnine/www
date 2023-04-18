@@ -1,5 +1,6 @@
 import { type ChangeEvent, type FC, useEffect, useMemo, useRef, useState } from 'react';
 
+import TypingFeatureDetailTimer from './timer';
 import clsx from 'clsx';
 import { ChevronRight, Keyboard, RotateCw } from 'lucide-react';
 
@@ -30,8 +31,11 @@ const TypingFeatureDetail: FC = () => {
   const [typedPending, setTypedPending] = useState<string>('');
   const [startTime, setStartTime] = useState<Date>();
   const [endTime, setEndTime] = useState<Date>();
-  const [timePassed, setTimePassed] = useState<number>();
   const [wpm, setWpm] = useState<number>();
+  const [inputIsFocused, setInputIsFocused] = useState<boolean>(false);
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const lastCharTypedRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const SAMPLE_TEXT = 'what do you think about this doubt life powerhouse';
@@ -62,10 +66,6 @@ const TypingFeatureDetail: FC = () => {
 
     return res;
   }, [textWords, typedWords]);
-
-  /* const lastCharBoundingBox = document
-    .querySelector('[data-last-char="true"]')
-    ?.getBoundingClientRect(); */
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     // Start a new test if no typed characters.
@@ -105,7 +105,6 @@ const TypingFeatureDetail: FC = () => {
     setTypedPending('');
     setStartTime(undefined);
     setEndTime(undefined);
-    setTimePassed(undefined);
     setWpm(undefined);
     inputRef.current?.focus();
   };
@@ -137,31 +136,22 @@ const TypingFeatureDetail: FC = () => {
     return () => clearInterval(interval);
   }, [startTime, endTime, typed.length, numCorrectChars]);
 
-  // Timer to update the time passed.
-  useEffect(() => {
-    if (!startTime) return;
+  const wrapperNode = wrapperRef.current?.getBoundingClientRect();
+  const lastCharTypedNode = lastCharTypedRef.current?.getBoundingClientRect();
 
-    const interval = setInterval(() => {
-      const timePassed = (Date.now() - startTime.getTime()) / 1000;
-
-      setTimePassed(timePassed);
-    }, 50);
-
-    if (endTime) {
-      const timePassed = (Date.now() - startTime.getTime()) / 1000;
-
-      setTimePassed(timePassed);
-      clearInterval(interval);
-      return;
-    }
-
-    return () => clearInterval(interval);
-  }, [startTime, endTime]);
+  const left =
+    wrapperNode && lastCharTypedNode && typed.length > 0
+      ? lastCharTypedNode.left - wrapperNode.left + lastCharTypedNode.width
+      : 0;
+  const top =
+    wrapperNode && lastCharTypedNode && typed.length > 0
+      ? lastCharTypedNode.top - wrapperNode.top
+      : 2;
 
   return (
     <div className="flex h-full w-full flex-col justify-between bg-gray-3 p-2">
       {/* Typing input */}
-      <div className="relative w-full font-mono text-sm">
+      <div className="relative w-full font-mono text-sm" ref={wrapperRef}>
         {textWords.map((word, wordIndex) => {
           const currentWord = typedWords[wordIndex] || '';
           const wordAdjusted = `${word}${
@@ -181,10 +171,10 @@ const TypingFeatureDetail: FC = () => {
             return (
               <span
                 key={`${wordIndex}-${charIndex}`}
-                className={clsx(
-                  charCorrect ? 'text-gray-12' : charTyped ? 'text-red-9' : 'text-gray-10',
-                  lastCharTyped ? 'underline' : '',
-                )}
+                className={
+                  charCorrect ? 'text-gray-12' : charTyped ? 'text-red-9 underline' : 'text-gray-10'
+                }
+                ref={lastCharTyped ? lastCharTypedRef : undefined}
               >
                 {char}
               </span>
@@ -192,12 +182,25 @@ const TypingFeatureDetail: FC = () => {
           });
         })}
 
+        {/* User caret */}
+        <div
+          className="absolute left-0 top-0 transition-all"
+          style={{
+            opacity: !endTime && inputIsFocused ? 100 : 0,
+            transform: `translate(${left}px, ${top}px)`,
+          }}
+        >
+          <div className="h-4 w-[1.5px] animate-pulse rounded-full bg-gray-11" />
+        </div>
+
         {/* Input */}
         <textarea
           className="absolute left-0 top-0 flex h-full w-full resize-none items-start border-0 p-0 font-mono text-sm opacity-0 focus:outline-none focus:ring-0"
           value={typedPending}
           ref={inputRef}
           onChange={onChange}
+          onFocus={() => setInputIsFocused(true)}
+          onBlur={() => setInputIsFocused(false)}
           disabled={!!endTime}
           aria-label="Race against 5/9"
         />
@@ -228,25 +231,11 @@ const TypingFeatureDetail: FC = () => {
             </div>
           </div>
           {/* Time passed */}
-          <div>
-            <div className="text-[0.625rem] text-gray-11">Time</div>
-            <div className="text-xs text-gray-12">{timePassed ? `${timePassed}s` : '–'}</div>
-            <div className="flex items-center space-x-1">
-              <FiveoutofnineAvatar size={12} />
-              <div
-                className={clsx(
-                  'text-[0.625rem] transition-colors',
-                  endTime
-                    ? timePassed && timePassed < FIVEOUTOFNINE_TIME
-                      ? 'text-red-9'
-                      : 'text-green-9'
-                    : 'text-gray-11',
-                )}
-              >
-                {FIVEOUTOFNINE_TIME}s
-              </div>
-            </div>
-          </div>
+          <TypingFeatureDetailTimer
+            startTime={startTime}
+            endTime={endTime}
+            fiveoutofnineTime={FIVEOUTOFNINE_TIME}
+          />
         </div>
 
         {/* Buttons */}
