@@ -27,8 +27,8 @@ export const SHORT_QUOTES = [
   },
   {
     text: 'sudolabel',
-    wpm: 310.3,
-    time: 0.348,
+    wpm: 336.4,
+    time: 0.321,
   },
   {
     text: 'There are many things that I would like to say to you but I don\'t know how.',
