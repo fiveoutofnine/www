@@ -219,7 +219,7 @@ const TypingFeatureDetail: FC = () => {
             transform: `translate(${userCaretLeft}px, ${userCaretTop}px)`,
           }}
         >
-          <div className="h-4 w-[1.5px] animate-pulse rounded-full bg-gray-11 duration-300" />
+          <div className="h-4 w-[1.5px] animate-pulse rounded-full bg-gray-11" />
         </div>
 
         {/* Input */}
