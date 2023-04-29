@@ -65,7 +65,7 @@ const TypingFeatureDetail: FC = () => {
     let res = typedWords.length - 1;
 
     for (let i = 0; i < typedWords.length; ++i) {
-      const correctWord = textWords[i];
+      const correctWord = i < textWords.length ? textWords[i] : '';
       for (let j = 0; j < correctWord.length; ++j) {
         if (typedWords[i][j] === correctWord[j]) ++res;
       }
@@ -219,7 +219,7 @@ const TypingFeatureDetail: FC = () => {
             transform: `translate(${userCaretLeft}px, ${userCaretTop}px)`,
           }}
         >
-          <div className="duration-[300] h-4 w-[1.5px] animate-pulse rounded-full bg-gray-11" />
+          <div className="h-4 w-[1.5px] animate-pulse rounded-full bg-gray-11 duration-300" />
         </div>
 
         {/* Input */}
