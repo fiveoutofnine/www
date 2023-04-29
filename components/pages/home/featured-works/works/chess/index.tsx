@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import clsx from 'clsx';
 import { ChevronRight } from 'lucide-react';
 
+import ChessPiece from '@/components/common/chess-piece';
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
 import { Button } from '@/components/ui';
@@ -37,7 +38,13 @@ const ChessFeature: FC = () => {
       }
       tags={[<CategoryTag key={0} category="NFT" />, <CategoryTag key={1} category="On-chain" />]}
     >
-      <ChessFeatureDetail />
+      <ChessFeatureDetail
+        image={IMAGE}
+        tokenId={0}
+        userMove={{ from: 26, to: 20 }}
+        contractMove={{ from: 7, to: 19 }}
+        boardAfterMove="bcedcb909999000000091000110111326523"
+      />
     </FeatureDisplay>
   );
 };
@@ -47,23 +54,37 @@ const IMAGE =
 
 type ChessFeatureDetailProps = {
   image: string;
-  userMove: string;
-  contractMove: string;
-  boardAfterTurn: string;
+  tokenId: number;
+  userMove: { from: number; to: number };
+  contractMove: { from: number; to: number };
+  boardAfterMove: string;
 };
 
-const ChessFeatureDetail: FC = () => {
+const ChessFeatureDetail: FC<ChessFeatureDetailProps> = ({
+  image,
+  tokenId,
+  userMove,
+  contractMove,
+  boardAfterMove,
+}) => {
+  const getPieceNotation = (index: number) => {
+    return `${'ABCDEF'[index % 6]}${6 - Math.floor(index / 6)}`;
+  };
+
   return (
     <div className="flex h-full w-full space-x-2 p-2">
-      <div
+      <a
         className="h-full"
+        href={`https://etherscan.io/nft/0xb543f9043b387ce5b3d1f0d916e42d8ea2eba2e0/${tokenId}`}
         style={{
           aspectRatio: '1 / 1',
           transform: 'scale(0.128)' /* Height is hard-coded, so this should always be `0.128` */,
           transformOrigin: '0 0',
         }}
+        target="_blank"
+        rel="noopener noreferrer"
         dangerouslySetInnerHTML={{
-          __html: Buffer.from(IMAGE, 'base64')
+          __html: Buffer.from(image, 'base64')
             .toString()
             /* 62.5 = 8 * (1000 / 128) */
             .replace('<section', '<section style="border-radius:62.5px"'),
@@ -72,29 +93,70 @@ const ChessFeatureDetail: FC = () => {
 
       <div className="flex w-full flex-col justify-between rounded-lg bg-gray-3 p-2">
         <div className="mx-auto grid w-[72px] grid-cols-6 grid-rows-6 overflow-hidden rounded border border-gray-6">
-          {'325623111111000000000000999999bcdecb'.split('').map((piece, index) => (
-            <div
-              key={index}
-              className={clsx(
-                'flex h-3 w-3 items-center justify-center text-[0.5rem]',
-                (2709 >> index % 12) & 1 ? 'bg-gray-9' : 'bg-gray-4',
-              )}
-            >
-              {piece}
-            </div>
-          ))}
+          {boardAfterMove
+            .toLowerCase()
+            .split('')
+            .map((piece, index) => {
+              const pieceOverlap =
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                (userMove.from === index) +
+                (userMove.to === index) +
+                (contractMove.from === index) +
+                (contractMove.to === index);
+              const pieceColor =
+                piece < '8' ? 'stroke-gray-1 text-gray-12' : 'stroke-gray-12 text-gray-1';
+
+              return (
+                <div
+                  key={index}
+                  className={clsx(
+                    'flex h-3 w-3 items-center justify-center text-[0.5rem]',
+                    pieceOverlap > 1
+                      ? 'bg-purple-9'
+                      : userMove.from === index
+                      ? 'bg-blue-3'
+                      : userMove.to === index
+                      ? 'bg-blue-9'
+                      : contractMove.from === index
+                      ? 'bg-red-3'
+                      : contractMove.to === index
+                      ? 'bg-red-9'
+                      : (2709 >> index % 12) & 1
+                      ? 'bg-gray-9'
+                      : 'bg-gray-4',
+                  )}
+                >
+                  {piece === '1' || piece === '9' ? (
+                    <ChessPiece.Pawn className={clsx('h2 w-2', pieceColor)} />
+                  ) : piece === '2' || piece === 'a' ? (
+                    <ChessPiece.Bishop className={clsx('h2 w-2', pieceColor)} />
+                  ) : piece === '3' || piece === 'b' ? (
+                    <ChessPiece.Rook className={clsx('h2 w-2', pieceColor)} />
+                  ) : piece === '4' || piece === 'c' ? (
+                    <ChessPiece.Knight className={clsx('h2 w-2', pieceColor)} />
+                  ) : piece === '5' || piece === 'd' ? (
+                    <ChessPiece.Queen className={clsx('h2 w-2', pieceColor)} />
+                  ) : piece === '6' || piece === 'e' ? (
+                    <ChessPiece.King className={clsx('h2 w-2', pieceColor)} />
+                  ) : null}
+                </div>
+              );
+            })}
         </div>
         <div className="flex justify-between text-[0.5rem] font-medium">
           <div>
             <div className="text-blue-9">User</div>
             <div className="text-gray-12">
-              C2 <span className="text-gray-11">-&gt;</span> C3
+              {getPieceNotation(userMove.from)} <span className="text-gray-11">-&gt;</span>{' '}
+              {getPieceNotation(userMove.to)}
             </div>
           </div>
           <div className="flex flex-col items-end">
             <div className="text-red-9">Contract</div>
             <div className="text-gray-12">
-              C2 <span className="text-gray-11">-&gt;</span> C3
+              {getPieceNotation(contractMove.from)} <span className="text-gray-11">-&gt;</span>{' '}
+              {getPieceNotation(contractMove.to)}
             </div>
           </div>
         </div>
