@@ -39,8 +39,8 @@ const FeatureDisplay: FC<FeatureDisplayProps> = ({
         </div>
         {/* Name + description */}
         <div>
-          <div className="font-medium text-gray-12">{name}</div>
-          <div className="text-sm text-gray-11">{description}</div>
+          <div className="line-clamp-1 text-ellipsis font-medium text-gray-12">{name}</div>
+          <div className="line-clamp-1 text-ellipsis text-sm text-gray-11">{description}</div>
         </div>
       </div>
 
