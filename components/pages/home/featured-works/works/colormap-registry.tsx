@@ -73,11 +73,12 @@ const ColormapRegistryFeatureDetail: FC = () => {
   };
 
   return (
-    <div className="relative bg-gray-3 px-2">
+    <div className="relative bg-gray-3">
       <fieldset
         id="colormap-picker"
-        className="overflow-y-scroll grid h-[8.875rem] grid-cols-2 gap-1 overflow-x-hidden py-2"
+        className="overflow-y-scroll grid h-[8.875rem] grid-cols-2 gap-1 overflow-x-hidden p-2"
         onScroll={handleScroll}
+        tabIndex={-1}
       >
         {COLORMAPS.map((colormap, index) => {
           const tooltipColor = getColormapValue(
@@ -120,6 +121,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
                 aria-label={`Expand ${colormap.name} colormap`}
                 layoutId={`colormap-${index}`}
                 transition={{ type: 'tween', duration: 0.15 }}
+                tabIndex={selected === undefined ? 0 : -1}
               />
               {selected === index ? (
                 <div
