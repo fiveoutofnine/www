@@ -1,9 +1,11 @@
 import { type FC, type PointerEvent, useCallback, useState } from 'react';
 
 import { TooltipWithBounds, useTooltip, useTooltipInPortal } from '@visx/tooltip';
-import clsx from 'clsx';
 import { LayoutGroup, motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
+
+import { COLORMAPS } from '@/lib/constants/colormaps';
+import { getColormapValue } from '@/lib/utils';
 
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
@@ -36,26 +38,6 @@ const ColormapRegistryFeature: FC = () => {
 const ColormapRegistryFeatureDetail: FC = () => {
   const [selected, setSelected] = useState<number>();
 
-  const COLORMAPS = [
-    'bg-gradient-to-r from-cyan-500 via-purple-500 via-yellow-500 to-red-500',
-    'bg-blue-9',
-    'bg-green-9',
-    'bg-yellow-9',
-    'bg-purple-9',
-    'bg-pink-9',
-    'bg-red-9',
-    'bg-blue-9',
-    'bg-green-9',
-    'bg-yellow-9',
-    'bg-purple-9',
-    'bg-pink-9',
-    'bg-red-9',
-    'bg-blue-9',
-    'bg-green-9',
-    'bg-yellow-9',
-    'bg-purple-9',
-    'bg-pink-9',
-  ];
   const { containerRef, containerBounds } = useTooltipInPortal({
     scroll: true,
     detectBounds: true,
@@ -79,19 +61,40 @@ const ColormapRegistryFeatureDetail: FC = () => {
 
   return (
     <div className="relative bg-gray-3">
-      <fieldset className="overflow-y-scroll grid h-36 grid-cols-2 gap-1 overflow-x-hidden p-2">
+      {/* <label htmlFor="colormap-picker" className="mb-2 ml-2 text-xs text-gray-11">
+        Try pressing one!
+      </label> */}
+      <fieldset
+        id="colormap-picker"
+        className="overflow-y-scroll grid h-36 grid-cols-2 gap-1 overflow-x-hidden p-2"
+      >
         {COLORMAPS.map((colormap, index) => {
+          const tooltipColor = getColormapValue(
+            colormap.data,
+            (255 * tooltipLeft) / containerBounds.width,
+          );
+          const tooltipColorHex =
+            '#' +
+            tooltipColor.r.toString(16).padStart(2, '0') +
+            tooltipColor.g.toString(16).padStart(2, '0') +
+            tooltipColor.b.toString(16).padStart(2, '0');
+          const colormapPreview = `linear-gradient(to right, ${[...Array(15)]
+            .map((_, j) => {
+              const colorValue = getColormapValue(colormap.data, j * 17);
+
+              return `rgb(${colorValue.r}, ${colorValue.g}, ${colorValue.b})`;
+            })
+            .join(', ')})`;
+
           return (
             <LayoutGroup key={index}>
               <motion.button
-                className={clsx(
-                  'flex h-6 items-center justify-center rounded border border-gray-7 hover:border-gray-8 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-9 active:brightness-110',
-                  colormap,
-                )}
+                className="flex h-6 items-center justify-center rounded border border-gray-7 hover:border-gray-8 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-9 active:brightness-110"
                 onClick={() => setSelected(index)}
                 style={{
                   transitionProperty: 'border-color, filter',
                   transitionDuration: '150ms',
+                  background: colormapPreview,
                 }}
                 layoutId={`colormap-${index}`}
                 transition={{ type: 'tween', duration: 0.15 }}
@@ -104,9 +107,10 @@ const ColormapRegistryFeatureDetail: FC = () => {
                   onMouseLeave={hideTooltip}
                 >
                   <motion.div
-                    className={clsx('h-full w-full', COLORMAPS[selected])}
+                    className="h-full w-full"
                     layoutId={`colormap-${index}`}
                     transition={{ type: 'tween', duration: 0.15 }}
+                    style={{ background: colormapPreview }}
                   >
                     <motion.div
                       className="flex h-8 w-full items-center justify-between border-b border-gray-6 bg-gray-3 px-1"
@@ -123,8 +127,12 @@ const ColormapRegistryFeatureDetail: FC = () => {
                       >
                         <ArrowLeft />
                       </IconButton>
-                      <span className="text-xs font-medium text-gray-12">Winter</span>
-                      <IconButton size="sm">
+                      <span className="text-xs font-medium text-gray-12">{colormap.name}</span>
+                      <IconButton
+                        size="sm"
+                        href={`https://etherscan.io/tx/${colormap.addedTxHash}`}
+                        newTab
+                      >
                         <ExternalLink />
                       </IconButton>
                     </motion.div>
@@ -138,15 +146,20 @@ const ColormapRegistryFeatureDetail: FC = () => {
                           key={Math.random()} // Needed for bounds to update correctly
                           left={tooltipLeft}
                           top={62}
-                          className="flex h-8 items-center justify-center rounded-lg border border-gray-6 bg-gray-4 px-2 font-mono text-xs font-medium"
+                          className="flex h-8 items-center justify-center rounded-lg border border-gray-6 px-2 font-mono text-xs font-medium"
                           style={{
                             top: 0,
                             left: 0,
                             position: 'absolute',
                             pointerEvents: 'none',
+                            background: tooltipColorHex,
+                            color:
+                              tooltipColor.r + tooltipColor.g + tooltipColor.b > 382
+                                ? '#000'
+                                : '#fff',
                           }}
                         >
-                          #{tooltipLeft?.toFixed(0)}
+                          {tooltipColorHex.toUpperCase()}
                         </TooltipWithBounds>
                       </>
                     ) : null}

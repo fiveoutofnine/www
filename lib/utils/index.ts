@@ -1,3 +1,4 @@
+import getColormapValue from './getColormapValue';
 import validateQuery from './validateQuery';
 
-export { validateQuery };
+export { getColormapValue, validateQuery };
