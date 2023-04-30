@@ -1,6 +1,7 @@
-import { type FC, type PointerEvent, useCallback, useState } from 'react';
+import { type FC, type PointerEvent, type UIEvent, useCallback, useState } from 'react';
 
 import { TooltipWithBounds, useTooltip, useTooltipInPortal } from '@visx/tooltip';
+import clsx from 'clsx';
 import { LayoutGroup, motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 
@@ -37,6 +38,8 @@ const ColormapRegistryFeature: FC = () => {
 
 const ColormapRegistryFeatureDetail: FC = () => {
   const [selected, setSelected] = useState<number>();
+  const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
+  const [scrollIsAtBottom, setScrollIsAtBottom] = useState<boolean>(false);
 
   const { containerRef, containerBounds } = useTooltipInPortal({
     scroll: true,
@@ -59,14 +62,22 @@ const ColormapRegistryFeatureDetail: FC = () => {
     [showTooltip, containerBounds],
   );
 
+  const handleScroll = (event: UIEvent<HTMLFieldSetElement>) => {
+    const target = event.target as HTMLFieldSetElement;
+    const scrollTop = target.scrollTop;
+    const scrollHeight = target.scrollHeight;
+    const clientHeight = target.clientHeight;
+
+    setScrollIsAtTop(scrollTop === 0);
+    setScrollIsAtBottom(scrollHeight - scrollTop === clientHeight);
+  };
+
   return (
-    <div className="relative bg-gray-3">
-      {/* <label htmlFor="colormap-picker" className="mb-2 ml-2 text-xs text-gray-11">
-        Try pressing one!
-      </label> */}
+    <div className="relative bg-gray-3 px-2">
       <fieldset
         id="colormap-picker"
-        className="overflow-y-scroll grid h-36 grid-cols-2 gap-1 overflow-x-hidden p-2"
+        className="overflow-y-scroll grid h-[8.875rem] grid-cols-2 gap-1 overflow-x-hidden py-2"
+        onScroll={handleScroll}
       >
         {COLORMAPS.map((colormap, index) => {
           const tooltipColor = getColormapValue(
@@ -78,6 +89,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
             tooltipColor.r.toString(16).padStart(2, '0') +
             tooltipColor.g.toString(16).padStart(2, '0') +
             tooltipColor.b.toString(16).padStart(2, '0');
+          const tooltipColorIsDark = tooltipColor.r + tooltipColor.g + tooltipColor.b < 382;
           // We only sample as much as the longest array in the segment data
           // definition for efficiency.
           const sampleCount = Math.max(
@@ -96,10 +108,10 @@ const ColormapRegistryFeatureDetail: FC = () => {
           return (
             <LayoutGroup key={index}>
               <motion.button
-                className="flex h-6 items-center justify-center rounded border border-gray-7 hover:border-gray-8 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-9 active:brightness-110"
+                className="h-6 rounded border border-gray-7 hover:border-gray-8 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-9 active:brightness-110"
                 onClick={() => setSelected(index)}
                 style={{
-                  transitionProperty: 'border-color, filter',
+                  transitionProperty: 'border-color, filter, color',
                   transitionDuration: '150ms',
                   background: colormapPreview,
                 }}
@@ -114,7 +126,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
                   onMouseLeave={hideTooltip}
                 >
                   <motion.div
-                    className="h-full w-full"
+                    className="z-10 h-full w-full"
                     layoutId={`colormap-${index}`}
                     transition={{ type: 'tween', duration: 0.15 }}
                     style={{ background: colormapPreview }}
@@ -146,24 +158,25 @@ const ColormapRegistryFeatureDetail: FC = () => {
                     {tooltipOpen ? (
                       <>
                         <hr
-                          className="absolute h-28 border border-gray-7"
-                          style={{ transform: `translateX(${tooltipLeft}px)` }}
+                          className="absolute z-10 h-[6.875rem] transition-colors"
+                          style={{
+                            border: tooltipColorIsDark ? '0.5px solid #fff' : '0.5px solid #000',
+                            transform: `translateX(${tooltipLeft}px)`,
+                          }}
                         />
                         <TooltipWithBounds
                           key={Math.random()} // Needed for bounds to update correctly
                           left={tooltipLeft}
                           top={62}
-                          className="flex h-8 items-center justify-center rounded-lg border border-gray-6 px-2 font-mono text-xs font-medium"
+                          className="z-10 flex h-6 items-center justify-center rounded px-1.5 font-mono text-xs font-medium transition-colors"
                           style={{
                             top: 0,
                             left: 0,
                             position: 'absolute',
                             pointerEvents: 'none',
                             background: tooltipColorHex,
-                            color:
-                              tooltipColor.r + tooltipColor.g + tooltipColor.b > 382
-                                ? '#000'
-                                : '#fff',
+                            color: tooltipColorIsDark ? '#fff' : '#000',
+                            border: tooltipColorIsDark ? '1px solid #fff' : '1px solid #000',
                           }}
                         >
                           {tooltipColorHex.toUpperCase()}
@@ -177,6 +190,20 @@ const ColormapRegistryFeatureDetail: FC = () => {
           );
         })}
       </fieldset>
+      {/* Top gradient to hide overflow */}
+      <div
+        className={clsx(
+          'pointer-events-none absolute left-0 top-0 h-6 w-full bg-gradient-to-b from-gray-3 to-transparent transition-opacity',
+          scrollIsAtTop || selected !== undefined ? 'opacity-0' : 'opacity-100',
+        )}
+      />
+      {/* Bottom gradient to hide overflow */}
+      <div
+        className={clsx(
+          'pointer-events-none absolute bottom-0 left-0 h-6 w-full bg-gradient-to-t from-gray-3 to-transparent transition-opacity',
+          scrollIsAtBottom || selected !== undefined ? 'opacity-0' : 'opacity-100',
+        )}
+      />
     </div>
   );
 };
