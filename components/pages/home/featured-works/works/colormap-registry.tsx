@@ -71,16 +71,23 @@ const ColormapRegistryFeatureDetail: FC = () => {
         {COLORMAPS.map((colormap, index) => {
           const tooltipColor = getColormapValue(
             colormap.data,
-            (255 * tooltipLeft) / containerBounds.width,
+            (0xff * tooltipLeft) / containerBounds.width,
           );
           const tooltipColorHex =
             '#' +
             tooltipColor.r.toString(16).padStart(2, '0') +
             tooltipColor.g.toString(16).padStart(2, '0') +
             tooltipColor.b.toString(16).padStart(2, '0');
-          const colormapPreview = `linear-gradient(to right, ${[...Array(15)]
+          // We only sample as much as the longest array in the segment data
+          // definition for efficiency.
+          const sampleCount = Math.max(
+            colormap.data.r.length,
+            colormap.data.g.length,
+            colormap.data.b.length,
+          );
+          const colormapPreview = `linear-gradient(to right, ${[...Array(sampleCount)]
             .map((_, j) => {
-              const colorValue = getColormapValue(colormap.data, j * 17);
+              const colorValue = getColormapValue(colormap.data, (0xff * j) / (sampleCount - 1));
 
               return `rgb(${colorValue.r}, ${colorValue.g}, ${colorValue.b})`;
             })
