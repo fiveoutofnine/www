@@ -90,6 +90,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
             tooltipColor.g.toString(16).padStart(2, '0') +
             tooltipColor.b.toString(16).padStart(2, '0');
           const tooltipColorIsDark = tooltipColor.r + tooltipColor.g + tooltipColor.b < 382;
+
           // We only sample as much as the longest array in the segment data
           // definition for efficiency.
           const sampleCount = Math.max(
@@ -97,6 +98,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
             colormap.data.g.length,
             colormap.data.b.length,
           );
+
           const colormapPreview = `linear-gradient(to right, ${[...Array(sampleCount)]
             .map((_, j) => {
               const colorValue = getColormapValue(colormap.data, (0xff * j) / (sampleCount - 1));
@@ -191,6 +193,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
           );
         })}
       </fieldset>
+
       {/* Top gradient to hide overflow */}
       <div
         className={clsx(
