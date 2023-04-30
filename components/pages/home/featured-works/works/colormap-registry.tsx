@@ -115,6 +115,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
                   transitionDuration: '150ms',
                   background: colormapPreview,
                 }}
+                aria-label={`Expand ${colormap.name} colormap`}
                 layoutId={`colormap-${index}`}
                 transition={{ type: 'tween', duration: 0.15 }}
               />
