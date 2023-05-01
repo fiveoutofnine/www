@@ -151,7 +151,10 @@ const TxDotCoolFeatureDetail: FC = () => {
       </div>
 
       {/* Chat */}
-      <div className="h-[4.375rem] space-y-1 overflow-y-scroll px-2 pt-2 text-xs text-gray-12">
+      <div
+        className="h-[4.375rem] space-y-1 overflow-y-scroll px-2 pt-2 text-xs text-gray-12"
+        tabIndex={-1}
+      >
         {FIVEOUTOFNINE_MESSAGES.map((message) => (
           <a
             key={message.txHash}
