@@ -1,6 +1,7 @@
-import type { FC } from 'react';
+import { type FC, useEffect, useRef, useState } from 'react';
 
-import { ExternalLink, MessageCircle } from 'lucide-react';
+import { ArrowUp, ExternalLink, MessageCircle } from 'lucide-react';
+import { usePrepareSendTransaction, useSendTransaction } from 'wagmi';
 
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
@@ -42,6 +43,22 @@ const TxDotCoolFeature: FC = () => {
 };
 
 const TxDotCoolFeatureDetail: FC = () => {
+  const [userMessage, setUserInput] = useState<string>('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { config } = usePrepareSendTransaction({
+    request: {
+      to: process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS,
+      data: `0x${userMessage
+        .split('')
+        .map((_, i) => userMessage.charCodeAt(i).toString(16))
+        .join('')}`,
+    },
+  });
+  const { /* data, isLoading, isSuccess, */ sendTransaction } = useSendTransaction(config);
+
+  // Scroll messages into view.
+  useEffect(() => messagesEndRef.current?.scrollIntoView(), []);
+
   return (
     <div className="flex h-full flex-col bg-gray-3">
       {/* Header */}
@@ -60,9 +77,38 @@ const TxDotCoolFeatureDetail: FC = () => {
       </div>
 
       {/* Chat */}
-      <div className="flex grow flex-col"></div>
+      <div className="h-[4.375rem] space-y-1 overflow-y-scroll px-2 pt-2 text-xs text-gray-12">
+        <div className="flex h-6 w-fit items-center rounded-full bg-gray-7 px-2">
+          what&apos;s up I&apos;m 5/9
+        </div>
+        <div className="flex h-6 w-fit items-center rounded-full bg-gray-7 px-2">
+          send me messages
+        </div>
+        <div className="flex h-6 w-fit items-center rounded-full bg-gray-7 px-2">or ETH</div>
+        <div ref={messagesEndRef} />
+      </div>
 
       {/* Message input */}
+      <div className="flex h-10 items-center px-1.5 py-1">
+        <div className="relative w-full">
+          <input
+            className="h-8 w-full rounded-full border border-gray-7 bg-gray-2 pl-3 pr-1 text-xs text-gray-12 transition-colors placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none"
+            placeholder="Message fiveoutofnine.eth"
+            value={userMessage}
+            onChange={(e) => setUserInput(e.target.value)}
+          />
+          <IconButton
+            size="sm"
+            variant="secondary"
+            intent="primary"
+            className="absolute right-1 top-1 rounded-full"
+            disabled={!sendTransaction}
+            onClick={() => sendTransaction?.()}
+          >
+            <ArrowUp />
+          </IconButton>
+        </div>
+      </div>
     </div>
   );
 };
