@@ -136,7 +136,7 @@ const TxDotCoolFeatureDetail: FC = () => {
   return (
     <div className="flex h-full flex-col bg-gray-3">
       {/* Header */}
-      <div className="flex h-8 items-center justify-between border-b border-gray-6 px-1.5 backdrop-blur-xl">
+      <div className="flex h-8 items-center justify-between border-b border-gray-6 px-1.5">
         <div className="flex items-center space-x-1">
           <MessageCircle className="h-4 w-4 text-gray-11" />
           <div className="text-xs font-medium text-gray-12">fiveoutofnine.eth</div>
