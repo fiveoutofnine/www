@@ -76,7 +76,7 @@ const TxDotCoolFeatureDetail: FC = () => {
         action: (
           <Button
             size="sm"
-            href={`https://etherscan.io/address/${data.hash}`}
+            href={`https://etherscan.io/tx/${data.hash}`}
             rightIcon={<ExternalLink />}
             intent="primary"
             newTab
@@ -97,7 +97,7 @@ const TxDotCoolFeatureDetail: FC = () => {
         action: data ? (
           <Button
             size="sm"
-            href={`https://etherscan.io/address/${data.hash}`}
+            href={`https://etherscan.io/tx/${data.hash}`}
             rightIcon={<ExternalLink />}
             intent="fail"
             newTab
@@ -140,7 +140,7 @@ const TxDotCoolFeatureDetail: FC = () => {
         </div>
         <IconButton
           size="sm"
-          href={`https://etherscan.io/address/${process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS}`}
+          href={`https://etherscan.io/tx/${process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS}`}
           newTab
         >
           <ExternalLink />
@@ -183,6 +183,7 @@ const TxDotCoolFeatureDetail: FC = () => {
               disabled={userMessage.length === 0 || !sendTransaction || isLoading}
               onClick={(e) => {
                 e.preventDefault();
+                setUserInput('');
                 sendTransaction?.();
               }}
               type="submit"
