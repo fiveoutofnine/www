@@ -15,7 +15,7 @@ import { Button, IconButton } from '@/components/ui';
 const ColormapRegistryFeature: FC = () => {
   return (
     <FeatureDisplay
-      className="col-span-2 w-full lg:w-64"
+      className="min-[960px]:w-64 col-span-2 w-full"
       name="ColormapRegistry"
       description="On-chain registry"
       symbol={<Github />}

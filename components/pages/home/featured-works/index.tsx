@@ -8,7 +8,7 @@ import TypingFeature from './works/typing';
 
 const FeaturedWorks: FC = () => {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+    <div className="min-[960px]:grid-cols-6 min-[560px]:grid-cols-4 grid grid-cols-2 gap-4">
       <ChessFeature />
       <ColormapRegistryFeature />
       <TypingFeature />

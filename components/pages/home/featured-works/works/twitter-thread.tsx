@@ -8,7 +8,7 @@ import { Button } from '@/components/ui';
 const TwitterThreadFeature: FC = () => {
   return (
     <FeatureDisplayMinimal
-      className="col-span-2 w-full lg:col-span-3"
+      className="min-[960px]:col-span-3 col-span-2 w-full"
       name="Bit shiftoooor"
       description="Thread on bitshiftooor things"
       symbol={<Twitter />}
