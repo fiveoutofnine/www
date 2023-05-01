@@ -91,22 +91,28 @@ const TxDotCoolFeatureDetail: FC = () => {
       {/* Message input */}
       <div className="flex h-10 items-center px-1.5 py-1">
         <div className="relative w-full">
-          <input
-            className="h-8 w-full rounded-full border border-gray-7 bg-gray-2 pl-3 pr-1 text-xs text-gray-12 transition-colors placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none"
-            placeholder="Message fiveoutofnine.eth"
-            value={userMessage}
-            onChange={(e) => setUserInput(e.target.value)}
-          />
-          <IconButton
-            size="sm"
-            variant="secondary"
-            intent="primary"
-            className="absolute right-1 top-1 rounded-full"
-            disabled={!sendTransaction}
-            onClick={() => sendTransaction?.()}
-          >
-            <ArrowUp />
-          </IconButton>
+          <form>
+            <input
+              className="h-8 w-full rounded-full border border-gray-7 bg-gray-2 pl-3 pr-1 text-xs text-gray-12 transition-colors placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none"
+              placeholder="Message fiveoutofnine.eth"
+              value={userMessage}
+              onChange={(e) => setUserInput(e.target.value)}
+            />
+            <IconButton
+              size="sm"
+              variant="secondary"
+              intent="primary"
+              className="absolute right-1 top-1 rounded-full"
+              disabled={!sendTransaction}
+              onClick={(e) => {
+                e.preventDefault();
+                sendTransaction?.();
+              }}
+              type="submit"
+            >
+              <ArrowUp />
+            </IconButton>
+          </form>
         </div>
       </div>
     </div>
