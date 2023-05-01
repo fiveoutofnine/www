@@ -10,7 +10,7 @@ import { Button, IconButton } from '@/components/ui';
 const TxDotCoolFeature: FC = () => {
   return (
     <FeatureDisplay
-      className="min-[960px]:w-64 col-span-2 w-full"
+      className="col-span-2 w-full min-[960px]:w-64"
       name="tx.cool"
       description="UI/UX explorations"
       symbol={
@@ -95,6 +95,7 @@ const TxDotCoolFeatureDetail: FC = () => {
             <input
               className="h-8 w-full rounded-full border border-gray-7 bg-gray-2 pl-3 pr-1 text-xs text-gray-12 transition-colors placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none"
               placeholder="Message fiveoutofnine.eth"
+              aria-label="Message to fiveoutofnine.eth"
               value={userMessage}
               onChange={(e) => setUserInput(e.target.value)}
             />
@@ -103,6 +104,7 @@ const TxDotCoolFeatureDetail: FC = () => {
               variant="secondary"
               intent="primary"
               className="absolute right-1 top-1 rounded-full"
+              aria-label="Send on-chain message to fiveoutofnine.eth"
               disabled={!sendTransaction}
               onClick={(e) => {
                 e.preventDefault();
