@@ -83,7 +83,7 @@ const TxDotCoolFeatureDetail: FC = () => {
         {FIVEOUTOFNINE_MESSAGES.map((message) => (
           <a
             key={message.txHash}
-            className="flex h-6 w-fit items-center rounded-full bg-gray-7 px-2 transition-colors hover:bg-gray-8"
+            className="flex min-h-[1.5rem] w-fit items-center rounded-xl bg-gray-7 px-2 py-1 transition-colors hover:bg-gray-8"
             href={`https://etherscan.io/tx/${message.txHash}`}
             target="_blank"
             rel="noopener noreferrer"
