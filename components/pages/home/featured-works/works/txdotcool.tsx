@@ -51,6 +51,7 @@ const TxDotCoolFeatureDetail: FC = () => {
   const { toast } = useToast();
   const { config } = usePrepareSendTransaction({
     request: {
+      chainId: 1,
       to: process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS,
       data: `0x${userMessage
         .split('')
@@ -58,21 +59,73 @@ const TxDotCoolFeatureDetail: FC = () => {
         .join('')}`,
     },
   });
-  const { data, sendTransaction } = useSendTransaction(config);
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
+  const { data, sendTransaction } = useSendTransaction({
+    ...config,
+    onError(error) {
+      toast({
+        title: 'Transaction fail',
+        description: error.message,
+        intent: 'fail',
+      });
+    },
+    onSuccess(data) {
+      toast({
+        title: 'Transaction sent',
+        description: 'Your message has been sent to fiveoutofnine.eth.',
+        intent: 'primary',
+        action: (
+          <Button
+            size="sm"
+            href={`https://etherscan.io/address/${data.hash}`}
+            rightIcon={<ExternalLink />}
+            intent="primary"
+            newTab
+          >
+            View
+          </Button>
+        ),
+      });
+    },
   });
-
-  /* useEffect(() => {
-    toast({
-      title: 'Message sent!',
-    });
-  }, [isSuccess]); */
-  const sendToast = () =>
-    toast({
-      title: 'Message sent!',
-      description: 'Your message has been sent to the contract.',
-    });
+  const { isLoading } = useWaitForTransaction({
+    hash: data?.hash,
+    onError(error) {
+      toast({
+        title: 'Transaction fail',
+        description: error.message,
+        intent: 'fail',
+        action: data ? (
+          <Button
+            size="sm"
+            href={`https://etherscan.io/address/${data.hash}`}
+            rightIcon={<ExternalLink />}
+            intent="fail"
+            newTab
+          >
+            View
+          </Button>
+        ) : undefined,
+      });
+    },
+    onSuccess(data) {
+      toast({
+        title: 'Message sent',
+        description: 'Message sent to fiveoutonine.eth!',
+        intent: 'success',
+        action: data ? (
+          <Button
+            size="sm"
+            href={`https://etherscan.io/address/${data.transactionHash}`}
+            rightIcon={<ExternalLink />}
+            intent="success"
+            newTab
+          >
+            View
+          </Button>
+        ) : undefined,
+      });
+    },
+  });
 
   // Scroll messages into view on load.
   useEffect(() => messagesEndRef.current?.scrollIntoView(), []);
@@ -129,9 +182,8 @@ const TxDotCoolFeatureDetail: FC = () => {
               aria-label="Send on-chain message to fiveoutofnine.eth"
               disabled={userMessage.length === 0 || !sendTransaction || isLoading}
               onClick={(e) => {
-                sendToast();
                 e.preventDefault();
-                /* sendTransaction?.(); */
+                sendTransaction?.();
               }}
               type="submit"
             >
