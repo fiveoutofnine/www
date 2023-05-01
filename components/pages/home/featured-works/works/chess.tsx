@@ -107,8 +107,8 @@ const ChessFeatureDetail: FC = () => {
         <ChevronRight />
       </IconButton>
 
-      <div className="flex w-full flex-col justify-between rounded-lg bg-gray-3 p-2">
-        <div className="mx-auto grid w-[72px] grid-cols-6 grid-rows-6 overflow-hidden rounded border border-gray-6">
+      <div className="flex w-full flex-col justify-between">
+        <div className="mx-auto grid w-[96px] grid-cols-6 grid-rows-6 overflow-hidden rounded border border-gray-6">
           {nft.boardAfterMove
             .toLowerCase()
             .split('')
@@ -127,7 +127,7 @@ const ChessFeatureDetail: FC = () => {
                 <div
                   key={index}
                   className={clsx(
-                    'flex h-3 w-3 items-center justify-center text-[0.5rem]',
+                    'flex h-4 w-4 items-center justify-center text-[0.5rem]',
                     pieceOverlap > 1
                       ? 'bg-purple-9'
                       : nft.userMove.from === index
@@ -144,17 +144,17 @@ const ChessFeatureDetail: FC = () => {
                   )}
                 >
                   {piece === '1' || piece === '9' ? (
-                    <ChessPiece.Pawn className={clsx('h2 w-2', pieceColor)} />
+                    <ChessPiece.Pawn className={clsx('h-3 w-3', pieceColor)} />
                   ) : piece === '2' || piece === 'a' ? (
-                    <ChessPiece.Bishop className={clsx('h2 w-2', pieceColor)} />
+                    <ChessPiece.Bishop className={clsx('h-3 w-3', pieceColor)} />
                   ) : piece === '3' || piece === 'b' ? (
-                    <ChessPiece.Rook className={clsx('h2 w-2', pieceColor)} />
+                    <ChessPiece.Rook className={clsx('h-3 w-3', pieceColor)} />
                   ) : piece === '4' || piece === 'c' ? (
-                    <ChessPiece.Knight className={clsx('h2 w-2', pieceColor)} />
+                    <ChessPiece.Knight className={clsx('h-3 w-3', pieceColor)} />
                   ) : piece === '5' || piece === 'd' ? (
-                    <ChessPiece.Queen className={clsx('h2 w-2', pieceColor)} />
+                    <ChessPiece.Queen className={clsx('h-3 w-3', pieceColor)} />
                   ) : piece === '6' || piece === 'e' ? (
-                    <ChessPiece.King className={clsx('h2 w-2', pieceColor)} />
+                    <ChessPiece.King className={clsx('h-3 w-3', pieceColor)} />
                   ) : null}
                 </div>
               );
