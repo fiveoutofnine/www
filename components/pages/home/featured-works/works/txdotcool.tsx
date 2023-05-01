@@ -30,7 +30,7 @@ const TxDotCoolFeature: FC = () => {
         </svg>
       }
       button={
-        <Button size="sm" href="/chess" rightIcon={<ExternalLink />} disabled>
+        <Button size="sm" href="https://tx.cool" rightIcon={<ExternalLink />} newTab disabled>
           Visit
         </Button>
       }
