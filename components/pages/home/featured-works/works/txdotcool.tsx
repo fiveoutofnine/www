@@ -1,12 +1,13 @@
 import { type FC, useEffect, useRef, useState } from 'react';
 
 import { ArrowUp, ExternalLink, MessageCircle } from 'lucide-react';
-import { usePrepareSendTransaction, useSendTransaction } from 'wagmi';
+import { usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from 'wagmi';
 
 import { FIVEOUTOFNINE_MESSAGES } from '@/lib/constants/on-chain-messages';
 
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
+import { useToast } from '@/components/ui';
 import { Button, IconButton } from '@/components/ui';
 
 const TxDotCoolFeature: FC = () => {
@@ -47,6 +48,7 @@ const TxDotCoolFeature: FC = () => {
 const TxDotCoolFeatureDetail: FC = () => {
   const [userMessage, setUserInput] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
   const { config } = usePrepareSendTransaction({
     request: {
       to: process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS,
@@ -56,7 +58,21 @@ const TxDotCoolFeatureDetail: FC = () => {
         .join('')}`,
     },
   });
-  const { /* data, isLoading, isSuccess, */ sendTransaction } = useSendTransaction(config);
+  const { data, sendTransaction } = useSendTransaction(config);
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  });
+
+  /* useEffect(() => {
+    toast({
+      title: 'Message sent!',
+    });
+  }, [isSuccess]); */
+  const sendToast = () =>
+    toast({
+      title: 'Message sent!',
+      description: 'Your message has been sent to the contract.',
+    });
 
   // Scroll messages into view on load.
   useEffect(() => messagesEndRef.current?.scrollIntoView(), []);
@@ -111,10 +127,11 @@ const TxDotCoolFeatureDetail: FC = () => {
               intent="primary"
               className="absolute right-1 top-1 rounded-full"
               aria-label="Send on-chain message to fiveoutofnine.eth"
-              disabled={userMessage.length > 0 && !sendTransaction}
+              disabled={userMessage.length === 0 || !sendTransaction || isLoading}
               onClick={(e) => {
+                sendToast();
                 e.preventDefault();
-                sendTransaction?.();
+                /* sendTransaction?.(); */
               }}
               type="submit"
             >

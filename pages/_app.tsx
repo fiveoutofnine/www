@@ -12,6 +12,8 @@ import { publicProvider } from 'wagmi/providers/public';
 
 import '@/styles/globals.css';
 
+import { Toaster } from '@/components/ui';
+
 /* Config */
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID;
 
@@ -88,6 +90,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <RainbowKitProvider modalSize="compact" chains={chains} theme={darkTheme()}>
           <main className={inter.variable}>
             <Component {...pageProps} />
+            <Toaster />
           </main>
         </RainbowKitProvider>
       </WagmiConfig>
