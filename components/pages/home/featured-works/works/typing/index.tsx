@@ -14,7 +14,7 @@ import { Button, IconButton } from '@/components/ui';
 const TypingFeature: FC = () => {
   return (
     <FeatureDisplay
-      className="w-full md:w-64"
+      className="col-span-2 w-full sm:col-span-4 lg:col-span-2 lg:w-64"
       name="Typing"
       description="I type fast (try racing me)"
       symbol={<Keyboard />}

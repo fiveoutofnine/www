@@ -15,7 +15,7 @@ import { Button, IconButton } from '@/components/ui';
 const ColormapRegistryFeature: FC = () => {
   return (
     <FeatureDisplay
-      className="w-full md:w-64"
+      className="col-span-2 w-full lg:w-64"
       name="ColormapRegistry"
       description="On-chain registry"
       symbol={<Github />}
@@ -76,7 +76,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
     <div className="relative bg-gray-3">
       <fieldset
         id="colormap-picker"
-        className="overflow-y-scroll grid h-[8.875rem] grid-cols-2 gap-1 overflow-x-hidden p-2"
+        className="grid h-[8.875rem] grid-cols-2 gap-1 overflow-x-hidden overflow-y-scroll p-2"
         onScroll={handleScroll}
         tabIndex={-1}
       >

@@ -14,7 +14,7 @@ import { Button, IconButton } from '@/components/ui';
 const ChessFeature: FC = () => {
   return (
     <FeatureDisplay
-      className="w-full md:w-64"
+      className="w-full lg:w-64 col-span-2"
       name="Chess"
       description="On-chain chess engine"
       symbol={

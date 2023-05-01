@@ -8,18 +8,12 @@ import TypingFeature from './works/typing';
 
 const FeaturedWorks: FC = () => {
   return (
-    <div className="flex flex-col space-y-4">
-      <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-        <ChessFeature />
-        <TypingFeature />
-      </div>
-      <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-        <ColormapRegistryFeature />
-      </div>
-      <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-        <BitTwiddlingFeature />
-        <TwitterThreadFeature />
-      </div>
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+      <ChessFeature />
+      <ColormapRegistryFeature />
+      <TypingFeature />
+      <BitTwiddlingFeature />
+      <TwitterThreadFeature />
     </div>
   );
 };
