@@ -2,8 +2,8 @@
 export const SHORT_QUOTES = [
   {
     text: 'pnpm build',
-    wpm: 311.7,
-    time: 0.385,
+    wpm: 382.2,
+    time: 0.314,
   },
   {
     text: 'They don\'t know that we know they know we know.',
