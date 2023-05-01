@@ -3,6 +3,8 @@ import { type FC, useEffect, useRef, useState } from 'react';
 import { ArrowUp, ExternalLink, MessageCircle } from 'lucide-react';
 import { usePrepareSendTransaction, useSendTransaction } from 'wagmi';
 
+import { FIVEOUTOFNINE_MESSAGES } from '@/lib/constants/on-chain-messages';
+
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
 import { Button, IconButton } from '@/components/ui';
@@ -56,7 +58,7 @@ const TxDotCoolFeatureDetail: FC = () => {
   });
   const { /* data, isLoading, isSuccess, */ sendTransaction } = useSendTransaction(config);
 
-  // Scroll messages into view.
+  // Scroll messages into view on load.
   useEffect(() => messagesEndRef.current?.scrollIntoView(), []);
 
   return (
@@ -78,13 +80,17 @@ const TxDotCoolFeatureDetail: FC = () => {
 
       {/* Chat */}
       <div className="h-[4.375rem] space-y-1 overflow-y-scroll px-2 pt-2 text-xs text-gray-12">
-        <div className="flex h-6 w-fit items-center rounded-full bg-gray-7 px-2">
-          what&apos;s up I&apos;m 5/9
-        </div>
-        <div className="flex h-6 w-fit items-center rounded-full bg-gray-7 px-2">
-          send me messages
-        </div>
-        <div className="flex h-6 w-fit items-center rounded-full bg-gray-7 px-2">or ETH</div>
+        {FIVEOUTOFNINE_MESSAGES.map((message) => (
+          <a
+            key={message.txHash}
+            className="flex h-6 w-fit items-center rounded-full bg-gray-7 px-2 transition-colors hover:bg-gray-8"
+            href={`https://etherscan.io/tx/${message.txHash}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {message.content}
+          </a>
+        ))}
         <div ref={messagesEndRef} />
       </div>
 
