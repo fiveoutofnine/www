@@ -15,7 +15,7 @@ import { Button, IconButton } from '@/components/ui';
 const ColormapRegistryFeature: FC = () => {
   return (
     <FeatureDisplay
-      className="min-[960px]:w-64 col-span-2 w-full"
+      className="col-span-2 w-full min-[960px]:w-64"
       name="ColormapRegistry"
       description="On-chain registry"
       symbol={<Github />}
@@ -77,6 +77,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
       <fieldset
         id="colormap-picker"
         className="grid h-[8.875rem] grid-cols-2 gap-1 overflow-x-hidden overflow-y-scroll p-2"
+        aria-label="Pick a colormap to expand"
         onScroll={handleScroll}
         tabIndex={-1}
       >
@@ -118,7 +119,8 @@ const ColormapRegistryFeatureDetail: FC = () => {
                   transitionDuration: '150ms',
                   background: colormapPreview,
                 }}
-                aria-label={`Expand ${colormap.name} colormap`}
+                aria-label={`${colormap.name}`}
+                type="button"
                 layoutId={`colormap-${index}`}
                 transition={{ type: 'tween', duration: 0.15 }}
                 tabIndex={selected === undefined ? 0 : -1}
@@ -137,7 +139,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
                     style={{ background: colormapPreview }}
                   >
                     <motion.div
-                      className="flex h-8 w-full items-center justify-between border-b border-gray-6 bg-gray-3 px-1"
+                      className="flex h-8 w-full items-center justify-between border-b border-gray-6 bg-gray-3 px-1.5"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 32, opacity: 1 }}
                       transition={{ type: 'spring', delay: 0.1, duration: 0.25 }}
