@@ -111,7 +111,7 @@ const TxDotCoolFeatureDetail: FC = () => {
               intent="primary"
               className="absolute right-1 top-1 rounded-full"
               aria-label="Send on-chain message to fiveoutofnine.eth"
-              disabled={!sendTransaction}
+              disabled={userMessage.length > 0 && !sendTransaction}
               onClick={(e) => {
                 e.preventDefault();
                 sendTransaction?.();
