@@ -47,8 +47,11 @@ const TxDotCoolFeature: FC = () => {
 
 const TxDotCoolFeatureDetail: FC = () => {
   const [userMessage, setUserInput] = useState<string>('');
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
   const { toast } = useToast();
+
   const { config } = usePrepareSendTransaction({
     request: {
       chainId: 1,
@@ -133,14 +136,14 @@ const TxDotCoolFeatureDetail: FC = () => {
   return (
     <div className="flex h-full flex-col bg-gray-3">
       {/* Header */}
-      <div className="flex h-8 items-center justify-between border-b border-gray-6 bg-gray-3/50 px-1.5 backdrop-blur-xl">
+      <div className="flex h-8 items-center justify-between border-b border-gray-6 px-1.5 backdrop-blur-xl">
         <div className="flex items-center space-x-1">
           <MessageCircle className="h-4 w-4 text-gray-11" />
           <div className="text-xs font-medium text-gray-12">fiveoutofnine.eth</div>
         </div>
         <IconButton
           size="sm"
-          href={`https://etherscan.io/tx/${process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS}`}
+          href={`https://etherscan.io/address/${process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS}`}
           newTab
         >
           <ExternalLink />
@@ -168,12 +171,15 @@ const TxDotCoolFeatureDetail: FC = () => {
         <div className="relative w-full">
           <form>
             <input
-              className="h-8 w-full rounded-full border border-gray-7 bg-gray-2 pl-3 pr-1 text-xs text-gray-12 transition-colors placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none"
+              className="h-8 w-full rounded-full border border-gray-7 bg-gray-2 pl-3 pr-7 text-xs text-gray-12 transition-colors placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none"
               placeholder="Message fiveoutofnine.eth"
               aria-label="Message to fiveoutofnine.eth"
               value={userMessage}
               onChange={(e) => setUserInput(e.target.value)}
             />
+            {/* Overflow gradient */}
+            <div className="absolute right-7 top-1 h-6 w-8 bg-gradient-to-l from-gray-2 to-transparent" />
+            {/* Send button */}
             <IconButton
               size="sm"
               variant="secondary"
