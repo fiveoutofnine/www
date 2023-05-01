@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, MessageCircle } from 'lucide-react';
 
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
-import { Button } from '@/components/ui';
+import { Button, IconButton } from '@/components/ui';
 
 const TxDotCoolFeature: FC = () => {
   return (
@@ -42,7 +42,29 @@ const TxDotCoolFeature: FC = () => {
 };
 
 const TxDotCoolFeatureDetail: FC = () => {
-  return <div></div>;
+  return (
+    <div className="flex h-full flex-col bg-gray-3">
+      {/* Header */}
+      <div className="flex h-8 items-center justify-between border-b border-gray-6 bg-gray-3/50 px-1.5 backdrop-blur-xl">
+        <div className="flex items-center space-x-1">
+          <MessageCircle className="h-4 w-4 text-gray-11" />
+          <div className="text-xs font-medium text-gray-12">fiveoutofnine.eth</div>
+        </div>
+        <IconButton
+          size="sm"
+          href={`https://etherscan.io/address/${process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS}`}
+          newTab
+        >
+          <ExternalLink />
+        </IconButton>
+      </div>
+
+      {/* Chat */}
+      <div className="flex grow flex-col"></div>
+
+      {/* Message input */}
+    </div>
+  );
 };
 
 export default TxDotCoolFeature;
