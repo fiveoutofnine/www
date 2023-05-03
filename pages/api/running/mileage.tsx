@@ -59,7 +59,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const endDate = new Date(day + 86400000);
 
         const { data } = await supabase
-
           .from('hourly_mileage')
           .select()
           .gte('time', startDate.toISOString())
