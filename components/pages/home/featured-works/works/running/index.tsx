@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import RunningFeatureDetailBarChart from './bar-chart';
 import * as Tabs from '@radix-ui/react-tabs';
-import { BarChart, Grid, Mountain } from 'lucide-react';
+import { ArrowLeftRight, BarChart, Grid, Mountain } from 'lucide-react';
 
 import FeatureDisplay from '@/components/templates/feature-display';
 import { IconButton } from '@/components/ui';
@@ -23,25 +23,37 @@ const RunningFeature: FC = () => {
 const RunningFeatureDetail: FC = () => {
   return (
     <Tabs.Root className="flex h-full w-full" defaultValue="running-bar" orientation="vertical">
-      <Tabs.List className="flex h-full w-10 flex-col items-center space-y-2 border-r border-gray-6 p-2">
-        <Tabs.Trigger value="running-bar" asChild>
-          <IconButton size="sm" variant="ghost" className="data-[state=active]:bg-gray-4">
-            <BarChart />
+      <div className="flex h-full w-10 flex-col items-center justify-between border-r border-gray-6">
+        <Tabs.List className="flex w-10 flex-col items-center space-y-2 p-2">
+          <Tabs.Trigger value="running-bar" asChild>
+            <IconButton size="sm" variant="ghost" className="data-[state=active]:bg-gray-4">
+              <BarChart />
+            </IconButton>
+          </Tabs.Trigger>
+          <Tabs.Trigger value="running-heatmap" asChild>
+            <IconButton size="sm" variant="ghost" className="data-[state=active]:bg-gray-4">
+              <Grid />
+            </IconButton>
+          </Tabs.Trigger>
+        </Tabs.List>
+        <div className="border-t border-gray-6 p-2">
+          <IconButton size="sm" aria-label="Change units">
+            <ArrowLeftRight />
           </IconButton>
-        </Tabs.Trigger>
-        <Tabs.Trigger value="running-heatmap" asChild>
-          <IconButton size="sm" variant="ghost" className="data-[state=active]:bg-gray-4">
-            <Grid />
-          </IconButton>
-        </Tabs.Trigger>
-      </Tabs.List>
+        </div>
+      </div>
       <Tabs.Content
         value="running-bar"
-        className="flex h-full grow flex-col overflow-hidden bg-gray-3 p-2"
+        className="flex h-full grow flex-col overflow-hidden bg-gray-3 p-2 data-[state=inactive]:hidden"
+        tabIndex={-1}
       >
         <RunningFeatureDetailBarChart />
       </Tabs.Content>
-      <Tabs.Content value="running-heatmap" className="h-full w-full bg-gray-3 p-2">
+      <Tabs.Content
+        value="running-heatmap"
+        className="h-full grow overflow-hidden bg-gray-3 p-2 data-[state=inactive]:hidden"
+        tabIndex={-1}
+      >
         heatmap
       </Tabs.Content>
     </Tabs.Root>
