@@ -1,8 +1,10 @@
-import type { FC } from 'react';
+import { FC, useState } from 'react';
 
 import RunningFeatureDetailBarChart from './bar-chart';
 import * as Tabs from '@radix-ui/react-tabs';
 import { ArrowLeftRight, BarChart, Grid, Mountain } from 'lucide-react';
+
+import { DISTANCE_UNITS } from '@/lib/constants/units';
 
 import FeatureDisplay from '@/components/templates/feature-display';
 import { IconButton } from '@/components/ui';
@@ -21,6 +23,12 @@ const RunningFeature: FC = () => {
 };
 
 const RunningFeatureDetail: FC = () => {
+  const [unitIndex, setUnitIndex] = useState<number>(0);
+
+  const handleUnitChange = () => {
+    setUnitIndex((unitIndex + 1) % DISTANCE_UNITS.length);
+  };
+
   return (
     <Tabs.Root className="flex h-full w-full" defaultValue="running-bar" orientation="vertical">
       <div className="flex h-full w-10 flex-col items-center justify-between border-r border-gray-6">
@@ -37,7 +45,7 @@ const RunningFeatureDetail: FC = () => {
           </Tabs.Trigger>
         </Tabs.List>
         <div className="border-t border-gray-6 p-2">
-          <IconButton size="sm" aria-label="Change units">
+          <IconButton size="sm" aria-label="Change units" onClick={handleUnitChange}>
             <ArrowLeftRight />
           </IconButton>
         </div>
@@ -47,7 +55,7 @@ const RunningFeatureDetail: FC = () => {
         className="flex h-full grow flex-col overflow-hidden bg-gray-3 p-2 data-[state=inactive]:hidden"
         tabIndex={-1}
       >
-        <RunningFeatureDetailBarChart />
+        <RunningFeatureDetailBarChart unit={DISTANCE_UNITS[unitIndex]} />
       </Tabs.Content>
       <Tabs.Content
         value="running-heatmap"
