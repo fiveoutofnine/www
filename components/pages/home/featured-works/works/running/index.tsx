@@ -26,7 +26,7 @@ const RunningFeature: FC = () => {
 const RunningFeatureDetail: FC = () => {
   const [unitIndex, setUnitIndex] = useState<number>(0);
 
-  const tabContentStyles = 'h-full grow overflow-hidden bg-gray-3 p-2 data[state=inactive]:hidden';
+  const tabContentStyles = 'h-full grow overflow-hidden bg-gray-3 p-2';
   const tabTriggerStyles = 'data-[state=active]:bg-gray-4';
 
   const handleUnitChange = () => {
@@ -54,15 +54,13 @@ const RunningFeatureDetail: FC = () => {
           </IconButton>
         </div>
       </div>
-      <Tabs.Content
-        value="running-bar"
-        className={clsx(tabContentStyles, 'flex flex-col')}
-        tabIndex={-1}
-      >
-        <RunningFeatureDetailBarChart unit={LENGTH_UNITS[unitIndex]} />
+      <Tabs.Content value="running-bar" tabIndex={-1} asChild>
+        <div className={clsx(tabContentStyles, 'flex flex-col')}>
+          <RunningFeatureDetailBarChart unit={LENGTH_UNITS[unitIndex]} />
+        </div>
       </Tabs.Content>
       <Tabs.Content value="running-heatmap" className={tabContentStyles} tabIndex={-1}>
-        heatmap
+        <div>hi</div>
       </Tabs.Content>
     </Tabs.Root>
   );
