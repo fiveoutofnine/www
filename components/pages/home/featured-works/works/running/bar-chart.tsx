@@ -55,12 +55,12 @@ const RunningFeatureDetailBarChart: FC = () => {
           margin={{ top: 0, right: -32, left: 0, bottom: -12 }}
           barCategoryGap={4}
         >
-          <CartesianGrid strokeDasharray="2 2" stroke="hsl(0, 0%, 20.5%)" />
+          <CartesianGrid strokeDasharray="2 2" stroke="" />
           <XAxis
             dataKey="date"
             axisLine={false}
             padding={{ left: 0, right: 0 }}
-            tick={{ fontSize: 12, strokeWidth: 0, fill: 'hsl(0, 0%, 62.8%)' }}
+            tick={{ fontSize: 12, strokeWidth: 0, fill: '' }}
             tickFormatter={(date) => 'JFMAMJJASOND'.charAt(date.getUTCMonth())}
             tickLine={false}
             tickSize={4}
@@ -69,7 +69,7 @@ const RunningFeatureDetailBarChart: FC = () => {
             orientation="right"
             axisLine={false}
             padding={{ top: 0, bottom: 0 }}
-            tick={{ fontSize: 12, strokeWidth: 0, fill: 'hsl(0, 0%, 62.8%)' }}
+            tick={{ fontSize: 12, strokeWidth: 0, fill: '' }}
             tickCount={3}
             tickLine={false}
             tickSize={4}
@@ -96,7 +96,7 @@ const RunningFeatureDetailBarChart: FC = () => {
                 </div>
               ) : null;
             }}
-            cursor={{ fill: 'hsla(0, 0%, 17.9%)' }}
+            cursor={{ fill: '' }}
           />
           <Bar
             dataKey="value"

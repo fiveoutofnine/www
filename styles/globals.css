@@ -115,3 +115,24 @@ pre code *::selection,
   color: var(--hljs-comment) !important;
   font-style: normal !important;
 }
+
+.recharts-cartesian-grid-horizontal > line {
+  @apply stroke-gray-6;
+}
+
+.recharts-cartesian-grid-vertical > line {
+  @apply stroke-gray-6;
+  stroke-dasharray: '2 2';
+}
+
+.recharts-tooltip-cursor {
+  @apply fill-gray-5;
+}
+
+.recharts-tooltip-wrapper:focus {
+  outline: none;
+}
+
+.recharts-cartesian-axis-tick-value {
+  @apply fill-gray-11;
+}
