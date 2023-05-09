@@ -5,7 +5,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import clsx from 'clsx';
 import { ArrowLeftRight, BarChart, Grid, Mountain } from 'lucide-react';
 
-import { DISTANCE_UNITS } from '@/lib/constants/units';
+import { LENGTH_UNITS } from '@/lib/constants/units';
 
 import FeatureDisplay from '@/components/templates/feature-display';
 import { IconButton } from '@/components/ui';
@@ -30,7 +30,7 @@ const RunningFeatureDetail: FC = () => {
   const tabTriggerStyles = 'data-[state=active]:bg-gray-4';
 
   const handleUnitChange = () => {
-    setUnitIndex((unitIndex + 1) % DISTANCE_UNITS.length);
+    setUnitIndex((unitIndex + 1) % LENGTH_UNITS.length);
   };
 
   return (
@@ -59,7 +59,7 @@ const RunningFeatureDetail: FC = () => {
         className={clsx(tabContentStyles, 'flex flex-col')}
         tabIndex={-1}
       >
-        <RunningFeatureDetailBarChart unit={DISTANCE_UNITS[unitIndex]} />
+        <RunningFeatureDetailBarChart unit={LENGTH_UNITS[unitIndex]} />
       </Tabs.Content>
       <Tabs.Content value="running-heatmap" className={tabContentStyles} tabIndex={-1}>
         heatmap

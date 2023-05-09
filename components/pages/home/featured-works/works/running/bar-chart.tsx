@@ -2,12 +2,12 @@ import { type FC, Fragment, useEffect, useMemo, useState } from 'react';
 
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import type { DistanceUnit } from '@/lib/types/units';
+import type { LengthUnit } from '@/lib/types/units';
 import { formatValueToPrecision, getUTCMonthShortName } from '@/lib/utils';
 
 /* Props */
 type RunningFeatureDetailBarChartProps = {
-  unit: DistanceUnit;
+  unit: LengthUnit;
 };
 
 /* Component */

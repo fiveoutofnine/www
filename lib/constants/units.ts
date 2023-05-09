@@ -1,6 +1,6 @@
-import type { DistanceUnit } from '@/lib/types/units';
+import type { LengthUnit } from '@/lib/types/units';
 
-export const DISTANCE_UNITS: DistanceUnit[] = [
+export const LENGTH_UNITS: LengthUnit[] = [
   { name: 'km', scalar: 1 },
   { name: 'mi', scalar: 1 / 1.609 },
   { name: 'marathons', scalar: 1 / 42.195, spaceBefore: true },
