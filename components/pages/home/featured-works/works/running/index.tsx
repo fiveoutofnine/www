@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 
 import RunningFeatureDetailBarChart from './bar-chart';
 import * as Tabs from '@radix-ui/react-tabs';
+import clsx from 'clsx';
 import { ArrowLeftRight, BarChart, Grid, Mountain } from 'lucide-react';
 
 import { DISTANCE_UNITS } from '@/lib/constants/units';
@@ -25,6 +26,9 @@ const RunningFeature: FC = () => {
 const RunningFeatureDetail: FC = () => {
   const [unitIndex, setUnitIndex] = useState<number>(0);
 
+  const tabContentStyles = 'h-full grow overflow-hidden bg-gray-3 p-2 data[state=inactive]:hidden';
+  const tabTriggerStyles = 'data-[state=active]:bg-gray-4';
+
   const handleUnitChange = () => {
     setUnitIndex((unitIndex + 1) % DISTANCE_UNITS.length);
   };
@@ -34,12 +38,12 @@ const RunningFeatureDetail: FC = () => {
       <div className="flex h-full w-10 flex-col items-center justify-between border-r border-gray-6">
         <Tabs.List className="flex w-10 flex-col items-center space-y-2 p-2">
           <Tabs.Trigger value="running-bar" asChild>
-            <IconButton size="sm" variant="ghost" className="data-[state=active]:bg-gray-4">
+            <IconButton size="sm" variant="ghost" className={tabTriggerStyles}>
               <BarChart />
             </IconButton>
           </Tabs.Trigger>
           <Tabs.Trigger value="running-heatmap" asChild>
-            <IconButton size="sm" variant="ghost" className="data-[state=active]:bg-gray-4">
+            <IconButton size="sm" variant="ghost" className={tabTriggerStyles}>
               <Grid />
             </IconButton>
           </Tabs.Trigger>
@@ -52,16 +56,12 @@ const RunningFeatureDetail: FC = () => {
       </div>
       <Tabs.Content
         value="running-bar"
-        className="flex h-full grow flex-col overflow-hidden bg-gray-3 p-2 data-[state=inactive]:hidden"
+        className={clsx(tabContentStyles, 'flex flex-col')}
         tabIndex={-1}
       >
         <RunningFeatureDetailBarChart unit={DISTANCE_UNITS[unitIndex]} />
       </Tabs.Content>
-      <Tabs.Content
-        value="running-heatmap"
-        className="h-full grow overflow-hidden bg-gray-3 p-2 data-[state=inactive]:hidden"
-        tabIndex={-1}
-      >
+      <Tabs.Content value="running-heatmap" className={tabContentStyles} tabIndex={-1}>
         heatmap
       </Tabs.Content>
     </Tabs.Root>

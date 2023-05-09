@@ -8,7 +8,7 @@ import { Button } from '@/components/ui';
 const BitTwiddlingFeature: FC = () => {
   return (
     <FeatureDisplayMinimal
-      className="min-[960px]:col-span-3 col-span-2 w-full"
+      className="col-span-2 w-full min-[960px]:col-span-3"
       name="Bit Twiddling"
       description="Basic bit manipulation"
       symbol={<PenTool />}

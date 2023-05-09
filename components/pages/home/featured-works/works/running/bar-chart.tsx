@@ -62,7 +62,6 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({ u
   // calculated automatically.
   useEffect(() => {
     const yAxis = document.getElementsByClassName('recharts-cartesian-axis recharts-yAxis')[0];
-    console.log(yAxis?.getBoundingClientRect());
     setYAxisWidth(yAxis ? (yAxis as SVGGraphicsElement)?.getBoundingClientRect().width + 4 : 20.43);
   }, [processedData]);
 
