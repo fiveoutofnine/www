@@ -6,11 +6,20 @@ import clsx from 'clsx';
 import { ArrowLeftRight, BarChart, Grid, Mountain } from 'lucide-react';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
+import type { MileageLog } from '@/lib/types/running';
 
 import FeatureDisplay from '@/components/templates/feature-display';
 import { IconButton } from '@/components/ui';
 
-const RunningFeature: FC = () => {
+/* Props */
+type RunningFeatureProps = {
+  mileageLogs: MileageLog[];
+};
+
+type RunningFeatureDetailProps = RunningFeatureProps;
+
+/* Component */
+const RunningFeature: FC<RunningFeatureProps> = ({ mileageLogs }) => {
   return (
     <FeatureDisplay
       className="col-span-2 w-full min-[560px]:col-span-4"
@@ -18,12 +27,12 @@ const RunningFeature: FC = () => {
       description="I run a lot"
       symbol={<Mountain />}
     >
-      <RunningFeatureDetail />
+      <RunningFeatureDetail mileageLogs={mileageLogs} />
     </FeatureDisplay>
   );
 };
 
-const RunningFeatureDetail: FC = () => {
+const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs }) => {
   const [unitIndex, setUnitIndex] = useState<number>(0);
 
   const tabContentStyles = 'h-full grow overflow-hidden bg-gray-3';
@@ -56,7 +65,7 @@ const RunningFeatureDetail: FC = () => {
       </div>
       <Tabs.Content value="running-bar" tabIndex={-1} asChild>
         <div className={clsx(tabContentStyles, 'flex flex-col p-2')}>
-          <RunningFeatureDetailBarChart unit={LENGTH_UNITS[unitIndex]} />
+          <RunningFeatureDetailBarChart mileageLogs={mileageLogs} unit={LENGTH_UNITS[unitIndex]} />
         </div>
       </Tabs.Content>
       <Tabs.Content value="running-heatmap" className={tabContentStyles} tabIndex={-1} asChild>

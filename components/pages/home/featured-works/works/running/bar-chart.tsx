@@ -2,44 +2,35 @@ import { type FC, Fragment, useEffect, useMemo, useState } from 'react';
 
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
+import type { MileageLog } from '@/lib/types/running';
 import type { LengthUnit } from '@/lib/types/units';
 import { formatValueToPrecision, getUTCMonthShortName } from '@/lib/utils';
 
 /* Props */
 type RunningFeatureDetailBarChartProps = {
+  mileageLogs: MileageLog[];
   unit: LengthUnit;
 };
 
 /* Component */
-const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({ unit }) => {
+const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
+  mileageLogs,
+  unit,
+}) => {
   const [yAxisWidth, setYAxisWidth] = useState<number>(20.43);
 
   const currentDay = new Date().getUTCDate();
   const currentMonth = new Date().getUTCMonth();
   const currentYear = new Date().getUTCFullYear();
-  const data = useMemo(
-    () => [
-      { date: new Date(2022, 5, 1), value: 525.45 },
-      { date: new Date(2022, 6, 1), value: 483.02 },
-      { date: new Date(2022, 7, 1), value: 517.25 },
-      { date: new Date(2022, 8, 1), value: 685.78 },
-      { date: new Date(2022, 9, 1), value: 698.62 },
-      { date: new Date(2022, 10, 1), value: 687.89 },
-      { date: new Date(2022, 11, 1), value: 673.43 },
-      { date: new Date(2023, 0, 1), value: 670.37 },
-      { date: new Date(2023, 1, 1), value: 544.52 },
-      { date: new Date(2023, 2, 1), value: 729.96 },
-      { date: new Date(2023, 3, 1), value: 673.57 },
-      { date: new Date(2023, 4, 1), value: 171.58 },
-    ],
-    [],
-  );
+
   // Calculate the average distance per day for each month.
   const processedData = useMemo(
     () =>
-      data.map((d) => {
-        const month = d.date.getUTCMonth();
-        const year = d.date.getUTCFullYear();
+      mileageLogs.map((d) => {
+        const date = new Date(d.date);
+
+        const month = date.getUTCMonth();
+        const year = date.getUTCFullYear();
         const daysInMonth =
           currentMonth === month && currentYear === year
             ? currentDay
@@ -47,15 +38,15 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({ u
               28 + ((0xeefbb3 >> (month << 1)) & 3);
 
         return {
-          date: d.date,
+          date: date,
           value: (unit.scalar * d.value) / daysInMonth,
         };
       }),
-    [currentDay, currentMonth, currentYear, data, unit.scalar],
+    [currentDay, currentMonth, currentYear, mileageLogs, unit.scalar],
   );
   const total = useMemo(
-    () => data.reduce((a, b) => a + unit.scalar * b.value, 0),
-    [data, unit.scalar],
+    () => mileageLogs.reduce((a, b) => a + unit.scalar * b.value, 0),
+    [mileageLogs, unit.scalar],
   );
 
   // Work around to resize y-axis width because Recharts y-axis width is not
@@ -72,11 +63,13 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({ u
         <span className="text-xs text-gray-11">{`${unit.spaceBefore ? ' ' : ''}${unit.name}`}</span>
       </div>
       <div className="mt-0.5 text-xs text-gray-11">
-        {`${getUTCMonthShortName(
-          data[0].date,
-        )} ${data[0].date.getUTCFullYear()} to ${getUTCMonthShortName(
-          data[data.length - 1].date,
-        )} ${data[data.length - 1].date.getUTCFullYear()}`}
+        {processedData.length > 0
+          ? `${getUTCMonthShortName(
+              processedData[0].date,
+            )} ${processedData[0].date.getUTCFullYear()} to ${getUTCMonthShortName(
+              processedData[processedData.length - 1].date,
+            )} ${processedData[processedData.length - 1].date.getUTCFullYear()}`
+          : 'No data'}
       </div>
       <ResponsiveContainer className="mt-2" width="100%" height="100%">
         <BarChart data={processedData} margin={{ top: 0, left: 0, bottom: -14 }} barCategoryGap={4}>

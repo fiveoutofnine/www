@@ -8,13 +8,21 @@ import TwitterThreadFeature from './works/twitter-thread';
 import TxDotCoolFeature from './works/txdotcool';
 import TypingFeature from './works/typing';
 
-const FeaturedWorks: FC = () => {
+import type { MileageLog } from '@/lib/types/running';
+
+/* Props */
+type FeaturedWorksProps = {
+  mileageLogs: MileageLog[];
+};
+
+/* Component */
+const FeaturedWorks: FC<FeaturedWorksProps> = ({ mileageLogs }) => {
   return (
     <div className="grid grid-cols-2 gap-4 min-[560px]:grid-cols-4 min-[960px]:grid-cols-6">
       <ChessFeature />
       <TxDotCoolFeature />
       <TypingFeature />
-      <RunningFeature />
+      <RunningFeature mileageLogs={mileageLogs} />
       <ColormapRegistryFeature />
       <BitTwiddlingFeature />
       <TwitterThreadFeature />
