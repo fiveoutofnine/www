@@ -8,7 +8,16 @@ const supabase = createClient(
 );
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
+    const { data } = await supabase
+      .from('monthly_mileage')
+      .select('time, value')
+      .order('time', { ascending: false })
+      .limit(12);
+
+    res.setHeader('cache-control', 'public, s-maxage=86400, stale-while-revalidate=600');
+    res.status(200).json(data);
+  } else if (req.method === 'POST') {
     const apiKey = req.headers['x-api-key'];
 
     if (apiKey !== process.env.FIVEOUTOFNINE_API_KEY) {
