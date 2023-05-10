@@ -32,12 +32,14 @@ const fetchMileageLogs = async ({
     };
   }
 
-  const mileageLogs: MileageLog[] = data.map((item) => {
-    return {
-      date: item.time,
-      value: item.value,
-    };
-  });
+  const mileageLogs: MileageLog[] = data
+    .map((item) => {
+      return {
+        date: item.time,
+        value: item.value,
+      };
+    })
+    .reverse();
 
   return {
     data: mileageLogs,
