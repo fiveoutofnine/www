@@ -10,7 +10,7 @@ type FeatureDisplayProps = {
   description: string;
   symbol: ReactNode;
   tags?: ReactNode[];
-  button: ReactNode;
+  button?: ReactNode;
   children: ReactNode;
 };
 
@@ -27,7 +27,7 @@ const FeatureDisplay: FC<FeatureDisplayProps> = ({
   return (
     <div
       className={twMerge(
-        clsx('flex h-64 w-64 flex-col rounded-xl border border-gray-6 bg-gray-2'),
+        clsx('flex h-64 w-64 flex-col overflow-hidden rounded-xl border border-gray-6 bg-gray-2'),
         className,
       )}
     >
@@ -48,13 +48,15 @@ const FeatureDisplay: FC<FeatureDisplayProps> = ({
       <div className="w-full grow">{children}</div>
 
       {/* Footer */}
-      <div className="flex h-10 items-center justify-between border-t border-gray-6 p-2">
-        {/* Tags */}
-        <div className="flex items-center space-x-1">{tags ? tags.map((tag) => tag) : null}</div>
+      {tags || button ? (
+        <div className="flex h-10 items-center justify-between border-t border-gray-6 p-2">
+          {/* Tags */}
+          <div className="flex items-center space-x-1">{tags ? tags.map((tag) => tag) : null}</div>
 
-        {/* Button */}
-        {button}
-      </div>
+          {/* Button */}
+          {button}
+        </div>
+      ) : null}
     </div>
   );
 };
