@@ -36,7 +36,7 @@ const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs }) =>
   const [unitIndex, setUnitIndex] = useState<number>(0);
 
   const tabContentStyles = 'h-full grow overflow-hidden bg-gray-3';
-  const tabTriggerStyles = 'data-[state=active]:bg-gray-4';
+  const tabTriggerStyles = 'data-[state=active]:bg-gray-5';
 
   const handleUnitChange = () => {
     setUnitIndex((unitIndex + 1) % LENGTH_UNITS.length);
