@@ -26,4 +26,4 @@ export type ToastProps = ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
 export type ToastTitleProps = ComponentPropsWithoutRef<typeof ToastPrimitives.Title> &
   ToastTitleVariantProps;
 
-export type ToastViewport = ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>;
+export type ToastViewportProps = ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>;

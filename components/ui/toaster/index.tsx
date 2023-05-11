@@ -1,20 +1,27 @@
 import { type FC, type ForwardedRef, forwardRef } from 'react';
 
-import { toastVariants, toastViewportStyles, toastCloseStyles, toastDescriptionVariants, toastTitleVariants } from './styles';
+import {
+  toastCloseStyles,
+  toastDescriptionVariants,
+  toastTitleVariants,
+  toastVariants,
+  toastViewportStyles,
+} from './styles';
 import type {
   ToastActionProps,
   ToastCloseProps,
   ToastDescriptionProps,
   ToastProps,
   ToastTitleProps,
-  ToastViewport,
+  ToastViewportProps,
 } from './types';
 import { useToast } from './useToast';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { clsx } from 'clsx';
 import { X } from 'lucide-react';
-import { Button, IconButton } from '@/components/ui';
 import { twMerge } from 'tailwind-merge';
+
+import { IconButton } from '@/components/ui';
 
 const Toast = forwardRef(
   ({ className, intent = 'none', ...rest }: ToastProps, ref: ForwardedRef<HTMLLIElement>) => {
@@ -31,24 +38,20 @@ Toast.displayName = ToastPrimitives.Root.displayName;
 
 const ToastAction = forwardRef(
   ({ ...rest }: ToastActionProps, ref: ForwardedRef<HTMLButtonElement>) => (
-    <ToastPrimitives.Action
-      ref={ref}
-      asChild
-      {...rest}
-    />
+    <ToastPrimitives.Action ref={ref} asChild {...rest} />
   ),
 );
 ToastAction.displayName = ToastPrimitives.Action.displayName;
 
 const ToastClose = forwardRef(
   ({ className, intent, ...rest }: ToastCloseProps, ref: ForwardedRef<HTMLButtonElement>) => (
-    <ToastPrimitives.Close
-      ref={ref}
-      toast-close=""
-      asChild
-      {...rest}
-    >
-      <IconButton size='sm' variant='secondary' className={twMerge(clsx(toastCloseStyles, className))} intent={intent}>
+    <ToastPrimitives.Close ref={ref} toast-close="" asChild {...rest}>
+      <IconButton
+        size="sm"
+        variant="secondary"
+        className={twMerge(clsx(toastCloseStyles, className))}
+        intent={intent}
+      >
         <X />
       </IconButton>
     </ToastPrimitives.Close>
@@ -57,7 +60,10 @@ const ToastClose = forwardRef(
 ToastClose.displayName = ToastPrimitives.Close.displayName;
 
 const ToastDescription = forwardRef(
-  ({ className, intent = 'none', ...rest }: ToastDescriptionProps, ref: ForwardedRef<HTMLDivElement>) => (
+  (
+    { className, intent = 'none', ...rest }: ToastDescriptionProps,
+    ref: ForwardedRef<HTMLDivElement>,
+  ) => (
     <ToastPrimitives.Description
       ref={ref}
       className={twMerge(clsx(toastDescriptionVariants({ intent }), className))}
@@ -77,7 +83,9 @@ const Toaster: FC = () => {
           <Toast key={id} intent={intent} {...rest}>
             <div className="flex flex-col space-y-1">
               {title ? <ToastTitle intent={intent}>{title}</ToastTitle> : null}
-              {description ? <ToastDescription intent={intent}>{description}</ToastDescription> : null}
+              {description ? (
+                <ToastDescription intent={intent}>{description}</ToastDescription>
+              ) : null}
             </div>
             {action}
           </Toast>
@@ -102,15 +110,10 @@ const ToastTitle = forwardRef(
 ToastTitle.displayName = ToastPrimitives.Title.displayName;
 
 const ToastViewport = forwardRef(
-  ({ className, ...rest }: ToastViewport, ref: ForwardedRef<HTMLOListElement>) => (
+  ({ className, ...rest }: ToastViewportProps, ref: ForwardedRef<HTMLOListElement>) => (
     <ToastPrimitives.Viewport
       ref={ref}
-      className={twMerge(
-        clsx(
-          toastViewportStyles,
-          className,
-        ),
-      )}
+      className={twMerge(clsx(toastViewportStyles, className))}
       {...rest}
     />
   ),
