@@ -6,11 +6,7 @@ import SeoBase from '@/components/templates/seo-base';
 export class CustomDocument extends Document {
   render(): ReactElement {
     return (
-      <Html
-        lang="en"
-        className="dark"
-        style={{ background: 'hsl(0deg 0% 8.5%)', color: 'hsl(0deg 0% 93%)' }}
-      >
+      <Html lang="en" className="dark" style={{ background: 'black' }}>
         <Head>
           <SeoBase />
         </Head>
