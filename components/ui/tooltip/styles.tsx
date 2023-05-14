@@ -11,6 +11,7 @@ export const tooltipArrowVariants = cva(['animate-in', 'fade-in-50', 'shadow-md'
 
 export const tooltipVariants = cva(
   [
+    'max-w-[15rem]',
     'text-sm',
     'font-normal',
     'py-1',
