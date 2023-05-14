@@ -9,7 +9,7 @@ import { LENGTH_UNITS } from '@/lib/constants/units';
 import type { MileageLog } from '@/lib/types/running';
 
 import FeatureDisplay from '@/components/templates/feature-display';
-import { IconButton } from '@/components/ui';
+import { IconButton, Tooltip } from '@/components/ui';
 
 /* Props */
 type RunningFeatureProps = {
@@ -58,9 +58,11 @@ const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs }) =>
           </Tabs.Trigger>
         </Tabs.List>
         <div className="border-t border-gray-6 p-2">
-          <IconButton size="sm" aria-label="Change units" onClick={handleUnitChange}>
-            <ArrowLeftRight />
-          </IconButton>
+          <Tooltip content="Change units" side="left">
+            <IconButton size="sm" aria-label="Change units" onClick={handleUnitChange}>
+              <ArrowLeftRight />
+            </IconButton>
+          </Tooltip>
         </div>
       </div>
       <Tabs.Content value="running-bar" tabIndex={-1} asChild>
@@ -69,7 +71,10 @@ const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs }) =>
         </div>
       </Tabs.Content>
       <Tabs.Content value="running-heatmap" className={tabContentStyles} tabIndex={-1} asChild>
-        <div className={clsx(tabContentStyles)}>heatmap{/* <RunningFeatureDetailHeatmap /> */}</div>
+        <div className={clsx(tabContentStyles)}>
+          heatmap
+          {/* <RunningFeatureDetailHeatmap /> */}
+        </div>
       </Tabs.Content>
     </Tabs.Root>
   );
