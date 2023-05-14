@@ -9,7 +9,7 @@ import { CHESS_NFT_FALLBACK } from '@/lib/constants/chess-nfts';
 import ChessPiece from '@/components/common/chess-piece';
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
-import { Button, IconButton } from '@/components/ui';
+import { Button, IconButton, Tooltip } from '@/components/ui';
 
 const ChessFeature: FC = () => {
   return (
@@ -35,9 +35,11 @@ const ChessFeature: FC = () => {
         </svg>
       }
       button={
-        <Button size="sm" href="/chess" rightIcon={<ChevronRight />} disabled>
-          Play
-        </Button>
+        <Tooltip content='WIP'>
+          <Button size="sm" href="/chess" rightIcon={<ChevronRight />} disabled>
+            Play
+          </Button>
+        </Tooltip>
       }
       tags={[<CategoryTag key={0} category="NFT" />, <CategoryTag key={1} category="On-chain" />]}
     >
@@ -73,29 +75,31 @@ const ChessFeatureDetail: FC = () => {
 
   return (
     <div className="relative flex h-full w-full space-x-2 p-2">
-      <a
-        className="h-full"
-        href={`https://etherscan.io/tx/${nft.txHash}`}
-        style={{
-          aspectRatio: '1 / 1',
-          transform: 'scale(0.128)' /* Height is hard-coded, so this should always be `0.128` */,
-          transformOrigin: '0 0',
-        }}
-        target="_blank"
-        rel="noopener noreferrer"
-        dangerouslySetInnerHTML={{
-          __html: Buffer.from(nft.image, 'base64')
-            .toString()
-            /* 62.5 = 8 * (1000 / 128) */
-            .replace('<section', '<section style="border-radius:62.5px"'),
-        }}
-      />
+      <Tooltip content={nft.name}>
+        <a
+          className="h-full"
+          href={`https://etherscan.io/tx/${nft.txHash}`}
+          style={{
+            aspectRatio: '1 / 1',
+            transform: 'scale(0.128)', /* Height is hard-coded, so this should always be `0.128` */
+            transformOrigin: '0 0',
+          }}
+          target="_blank"
+          rel="noopener noreferrer"
+          dangerouslySetInnerHTML={{
+            __html: Buffer.from(nft.image, 'base64')
+              .toString()
+              /* 62.5 = 8 * (1000 / 128) */
+              .replace('<section', '<section style="border-radius:62.5px"'),
+          }}
+        />
+      </Tooltip>
       <IconButton
         className="absolute bottom-2.5 left-1"
         size="sm"
         onClick={fetchPrevMove}
         disabled={nft.tokenId === 0}
-      >
+        >
         <ChevronLeft />
       </IconButton>
       <IconButton
@@ -103,7 +107,7 @@ const ChessFeatureDetail: FC = () => {
         size="sm"
         onClick={fetchNextMove}
         disabled={nft.tokenId === 100}
-      >
+        >
         <ChevronRight />
       </IconButton>
 

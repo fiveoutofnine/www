@@ -9,7 +9,7 @@ import { SHORT_QUOTES } from '@/lib/constants/typing';
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
-import { Button, IconButton } from '@/components/ui';
+import { Button, IconButton, Tooltip } from '@/components/ui';
 
 const TypingFeature: FC = () => {
   return (
@@ -269,12 +269,16 @@ const TypingFeatureDetail: FC = () => {
 
         {/* Buttons */}
         <div className="flex space-x-1">
-          <IconButton size="sm" disabled={typed.length === 0} onClick={resetTest}>
-            <RotateCw />
-          </IconButton>
-          <IconButton size="sm" onClick={changeQuote}>
-            <ChevronRight />
-          </IconButton>
+          <Tooltip content="Reset">
+            <IconButton size="sm" disabled={typed.length === 0} onClick={resetTest}>
+              <RotateCw />
+            </IconButton>
+          </Tooltip>
+          <Tooltip content="Randomize quote" align="end">
+            <IconButton size="sm" onClick={changeQuote}>
+              <ChevronRight />
+            </IconButton>
+          </Tooltip>
         </div>
       </div>
     </div>

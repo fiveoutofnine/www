@@ -8,7 +8,7 @@ import { FIVEOUTOFNINE_MESSAGES } from '@/lib/constants/on-chain-messages';
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
 import { useToast } from '@/components/ui';
-import { Button, IconButton } from '@/components/ui';
+import { Button, IconButton, Tooltip } from '@/components/ui';
 
 const TxDotCoolFeature: FC = () => {
   return (
@@ -34,9 +34,11 @@ const TxDotCoolFeature: FC = () => {
         </svg>
       }
       button={
-        <Button size="sm" href="https://tx.cool" rightIcon={<ExternalLink />} newTab disabled>
-          Visit
-        </Button>
+        <Tooltip content="WIP">
+          <Button size="sm" href="https://tx.cool" rightIcon={<ExternalLink />} newTab disabled>
+            Visit
+          </Button>
+        </Tooltip>
       }
       tags={[<CategoryTag key={0} category="Web" />]}
     >
