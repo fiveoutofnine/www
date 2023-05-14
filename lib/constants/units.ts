@@ -1,9 +1,11 @@
 import type { LengthUnit } from '@/lib/types/units';
 
+// eslint-disable prettier/prettier
+// Disabled to keep each entry 1 line (easier to read IMO).
 export const LENGTH_UNITS: LengthUnit[] = [
   { name: 'km', scalar: 1 },
   { name: 'mi', scalar: 1 / 1.609 },
-  { name: 'marathons', scalar: 1 / 42.195, spaceBefore: true },
+  { name: 'marathons', scalar: 1 / 42.195, spaceBefore: true, description: '42.195km' },
   { name: 'm', scalar: 1e3 },
   { name: 'mm', scalar: 1e6 },
   { name: 'µm', scalar: 1e9 },

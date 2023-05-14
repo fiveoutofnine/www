@@ -1,10 +1,21 @@
 import { type FC, Fragment, useEffect, useMemo, useState } from 'react';
 
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Info } from 'lucide-react';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Tooltip as RechartTooltip,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import type { MileageLog } from '@/lib/types/running';
 import type { LengthUnit } from '@/lib/types/units';
 import { formatValueToPrecision, getUTCMonthShortName } from '@/lib/utils';
+
+import { Tooltip } from '@/components/ui';
 
 /* Props */
 type RunningFeatureDetailBarChartProps = {
@@ -60,7 +71,16 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
     <Fragment>
       <div className="font-medium">
         <span className="text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
-        <span className="text-xs text-gray-11">{`${unit.spaceBefore ? ' ' : ''}${unit.name}`}</span>
+        <span className="text-xs text-gray-11">
+          {`${unit.spaceBefore ? ' ' : ''}${unit.name}`}{' '}
+          {unit.description ? (
+            <Tooltip content={unit.description} sideOffset={0}>
+              <span>
+                <Info className="inline h-2.5 w-2.5" />
+              </span>
+            </Tooltip>
+          ) : null}
+        </span>
       </div>
       <div className="mt-0.5 text-xs text-gray-11">
         {processedData.length > 0
@@ -96,7 +116,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
               tickSize={4}
             />
           }
-          <Tooltip
+          <RechartTooltip
             content={({ active, payload, label }) => {
               const monthName = label ? getUTCMonthShortName(label) : '';
               const year = label ? label.getUTCFullYear() : 0;
