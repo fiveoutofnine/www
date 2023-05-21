@@ -7,7 +7,7 @@ import { NAVBAR_PAGES } from '@/lib/constants/site';
 import type { PageSlug } from '@/lib/types/site';
 
 import ConnectButton from '@/components/common/connect-button';
-import { Button, IconButton } from '@/components/ui';
+import { Button, IconButton, Tooltip } from '@/components/ui';
 
 /* Props */
 type NavBarProps = {
@@ -57,15 +57,16 @@ const MobileNavBar: FC<NavBarProps> = ({ selected }) => {
         const pageSelected = selected === page.slug;
 
         return (
-          <IconButton
-            key={page.slug}
-            className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-4' : '')}
-            variant="ghost"
-            href={page.slug}
-            disabled={pageSelected}
-          >
-            {page.icon}
-          </IconButton>
+          <Tooltip key={page.slug} content={page.name}>
+            <IconButton
+              className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-4' : '')}
+              variant="ghost"
+              href={page.slug}
+              disabled={pageSelected}
+            >
+              {page.icon}
+            </IconButton>
+          </Tooltip>
         );
       })}
       <div className="flex-grow" />

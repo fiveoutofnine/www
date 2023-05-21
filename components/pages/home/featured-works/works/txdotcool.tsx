@@ -133,7 +133,10 @@ const TxDotCoolFeatureDetail: FC = () => {
   });
 
   // Scroll messages into view on load.
-  useEffect(() => messagesEndRef.current?.scrollIntoView(), []);
+  useEffect(
+    () => messagesEndRef.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' }),
+    [],
+  );
 
   return (
     <div className="flex h-full flex-col bg-gray-3">
