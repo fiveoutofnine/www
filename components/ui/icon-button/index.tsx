@@ -16,6 +16,7 @@ const IconButton = forwardRef(
       disabled = false,
       href,
       newTab,
+      title,
       onClick,
       children,
       ...rest
@@ -29,6 +30,7 @@ const IconButton = forwardRef(
           className,
         ),
       ),
+      title: title || href || undefined,
       'data-variant': variant,
       'data-disabled': disabled,
       'aria-disabled': disabled,
