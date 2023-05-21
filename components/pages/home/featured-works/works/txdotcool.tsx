@@ -139,39 +139,37 @@ const TxDotCoolFeatureDetail: FC = () => {
   );
 
   return (
-    <div className="flex h-full flex-col bg-gray-3">
-      {/* Header */}
-      <div className="flex h-8 items-center justify-between border-b border-gray-6 px-1.5">
-        <div className="flex items-center space-x-1">
-          <MessageCircle className="h-4 w-4 text-gray-11" />
-          <div className="text-xs font-medium text-gray-12">fiveoutofnine.eth</div>
-        </div>
-        <IconButton
-          size="sm"
-          href={`https://etherscan.io/address/${process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS}`}
-          newTab
-        >
-          <ExternalLink />
-        </IconButton>
-      </div>
-
-      {/* Chat */}
-      <div
-        className="h-[4.375rem] space-y-1 overflow-y-scroll px-2 pt-2 text-xs text-gray-12"
-        tabIndex={-1}
-      >
-        {FIVEOUTOFNINE_MESSAGES.map((message) => (
-          <a
-            key={message.txHash}
-            className="flex min-h-[1.5rem] w-fit items-center rounded-xl bg-gray-7 px-2 py-1 transition-colors hover:bg-gray-8"
-            href={`https://etherscan.io/tx/${message.txHash}`}
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex h-full flex-col bg-gray-3 text-xs">
+      <div className="h-[6.375rem] overflow-y-scroll text-xs text-gray-12" tabIndex={-1}>
+        {/* Header */}
+        <div className="hide-scrollbar sticky top-0 flex h-8 items-center justify-between border-b border-gray-6 bg-gray-3 px-1.5">
+          <div className="flex items-center space-x-1">
+            <MessageCircle className="h-4 w-4 text-gray-11" />
+            <div className="font-medium text-gray-12">fiveoutofnine.eth</div>
+          </div>
+          <IconButton
+            size="sm"
+            href={`https://etherscan.io/address/${process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS}`}
+            newTab
           >
-            {message.content}
-          </a>
-        ))}
-        <div ref={messagesEndRef} />
+            <ExternalLink />
+          </IconButton>
+        </div>
+        {/* Chat */}
+        <div className="space-y-1 px-2 pt-2">
+          {FIVEOUTOFNINE_MESSAGES.map((message) => (
+            <a
+              key={message.txHash}
+              className="flex min-h-[1.5rem] w-fit items-center rounded-xl bg-blue-9 px-2 py-1 transition-colors hover:bg-gray-8"
+              href={`https://etherscan.io/tx/${message.txHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {message.content}
+            </a>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
       {/* Message input */}
@@ -179,7 +177,7 @@ const TxDotCoolFeatureDetail: FC = () => {
         <div className="relative w-full">
           <form>
             <input
-              className="h-8 w-full rounded-full border border-gray-7 bg-gray-2 pl-3 pr-7 text-xs text-gray-12 transition-colors placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none"
+              className="h-8 w-full rounded-full border border-gray-7 bg-gray-2 pl-3 pr-7 text-gray-12 transition-colors placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none"
               placeholder="Message fiveoutofnine.eth"
               aria-label="Message to fiveoutofnine.eth"
               value={userMessage}
