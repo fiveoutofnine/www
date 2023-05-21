@@ -18,6 +18,7 @@ const Button = forwardRef(
       leftIcon,
       rightIcon,
       newTab,
+      title,
       onClick,
       children,
       ...rest
@@ -31,6 +32,7 @@ const Button = forwardRef(
           className,
         ),
       ),
+      title: title || href || undefined,
       'data-variant': variant,
       'data-disabled': disabled,
       'aria-disabled': disabled,
