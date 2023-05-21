@@ -243,21 +243,23 @@ const TypingFeatureDetail: FC = () => {
           <div>
             <div className="text-[0.625rem] text-gray-11">WPM</div>
             <div className="text-xs text-gray-12">{wpm ?? '–'}</div>
-            <div className="flex items-center space-x-1">
-              <FiveoutofnineAvatar size={12} />
-              <div
-                className={clsx(
-                  'text-[0.625rem] transition-colors',
-                  endTime
-                    ? wpm && wpm > quote.wpm
-                      ? 'text-red-9'
-                      : 'text-green-9'
-                    : 'text-gray-11',
-                )}
-              >
-                {quote.wpm}
+            <Tooltip className="font-sans" content="5/9's WPM" side="bottom">
+              <div className="flex items-center space-x-1">
+                <FiveoutofnineAvatar size={12} />
+                <div
+                  className={clsx(
+                    'text-[0.625rem] transition-colors',
+                    endTime
+                      ? wpm && wpm > quote.wpm
+                        ? 'text-red-9'
+                        : 'text-green-9'
+                      : 'text-gray-11',
+                  )}
+                >
+                  {quote.wpm}
+                </div>
               </div>
-            </div>
+            </Tooltip>
           </div>
           {/* Time passed */}
           <TypingFeatureDetailTimer

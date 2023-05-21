@@ -46,12 +46,11 @@ const ColormapRegistryFeatureDetail: FC = () => {
     detectBounds: true,
   });
 
-  const {
-    showTooltip,
-    hideTooltip,
-    tooltipOpen,
-    tooltipLeft = 0,
-  } = useTooltip<string>({ tooltipOpen: true, tooltipLeft: 0, tooltipTop: 62 });
+  const { showTooltip, hideTooltip, tooltipOpen, tooltipLeft } = useTooltip<string>({
+    tooltipOpen: true,
+    tooltipLeft: undefined,
+    tooltipTop: 62,
+  });
 
   const handlePointerMove = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {
@@ -84,7 +83,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
         {COLORMAPS.map((colormap, index) => {
           const tooltipColor = getColormapValue(
             colormap.data,
-            (0xff * tooltipLeft) / containerBounds.width,
+            (0xff * (tooltipLeft ?? 0)) / containerBounds.width,
           );
           const tooltipColorHex =
             '#' +
@@ -162,7 +161,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
                         <ExternalLink />
                       </IconButton>
                     </motion.div>
-                    {tooltipOpen ? (
+                    {tooltipOpen && tooltipLeft !== undefined ? (
                       <>
                         <hr
                           className="absolute z-10 h-[6.875rem] transition-colors"
