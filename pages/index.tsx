@@ -3,7 +3,7 @@ import type { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 
 import type { MileageLog } from '@/lib/types/running';
-import { fetchMileageLogs } from '@/lib/utils';
+import { fetchMileageLogs, fetchRunningLogs } from '@/lib/utils';
 
 import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
@@ -13,10 +13,11 @@ import FiveoutofnineHeader from '@/components/pages/home/header';
 /* Props */
 type HomePageProps = {
   mileageLogs: MileageLog[];
+  runningLogs: MileageLog[];
 };
 
 /* Page */
-const HomePage: NextPage<HomePageProps> = ({ mileageLogs }) => {
+const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
   return (
     <>
       <NextSeo
@@ -32,7 +33,7 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs }) => {
       <BaseLayout name="Home" pageSlug="/">
         <ContainerLayout className="flex flex-col space-y-4">
           <FiveoutofnineHeader />
-          <FeaturedWorks mileageLogs={mileageLogs} />
+          <FeaturedWorks mileageLogs={mileageLogs} runningLogs={runningLogs} />
         </ContainerLayout>
       </BaseLayout>
     </>
@@ -41,9 +42,10 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs }) => {
 
 /* Get Static Props */
 export const getStaticProps: GetStaticProps = async () => {
-  const { data } = await fetchMileageLogs({ type: 'monthly', limit: 12 });
+  const { data: mileageLogs } = await fetchMileageLogs({ type: 'monthly', limit: 12 });
+  const { data: runningLogs } = await fetchRunningLogs();
 
-  const props: HomePageProps = { mileageLogs: data };
+  const props: HomePageProps = { mileageLogs, runningLogs };
 
   return { props, revalidate: 3600 };
 };

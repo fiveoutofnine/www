@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 
 import RunningFeatureDetailBarChart from './bar-chart';
+import RunningFeatureDetailHeatmap from './heatmap';
 import * as Tabs from '@radix-ui/react-tabs';
 import clsx from 'clsx';
 import { ArrowLeftRight, BarChart, Grid, Mountain } from 'lucide-react';
@@ -14,12 +15,13 @@ import { IconButton, Tooltip } from '@/components/ui';
 /* Props */
 type RunningFeatureProps = {
   mileageLogs: MileageLog[];
+  runningLogs: MileageLog[];
 };
 
 type RunningFeatureDetailProps = RunningFeatureProps;
 
 /* Component */
-const RunningFeature: FC<RunningFeatureProps> = ({ mileageLogs }) => {
+const RunningFeature: FC<RunningFeatureProps> = ({ mileageLogs, runningLogs }) => {
   return (
     <FeatureDisplay
       className="col-span-2 w-full min-[560px]:col-span-4"
@@ -27,12 +29,12 @@ const RunningFeature: FC<RunningFeatureProps> = ({ mileageLogs }) => {
       description="I run a lot"
       symbol={<Mountain />}
     >
-      <RunningFeatureDetail mileageLogs={mileageLogs} />
+      <RunningFeatureDetail mileageLogs={mileageLogs} runningLogs={runningLogs} />
     </FeatureDisplay>
   );
 };
 
-const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs }) => {
+const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs, runningLogs }) => {
   const [unitIndex, setUnitIndex] = useState<number>(0);
 
   const tabContentStyles = 'h-full grow overflow-hidden bg-gray-3';
@@ -72,8 +74,7 @@ const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs }) =>
       </Tabs.Content>
       <Tabs.Content value="running-heatmap" className={tabContentStyles} tabIndex={-1} asChild>
         <div className={clsx(tabContentStyles)}>
-          heatmap
-          {/* <RunningFeatureDetailHeatmap /> */}
+          <RunningFeatureDetailHeatmap runningLogs={runningLogs} unit={LENGTH_UNITS[unitIndex]} />
         </div>
       </Tabs.Content>
     </Tabs.Root>
