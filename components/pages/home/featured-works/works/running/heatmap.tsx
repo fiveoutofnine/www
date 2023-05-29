@@ -1,6 +1,15 @@
-import { type FC, Fragment, type PointerEvent, useCallback, useMemo, useState } from 'react';
+import {
+  type FC,
+  Fragment,
+  type PointerEvent,
+  type UIEvent,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 
 import { TooltipWithBounds, useTooltip, useTooltipInPortal } from '@visx/tooltip';
+import clsx from 'clsx';
 import { ChevronDown, Info } from 'lucide-react';
 
 import type { MileageLog } from '@/lib/types/running';
@@ -8,6 +17,7 @@ import type { LengthUnit } from '@/lib/types/units';
 import { formatValueToPrecision } from '@/lib/utils';
 
 import { Button, Tooltip } from '@/components/ui';
+import { buttonVariants } from '@/components/ui/button/styles';
 
 /* Props */
 type RunningFeatureDetailHeatmapProps = {
@@ -23,7 +33,14 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
   runningLogs,
   unit,
 }) => {
-  const [year, setYear] = useState<number>(2023);
+  const yearsLogged = useMemo(
+    () => Array.from(new Set(runningLogs.map((log) => new Date(log.date).getFullYear()))).reverse(),
+    [runningLogs],
+  );
+
+  const [year, setYear] = useState<number>(yearsLogged[0]);
+  const [scrollIsAtLeft, setScrollIsAtLeft] = useState<boolean>(true);
+  const [scrollIsAtRight, setScrollIsAtRight] = useState<boolean>(false);
 
   const { containerRef, containerBounds } = useTooltipInPortal({
     scroll: true,
@@ -59,6 +76,21 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
     [containerBounds.left, containerBounds.top, unit.scalar, showTooltip],
   );
 
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLFieldSetElement;
+    const scrollLeft = target.scrollLeft;
+    const scrollWidth = target.scrollWidth;
+    const clientWidth = target.clientWidth;
+
+    setScrollIsAtLeft(scrollLeft === 0);
+    setScrollIsAtRight(scrollWidth - scrollLeft === clientWidth);
+  };
+
+  // First day of the year.
+  const firstDay = useMemo(() => new Date(year, 0, 1), [year]);
+  // The number of days offset from Sunday (i.e. Sunday -> 0, Monday -> 1,
+  // etc.).
+  const dayOffset = useMemo(() => firstDay.getDay(), [firstDay]);
   const filteredLogs = useMemo(
     () => runningLogs.filter((log) => new Date(log.date).getUTCFullYear() === year),
     [runningLogs, year],
@@ -66,9 +98,6 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
   const logs = useMemo(() => {
     // First day of the year `year`.
     const date = new Date(year, 0, 1);
-    // The number of days offset from Sunday (i.e. Sunday -> 0, Monday -> 1,
-    // etc.).
-    const offset = date.getDay();
     // The array of heatmap squares.
     const days: (MileageLog | null | undefined)[][] = [];
 
@@ -80,31 +109,33 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
     // Iterate through `arr`
     for (let i = 0; i < filteredLogs.length; ++i) {
       // We first retrieve `date.getDay()` for which row (i.e. which day).
-      // `Math.floor(i / 7) + (date.getDay() < offset ? 1 : 0)` gets us the
-      // correct ``x'' position. We refer to `offset` that we computed earlier
-      // to correctly leave the first few cells null.
+      // `Math.floor(i / 7) + (date.getDay() < dayOffset ? 1 : 0)` gets us the
+      // correct ``x'' position. We refer to `dayOffset` that we computed
+      // earlier to correctly leave the first few cells null.
       days[new Date(filteredLogs[i].date).getDay()][
-        Math.floor(i / 7) + (date.getDay() < offset ? 1 : 0)
+        Math.floor(i / 7) + (date.getDay() < dayOffset ? 1 : 0)
       ] = filteredLogs[i] ? filteredLogs[i] : null;
       date.setDate(date.getDate() + 1);
     }
 
     const daysInYear = year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0) ? 366 : 365;
     for (let i = filteredLogs.length; i < daysInYear; ++i) {
-      days[new Date(date).getDay()][Math.floor(i / 7) + (date.getDay() < offset ? 1 : 0)] =
+      days[new Date(date).getDay()][Math.floor(i / 7) + (date.getDay() < dayOffset ? 1 : 0)] =
         undefined;
       date.setDate(date.getDate() + 1);
     }
 
     return days;
-  }, [filteredLogs, year]);
+  }, [dayOffset, filteredLogs, year]);
   const max = useMemo(() => Math.max(...filteredLogs.map((log) => log.value)), [filteredLogs]);
   const total = useMemo(
     () => filteredLogs.reduce((a, b) => a + unit.scalar * b.value, 0),
     [filteredLogs, unit.scalar],
   );
-  const width = useMemo(() => 53 * SQUARE_SIZE + 52 * GAP + 8, []);
-  const height = useMemo(() => 7 * SQUARE_SIZE + 6 * GAP, []);
+  const width = useMemo(() => 53 * SQUARE_SIZE + 52 * GAP, []);
+  // Add 16 to account for the height of month labels (font size is 12px, and we
+  // want a 4px margin).
+  const height = useMemo(() => 7 * SQUARE_SIZE + 6 * GAP + 16, []);
 
   return (
     <div className="flex h-full flex-col p-2">
@@ -122,83 +153,162 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
             ) : null}
           </span>
         </div>
-        <Button size="sm" variant="outline" rightIcon={<ChevronDown />}>
-          {year}
-        </Button>
-      </div>
-      <div className="hide-scrollbar relative mt-1 overflow-x-scroll rounded border border-gray-6 p-2">
-        <svg
-          width={width}
-          height={height}
-          viewBox={`0 0 ${width} ${height}`}
-          xmlns="http://www.w3.org/2000/svg"
-          role="figure"
-          ref={containerRef}
-          onPointerMove={handlePointerMove}
-          onMouseLeave={hideTooltip}
+        <select
+          value={year}
+          onChange={(e) => setYear(Number(e.target.value))}
+          className={buttonVariants({
+            size: 'sm',
+            variant: 'outline',
+            intent: 'none',
+          })}
         >
-          <desc>5/9&apos;s running heatmap for {year}</desc>
-          {logs.map((log, y) => {
-            return (
-              <Fragment key={y}>
-                {log.map((day, x) => {
-                  if (day === null) return null;
+          {/* <Button size="sm" variant="outline" rightIcon={<ChevronDown />}>
+            {year}
+          </Button> */}
+          {yearsLogged.map((year) => (
+            <option key={year}>{year}</option>
+          ))}
+        </select>
+      </div>
+      <div className="relative">
+        <div
+          className="hide-scrollbar relative mt-2 overflow-x-scroll"
+          tabIndex={-1}
+          onScroll={handleScroll}
+        >
+          <svg
+            width={width}
+            height={height}
+            viewBox={`0 0 ${width} ${height}`}
+            xmlns="http://www.w3.org/2000/svg"
+            role="figure"
+            ref={containerRef}
+            onPointerMove={handlePointerMove}
+            onMouseLeave={hideTooltip}
+          >
+            <desc>5/9&apos;s running heatmap for {year}</desc>
+            {Array(12)
+              .fill(null)
+              .map((_, month) => {
+                const firstDayOfMonth = new Date(year, month, 1);
 
-                  if (day === undefined) {
-                    return (
-                      <path
-                        key={`${x}-${y}`}
-                        d={`M${(SQUARE_SIZE + GAP) * x + 2} ${(SQUARE_SIZE + GAP) * y + 0.5}h${
-                          SQUARE_SIZE - 4
-                        }q1.5 0 1.5 1.5v${SQUARE_SIZE - 4}q0 1.5-1.5 1.5h-${
-                          SQUARE_SIZE - 4
-                        }q-1.5 0-1.5-1.5v-${SQUARE_SIZE - 4}q0-1.5 1.5-1.5z`}
-                        className="stroke fill-transparent stroke-gray-7 transition-colors hover:stroke-gray-8"
-                      />
-                    );
-                  }
+                return (
+                  <text
+                    key={month}
+                    x={
+                      (SQUARE_SIZE + GAP) *
+                      Math.ceil(
+                        (86_400 * dayOffset + firstDayOfMonth.getTime() - firstDay.getTime()) /
+                          604_800_000,
+                      )
+                    }
+                    y={12}
+                    fontSize={12}
+                    className="fill-gray-11"
+                  >
+                    {firstDayOfMonth.toLocaleDateString('en-US', { month: 'short' })}
+                  </text>
+                );
+              })}
+            {logs.map((log, y) => {
+              return (
+                <Fragment key={y}>
+                  {log.map((day, x) => {
+                    if (day === null) return null;
 
-                  return (
-                    <path
-                      key={day.date}
-                      d={`M${(SQUARE_SIZE + GAP) * x + 2} ${(SQUARE_SIZE + GAP) * y + 0.5}h${
+                    const props = {
+                      // Add 16 to account for the height of month labels (font
+                      // size is 12px, and we want a 4px margin).
+                      d: `M${(SQUARE_SIZE + GAP) * x + 2} ${(SQUARE_SIZE + GAP) * y + 0.5 + 16}h${
                         SQUARE_SIZE - 4
                       }q1.5 0 1.5 1.5v${SQUARE_SIZE - 4}q0 1.5-1.5 1.5h-${
                         SQUARE_SIZE - 4
-                      }q-1.5 0-1.5-1.5v-${SQUARE_SIZE - 4}q0-1.5 1.5-1.5z`}
-                      className="stroke fill-blue-9 stroke-gray-7 transition-colors hover:stroke-gray-8"
-                      fillOpacity={day.value / max}
-                      data-date={day.date}
-                      data-value={day.value}
-                    />
-                  );
-                })}
-              </Fragment>
-            );
-          })}
-        </svg>
-        {tooltipOpen &&
-        tooltipLeft !== undefined &&
-        tooltipTop !== undefined &&
-        tooltipData !== undefined ? (
-          <TooltipWithBounds
-            key={Math.random()}
-            top={tooltipTop}
-            left={tooltipLeft}
-            offsetLeft={-SQUARE_SIZE}
-            className="pointer-events-none absolute left-0 top-0 z-50 rounded border border-gray-6 bg-gray-3 px-2 py-1 text-sm text-gray-12 shadow-md transition-colors"
-            style={{}}
-          >
-            {JSON.parse(tooltipData).value}
-            {unit.spaceBefore ? ' ' : ''}
-            <span className="text-gray-11">{unit.name} on</span>{' '}
-            {new Date(JSON.parse(tooltipData).date).toLocaleDateString('en-US', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
+                      }q-1.5 0-1.5-1.5v-${SQUARE_SIZE - 4}q0-1.5 1.5-1.5z`,
+                      ...(day === undefined
+                        ? {}
+                        : {
+                            fillOpacity: day.value / max,
+                            'data-date': day.date,
+                            'data-value': day.value,
+                          }),
+                    };
+
+                    return (
+                      <path
+                        key={`running-heatmap-${x}-${y}`}
+                        className={clsx(
+                          'stroke stroke-gray-7 transition-colors hover:stroke-gray-8',
+                          day === undefined ? 'fill-transparent' : 'fill-blue-9',
+                        )}
+                        {...props}
+                      />
+                    );
+                  })}
+                </Fragment>
+              );
             })}
-          </TooltipWithBounds>
-        ) : null}
+          </svg>
+          {tooltipOpen &&
+          tooltipLeft !== undefined &&
+          tooltipTop !== undefined &&
+          tooltipData !== undefined ? (
+            <TooltipWithBounds
+              key={Math.random()}
+              top={tooltipTop}
+              left={tooltipLeft}
+              offsetLeft={-SQUARE_SIZE}
+              className="pointer-events-none absolute left-0 top-0 z-50 rounded border border-gray-6 bg-gray-3 px-2 py-1 text-sm text-gray-12 shadow-md transition-colors"
+              style={{}}
+            >
+              {JSON.parse(tooltipData).value}
+              {unit.spaceBefore ? ' ' : ''}
+              <span className="text-gray-11">{unit.name} on</span>{' '}
+              {new Date(JSON.parse(tooltipData).date).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              })}
+            </TooltipWithBounds>
+          ) : null}
+        </div>
+
+        {/* Left gradient to hide overflow */}
+        <div
+          className={clsx(
+            'absolute bottom-0 left-0 h-full w-4 bg-gradient-to-r from-gray-3 to-transparent transition-opacity',
+            scrollIsAtLeft ? 'opacity-0' : 'opacity-100',
+          )}
+        />
+        {/* Right gradient to hide overflow */}
+        <div
+          className={clsx(
+            'absolute bottom-0 right-0 h-full w-4 bg-gradient-to-l from-gray-3 to-transparent transition-opacity',
+            scrollIsAtRight ? 'opacity-0' : 'opacity-100',
+          )}
+        />
+      </div>
+      <div className="flex grow items-end justify-end space-x-2">
+        <div className="flex items-center space-x-1 text-xs text-gray-11">
+          <span>Less</span>
+          <svg
+            width="68"
+            height="12"
+            viewBox="0 0 68 12"
+            xmlns="http://www.w3.org/2000/svg"
+            role="note"
+          >
+            <path
+              id="a"
+              d="M58 .5h8q1.5 0 1.5 1.5v8q0 1.5-1.5 1.5h-8q-1.5 0-1.5-1.5V2Q56.5.5 58 .5z"
+              className="stroke fill-blue-9 stroke-gray-7"
+            />
+            <use xlinkHref="#a" transform="translate(-14)" fillOpacity="0.75" />
+            <use xlinkHref="#a" transform="translate(-28)" fillOpacity="0.5" />
+            <use xlinkHref="#a" transform="translate(-42)" fillOpacity="0.25" />
+            <use xlinkHref="#a" transform="translate(-56)" fillOpacity="0" />
+          </svg>
+          <span>More</span>
+        </div>
       </div>
     </div>
   );
