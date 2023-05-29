@@ -55,8 +55,8 @@ const ColormapRegistryFeatureDetail: FC = () => {
   const handlePointerMove = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {
       // Coordinates should be relative to the container
-      const containerX = ('clientX' in event ? event.clientX : 0) - containerBounds.left;
-      showTooltip({ tooltipLeft: containerX, tooltipTop: 62 });
+      const tooltipLeft = ('clientX' in event ? event.clientX : 0) - containerBounds.left;
+      showTooltip({ tooltipLeft, tooltipTop: 62 });
     },
     [showTooltip, containerBounds],
   );
@@ -174,12 +174,8 @@ const ColormapRegistryFeatureDetail: FC = () => {
                           key={Math.random()} // Needed for bounds to update correctly
                           left={tooltipLeft}
                           top={62}
-                          className="z-10 flex h-6 items-center justify-center rounded px-1.5 font-mono text-xs font-medium transition-colors"
+                          className="pointer-events-none absolute left-0 top-0 z-10 flex h-6 items-center justify-center rounded px-1.5 font-mono text-xs font-medium transition-colors"
                           style={{
-                            top: 0,
-                            left: 0,
-                            position: 'absolute',
-                            pointerEvents: 'none',
                             background: tooltipColorHex,
                             color: tooltipColorIsDark ? '#fff' : '#000',
                             border: tooltipColorIsDark ? '1px solid #fff' : '1px solid #000',
