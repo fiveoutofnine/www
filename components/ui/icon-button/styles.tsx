@@ -177,8 +177,8 @@ export const iconButtonVariants = cva(
     },
     compoundVariants: [
       { variant: 'primary', disabled: true, className: 'bg-gray-3 text-gray-7 border-gray-7' },
-      { variant: 'secondary', disabled: true, className: 'text-gray-7 border-gray-7' },
-      { variant: 'outline', disabled: true, className: 'bg-gray-9 text-gray-11' },
+      { variant: 'secondary', disabled: true, className: 'bg-gray-9 text-gray-11' },
+      { variant: 'outline', disabled: true, className: 'text-gray-7 border-gray-7' },
       { variant: 'ghost', disabled: true, className: 'bg-gray-9 text-gray-11' },
     ],
   },

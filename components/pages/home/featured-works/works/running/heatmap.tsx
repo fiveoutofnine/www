@@ -10,14 +10,13 @@ import {
 
 import { TooltipWithBounds, useTooltip, useTooltipInPortal } from '@visx/tooltip';
 import clsx from 'clsx';
-import { ChevronDown, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 
 import type { MileageLog } from '@/lib/types/running';
 import type { LengthUnit } from '@/lib/types/units';
 import { formatValueToPrecision } from '@/lib/utils';
 
-import { Button, Tooltip } from '@/components/ui';
-import { buttonVariants } from '@/components/ui/button/styles';
+import { Select, Tooltip } from '@/components/ui';
 
 /* Props */
 type RunningFeatureDetailHeatmapProps = {
@@ -153,22 +152,17 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
             ) : null}
           </span>
         </div>
-        <select
+        <Select
+          size="sm"
+          variant="outline"
+          intent="none"
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
-          className={buttonVariants({
-            size: 'sm',
-            variant: 'outline',
-            intent: 'none',
-          })}
         >
-          {/* <Button size="sm" variant="outline" rightIcon={<ChevronDown />}>
-            {year}
-          </Button> */}
           {yearsLogged.map((year) => (
-            <option key={year}>{year}</option>
+            <Select.Item key={year}>{year}</Select.Item>
           ))}
-        </select>
+        </Select>
       </div>
       <div className="relative">
         <div
