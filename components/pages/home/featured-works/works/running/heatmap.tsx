@@ -32,6 +32,8 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
   runningLogs,
   unit,
 }) => {
+  // `log.date` doesn't have to be initialized to a UTC date because we only
+  // care about the year (which should stay consistent).
   const yearsLogged = useMemo(
     () => Array.from(new Set(runningLogs.map((log) => new Date(log.date).getFullYear()))).reverse(),
     [runningLogs],
@@ -86,17 +88,17 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
   };
 
   // First day of the year.
-  const firstDay = useMemo(() => new Date(year, 0, 1), [year]);
+  const firstDay = useMemo(() => new Date(Date.UTC(year, 0, 1)), [year]);
   // The number of days offset from Sunday (i.e. Sunday -> 0, Monday -> 1,
   // etc.).
-  const dayOffset = useMemo(() => firstDay.getDay(), [firstDay]);
+  const dayOffset = useMemo(() => firstDay.getUTCDay(), [firstDay]);
   const filteredLogs = useMemo(
     () => runningLogs.filter((log) => new Date(log.date).getUTCFullYear() === year),
     [runningLogs, year],
   );
   const logs = useMemo(() => {
     // First day of the year `year`.
-    const date = new Date(year, 0, 1);
+    const date = new Date(Date.UTC(year, 0, 1));
     // The array of heatmap squares.
     const days: (MileageLog | null | undefined)[][] = [];
 
@@ -107,21 +109,25 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
 
     // Iterate through `arr`
     for (let i = 0; i < filteredLogs.length; ++i) {
-      // We first retrieve `date.getDay()` for which row (i.e. which day).
-      // `Math.floor(i / 7) + (date.getDay() < dayOffset ? 1 : 0)` gets us the
-      // correct ``x'' position. We refer to `dayOffset` that we computed
+      // We first retrieve `currentUTCDate.getUTCDay()` for which row (i.e.
+      // which day).
+      // `Math.floor(i / 7) + (date.getUTCDay() < dayOffset ? 1 : 0)` gets us
+      // the correct ``x'' position. We refer to `dayOffset` that we computed
       // earlier to correctly leave the first few cells null.
-      days[new Date(filteredLogs[i].date).getDay()][
-        Math.floor(i / 7) + (date.getDay() < dayOffset ? 1 : 0)
-      ] = filteredLogs[i] ? filteredLogs[i] : null;
-      date.setDate(date.getDate() + 1);
+      const currentDate = new Date(filteredLogs[i].date);
+      const currentUTCDate = new Date(
+        Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate()),
+      );
+      days[currentUTCDate.getUTCDay()][Math.floor(i / 7) + (date.getUTCDay() < dayOffset ? 1 : 0)] =
+        filteredLogs[i] ? filteredLogs[i] : null;
+      date.setUTCDate(date.getUTCDate() + 1);
     }
 
     const daysInYear = year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0) ? 366 : 365;
     for (let i = filteredLogs.length; i < daysInYear; ++i) {
-      days[new Date(date).getDay()][Math.floor(i / 7) + (date.getDay() < dayOffset ? 1 : 0)] =
+      days[new Date(date).getUTCDay()][Math.floor(i / 7) + (date.getUTCDay() < dayOffset ? 1 : 0)] =
         undefined;
-      date.setDate(date.getDate() + 1);
+      date.setUTCDate(date.getUTCDate() + 1);
     }
 
     return days;
@@ -158,6 +164,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
           intent="none"
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
+          aria-label="Select year to view running logs from"
         >
           {yearsLogged.map((year) => (
             <Select.Item key={year}>{year}</Select.Item>
@@ -184,7 +191,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
             {Array(12)
               .fill(null)
               .map((_, month) => {
-                const firstDayOfMonth = new Date(year, month, 1);
+                const firstDayOfMonth = new Date(Date.UTC(year, month, 1));
 
                 return (
                   <text
@@ -221,7 +228,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
                       ...(day === undefined
                         ? {}
                         : {
-                            fillOpacity: day.value / max,
+                            fillOpacity: max > 0 ? day.value / max : 0,
                             'data-date': day.date,
                             'data-value': day.value,
                           }),
@@ -269,14 +276,14 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
         {/* Left gradient to hide overflow */}
         <div
           className={clsx(
-            'absolute bottom-0 left-0 h-full w-4 bg-gradient-to-r from-gray-3 to-transparent transition-opacity',
+            'pointer-events-none absolute bottom-0 left-0 h-[112px] w-4 bg-gradient-to-r from-gray-3 to-transparent transition-opacity',
             scrollIsAtLeft ? 'opacity-0' : 'opacity-100',
           )}
         />
         {/* Right gradient to hide overflow */}
         <div
           className={clsx(
-            'absolute bottom-0 right-0 h-full w-4 bg-gradient-to-l from-gray-3 to-transparent transition-opacity',
+            'pointer-events-none absolute bottom-0 right-0 h-[112px] w-4 bg-gradient-to-l from-gray-3 to-transparent transition-opacity',
             scrollIsAtRight ? 'opacity-0' : 'opacity-100',
           )}
         />
