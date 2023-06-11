@@ -140,9 +140,12 @@ const TxDotCoolFeatureDetail: FC = () => {
 
   return (
     <div className="flex h-full flex-col bg-gray-3 text-xs">
-      <div className="h-[6.375rem] overflow-y-scroll text-xs text-gray-12" tabIndex={-1}>
+      <div
+        className="hide-scrollbar h-[6.375rem] overflow-y-scroll text-xs text-gray-12"
+        tabIndex={-1}
+      >
         {/* Header */}
-        <div className="hide-scrollbar sticky top-0 flex h-8 items-center justify-between border-b border-gray-6 bg-gray-3 px-1.5">
+        <div className="sticky top-0 flex h-8 items-center justify-between border-b border-gray-6 bg-gray-3 px-1.5">
           <div className="flex items-center space-x-1">
             <MessageCircle className="h-4 w-4 text-gray-11" />
             <div className="font-medium text-gray-12">fiveoutofnine.eth</div>

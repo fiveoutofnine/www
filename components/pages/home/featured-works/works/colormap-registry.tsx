@@ -75,7 +75,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
     <div className="relative bg-gray-3">
       <fieldset
         id="colormap-picker"
-        className="grid h-[8.875rem] grid-cols-2 gap-1 overflow-x-hidden overflow-y-scroll p-2"
+        className="hide-scrollbar grid h-[8.875rem] grid-cols-2 gap-1 overflow-x-hidden overflow-y-scroll p-2"
         aria-label="Pick a colormap to expand"
         onScroll={handleScroll}
         tabIndex={-1}
