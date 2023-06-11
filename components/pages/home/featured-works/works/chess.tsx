@@ -77,7 +77,7 @@ const ChessFeatureDetail: FC = () => {
     <div className="relative flex h-full w-full space-x-2 p-2">
       <Tooltip content={nft.name}>
         <a
-          className="h-full"
+          className="h-full rounded-lg"
           href={`https://etherscan.io/tx/${nft.txHash}`}
           style={{
             aspectRatio: '1 / 1',
