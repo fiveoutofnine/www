@@ -49,19 +49,31 @@ const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs, runn
       <div className="flex h-full w-10 flex-col items-center justify-between border-r border-gray-6">
         <Tabs.List className="flex w-10 flex-col items-center space-y-2 p-2">
           <Tabs.Trigger value="running-bar" asChild>
-            <IconButton size="sm" variant="ghost" className={tabTriggerStyles}>
+            <IconButton
+              size="sm"
+              variant="ghost"
+              role="tab"
+              className={tabTriggerStyles}
+              aria-label="Running bar graph"
+            >
               <BarChart />
             </IconButton>
           </Tabs.Trigger>
           <Tabs.Trigger value="running-heatmap" asChild>
-            <IconButton size="sm" variant="ghost" className={tabTriggerStyles}>
+            <IconButton
+              size="sm"
+              variant="ghost"
+              role="tab"
+              className={tabTriggerStyles}
+              aria-label="Running heatmap"
+            >
               <Grid />
             </IconButton>
           </Tabs.Trigger>
         </Tabs.List>
         <div className="border-t border-gray-6 p-2">
           <Tooltip content="Change units" side="left">
-            <IconButton size="sm" aria-label="Change units" onClick={handleUnitChange}>
+            <IconButton size="sm" onClick={handleUnitChange} aria-label="Change units">
               <ArrowLeftRight />
             </IconButton>
           </Tooltip>

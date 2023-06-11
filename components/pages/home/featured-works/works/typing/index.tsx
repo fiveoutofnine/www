@@ -272,12 +272,17 @@ const TypingFeatureDetail: FC = () => {
         {/* Buttons */}
         <div className="flex space-x-1">
           <Tooltip content="Reset">
-            <IconButton size="sm" disabled={typed.length === 0} onClick={resetTest}>
+            <IconButton
+              size="sm"
+              disabled={typed.length === 0}
+              onClick={resetTest}
+              aria-label="Restart test"
+            >
               <RotateCw />
             </IconButton>
           </Tooltip>
           <Tooltip content="Randomize quote" align="end">
-            <IconButton size="sm" onClick={changeQuote}>
+            <IconButton size="sm" onClick={changeQuote} aria-label="Randomize quote">
               <ChevronRight />
             </IconButton>
           </Tooltip>

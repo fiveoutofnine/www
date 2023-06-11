@@ -99,6 +99,7 @@ const ChessFeatureDetail: FC = () => {
         size="sm"
         onClick={fetchPrevMove}
         disabled={nft.tokenId === 0}
+        aria-label='View previous move'
         >
         <ChevronLeft />
       </IconButton>
@@ -107,6 +108,7 @@ const ChessFeatureDetail: FC = () => {
         size="sm"
         onClick={fetchNextMove}
         disabled={nft.tokenId === 100}
+        aria-label='View next move'
         >
         <ChevronRight />
       </IconButton>
