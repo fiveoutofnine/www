@@ -160,7 +160,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
         </div>
         <Select
           size="sm"
-          variant="outline"
+          variant="primary"
           intent="none"
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
