@@ -86,6 +86,7 @@ const ChessFeatureDetail: FC = () => {
           }}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label='View NFT mint transaction on Etherscan'
           dangerouslySetInnerHTML={{
             __html: Buffer.from(nft.image, 'base64')
               .toString()
