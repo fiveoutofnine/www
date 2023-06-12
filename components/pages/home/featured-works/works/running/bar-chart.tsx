@@ -84,7 +84,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
     <Fragment>
       <div className="font-medium">
         <Tooltip
-          content={`${formatValueToPrecision(total / 365, 2, false)} ${unitName}/day`}
+          content={`${formatValueToPrecision(total / 365, 2, false)}${unitName}/day`}
           sideOffset={0}
         >
           <span className="text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
