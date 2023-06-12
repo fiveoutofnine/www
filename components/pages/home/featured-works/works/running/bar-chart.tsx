@@ -13,7 +13,7 @@ import {
 
 import type { MileageLog } from '@/lib/types/running';
 import type { LengthUnit } from '@/lib/types/units';
-import { formatValueToPrecision, getUTCMonthShortName } from '@/lib/utils';
+import { formatValueToPrecision } from '@/lib/utils';
 
 import { Tooltip } from '@/components/ui';
 
@@ -28,6 +28,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
   mileageLogs,
   unit,
 }) => {
+  // 20.43 is a precomputed value to fit the width when the unit is set to km.
   const [yAxisWidth, setYAxisWidth] = useState<number>(20.43);
 
   const currentDay = new Date().getUTCDate();
@@ -39,9 +40,12 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
     () =>
       mileageLogs.map((d) => {
         const date = new Date(d.date);
+        const utcDate = new Date(
+          Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
+        );
 
-        const month = date.getUTCMonth();
-        const year = date.getUTCFullYear();
+        const month = utcDate.getUTCMonth();
+        const year = utcDate.getUTCFullYear();
         const daysInMonth =
           currentMonth === month && currentYear === year
             ? currentDay
@@ -49,7 +53,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
               28 + ((0xeefbb3 >> (month << 1)) & 3);
 
         return {
-          date: date,
+          date: utcDate,
           value: (unit.scalar * d.value) / daysInMonth,
         };
       }),
@@ -84,11 +88,13 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
       </div>
       <div className="mt-0.5 text-xs text-gray-11">
         {processedData.length > 0
-          ? `${getUTCMonthShortName(
-              processedData[0].date,
-            )} ${processedData[0].date.getUTCFullYear()} to ${getUTCMonthShortName(
-              processedData[processedData.length - 1].date,
-            )} ${processedData[processedData.length - 1].date.getUTCFullYear()}`
+          ? `${processedData[0].date.toLocaleDateString('en-US', {
+              month: 'short',
+            })} ${processedData[0].date.getUTCFullYear()} to ${processedData[
+              processedData.length - 1
+            ].date.toLocaleDateString('en-US', { month: 'short' })} ${processedData[
+              processedData.length - 1
+            ].date.getUTCFullYear()}`
           : 'No data'}
       </div>
       <ResponsiveContainer className="mt-2" width="100%" height="100%">
@@ -118,7 +124,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
           }
           <RechartTooltip
             content={({ active, payload, label }) => {
-              const monthName = label ? getUTCMonthShortName(label) : '';
+              const monthName = label ? label.toLocaleDateString('en-US', { month: 'short' }) : '';
               const year = label ? label.getUTCFullYear() : 0;
 
               return payload && active && payload.length > 0 && payload[0].value ? (
