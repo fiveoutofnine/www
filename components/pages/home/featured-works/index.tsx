@@ -3,8 +3,8 @@ import type { FC } from 'react';
 import BitTwiddlingFeature from './works/bit-twiddling';
 import ChessFeature from './works/chess';
 import ColormapRegistryFeature from './works/colormap-registry';
+import CoolContractsFeature from './works/cool-contracts';
 import RunningFeature from './works/running';
-import TwitterThreadFeature from './works/twitter-thread';
 import TxDotCoolFeature from './works/txdotcool';
 import TypingFeature from './works/typing';
 
@@ -26,7 +26,7 @@ const FeaturedWorks: FC<FeaturedWorksProps> = ({ mileageLogs, runningLogs }) => 
       <RunningFeature mileageLogs={mileageLogs} runningLogs={runningLogs} />
       <ColormapRegistryFeature />
       <BitTwiddlingFeature />
-      <TwitterThreadFeature />
+      <CoolContractsFeature />
     </div>
   );
 };
