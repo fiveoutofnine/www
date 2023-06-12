@@ -4,7 +4,7 @@ import RunningFeatureDetailBarChart from './bar-chart';
 import RunningFeatureDetailHeatmap from './heatmap';
 import * as Tabs from '@radix-ui/react-tabs';
 import clsx from 'clsx';
-import { ArrowLeftRight, BarChart, Grid, Mountain } from 'lucide-react';
+import { ArrowLeftRight, BarChart, Footprints, Grid } from 'lucide-react';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
 import type { MileageLog } from '@/lib/types/running';
@@ -27,7 +27,7 @@ const RunningFeature: FC<RunningFeatureProps> = ({ mileageLogs, runningLogs }) =
       className="col-span-2 w-full min-[560px]:col-span-4"
       name="Running"
       description="I run a lot"
-      symbol={<Mountain />}
+      symbol={<Footprints />}
     >
       <RunningFeatureDetail mileageLogs={mileageLogs} runningLogs={runningLogs} />
     </FeatureDisplay>
