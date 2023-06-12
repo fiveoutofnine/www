@@ -54,6 +54,7 @@ const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs, runn
               variant="ghost"
               role="tab"
               className={tabTriggerStyles}
+              title="Bar graph"
               aria-label="Running bar graph"
             >
               <BarChart />
@@ -65,6 +66,7 @@ const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs, runn
               variant="ghost"
               role="tab"
               className={tabTriggerStyles}
+              title="Heatmap"
               aria-label="Running heatmap"
             >
               <Grid />
