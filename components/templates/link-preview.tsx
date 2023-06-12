@@ -23,10 +23,10 @@ const LinkPreview: FC<LinkPreviewProps> = ({
   const props = { href, ...rest };
 
   return (
-    <HoverCard trigger={<Link {...props}>{children}</Link>}>
+    <HoverCard trigger={<Link {...props}>{children}</Link>} openDelay={300}>
       <Link {...props}>
         <Image
-          className="rounded hover:brightness-75"
+          className="rounded transition hover:brightness-75"
           src={src}
           width={width}
           height={height}

@@ -10,6 +10,8 @@ const HoverCard = forwardRef(
   (
     {
       className,
+      openDelay = 500,
+      closeDelay = 300,
       sideOffset = 4,
       hasArrow = true,
       inverted = true,
@@ -19,7 +21,7 @@ const HoverCard = forwardRef(
     }: HoverCardProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => (
-    <HoverCardPrimitive.Root openDelay={500}>
+    <HoverCardPrimitive.Root openDelay={openDelay} closeDelay={closeDelay}>
       <HoverCardPrimitive.Trigger asChild>{trigger}</HoverCardPrimitive.Trigger>
       <HoverCardPrimitive.Content
         ref={ref}

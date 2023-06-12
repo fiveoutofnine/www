@@ -11,5 +11,7 @@ type HoverCardVariantProps = VariantProps<typeof hoverCardVariants>;
 export type HoverCardProps = ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> &
   HoverCardVariantProps & {
     trigger: ReactNode;
+    openDelay?: number;
+    closeDelay?: number;
     hasArrow?: boolean;
   };
