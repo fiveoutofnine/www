@@ -1,10 +1,10 @@
-import Image from 'next/image';
 import type { FC } from 'react';
 
 import { Github, Twitter } from 'lucide-react';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
-import { Button, HoverCard } from '@/components/ui';
+import LinkPreview from '@/components/templates/link-preview';
+import { Button } from '@/components/ui';
 
 const FiveoutofnineHeader: FC = () => {
   return (
@@ -18,37 +18,25 @@ const FiveoutofnineHeader: FC = () => {
           <div className="text-base font-semibold md:text-2xl">5/9</div>
           <span className="mt-0.5 text-sm text-gray-11 md:mt-1 md:text-base">
             Working on{' '}
-            <HoverCard
-              trigger={
-                <a
-                  className="font-medium text-gray-12 hover:underline"
-                  href="https://waterfall.market"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  Waterfall
-                </a>
-              }
+            <LinkPreview
+              className="font-medium text-gray-12 hover:underline"
+              href="https://waterfall.market"
+              src="/static/waterfall-market-preview.webp"
+              target="_blank"
+              rel="noreferrer noopener"
             >
-              <a href="https://curta.wtf" target="_blank" rel="noreferrer noopener">
-                <Image
-                  className="rounded hover:brightness-75"
-                  alt="Preview of https://curta.wtf"
-                  src="/static/curta-wtf-preview.webp"
-                  width={256}
-                  height={128}
-                />
-              </a>
-            </HoverCard>{' '}
+              Waterfall
+            </LinkPreview>{' '}
             and{' '}
-            <a
-              className="font-medium text-gray-12"
+            <LinkPreview
+              className="font-medium text-gray-12 hover:underline"
               href="https://curta.wtf"
+              src="/static/curta-wtf-preview.webp"
               target="_blank"
               rel="noreferrer noopener"
             >
               Curta
-            </a>
+            </LinkPreview>
             .
           </span>
         </div>
