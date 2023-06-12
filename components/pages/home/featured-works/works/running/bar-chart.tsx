@@ -36,32 +36,41 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
   const currentYear = new Date().getUTCFullYear();
 
   // Calculate the average distance per day for each month.
-  const processedData = useMemo(
-    () =>
-      mileageLogs.map((d) => {
-        const date = new Date(d.date);
-        const utcDate = new Date(
-          Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
-        );
+  const [data, totalDays] = useMemo(() => {
+    let totalDays = 0;
+    const data = mileageLogs.map((d) => {
+      const date = new Date(d.date);
+      const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
 
-        const month = utcDate.getUTCMonth();
-        const year = utcDate.getUTCFullYear();
-        const daysInMonth =
-          currentMonth === month && currentYear === year
-            ? currentDay
-            : // `0xeefbb3 = (3 << 22) | (2 << 20) | ... | (0 << 2) | (3 << 0)`
-              28 + ((0xeefbb3 >> (month << 1)) & 3);
+      const month = utcDate.getUTCMonth();
+      const year = utcDate.getUTCFullYear();
+      const daysInMonth =
+        currentMonth === month && currentYear === year
+          ? currentDay
+          : // `0xeefbb3 = (3 << 22) | (2 << 20) | ... | (0 << 2) | (3 << 0)`
+            28 +
+            ((0xeefbb3 >> (month << 1)) & 3) +
+            // Add 1 if it's a leap year and the month is February.
+            ((year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)) && month === 1 ? 1 : 0);
+      totalDays += daysInMonth;
 
-        return {
-          date: utcDate,
-          value: (unit.scalar * d.value) / daysInMonth,
-        };
-      }),
-    [currentDay, currentMonth, currentYear, mileageLogs, unit.scalar],
-  );
+      return {
+        date: utcDate,
+        value: (unit.scalar * d.value) / daysInMonth,
+      };
+    });
+
+    return [data, totalDays];
+  }, [currentDay, currentMonth, currentYear, mileageLogs, unit.scalar]);
+  // We scale to annualized mileage.
   const total = useMemo(
-    () => mileageLogs.reduce((a, b) => a + unit.scalar * b.value, 0),
-    [mileageLogs, unit.scalar],
+    () => (365 * mileageLogs.reduce((a, b) => a + unit.scalar * b.value, 0)) / totalDays,
+    [mileageLogs, totalDays, unit.scalar],
+  );
+
+  const unitName = useMemo(
+    () => `${unit.spaceBefore ? ' ' : ''}${unit.name}`,
+    [unit.name, unit.spaceBefore],
   );
 
   // Work around to resize y-axis width because Recharts y-axis width is not
@@ -69,14 +78,19 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
   useEffect(() => {
     const yAxis = document.getElementsByClassName('recharts-cartesian-axis recharts-yAxis')[0];
     setYAxisWidth(yAxis ? (yAxis as SVGGraphicsElement)?.getBoundingClientRect().width + 4 : 20.43);
-  }, [processedData]);
+  }, [data]);
 
   return (
     <Fragment>
       <div className="font-medium">
-        <span className="text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
+        <Tooltip
+          content={`${formatValueToPrecision(total / 365, 2, false)} ${unitName}/day`}
+          sideOffset={0}
+        >
+          <span className="text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
+        </Tooltip>
         <span className="text-xs text-gray-11">
-          {`${unit.spaceBefore ? ' ' : ''}${unit.name}`}{' '}
+          {unitName + ' '}
           {unit.description ? (
             <Tooltip content={unit.description} sideOffset={0}>
               <span>
@@ -87,18 +101,17 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
         </span>
       </div>
       <div className="mt-0.5 text-xs text-gray-11">
-        {processedData.length > 0
-          ? `${processedData[0].date.toLocaleDateString('en-US', {
+        {data.length > 0
+          ? `${data[0].date.toLocaleDateString('en-US', {
               month: 'short',
-            })} ${processedData[0].date.getUTCFullYear()} to ${processedData[
-              processedData.length - 1
-            ].date.toLocaleDateString('en-US', { month: 'short' })} ${processedData[
-              processedData.length - 1
-            ].date.getUTCFullYear()}`
+            })} ${data[0].date.getUTCFullYear()} to ${data[data.length - 1].date.toLocaleDateString(
+              'en-US',
+              { month: 'short' },
+            )} ${data[data.length - 1].date.getUTCFullYear()}`
           : 'No data'}
       </div>
       <ResponsiveContainer className="mt-2" width="100%" height="100%">
-        <BarChart data={processedData} margin={{ top: 0, left: 0, bottom: -14 }} barCategoryGap={4}>
+        <BarChart data={data} margin={{ top: 0, left: 0, bottom: -14 }} barCategoryGap={4}>
           <CartesianGrid />
           <XAxis
             dataKey="date"
@@ -138,9 +151,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
                       {/* @ts-ignore */}
                       {formatValueToPrecision(payload[0].value, 2, false)}
                     </span>
-                    <span className="text-xs text-gray-11">
-                      {`${unit.spaceBefore ? ' ' : ''}${unit.name}`}/day
-                    </span>
+                    <span className="text-xs text-gray-11">{`${unitName}/day`}</span>
                   </div>
                   <div className="text-xs text-gray-11">{`${monthName} ${year}`}</div>
                 </div>
