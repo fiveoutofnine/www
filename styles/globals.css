@@ -16,6 +16,7 @@ a {
 }
 
 * {
+  @apply selection:bg-[#FF00FF] selection:text-white;
   box-sizing: border-box;
 }
 
