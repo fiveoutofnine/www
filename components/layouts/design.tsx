@@ -1,15 +1,18 @@
 import type { FC, ReactNode } from 'react';
 
-import DesignNavBar from '../pages/design/nav-bar';
 import { MDXProvider } from '@mdx-js/react';
+
+import type { PageSlug } from '@/lib/types/site';
 
 import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
+import DesignNavBar from '@/components/pages/design/nav-bar';
+import DesignPageNav from '@/components/pages/design/page-nav';
 
 /* Props */
 type DesignLayoutProps = {
   name: string;
-  selected: string;
+  selected: PageSlug;
   children?: ReactNode;
 };
 
@@ -31,11 +34,15 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
 
   return (
     <BaseLayout name={name} pageSlug="/design">
-      <ContainerLayout className="relative flex max-w-[90rem] flex-col space-x-0 md:flex-row md:space-x-16">
+      {/* Overriding default padding of `p-4` on small devices because this is
+      intended to be a docs page, and `p-6` increases readability quite a bit. */}
+      <ContainerLayout className="relative flex max-w-[90rem] flex-col space-x-0 p-6 md:flex-row md:space-x-16">
         <DesignNavBar selected={selected} />
         <MDXProvider components={components}>
           <article className="prose prose-gray max-w-none grow dark:prose-invert">
             {children}
+            <hr className="mb-6 mt-6 w-full border-b border-gray-6 md:mt-12" />
+            <DesignPageNav pageSlug={selected} />
           </article>
         </MDXProvider>
       </ContainerLayout>

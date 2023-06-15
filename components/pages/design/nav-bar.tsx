@@ -3,12 +3,13 @@ import type { FC } from 'react';
 import clsx from 'clsx';
 
 import { DESIGN_COMPONENT_PAGES, DESIGN_PAGES } from '@/lib/constants/site';
+import type { PageSlug } from '@/lib/types/site';
 
 import { Button } from '@/components/ui';
 
 /* Props */
 type DesignNavBarProps = {
-  selected?: string;
+  selected?: PageSlug;
 };
 
 /* Component */
