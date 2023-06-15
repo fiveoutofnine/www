@@ -17,10 +17,10 @@ type DesignLayoutProps = {
 const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
   const components = {
     h1: ({ children }: JSX.IntrinsicElements['h1']) => (
-      <h1 className="text-4xl font-semibold tracking-tight text-gray-12">{children}</h1>
+      <h1 className="mb-4 text-4xl font-semibold tracking-tight text-gray-12">{children}</h1>
     ),
     h2: ({ children }: JSX.IntrinsicElements['h2']) => (
-      <h2 className="text-2xl font-semibold tracking-tight text-gray-12">{children}</h2>
+      <h2 className="mb-4 mt-12 text-2xl font-semibold tracking-tight text-gray-12">{children}</h2>
     ),
     h3: ({ children }: JSX.IntrinsicElements['h3']) => (
       <h3 className="text-xl font-semibold tracking-tight text-gray-12">{children}</h3>
@@ -30,7 +30,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
 
   return (
     <BaseLayout name={name} pageSlug="/design">
-      <ContainerLayout className="flex max-w-[80rem] flex-col space-x-0 md:flex-row md:space-x-12">
+      <ContainerLayout className="flex max-w-[90rem] flex-col space-x-0 md:flex-row md:space-x-12">
         <DesignNavBar selected={selected} />
         <MDXProvider components={components}>
           <article className="prose prose-gray max-w-none grow dark:prose-invert">
