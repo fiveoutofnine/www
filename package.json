@@ -1,5 +1,5 @@
 {
-  "name": "flywheel",
+  "name": "www",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@babel/core": ">=7.4.0 <8.0.0",
+    "@mdx-js/loader": "^2.3.0",
+    "@mdx-js/react": "^2.3.0",
+    "@next/mdx": "^13.4.5",
     "@radix-ui/colors": "^0.1.8",
     "@radix-ui/react-hover-card": "^1.0.6",
     "@radix-ui/react-tabs": "^1.0.3",
