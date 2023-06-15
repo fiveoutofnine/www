@@ -1,0 +1,37 @@
+import DesignLayout from '@/components/layouts/design';
+import { Button } from '@/components/ui';
+
+# Button
+
+## Size
+
+<div
+  className="flex w-full items-center justify-between rounded-xl border border-gray-6 bg-gray-2"
+  style={{ padding: '32px' }}
+>
+  <Button size="sm">Button</Button>
+  <Button size="md">Button</Button>
+  <Button size="lg">Button</Button>
+  <Button size="xl">Button</Button>
+</div>
+
+## Variant
+
+<div
+  className="flex w-full items-center justify-between rounded-xl border border-gray-6 bg-gray-2"
+  style={{ padding: '32px' }}
+>
+  <Button variant="primary">Button</Button>
+  <Button variant="secondary">Button</Button>
+  <Button variant="outline">Button</Button>
+  <Button variant="ghost">Button</Button>
+  <Button variant="text">Button</Button>
+</div>
+
+## Intent
+
+export default ({ children }) => (
+  <DesignLayout name="Button" selected="/design/component/button">
+    {children}
+  </DesignLayout>
+);
