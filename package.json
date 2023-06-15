@@ -47,6 +47,7 @@
     "typescript": "5.0.4",
     "viem": "^0.3.2",
     "wagmi": "^0.12.10",
+    "webpack": ">=4",
     "zod": "^3.21.4"
   },
   "devDependencies": {
@@ -60,6 +61,7 @@
     "prettier-plugin-tailwindcss": "^0.2.7",
     "tailwindcss-animate": "^1.0.5",
     "tailwindcss-percentage-width": "^1.0.3",
-    "windy-radix-palette": "^0.6.0"
+    "windy-radix-palette": "^0.6.0",
+    "windy-radix-typography": "^0.2.1"
   }
 }
