@@ -1,34 +1,116 @@
+import { Circle } from 'lucide-react';
+
 import DesignLayout from '@/components/layouts/design';
+import DesignComponentsDisplay from '@/components/pages/design/components-display';
 import { Button } from '@/components/ui';
 
 # Button
 
 ## Size
 
-<div
-  className="flex w-full items-center justify-between rounded-xl border border-gray-6 bg-gray-2"
-  style={{ padding: '32px' }}
->
-  <Button size="sm">Button</Button>
-  <Button size="md">Button</Button>
-  <Button size="lg">Button</Button>
-  <Button size="xl">Button</Button>
-</div>
+<DesignComponentsDisplay columns={[2, 4]}>
+  <Button size="sm" children="Button" />
+  <Button size="md" children="Button" />
+  <Button size="lg" children="Button" />
+  <Button size="xl" children="Button" />
+</DesignComponentsDisplay>
+
+<DesignComponentsDisplay columns={[2, 4]}>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+</DesignComponentsDisplay>
 
 ## Variant
 
-<div
-  className="flex w-full items-center justify-between rounded-xl border border-gray-6 bg-gray-2"
-  style={{ padding: '32px' }}
->
-  <Button variant="primary">Button</Button>
-  <Button variant="secondary">Button</Button>
-  <Button variant="outline">Button</Button>
-  <Button variant="ghost">Button</Button>
-  <Button variant="text">Button</Button>
-</div>
+<DesignComponentsDisplay columns={[2, 5]}>
+  <Button variant="primary" children="Button" />
+  <Button variant="secondary" children="Button" />
+  <Button variant="outline" children="Button" />
+  <Button variant="ghost" children="Button" />
+  <Button variant="text" children="Button" />
+</DesignComponentsDisplay>
 
 ## Intent
+
+<DesignComponentsDisplay columns={[2, 3, 6]}>
+  <Button variant="primary" intent="none" children="Button" />
+  <Button variant="primary" intent="primary" children="Button" />
+  <Button variant="primary" intent="fail" children="Button" />
+  <Button variant="primary" intent="success" children="Button" />
+  <Button variant="primary" intent="warning" children="Button" />
+  <Button variant="primary" intent="orange" children="Button" />
+  <Button variant="secondary" intent="none" children="Button" />
+  <Button variant="secondary" intent="primary" children="Button" />
+  <Button variant="secondary" intent="fail" children="Button" />
+  <Button variant="secondary" intent="success" children="Button" />
+  <Button variant="secondary" intent="warning" children="Button" />
+  <Button variant="secondary" intent="orange" children="Button" />
+  <Button variant="outline" intent="none" children="Button" />
+  <Button variant="outline" intent="primary" children="Button" />
+  <Button variant="outline" intent="fail" children="Button" />
+  <Button variant="outline" intent="success" children="Button" />
+  <Button variant="outline" intent="warning" children="Button" />
+  <Button variant="outline" intent="orange" children="Button" />
+  <Button variant="ghost" intent="none" children="Button" />
+  <Button variant="ghost" intent="primary" children="Button" />
+  <Button variant="ghost" intent="fail" children="Button" />
+  <Button variant="ghost" intent="success" children="Button" />
+  <Button variant="ghost" intent="warning" children="Button" />
+  <Button variant="ghost" intent="orange" children="Button" />
+  <Button variant="text" intent="none" children="Button" />
+  <Button variant="text" intent="primary" children="Button" />
+  <Button variant="text" intent="fail" children="Button" />
+  <Button variant="text" intent="success" children="Button" />
+  <Button variant="text" intent="warning" children="Button" />
+  <Button variant="text" intent="orange" children="Button" />
+</DesignComponentsDisplay>
+
+## Disabled
+
+<DesignComponentsDisplay columns={[2, 4]}>
+  <Button variant="primary" children="Button" />
+  <Button variant="primary" children="Button" disabled />
+  <Button variant="secondary" children="Button" />
+  <Button variant="secondary" children="Button" disabled />
+  <Button variant="outline" children="Button" />
+  <Button variant="outline" children="Button" disabled />
+  <Button variant="ghost" children="Button" />
+  <Button variant="ghost" children="Button" disabled />
+  <Button variant="text" children="Button" />
+  <Button variant="text" children="Button" disabled />
+</DesignComponentsDisplay>
+
+## Icons
+
+<DesignComponentsDisplay columns={[3]}>
+  <Button leftIcon={<Circle />} children="Button" />
+  <Button rightIcon={<Circle />} children="Button" />
+  <Button leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
+</DesignComponentsDisplay>
+
+## Sizes with icons
+
+<DesignComponentsDisplay columns={[2, 4]}>
+  <Button size="sm" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
+  <Button size="md" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
+  <Button size="lg" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
+  <Button size="xl" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
+</DesignComponentsDisplay>
+
+## Link
+
+<DesignComponentsDisplay columns={[2]}>
+  <Button children="Home" href="/" />
+  <Button children="New tab" href="/" newTab />
+</DesignComponentsDisplay>
 
 export default ({ children }) => (
   <DesignLayout name="Button" selected="/design/component/button">
