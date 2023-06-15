@@ -8,29 +8,16 @@ import { Button } from '@/components/ui';
 
 ## Size
 
-<DesignComponentsDisplay columns={[2, 4]}>
+<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-4">
   <Button size="sm" children="Button" />
   <Button size="md" children="Button" />
   <Button size="lg" children="Button" />
   <Button size="xl" children="Button" />
 </DesignComponentsDisplay>
 
-<DesignComponentsDisplay columns={[2, 4]}>
-  <div>1</div>
-  <div>1</div>
-  <div>1</div>
-  <div>1</div>
-  <div>1</div>
-  <div>1</div>
-  <div>1</div>
-  <div>1</div>
-  <div>1</div>
-  <div>1</div>
-</DesignComponentsDisplay>
-
 ## Variant
 
-<DesignComponentsDisplay columns={[2, 5]}>
+<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-5">
   <Button variant="primary" children="Button" />
   <Button variant="secondary" children="Button" />
   <Button variant="outline" children="Button" />
@@ -40,7 +27,7 @@ import { Button } from '@/components/ui';
 
 ## Intent
 
-<DesignComponentsDisplay columns={[2, 3, 6]}>
+<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
   <Button variant="primary" intent="none" children="Button" />
   <Button variant="primary" intent="primary" children="Button" />
   <Button variant="primary" intent="fail" children="Button" />
@@ -75,7 +62,7 @@ import { Button } from '@/components/ui';
 
 ## Disabled
 
-<DesignComponentsDisplay columns={[2, 4]}>
+<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-4">
   <Button variant="primary" children="Button" />
   <Button variant="primary" children="Button" disabled />
   <Button variant="secondary" children="Button" />
@@ -90,7 +77,7 @@ import { Button } from '@/components/ui';
 
 ## Icons
 
-<DesignComponentsDisplay columns={[3]}>
+<DesignComponentsDisplay className="grid-cols-3">
   <Button leftIcon={<Circle />} children="Button" />
   <Button rightIcon={<Circle />} children="Button" />
   <Button leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
@@ -98,7 +85,7 @@ import { Button } from '@/components/ui';
 
 ## Sizes with icons
 
-<DesignComponentsDisplay columns={[2, 4]}>
+<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-4">
   <Button size="sm" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
   <Button size="md" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
   <Button size="lg" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
@@ -107,7 +94,7 @@ import { Button } from '@/components/ui';
 
 ## Link
 
-<DesignComponentsDisplay columns={[2]}>
+<DesignComponentsDisplay className="grid-cols-2">
   <Button children="Home" href="/" />
   <Button children="New tab" href="/" newTab />
 </DesignComponentsDisplay>
