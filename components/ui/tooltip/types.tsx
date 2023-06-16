@@ -12,4 +12,5 @@ export type TooltipProps = ComponentPropsWithoutRef<typeof TooltipPrimitive.Cont
   TooltipVariantProps & {
     content: ReactNode;
     hasArrow?: boolean;
+    noDelay?: boolean;
   };

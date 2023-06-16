@@ -12,14 +12,15 @@ const Tooltip = forwardRef(
       className,
       sideOffset = 4,
       content,
-      hasArrow = true,
       inverted = true,
+      hasArrow = true,
+      noDelay = false,
       children,
       ...rest
     }: TooltipProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => (
-    <TooltipPrimitive.Provider delayDuration={500}>
+    <TooltipPrimitive.Provider delayDuration={noDelay ? 0 : 500}>
       <TooltipPrimitive.Root>
         <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
