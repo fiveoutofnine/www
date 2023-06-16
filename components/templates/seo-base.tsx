@@ -19,7 +19,7 @@ const SeoBase: FC<SeoBaseProps> = ({ name }) => {
 
       <title>{title}</title>
       <meta name="title" content={title} />
-      <meta name="theme-color" content="#161616" />
+      <meta name="theme-color" content="#000" />
     </Head>
   );
 };

@@ -58,7 +58,10 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
         openGraph={{
           type: 'website',
           locale: 'en_US',
-          title: `5/9 Design | ${name}`,
+          title: `${name} - 5/9 Design`,
+          description: 'open-source accessible design system',
+          url: 'https://fiveoutofnine.com/design',
+          site_name: 'fiveoutofnine',
         }}
       />
 
