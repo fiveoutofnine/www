@@ -1,4 +1,4 @@
-import { Circle } from 'lucide-react';
+import { ChevronRight, Circle, ExternalLink } from 'lucide-react';
 
 import DesignLayout from '@/components/layouts/design';
 import DesignComponentsDisplay from '@/components/pages/design/components-display';
@@ -105,9 +105,11 @@ To use icon-only buttons, use `IconButton`. It is identical to `Button`, except 
 
 ## Link
 
+To have the button act as a link, pass in a URL to the `href` prop. To open the link in a new tab, use the `newTab` prop. Note that the final component is rendered as a `<button>` element, not `<a>`.
+
 <DesignComponentsDisplay className="grid-cols-2">
-  <Button children="Home" href="/" />
-  <Button children="New tab" href="/" newTab />
+  <Button children="Home" href="/" rightIcon={<ChevronRight />} />
+  <Button children="New tab" href="/" rightIcon={<ExternalLink />} newTab />
 </DesignComponentsDisplay>
 
 export default ({ children }) => (
