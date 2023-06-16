@@ -112,8 +112,6 @@ To have the button act as a link, pass in a URL to the `href` prop. To open the 
   <Button children="New tab" href="/" rightIcon={<ExternalLink />} newTab />
 </DesignComponentsDisplay>
 
-export default ({ children }) => (
-  <DesignLayout name="Button" selected="/design/component/button">
-    {children}
-  </DesignLayout>
+export default (props) => (
+  <DesignLayout name="Button" selected="/design/component/button" {...props} />
 );

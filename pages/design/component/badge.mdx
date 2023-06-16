@@ -36,8 +36,6 @@ import { Badge, Button } from '@/components/ui';
   <Badge variant="secondary" intent="orange" children="Badge" />
 </DesignComponentsDisplay>
 
-export default ({ children }) => (
-  <DesignLayout name="Badge" selected="/design/component/badge">
-    {children}
-  </DesignLayout>
+export default (props) => (
+  <DesignLayout name="Badge" selected="/design/component/badge" {...props} />
 );

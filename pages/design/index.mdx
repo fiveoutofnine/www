@@ -2,8 +2,4 @@ import DesignLayout from '@/components/layouts/design';
 
 # Design
 
-export default ({ children }) => (
-  <DesignLayout name="Design" selected="/design">
-    {children}
-  </DesignLayout>
-);
+export default (props) => <DesignLayout name="Introduction" selected="/design" {...props} />;

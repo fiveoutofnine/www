@@ -76,8 +76,6 @@ To override the default `ChevronDown` icon (from [`lucide-react`](https://lucide
   <Select rightIcon={<Circle />} children={<option>Select</option>} />
 </DesignComponentsDisplay>
 
-export default ({ children }) => (
-  <DesignLayout name="Select" selected="/design/component/select">
-    {children}
-  </DesignLayout>
+export default (props) => (
+  <DesignLayout name="Select" selected="/design/component/select" {...props} />
 );
