@@ -20,7 +20,6 @@ export const DESIGN_COMPONENT_PAGES: Page[] = [
   { name: 'Badge', slug: '/design/component/badge' },
   { name: 'Button', slug: '/design/component/button' },
   { name: 'Hover Card', slug: '/design/component/hover-card' },
-  { name: 'Icon Button', slug: '/design/component/icon-button' },
   { name: 'Select', slug: '/design/component/select' },
   { name: 'Toast', slug: '/design/component/toast' },
   { name: 'Tooltip', slug: '/design/component/tooltip' },

@@ -18,7 +18,6 @@ export type PageSlug =
   | '/design/component/badge'
   | '/design/component/button'
   | '/design/component/hover-card'
-  | '/design/component/icon-button'
   | '/design/component/select'
   | '/design/component/toast'
   | '/design/component/tooltip';

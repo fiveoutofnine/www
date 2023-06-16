@@ -30,6 +30,11 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
       </h2>
     ),
     p: ({ children }: JSX.IntrinsicElements['p']) => <p className="text-gray-11">{children}</p>,
+    code: ({ children }: JSX.IntrinsicElements['code']) => (
+      <code className="rounded border border-gray-6 bg-gray-3 px-1 py-0.5 font-normal text-gray-12 before:content-none after:content-none">
+        {children}
+      </code>
+    ),
   };
 
   return (

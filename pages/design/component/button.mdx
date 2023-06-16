@@ -2,7 +2,7 @@ import { Circle } from 'lucide-react';
 
 import DesignLayout from '@/components/layouts/design';
 import DesignComponentsDisplay from '@/components/pages/design/components-display';
-import { Button } from '@/components/ui';
+import { Button, IconButton } from '@/components/ui';
 
 # Button
 
@@ -90,6 +90,17 @@ import { Button } from '@/components/ui';
   <Button size="md" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
   <Button size="lg" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
   <Button size="xl" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
+</DesignComponentsDisplay>
+
+## Icon button
+
+To use icon-only icons, use the separate component `IconButton`. It is identical to `Button` except it does not have the `text` variant.
+
+<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-4">
+  <IconButton size="sm" children={<Circle />} />
+  <IconButton size="md" children={<Circle />} />
+  <IconButton size="lg" children={<Circle />} />
+  <IconButton size="xl" children={<Circle />} />
 </DesignComponentsDisplay>
 
 ## Link
