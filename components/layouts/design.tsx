@@ -20,10 +20,7 @@ type DesignLayoutProps = {
 const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
   const components = {
     a: ({ children, ...rest }: JSX.IntrinsicElements['a']) => (
-      <a
-        className="mdx--link group font-semibold text-blue-9 no-underline hover:underline"
-        {...rest}
-      >
+      <a className="mdx--link group font-medium text-blue-9 no-underline hover:underline" {...rest}>
         {children}
       </a>
     ),
