@@ -26,7 +26,7 @@ const NavBar: FC<NavBarProps> = ({ selected }) => {
 
 const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
   return (
-    <nav className="hidden sticky top-0 z-popover h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:flex">
+    <nav className="sticky top-0 z-popover hidden h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:flex">
       <Logo />
       {NAVBAR_PAGES.map((page) => {
         const pageSelected = selected === page.slug;
