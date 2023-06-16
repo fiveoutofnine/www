@@ -60,7 +60,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
         <MDXProvider components={components}>
           <article className="prose prose-gray max-w-none grow dark:prose-invert">
             {children}
-            <hr className="mb-6 mt-6 w-full border-gray-6 md:mt-12" />
+            <hr className="mb-6 mt-6 w-full rounded-full border-gray-6 md:mt-12" />
             <DesignPageNav pageSlug={selected} />
           </article>
         </MDXProvider>
