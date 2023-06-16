@@ -65,7 +65,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
         }}
       />
 
-      <BaseLayout name={name} pageSlug="/design">
+      <BaseLayout title="5/9 Design" subtitle={name} pageSlug="/design">
         {/* Note: `pb-6` overrides `pb-4` on small devices. `<DesignNavBar />`
             has a `mb-6` when displayed on small screens, so the ``margin''
             above/below the article content is symmetrical. We do this instead

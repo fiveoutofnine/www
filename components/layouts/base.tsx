@@ -12,10 +12,10 @@ type BaseLayoutProps = SeoBaseProps & {
 };
 
 /* Component */
-const BaseLayout: FC<BaseLayoutProps> = ({ name, pageSlug, children }) => {
+const BaseLayout: FC<BaseLayoutProps> = ({ title, subtitle, pageSlug, children }) => {
   return (
     <>
-      <SeoBase name={name} />
+      <SeoBase title={title} subtitle={subtitle} />
       <NavBar selected={pageSlug} />
       <main className="relative flex grow flex-col">{children}</main>
     </>
