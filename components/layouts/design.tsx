@@ -19,6 +19,24 @@ type DesignLayoutProps = {
 /* Component */
 const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
   const components = {
+    a: ({ children, ...rest }: JSX.IntrinsicElements['a']) => (
+      <a
+        className="mdx--link group font-semibold text-blue-9 no-underline hover:underline"
+        {...rest}
+      >
+        {children}
+      </a>
+    ),
+    blockquote: ({ children }: JSX.IntrinsicElements['blockquote']) => (
+      <blockquote className="mdx--blockquote group rounded-xl border border-blue-6 bg-blue-3 p-4 text-blue-12">
+        {children}
+      </blockquote>
+    ),
+    code: ({ children }: JSX.IntrinsicElements['code']) => (
+      <code className="rounded border border-gray-6 bg-gray-3 px-1 py-0.5 font-normal text-gray-12 before:content-none after:content-none group-[.mdx--link]:text-blue-9">
+        {children}
+      </code>
+    ),
     h1: ({ children }: JSX.IntrinsicElements['h1']) => (
       <h1 className="mb-4 text-3xl font-semibold tracking-tight text-gray-12 md:text-4xl">
         {children}
@@ -29,11 +47,10 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
         {children}
       </h2>
     ),
-    p: ({ children }: JSX.IntrinsicElements['p']) => <p className="text-gray-11">{children}</p>,
-    code: ({ children }: JSX.IntrinsicElements['code']) => (
-      <code className="rounded border border-gray-6 bg-gray-3 px-1 py-0.5 font-normal text-gray-12 before:content-none after:content-none">
+    p: ({ children }: JSX.IntrinsicElements['p']) => (
+      <p className="not-italic text-gray-11 before:content-none after:content-none group-[.mdx--blockquote]:my-0 group-[.mdx--blockquote]:text-blue-12">
         {children}
-      </code>
+      </p>
     ),
   };
 
