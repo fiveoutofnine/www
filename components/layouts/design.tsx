@@ -53,9 +53,9 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
 
   return (
     <BaseLayout name={name} pageSlug="/design">
-      {/* Overriding default padding of `p-4` on small devices because this is
-      intended to be a docs page, and `p-6` increases readability quite a bit. */}
-      <ContainerLayout className="relative flex max-w-[90rem] flex-col space-x-0 p-6 md:flex-row md:space-x-16">
+      {/* Overriding default padding of `py-4` on small devices because this is
+      intended to be a docs page, and `py-6` increases readability quite a bit. */}
+      <ContainerLayout className="relative flex max-w-[90rem] flex-col space-x-0 py-6 md:flex-row md:space-x-16">
         <DesignNavBar selected={selected} />
         <MDXProvider components={components}>
           <article className="prose prose-gray max-w-none grow dark:prose-invert">
