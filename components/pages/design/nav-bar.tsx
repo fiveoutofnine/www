@@ -16,7 +16,7 @@ type DesignNavBarProps = {
 const DesignNavBar: FC<DesignNavBarProps> = ({ selected }) => {
   return (
     <nav
-      className="hidden sticky top-28 -ml-3 w-[12.5rem] flex-col md:flex"
+      className="hidden sticky top-28 -ml-3 min-w-[10rem] max-w-[10rem] flex-col md:flex"
       style={{ height: 'calc(100vh - 11rem)' }}
     >
       <div className="ml-3 text-base font-medium text-gray-12">Foundations</div>
