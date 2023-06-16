@@ -72,7 +72,7 @@ const DesignNavBarMobile: FC<DesignNavBarProps> = ({ selected }) => {
         />
         <Dialog.Content asChild>
           <nav
-            className="fixed bottom-0 left-0 z-overlay w-full overflow-y-auto bg-gray-1 p-4 animate-in slide-in-from-top-1 md:hidden"
+            className="fixed bottom-0 left-0 z-overlay w-full overflow-y-scroll bg-gray-1 p-4 animate-in slide-in-from-top-1 md:hidden"
             style={{ height: 'calc(100vh - 6rem)' }}
           >
             <DesignNavBarInternal selected={selected} />
