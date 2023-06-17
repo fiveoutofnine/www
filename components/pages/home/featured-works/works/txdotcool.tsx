@@ -120,7 +120,7 @@ const TxDotCoolFeatureDetail: FC = () => {
         action: data ? (
           <Button
             size="sm"
-            href={`https://etherscan.io/address/${data.transactionHash}`}
+            href={`https://etherscan.io/tx/${data.transactionHash}`}
             rightIcon={<ExternalLink />}
             intent="success"
             newTab
