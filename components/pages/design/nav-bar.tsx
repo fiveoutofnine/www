@@ -85,7 +85,7 @@ const DesignNavBarInternal: FC<DesignNavBarProps> = ({ selected }) => {
         const pageSelected = selected === page.slug;
 
         return (
-          <li key={page.slug} className="marker:content-none">
+          <div key={page.slug}>
             <Button
               className={clsx(
                 'mt-1 w-full justify-start',
@@ -97,7 +97,7 @@ const DesignNavBarInternal: FC<DesignNavBarProps> = ({ selected }) => {
             >
               {page.name}
             </Button>
-          </li>
+          </div>
         );
       })}
 
@@ -106,7 +106,7 @@ const DesignNavBarInternal: FC<DesignNavBarProps> = ({ selected }) => {
         const pageSelected = selected === page.slug;
 
         return (
-          <li key={page.slug} className="marker:content-none">
+          <div key={page.slug}>
             <Button
               className={clsx(
                 'mt-1 w-full justify-start',
@@ -118,7 +118,7 @@ const DesignNavBarInternal: FC<DesignNavBarProps> = ({ selected }) => {
             >
               {page.name}
             </Button>
-          </li>
+          </div>
         );
       })}
     </Fragment>

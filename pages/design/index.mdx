@@ -62,31 +62,18 @@ export const ComponentFeature = ({ href, children }) => {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => setIsMounted(true), []);
   const isMobile = isMounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
-  const containerStyles =
-    'flex h-32 w-full items-center justify-center rounded-xl border border-gray-7 bg-gray-2';
-  if (isMobile) {
-    return (
-      <Link
-        className={clsx(
-          containerStyles,
-          'no-underline focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-9',
-        )}
-        href={href}
-        tabIndex={0}
-      >
-        {children}
-      </Link>
-    );
-  }
   return (
     <div
-      className={clsx(containerStyles, 'group relative transition-colors hover:border-gray-8')}
+      className="group relative flex h-32 w-full items-center justify-center rounded-xl border border-gray-7 bg-gray-2 transition-colors hover:border-gray-8"
       tabIndex={-1}
     >
       {children}
       <IconButton
         variant="ghost"
-        className="absolute bottom-2 right-2 hidden animate-in fade-in group-hover:flex"
+        className={clsx(
+          'absolute bottom-2 right-2',
+          isMobile ? 'hidden animate-in fade-in group-hover:flex' : 'flex',
+        )}
         href={href}
       >
         <ArrowRight />
