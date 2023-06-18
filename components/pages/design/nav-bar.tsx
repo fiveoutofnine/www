@@ -52,7 +52,7 @@ const DesignNavBarMobile: FC<DesignNavBarProps> = ({ selected }) => {
 
   return (
     <Dialog.Root open={open && isSmallScreen} onOpenChange={setOpen}>
-      <div className="pointer-events-auto sticky top-12 z-popover mb-6 flex h-12 w-full items-center border-b border-gray-6 bg-black px-4 md:hidden">
+      <div className="pointer-events-auto sticky top-12 z-popover mb-6 flex h-12 w-full items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:hidden">
         <Dialog.Trigger asChild>
           <IconButton variant="outline">{open ? <X /> : <Menu />}</IconButton>
         </Dialog.Trigger>

@@ -1,5 +1,50 @@
+import { ExternalLink, PenTool } from 'lucide-react';
+
 import DesignLayout from '@/components/layouts/design';
+import FeatureDisplayMinimal from '@/components/templates/feature-display-minimal';
+import { Button } from '@/components/ui';
 
 # Libraries
+
+Description
+
+- Tailwind CSS
+  - `@tailwindcss/aspect-ratio`
+  - `@tailwindcss/typography`
+  - `tailwindcss-percentage-width`
+  - `tailwindcss-animate`
+  - `windy-radix-palette`
+  - `windy-radix-typography`
+- Radix UI
+- Radix UI colors
+- `class-variance-authority`
+- Framer motion
+- Lucide icons
+
+## Lmao
+
+<div className="grid grid-cols-2 gap-4">
+  {[
+    {
+      name: 'Tailwind CSS',
+      description: 'Some short description.',
+      symbol: <PenTool />,
+      href: 'https://tailwindcss.com',
+    },
+  ].map((item, index) => (
+    <FeatureDisplayMinimal
+      key={`library-${index}`}
+      className="col-span-2 w-full lg:col-span-1"
+      name={item.name}
+      description={item.description}
+      symbol={item.symbol}
+      button={
+        <Button size="sm" rightIcon={<ExternalLink />} href={item.href} newTab>
+          View
+        </Button>
+      }
+    />
+  ))}
+</div>
 
 export default (props) => <DesignLayout name="Libraries" selected="/design/libraries" {...props} />;

@@ -11,7 +11,6 @@ export const NAVBAR_PAGES: Page[] = [
 
 export const DESIGN_PAGES: Page[] = [
   { name: 'Introduction', slug: '/design' },
-  { name: 'Assets', slug: '/design/assets' },
   { name: 'Color', slug: '/design/color' },
   { name: 'Libraries', slug: '/design/libraries' },
 ];

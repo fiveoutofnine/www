@@ -11,7 +11,6 @@ export type PageSlug =
   | '/blog'
   // Design pages
   | '/design'
-  | '/design/assets'
   | '/design/color'
   | '/design/libraries'
   // Design component pages
