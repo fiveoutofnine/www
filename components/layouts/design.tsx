@@ -46,7 +46,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
       </h2>
     ),
     h3: ({ children }: JSX.IntrinsicElements['h3']) => (
-      <h3 className="mb-2 mt-3 text-lg font-semibold tracking-tight text-gray-12 md:mb-4 md:mt-6 md:text-xl">
+      <h3 className="mb-2 mt-5 text-lg font-semibold tracking-tight text-gray-12 md:mb-4 md:mt-6 md:text-xl">
         {children}
       </h3>
     ),
