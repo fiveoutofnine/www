@@ -100,7 +100,9 @@ export const ColorSample = ({ scale, index, color, ...rest }) => {
             setTimeout(() => {
               setCopied(false);
             }, 2000);
-          } catch (err) {}
+          } catch (err) {
+            toast({ title: 'Failed to copy to clipboard', description: color, intent: 'fail' });
+          }
         }}
         onKeyDown={(e) => {
           if (e.key === 'ArrowLeft' && index > 0) {
