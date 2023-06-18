@@ -1,7 +1,7 @@
 import { Fragment, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
-import { Check } from 'lucide-react';
+import { Check, Copy } from 'lucide-react';
 
 import DesignLayout from '@/components/layouts/design';
 import { Tooltip, useToast } from '@/components/ui';
@@ -78,6 +78,7 @@ export const ColorScale = ({ scale }) => {
 export const ColorSample = ({ scale, index, color, ...rest }) => {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const [hovering, setHovering] = useState(false);
   return (
     <Tooltip content={`${index}: ${color}`}>
       <button
@@ -104,6 +105,8 @@ export const ColorSample = ({ scale, index, color, ...rest }) => {
             toast({ title: 'Failed to copy to clipboard', description: color, intent: 'fail' });
           }
         }}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
         onKeyDown={(e) => {
           if (e.key === 'ArrowLeft' && index > 0) {
             document.getElementById(`${scale}-${index - 1}`)?.focus();
@@ -116,10 +119,18 @@ export const ColorSample = ({ scale, index, color, ...rest }) => {
         type="button"
         tabIndex={0}
       >
+        {!copied && hovering ? (
+          <Copy
+            className={clsx(
+              'h-4 w-4 animate-in fade-in duration-150',
+              index > 7 ? 'text-gray-1' : 'text-gray-12',
+            )}
+          />
+        ) : null}
         {copied ? (
           <Check
             className={clsx(
-              'duration-250 h-4 w-4 animate-in fade-in',
+              'h-4 w-4 animate-in fade-in zoom-in duration-300',
               index > 7 ? 'text-gray-1' : 'text-gray-12',
             )}
           />

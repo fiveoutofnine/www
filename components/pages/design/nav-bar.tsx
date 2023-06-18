@@ -28,7 +28,7 @@ const DesignNavBar: FC<DesignNavBarProps> = (props) => {
 const DesignNavBarDesktop: FC<DesignNavBarProps> = ({ selected }) => {
   return (
     <nav
-      className="sticky top-28 -ml-3 hidden min-w-[10rem] max-w-[10rem] flex-col md:flex"
+      className="hide-scrollbar sticky top-28 -ml-3 hidden min-w-[11rem] max-w-[11rem] flex-col overflow-y-scroll md:flex"
       style={{ height: 'calc(100vh - 11rem)' }}
     >
       <DesignNavBarInternal selected={selected} />
@@ -68,7 +68,7 @@ const DesignNavBarMobile: FC<DesignNavBarProps> = ({ selected }) => {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-overlay outline-none backdrop-brightness-50 animate-in fade-in-50 focus:outline-none md:hidden" />
         <Dialog.Content asChild>
-          <nav className="fixed inset-0 z-overlay overflow-y-scroll bg-gray-1 p-4 pt-28 animate-in slide-in-from-top-1 md:hidden">
+          <nav className="hide-scrollbar fixed inset-0 z-overlay overflow-y-scroll bg-gray-1 p-4 pt-28 animate-in slide-in-from-top-1 md:hidden">
             <DesignNavBarInternal selected={selected} />
           </nav>
         </Dialog.Content>
@@ -85,18 +85,19 @@ const DesignNavBarInternal: FC<DesignNavBarProps> = ({ selected }) => {
         const pageSelected = selected === page.slug;
 
         return (
-          <Button
-            key={page.slug}
-            className={clsx(
-              'mt-1 w-full justify-start',
-              pageSelected ? 'cursor-default bg-gray-4' : '',
-            )}
-            variant="ghost"
-            href={page.slug}
-            disabled={pageSelected}
-          >
-            {page.name}
-          </Button>
+          <li key={page.slug} className="marker:content-none">
+            <Button
+              className={clsx(
+                'mt-1 w-full justify-start',
+                pageSelected ? 'cursor-default bg-gray-4' : '',
+              )}
+              variant="ghost"
+              href={page.slug}
+              disabled={pageSelected}
+            >
+              {page.name}
+            </Button>
+          </li>
         );
       })}
 
@@ -105,18 +106,19 @@ const DesignNavBarInternal: FC<DesignNavBarProps> = ({ selected }) => {
         const pageSelected = selected === page.slug;
 
         return (
-          <Button
-            key={page.slug}
-            className={clsx(
-              'mt-1 w-full justify-start',
-              pageSelected ? 'cursor-default bg-gray-4' : '',
-            )}
-            variant="ghost"
-            href={page.slug}
-            disabled={pageSelected}
-          >
-            {page.name}
-          </Button>
+          <li key={page.slug} className="marker:content-none">
+            <Button
+              className={clsx(
+                'mt-1 w-full justify-start',
+                pageSelected ? 'cursor-default bg-gray-4' : '',
+              )}
+              variant="ghost"
+              href={page.slug}
+              disabled={pageSelected}
+            >
+              {page.name}
+            </Button>
+          </li>
         );
       })}
     </Fragment>
