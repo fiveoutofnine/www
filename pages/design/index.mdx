@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+import { FiveoutofnineHoverCard } from './component/hover-card.mdx';
 import { ToastButton } from './component/toast.mdx';
 import clsx from 'clsx';
 import { ArrowRight, ChevronRight, Github } from 'lucide-react';
@@ -44,6 +45,19 @@ An open-source design system aiming to be accessible, functional, and provide a 
   </ComponentFeature>
   <ComponentFeature href="/design/component/button">
     <Button children="Button" />
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/hover-card">
+    <FiveoutofnineHoverCard
+      trigger={
+        <Link
+          className="text-sm font-medium text-gray-12 no-underline hover:underline"
+          href="https://twitter.com/fiveoutofnine"
+          target="_blank"
+          rel="noreferrer noopener"
+          children="Hover Card"
+        />
+      }
+    />
   </ComponentFeature>
   <ComponentFeature href="/design/component/select">
     <Select children={<option children="Select" />} />
