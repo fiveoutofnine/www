@@ -10,9 +10,12 @@ import { Badge, Button, Tooltip } from '@/components/ui';
 
 ## Side
 
-<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-4">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-2 md:grid-rows-1">
   <Tooltip content="5/9 moment" side="top">
     <Button className="w-fit" children="Top" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="right">
+    <Button className="w-fit" children="Right" />
   </Tooltip>
   <Tooltip content="5/9 moment" side="bottom">
     <Button className="w-fit" children="Bottom" />
@@ -20,14 +23,11 @@ import { Badge, Button, Tooltip } from '@/components/ui';
   <Tooltip content="5/9 moment" side="left">
     <Button className="w-fit" children="Left" />
   </Tooltip>
-  <Tooltip content="5/9 moment" side="right">
-    <Button className="w-fit" children="Right" />
-  </Tooltip>
 </DesignComponentsDisplay>
 
 ## Align
 
-<DesignComponentsDisplay className="grid-cols-2 sm:grid-cols-3">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-6 lg:grid-rows-3">
   <Tooltip content="5/9 moment" side="top" align="start">
     <Button className="w-fit" variant="primary" intent="primary" children="Top/Start" />
   </Tooltip>
@@ -37,38 +37,38 @@ import { Badge, Button, Tooltip } from '@/components/ui';
   <Tooltip content="5/9 moment" side="top" align="end">
     <Button className="w-fit" variant="outline" intent="primary" children="Top/End" />
   </Tooltip>
-  <Tooltip content="5/9 moment" side="bottom" align="start">
-    <Button className="w-fit" variant="primary" intent="fail" children="Bottom/Start" />
-  </Tooltip>
-  <Tooltip content="5/9 moment" side="bottom" align="center">
-    <Button className="w-fit" variant="secondary" intent="fail" children="Bottom/Center" />
-  </Tooltip>
-  <Tooltip content="5/9 moment" side="bottom" align="end">
-    <Button className="w-fit" variant="outline" intent="fail" children="Bottom/End" />
-  </Tooltip>
-  <Tooltip content="5/9 moment" side="left" align="start">
-    <Button className="w-fit" variant="primary" intent="success" children="Left/Start" />
-  </Tooltip>
-  <Tooltip content="5/9 moment" side="left" align="center">
-    <Button className="w-fit" variant="secondary" intent="success" children="Left/Center" />
-  </Tooltip>
-  <Tooltip content="5/9 moment" side="left" align="end">
-    <Button className="w-fit" variant="outline" intent="success" children="Left/End" />
-  </Tooltip>
   <Tooltip content="5/9 moment" side="right" align="start">
-    <Button className="w-fit" variant="primary" intent="warning" children="Right/Start" />
+    <Button className="w-fit" variant="primary" intent="fail" children="Right/Start" />
   </Tooltip>
   <Tooltip content="5/9 moment" side="right" align="center">
-    <Button className="w-fit" variant="secondary" intent="warning" children="Right/Center" />
+    <Button className="w-fit" variant="secondary" intent="fail" children="Right/Center" />
   </Tooltip>
   <Tooltip content="5/9 moment" side="right" align="end">
-    <Button className="w-fit" variant="outline" intent="warning" children="Right/End" />
+    <Button className="w-fit" variant="outline" intent="fail" children="Right/End" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="bottom" align="start">
+    <Button className="w-fit" variant="primary" intent="success" children="Bottom/Start" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="bottom" align="center">
+    <Button className="w-fit" variant="secondary" intent="success" children="Bottom/Center" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="bottom" align="end">
+    <Button className="w-fit" variant="outline" intent="success" children="Bottom/End" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="left" align="start">
+    <Button className="w-fit" variant="primary" intent="warning" children="Left/Start" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="left" align="center">
+    <Button className="w-fit" variant="secondary" intent="warning" children="Left/Center" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="left" align="end">
+    <Button className="w-fit" variant="outline" intent="warning" children="Left/End" />
   </Tooltip>
 </DesignComponentsDisplay>
 
 ## Custom content
 
-<DesignComponentsDisplay className="grid-cols-1">
+<DesignComponentsDisplay>
   <Tooltip content={<Badge size="sm" intent="primary" children="5/9 moment" />} inverted={false}>
     <Button className="w-fit" children="Hover" />
   </Tooltip>
@@ -76,7 +76,7 @@ import { Badge, Button, Tooltip } from '@/components/ui';
 
 ## Other
 
-<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-3">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-2 md:grid-rows-1">
   <Tooltip content="5/9 moment" hasArrow={false}>
     <Button className="w-fit" children="No arrow" />
   </Tooltip>

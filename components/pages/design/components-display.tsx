@@ -11,7 +11,10 @@ const DesignComponentsDisplay: FC<JSX.IntrinsicElements['div']> = ({
   return (
     <div
       className={twMerge(
-        clsx('grid w-full gap-4 rounded-xl border border-gray-6 bg-gray-2 p-8', className),
+        clsx(
+          'grid w-full items-center justify-evenly gap-4 rounded-xl border border-gray-6 bg-gray-2 py-8',
+          className,
+        ),
       )}
       {...rest}
     >

@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui';
 
 ## Size
 
-<DesignComponentsDisplay className="grid-cols-3">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
   <Badge size="sm" children="Badge" />
   <Badge size="md" children="Badge" />
   <Badge size="lg" children="Badge" />
@@ -14,25 +14,25 @@ import { Badge } from '@/components/ui';
 
 ## Variant
 
-<DesignComponentsDisplay className="grid-cols-2">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
   <Badge variant="primary" children="Badge" />
   <Badge variant="secondary" children="Badge" />
 </DesignComponentsDisplay>
 
 ## Intent
 
-<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-6 md:grid-rows-4 lg:grid-rows-2">
   <Badge variant="primary" intent="none" children="Badge" />
-  <Badge variant="primary" intent="primary" children="Badge" />
-  <Badge variant="primary" intent="fail" children="Badge" />
-  <Badge variant="primary" intent="success" children="Badge" />
-  <Badge variant="primary" intent="warning" children="Badge" />
-  <Badge variant="primary" intent="orange" children="Badge" />
   <Badge variant="secondary" intent="none" children="Badge" />
+  <Badge variant="primary" intent="primary" children="Badge" />
   <Badge variant="secondary" intent="primary" children="Badge" />
+  <Badge variant="primary" intent="fail" children="Badge" />
   <Badge variant="secondary" intent="fail" children="Badge" />
+  <Badge variant="primary" intent="success" children="Badge" />
   <Badge variant="secondary" intent="success" children="Badge" />
+  <Badge variant="primary" intent="warning" children="Badge" />
   <Badge variant="secondary" intent="warning" children="Badge" />
+  <Badge variant="primary" intent="orange" children="Badge" />
   <Badge variant="secondary" intent="orange" children="Badge" />
 </DesignComponentsDisplay>
 

@@ -8,7 +8,7 @@ import { Button, IconButton } from '@/components/ui';
 
 ## Size
 
-<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-4">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-2 md:grid-rows-1">
   <Button size="sm" children="Button" />
   <Button size="md" children="Button" />
   <Button size="lg" children="Button" />
@@ -17,7 +17,7 @@ import { Button, IconButton } from '@/components/ui';
 
 ## Variant
 
-<DesignComponentsDisplay className="grid-cols-2 lg:grid-cols-5">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-3 lg:grid-rows-1">
   <Button variant="primary" children="Button" />
   <Button variant="secondary" children="Button" />
   <Button variant="outline" children="Button" />
@@ -27,42 +27,42 @@ import { Button, IconButton } from '@/components/ui';
 
 ## Intent
 
-<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-10 lg:grid-rows-5">
   <Button variant="primary" intent="none" children="Button" />
-  <Button variant="primary" intent="primary" children="Button" />
-  <Button variant="primary" intent="fail" children="Button" />
-  <Button variant="primary" intent="success" children="Button" />
-  <Button variant="primary" intent="warning" children="Button" />
-  <Button variant="primary" intent="orange" children="Button" />
   <Button variant="secondary" intent="none" children="Button" />
-  <Button variant="secondary" intent="primary" children="Button" />
-  <Button variant="secondary" intent="fail" children="Button" />
-  <Button variant="secondary" intent="success" children="Button" />
-  <Button variant="secondary" intent="warning" children="Button" />
-  <Button variant="secondary" intent="orange" children="Button" />
   <Button variant="outline" intent="none" children="Button" />
-  <Button variant="outline" intent="primary" children="Button" />
-  <Button variant="outline" intent="fail" children="Button" />
-  <Button variant="outline" intent="success" children="Button" />
-  <Button variant="outline" intent="warning" children="Button" />
-  <Button variant="outline" intent="orange" children="Button" />
   <Button variant="ghost" intent="none" children="Button" />
-  <Button variant="ghost" intent="primary" children="Button" />
-  <Button variant="ghost" intent="fail" children="Button" />
-  <Button variant="ghost" intent="success" children="Button" />
-  <Button variant="ghost" intent="warning" children="Button" />
-  <Button variant="ghost" intent="orange" children="Button" />
   <Button variant="text" intent="none" children="Button" />
+  <Button variant="primary" intent="primary" children="Button" />
+  <Button variant="secondary" intent="primary" children="Button" />
+  <Button variant="outline" intent="primary" children="Button" />
+  <Button variant="ghost" intent="primary" children="Button" />
   <Button variant="text" intent="primary" children="Button" />
+  <Button variant="primary" intent="fail" children="Button" />
+  <Button variant="secondary" intent="fail" children="Button" />
+  <Button variant="outline" intent="fail" children="Button" />
+  <Button variant="ghost" intent="fail" children="Button" />
   <Button variant="text" intent="fail" children="Button" />
+  <Button variant="primary" intent="success" children="Button" />
+  <Button variant="secondary" intent="success" children="Button" />
+  <Button variant="outline" intent="success" children="Button" />
+  <Button variant="ghost" intent="success" children="Button" />
   <Button variant="text" intent="success" children="Button" />
+  <Button variant="primary" intent="warning" children="Button" />
+  <Button variant="secondary" intent="warning" children="Button" />
+  <Button variant="outline" intent="warning" children="Button" />
+  <Button variant="ghost" intent="warning" children="Button" />
   <Button variant="text" intent="warning" children="Button" />
+  <Button variant="primary" intent="orange" children="Button" />
+  <Button variant="secondary" intent="orange" children="Button" />
+  <Button variant="outline" intent="orange" children="Button" />
+  <Button variant="ghost" intent="orange" children="Button" />
   <Button variant="text" intent="orange" children="Button" />
 </DesignComponentsDisplay>
 
 ## Disabled
 
-<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-4">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-4 lg:grid-rows-2">
   <Button variant="primary" children="Button" />
   <Button variant="primary" children="Button" disabled />
   <Button variant="secondary" children="Button" />
@@ -77,7 +77,7 @@ import { Button, IconButton } from '@/components/ui';
 
 ## Icons
 
-<DesignComponentsDisplay className="grid-cols-2 sm:grid-cols-3">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-2 lg:grid-rows-1">
   <Button leftIcon={<Circle />} children="Button" />
   <Button rightIcon={<Circle />} children="Button" />
   <Button leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
@@ -85,7 +85,7 @@ import { Button, IconButton } from '@/components/ui';
 
 ## Sizes with icons
 
-<DesignComponentsDisplay className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-4 md:grid-rows-2 lg:grid-rows-1">
   <Button size="sm" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
   <Button size="md" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
   <Button size="lg" leftIcon={<Circle />} rightIcon={<Circle />} children="Button" />
@@ -96,7 +96,7 @@ import { Button, IconButton } from '@/components/ui';
 
 To use icon-only buttons, use `IconButton`. It is identical to `Button`, except it does not have the `text` variant.
 
-<DesignComponentsDisplay className="grid-cols-2 md:grid-cols-4">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-2 md:grid-rows-1">
   <IconButton size="sm" children={<Circle />} />
   <IconButton size="md" children={<Circle />} />
   <IconButton size="lg" children={<Circle />} />
@@ -107,7 +107,7 @@ To use icon-only buttons, use `IconButton`. It is identical to `Button`, except 
 
 To have the button act as a link, pass in a URL to the `href` prop. To open the link in a new tab, use the `newTab` prop. Note that the final component is rendered as a `<button>` element, not `<a>`.
 
-<DesignComponentsDisplay className="grid-cols-2">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
   <Button children="Home" href="/" rightIcon={<ChevronRight />} />
   <Button children="New tab" href="/" rightIcon={<ExternalLink />} newTab />
 </DesignComponentsDisplay>
