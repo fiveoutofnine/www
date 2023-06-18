@@ -79,7 +79,7 @@ export const ColorSample = ({ scale, index, color, ...rest }) => {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   return (
-    <Tooltip content={color}>
+    <Tooltip content={`${index}: ${color}`}>
       <button
         id={`${scale}-${index}`}
         className={clsx(
