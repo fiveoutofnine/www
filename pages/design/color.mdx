@@ -80,7 +80,7 @@ export const ColorSample = ({ scale, index, color, ...rest }) => {
   const [copied, setCopied] = useState(false);
   const [hovering, setHovering] = useState(false);
   return (
-    <Tooltip content={`${index}: ${color}`}>
+    <Tooltip content={`${index + 1}: ${color}`}>
       <button
         id={`${scale}-${index}`}
         className={clsx(
