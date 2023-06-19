@@ -96,7 +96,11 @@ export const ColorSample = ({ scale, index, color, ...rest }) => {
         onClick={async () => {
           try {
             await navigator.clipboard.writeText(color);
-            toast({ title: 'Copied to clipboard', description: color, intent: 'success' });
+            toast({
+              title: 'Copied to clipboard',
+              description: `${scale}${index + 1} - ${color}`,
+              intent: 'success',
+            });
             setCopied(true);
             setTimeout(() => {
               setCopied(false);
