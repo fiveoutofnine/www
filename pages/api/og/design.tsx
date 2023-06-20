@@ -12,7 +12,7 @@ const ORANGE_9 = 'hsl(24, 94.0%, 50.0%)';
 const ORANGE_11 = 'hsl(24, 100%, 62.2%)';
 const ORANGE_12 = 'hsl(24, 97.0%, 93.2%)';
 
-const interRegularFontP = fetch(
+/* const interRegularFontP = fetch(
   new URL('../../../public/static/fonts/Inter-Regular.ttf', import.meta.url),
 ).then((res) => res.arrayBuffer());
 
@@ -22,7 +22,7 @@ const interMediumFontP = fetch(
 
 const interSemiBoldFontP = fetch(
   new URL('../../../public/static/fonts/Inter-SemiBold.ttf', import.meta.url),
-).then((res) => res.arrayBuffer());
+).then((res) => res.arrayBuffer()); */
 
 export default async function handler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -35,11 +35,11 @@ export default async function handler(req: NextRequest) {
   const subtitle = hasSubtitle ? searchParams.get('subtitle') : null;
   const description = hasDescription ? searchParams.get('description') : null;
 
-  const [interRegularFont, interMediumFont, interSemiBoldFont] = await Promise.all([
+  /* const [interRegularFont, interMediumFont, interSemiBoldFont] = await Promise.all([
     interRegularFontP,
     interMediumFontP,
     interSemiBoldFontP,
-  ]);
+  ]); */
 
   return new ImageResponse(
     (
@@ -214,8 +214,8 @@ export default async function handler(req: NextRequest) {
     ),
     {
       width: 1200,
-      height: 627,
-      fonts: [
+      height: 630,
+      /* fonts: [
         {
           name: 'Inter',
           data: interRegularFont,
@@ -234,7 +234,7 @@ export default async function handler(req: NextRequest) {
           style: 'normal',
           weight: 600,
         },
-      ],
+      ], */
     },
   );
 }
