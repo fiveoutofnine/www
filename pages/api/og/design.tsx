@@ -12,7 +12,7 @@ const ORANGE_9 = 'hsl(24, 94.0%, 50.0%)';
 const ORANGE_11 = 'hsl(24, 100%, 62.2%)';
 const ORANGE_12 = 'hsl(24, 97.0%, 93.2%)';
 
-const FONT_PATH = '../../../public/static/fonts';
+const FONT_PATH = '/static/fonts';
 
 export default async function handler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
