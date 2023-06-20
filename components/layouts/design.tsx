@@ -64,7 +64,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
           type: 'website',
           locale: 'en_US',
           title: `${name} - 5/9 Design`,
-          description: 'open-source accessible design system',
+          description: 'open-source and accessible design system',
           url: 'https://fiveoutofnine.com/design',
           site_name: 'fiveoutofnine',
         }}
