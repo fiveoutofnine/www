@@ -12,7 +12,7 @@ const ORANGE_9 = 'hsl(24, 94.0%, 50.0%)';
 const ORANGE_11 = 'hsl(24, 100%, 62.2%)';
 const ORANGE_12 = 'hsl(24, 97.0%, 93.2%)';
 
-const FONT_PATH = '/static/fonts';
+const FONT_PATH = '../../../public/static/fonts';
 
 export default async function handler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -24,6 +24,16 @@ export default async function handler(req: NextRequest) {
   const title = hasTitle ? searchParams.get('title') : 'Title';
   const subtitle = hasSubtitle ? searchParams.get('subtitle') : null;
   const description = hasDescription ? searchParams.get('description') : null;
+
+  const interRegularFont = await fetch(
+    new URL(`${FONT_PATH}/Inter-Regular.otf`, import.meta.url),
+  ).then((res) => res.arrayBuffer());
+  const interMediumFont = await fetch(
+    new URL(`${FONT_PATH}/Inter-Medium.otf`, import.meta.url),
+  ).then((res) => res.arrayBuffer());
+  const interSemiBoldFont = await fetch(
+    new URL(`${FONT_PATH}/Inter-SemiBold.otf`, import.meta.url),
+  ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
     (
@@ -202,25 +212,19 @@ export default async function handler(req: NextRequest) {
       fonts: [
         {
           name: 'Inter',
-          data: await fetch(new URL(`${FONT_PATH}/Inter-Regular.otf`, import.meta.url)).then(
-            (res) => res.arrayBuffer(),
-          ),
+          data: interRegularFont,
           style: 'normal',
           weight: 400,
         },
         {
           name: 'Inter',
-          data: await fetch(new URL(`${FONT_PATH}/Inter-Medium.otf`, import.meta.url)).then((res) =>
-            res.arrayBuffer(),
-          ),
+          data: interMediumFont,
           style: 'normal',
           weight: 500,
         },
         {
           name: 'Inter',
-          data: await fetch(new URL(`${FONT_PATH}/Inter-SemiBold.otf`, import.meta.url)).then(
-            (res) => res.arrayBuffer(),
-          ),
+          data: interSemiBoldFont,
           style: 'normal',
           weight: 600,
         },
