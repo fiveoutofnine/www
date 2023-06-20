@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { ImageResponse } from '@vercel/og';
 
 export const config = {
-  runtime: 'experimental-edge',
+  runtime: 'edge',
 };
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -59,6 +59,7 @@ export default async function handler(req: NextRequest) {
             justifyContent: 'space-between',
             border: '2px solid',
             borderColor: radixColors.orange6,
+            borderRadius: 32,
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -132,7 +133,7 @@ export default async function handler(req: NextRequest) {
               </div>
             ) : null}
           </div>
-          <div
+          {/* <div
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -201,7 +202,7 @@ export default async function handler(req: NextRequest) {
             >
               /design
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     ),
