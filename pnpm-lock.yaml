@@ -36,8 +36,6 @@ specifiers:
   lucide-react: ^0.145.0
   next: 13.3.0
   next-seo: ^6.0.0
-  og^0.0.20: link:@vercel/og^0.0.20
-  og^0.5.3: link:@vercel/og^0.5.3
   postcss: 8.4.21
   prettier: ^2.8.7
   prettier-plugin-tailwindcss: ^0.2.7
@@ -87,8 +85,6 @@ dependencies:
   lucide-react: 0.145.0_react@18.2.0
   next: 13.3.0_z72xxk7vwlamvgqemvc4ptm4du
   next-seo: 6.0.0_yucv4tfv7v7nrkw2uguegj6e7e
-  og^0.0.20: link:@vercel/og^0.0.20
-  og^0.5.3: link:@vercel/og^0.5.3
   postcss: 8.4.21
   prop-types: 15.8.1
   react: 18.2.0
