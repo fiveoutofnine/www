@@ -6,8 +6,11 @@ export const config = {
   runtime: 'edge',
 };
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const radixColors = require('@radix-ui/colors');
+const ORANGE_2 = 'hsl(28, 100%, 8.4%)';
+const ORANGE_6 = 'hsl(24, 88.6%, 19.8%)';
+const ORANGE_9 = 'hsl(24, 94.0%, 50.0%)';
+const ORANGE_11 = 'hsl(24, 100%, 62.2%)';
+const ORANGE_12 = 'hsl(24, 97.0%, 93.2%)';
 
 const interRegularFontP = fetch(
   new URL('../../../public/static/fonts/Inter-Regular.ttf', import.meta.url),
@@ -43,7 +46,10 @@ export default async function handler(req: NextRequest) {
       <div
         style={{
           padding: 32,
-          background: radixColors.orange9,
+          background: ORANGE_9,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           width: '100%',
           height: '100%',
         }}
@@ -51,14 +57,14 @@ export default async function handler(req: NextRequest) {
         <div
           style={{
             padding: 64,
-            background: radixColors.orange2,
+            background: ORANGE_2,
             width: '100%',
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             border: '2px solid',
-            borderColor: radixColors.orange6,
+            borderColor: ORANGE_6,
             borderRadius: 32,
           }}
         >
@@ -68,7 +74,7 @@ export default async function handler(req: NextRequest) {
                 style={{
                   fontSize: 64,
                   lineHeight: 1.2,
-                  color: radixColors.orange11,
+                  color: ORANGE_11,
                   fontWeight: 500,
                 }}
               >
@@ -91,7 +97,7 @@ export default async function handler(req: NextRequest) {
                     height="40"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke={radixColors.orange11}
+                    stroke={ORANGE_11}
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -105,7 +111,7 @@ export default async function handler(req: NextRequest) {
                   style={{
                     fontSize: 64,
                     lineHeight: 1.2,
-                    color: radixColors.orange11,
+                    color: ORANGE_11,
                     fontWeight: 600,
                     marginLeft: 16,
                     letterSpacing: '-0.025em',
@@ -124,7 +130,7 @@ export default async function handler(req: NextRequest) {
                   fontSize: 40,
                   lineHeight: 1.5,
                   width: '100%',
-                  color: radixColors.orange11,
+                  color: ORANGE_11,
                   marginTop: 32,
                   fontWeight: 400,
                 }}
@@ -133,7 +139,7 @@ export default async function handler(req: NextRequest) {
               </div>
             ) : null}
           </div>
-          {/* <div
+          <div
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -150,8 +156,8 @@ export default async function handler(req: NextRequest) {
               <div
                 style={{
                   display: 'flex',
-                  width: 40,
-                  height: 40,
+                  width: 64,
+                  height: 64,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
@@ -183,7 +189,7 @@ export default async function handler(req: NextRequest) {
                 style={{
                   fontSize: 40,
                   lineHeight: 1.2,
-                  color: radixColors.orange12,
+                  color: ORANGE_12,
                   fontWeight: 600,
                   marginLeft: 16,
                   letterSpacing: '-0.025em',
@@ -196,13 +202,13 @@ export default async function handler(req: NextRequest) {
               style={{
                 fontSize: 40,
                 lineHeight: 1.2,
-                color: radixColors.orange11,
+                color: ORANGE_11,
                 fontWeight: 500,
               }}
             >
               /design
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     ),
