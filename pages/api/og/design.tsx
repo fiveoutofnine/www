@@ -12,17 +12,7 @@ const ORANGE_9 = 'hsl(24, 94.0%, 50.0%)';
 const ORANGE_11 = 'hsl(24, 100%, 62.2%)';
 const ORANGE_12 = 'hsl(24, 97.0%, 93.2%)';
 
-const interRegularFontP = fetch(
-  new URL('../../../public/static/fonts/Inter-Regular.otf', import.meta.url),
-).then((res) => res.arrayBuffer());
-
-const interMediumFontP = fetch(
-  new URL('../../../public/static/fonts/Inter-Medium.otf', import.meta.url),
-).then((res) => res.arrayBuffer());
-
-const interSemiBoldFontP = fetch(
-  new URL('../../../public/static/fonts/Inter-SemiBold.otf', import.meta.url),
-).then((res) => res.arrayBuffer());
+const FONT_PATH = '../../../public/static/fonts';
 
 export default async function handler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -34,12 +24,6 @@ export default async function handler(req: NextRequest) {
   const title = hasTitle ? searchParams.get('title') : 'Title';
   const subtitle = hasSubtitle ? searchParams.get('subtitle') : null;
   const description = hasDescription ? searchParams.get('description') : null;
-
-  const [interRegularFont, interMediumFont, interSemiBoldFont] = await Promise.all([
-    interRegularFontP,
-    interMediumFontP,
-    interSemiBoldFontP,
-  ]);
 
   return new ImageResponse(
     (
@@ -218,19 +202,25 @@ export default async function handler(req: NextRequest) {
       fonts: [
         {
           name: 'Inter',
-          data: interRegularFont,
+          data: await fetch(new URL(`${FONT_PATH}/Inter-Regular.otf`, import.meta.url)).then(
+            (res) => res.arrayBuffer(),
+          ),
           style: 'normal',
           weight: 400,
         },
         {
           name: 'Inter',
-          data: interMediumFont,
+          data: await fetch(new URL(`${FONT_PATH}/Inter-Medium.otf`, import.meta.url)).then((res) =>
+            res.arrayBuffer(),
+          ),
           style: 'normal',
           weight: 500,
         },
         {
           name: 'Inter',
-          data: interSemiBoldFont,
+          data: await fetch(new URL(`${FONT_PATH}/Inter-SemiBold.otf`, import.meta.url)).then(
+            (res) => res.arrayBuffer(),
+          ),
           style: 'normal',
           weight: 600,
         },
