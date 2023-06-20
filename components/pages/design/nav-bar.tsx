@@ -28,7 +28,7 @@ const DesignNavBar: FC<DesignNavBarProps> = (props) => {
 const DesignNavBarDesktop: FC<DesignNavBarProps> = ({ selected }) => {
   return (
     <nav
-      className="hide-scrollbar sticky top-28 -ml-3 hidden min-w-[11rem] max-w-[11rem] flex-col overflow-y-scroll md:flex"
+      className="hide-scrollbar sticky top-28 -ml-3 hidden min-w-[11rem] max-w-[11rem] flex-col overflow-y-scroll px-0.5 md:flex"
       style={{ height: 'calc(100vh - 11rem)' }}
     >
       <DesignNavBarInternal selected={selected} />
