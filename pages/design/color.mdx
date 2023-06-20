@@ -144,4 +144,12 @@ export const ColorSample = ({ scale, index, color, ...rest }) => {
   );
 };
 
-export default (props) => <DesignLayout name="Color" selected="/design/color" {...props} />;
+export default (props) => (
+  <DesignLayout
+    category="Foundations"
+    name="Color"
+    description="Accessible and easily maintainable color system."
+    selected="/design/color"
+    {...props}
+  />
+);

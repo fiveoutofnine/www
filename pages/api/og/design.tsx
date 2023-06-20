@@ -109,7 +109,7 @@ export default async function handler(req: NextRequest) {
                   style={{
                     fontSize: 64,
                     lineHeight: 1.2,
-                    color: ORANGE_11,
+                    color: ORANGE_12,
                     fontWeight: 600,
                     marginLeft: 16,
                     letterSpacing: '-0.025em',

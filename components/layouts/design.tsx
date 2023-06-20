@@ -12,13 +12,21 @@ import DesignPageNav from '@/components/pages/design/page-nav';
 
 /* Props */
 type DesignLayoutProps = {
+  category: string;
   name: string;
+  description?: string;
   selected: PageSlug;
   children?: ReactNode;
 };
 
 /* Component */
-const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
+const DesignLayout: FC<DesignLayoutProps> = ({
+  category,
+  name,
+  description,
+  selected,
+  children,
+}) => {
   const components = {
     a: ({ children, ...rest }: JSX.IntrinsicElements['a']) => (
       <a className="mdx--link group font-medium text-blue-9 no-underline hover:underline" {...rest}>
@@ -67,6 +75,14 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
           description: 'open-source and accessible design system',
           url: 'https://fiveoutofnine.com/design',
           site_name: 'fiveoutofnine',
+          images: [
+            {
+              url: `https://www-git-v1-design-page-fiveoutofnine.vercel.app/api/og/design?title=${category}&subtitle=${name}&description=${description}`,
+              width: 1200,
+              height: 630,
+              alt: 'Curta Playground OG Image',
+            },
+          ],
         }}
       />
 

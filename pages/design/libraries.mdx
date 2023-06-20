@@ -274,4 +274,12 @@ export const VercelDesignIcon = () => {
   );
 };
 
-export default (props) => <DesignLayout name="Libraries" selected="/design/libraries" {...props} />;
+export default (props) => (
+  <DesignLayout
+    category="Foundations"
+    name="Libraries"
+    description="List of open-source libraries/work the design system and site compose and build on top of."
+    selected="/design/libraries"
+    {...props}
+  />
+);

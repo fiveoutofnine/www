@@ -60,5 +60,11 @@ return <Button intent={intent} onClick={() => toast({ title, description, intent
 }
 
 export default (props) => (
-  <DesignLayout name="Toast" selected="/design/component/toast" {...props} />
+  <DesignLayout
+    category="Components"
+    name="Toast"
+    description="A succinct message that is displayed temporarily."
+    selected="/design/component/toast"
+    {...props}
+  />
 );
