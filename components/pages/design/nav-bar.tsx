@@ -67,7 +67,7 @@ const DesignNavBarMobile: FC<DesignNavBarProps> = ({ selected }) => {
 
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-overlay outline-none backdrop-brightness-50 animate-in fade-in-50 focus:outline-none md:hidden" />
-        <Dialog.Content asChild>
+        <Dialog.Content onOpenAutoFocus={(e) => e.preventDefault()} asChild>
           <nav className="hide-scrollbar fixed inset-0 z-overlay overflow-y-scroll bg-gray-1 p-4 pt-28 animate-in slide-in-from-top-1 md:hidden">
             <DesignNavBarInternal selected={selected} />
           </nav>
