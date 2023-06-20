@@ -8,3 +8,18 @@ export const NAVBAR_PAGES: Page[] = [
   { name: 'Blog', slug: '/blog', icon: <PenTool /> },
   { name: 'Design', slug: '/design', icon: <Paintbrush2 /> },
 ];
+
+export const DESIGN_PAGES: Page[] = [
+  { name: 'Introduction', slug: '/design' },
+  { name: 'Color', slug: '/design/color' },
+  { name: 'Libraries', slug: '/design/libraries' },
+];
+
+export const DESIGN_COMPONENT_PAGES: Page[] = [
+  { name: 'Badge', slug: '/design/component/badge' },
+  { name: 'Button', slug: '/design/component/button' },
+  { name: 'Hover Card', slug: '/design/component/hover-card' },
+  { name: 'Select', slug: '/design/component/select' },
+  { name: 'Toast', slug: '/design/component/toast' },
+  { name: 'Tooltip', slug: '/design/component/tooltip' },
+];

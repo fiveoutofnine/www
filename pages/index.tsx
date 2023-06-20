@@ -30,7 +30,7 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
         }}
       />
 
-      <BaseLayout name="Home" pageSlug="/">
+      <BaseLayout subtitle="Home" pageSlug="/">
         <ContainerLayout className="flex flex-col space-y-4">
           <FiveoutofnineHeader />
           <FeaturedWorks mileageLogs={mileageLogs} runningLogs={runningLogs} />

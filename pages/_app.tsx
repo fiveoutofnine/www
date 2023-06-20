@@ -50,7 +50,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         defaultTitle="5/9"
         description={DESCRIPTION}
         canonical="https://fiveoutofnine.com"
-        themeColor="#161616"
+        themeColor="#000"
         openGraph={{
           type: 'website',
           locale: 'en_US',

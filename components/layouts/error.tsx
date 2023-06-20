@@ -16,7 +16,7 @@ const ErrorLayout: FC<ErrorLayoutProps> = ({ statusCode, children }) => {
   const message = statusCode === 404 ? '0x924C0FAD' : '0x2145B8F0';
 
   return (
-    <BaseLayout name="Error">
+    <BaseLayout title="5/9 Error" subtitle={statusCode?.toString()}>
       <ContainerLayout className="flex flex-col items-center justify-center">
         <h1 className="text-3xl font-medium text-gray-12 md:text-5xl">
           <pre className="rounded-lg border border-gray-6 bg-gray-4 p-2 md:rounded-xl md:p-3">

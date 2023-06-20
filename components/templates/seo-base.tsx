@@ -3,12 +3,13 @@ import type { FC } from 'react';
 
 /* Props */
 export type SeoBaseProps = {
-  name?: string;
+  title?: string;
+  subtitle?: string;
 };
 
 /* Component */
-const SeoBase: FC<SeoBaseProps> = ({ name }) => {
-  const title = name ? `5/9 | ${name}` : '5/9';
+const SeoBase: FC<SeoBaseProps> = ({ title = '5/9', subtitle }) => {
+  const fullTitle = subtitle && subtitle.length > 0 ? `${title} | ${subtitle}` : title;
 
   return (
     <Head>
@@ -17,9 +18,9 @@ const SeoBase: FC<SeoBaseProps> = ({ name }) => {
       <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
       <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
 
-      <title>{title}</title>
-      <meta name="title" content={title} />
-      <meta name="theme-color" content="#161616" />
+      <title>{fullTitle}</title>
+      <meta name="title" content={fullTitle} />
+      <meta name="theme-color" content="#000" />
     </Head>
   );
 };

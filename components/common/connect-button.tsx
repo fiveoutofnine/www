@@ -40,7 +40,7 @@ const ConnectButton: FC<ConnectButtonProps> = ({ className }) => {
                     leftIcon={<Wallet />}
                     type="button"
                   >
-                    Connect wallet
+                    Connect
                   </Button>
                 );
               }
