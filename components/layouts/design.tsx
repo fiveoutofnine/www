@@ -77,7 +77,9 @@ const DesignLayout: FC<DesignLayoutProps> = ({
           site_name: 'fiveoutofnine',
           images: [
             {
-              url: `https://www-git-v1-design-page-fiveoutofnine.vercel.app/api/og/design?title=${category}&subtitle=${name}&description=${description}`,
+              // TODO: replace base URL with `fiveoutofnine.com` before merging
+              // to `main`.
+              url: `https://www-git-v1-fiveoutofnine.vercel.app/api/og/design?title=${category}&subtitle=${name}&description=${description}`,
               width: 1200,
               height: 630,
               alt: 'Curta Playground OG Image',
