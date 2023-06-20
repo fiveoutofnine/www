@@ -82,7 +82,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({
               url: `https://www-git-v1-fiveoutofnine.vercel.app/api/og/design?title=${category}&subtitle=${name}&description=${description}`,
               width: 1200,
               height: 630,
-              alt: 'Curta Playground OG Image',
+              alt: '5/9 design system docs open-graph image',
             },
           ],
         }}
