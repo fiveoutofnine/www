@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { ImageResponse } from '@vercel/og';
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',
 };
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -215,12 +215,12 @@ export default async function handler(req: NextRequest) {
           style: 'normal',
           weight: 400,
         },
-        /* {
+        {
           name: 'Inter',
           data: interMediumFont,
           style: 'normal',
           weight: 500,
-        }, */
+        },
         {
           name: 'Inter',
           data: interSemiBoldFont,
