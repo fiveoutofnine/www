@@ -12,16 +12,14 @@ const ORANGE_9 = 'hsl(24, 94.0%, 50.0%)';
 const ORANGE_11 = 'hsl(24, 100%, 62.2%)';
 const ORANGE_12 = 'hsl(24, 97.0%, 93.2%)';
 
-const FONT_PATH = '../../../public/static/fonts';
-
 const interRegularFontP = fetch(
-  new URL(`${FONT_PATH}/Inter-Regular-Subset.otf`, import.meta.url),
+  new URL('../../../public/static/fonts/Inter-Regular-Subset.otf', import.meta.url),
 ).then((res) => res.arrayBuffer());
 const interMediumFontP = fetch(
-  new URL(`${FONT_PATH}/Inter-Medium-Subset.otf`, import.meta.url),
+  new URL('../../../public/static/fonts/Inter-Medium-Subset.otf', import.meta.url),
 ).then((res) => res.arrayBuffer());
 const interSemiBoldFontP = fetch(
-  new URL(`${FONT_PATH}/Inter-SemiBold-Subset.otf`, import.meta.url),
+  new URL('../../../public/static/fonts/Inter-SemiBold-Subset.otf', import.meta.url),
 ).then((res) => res.arrayBuffer());
 
 export default async function handler(req: NextRequest) {
@@ -115,9 +113,6 @@ export default async function handler(req: NextRequest) {
                     fontWeight: 600,
                     marginLeft: 16,
                     letterSpacing: '-0.025em',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
                   }}
                 >
                   {subtitle}
