@@ -14,6 +14,16 @@ const ORANGE_12 = 'hsl(24, 97.0%, 93.2%)';
 
 const FONT_PATH = '../../../public/static/fonts';
 
+const interRegularFontP = fetch(
+  new URL(`${FONT_PATH}/Inter-Regular-Subset.otf`, import.meta.url),
+).then((res) => res.arrayBuffer());
+const interMediumFontP = fetch(
+  new URL(`${FONT_PATH}/Inter-Medium-Subset.otf`, import.meta.url),
+).then((res) => res.arrayBuffer());
+const interSemiBoldFontP = fetch(
+  new URL(`${FONT_PATH}/Inter-SemiBold-Subset.otf`, import.meta.url),
+).then((res) => res.arrayBuffer());
+
 export default async function handler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
@@ -25,15 +35,11 @@ export default async function handler(req: NextRequest) {
   const subtitle = hasSubtitle ? searchParams.get('subtitle') : null;
   const description = hasDescription ? searchParams.get('description') : null;
 
-  const interRegularFont = await fetch(
-    new URL(`${FONT_PATH}/Inter-Regular.otf`, import.meta.url),
-  ).then((res) => res.arrayBuffer());
-  const interMediumFont = await fetch(
-    new URL(`${FONT_PATH}/Inter-Medium.otf`, import.meta.url),
-  ).then((res) => res.arrayBuffer());
-  const interSemiBoldFont = await fetch(
-    new URL(`${FONT_PATH}/Inter-SemiBold.otf`, import.meta.url),
-  ).then((res) => res.arrayBuffer());
+  const [interRegularFont, interMediumFont, interSemiBoldFont] = await Promise.all([
+    interRegularFontP,
+    interMediumFontP,
+    interSemiBoldFontP,
+  ]);
 
   return new ImageResponse(
     (
