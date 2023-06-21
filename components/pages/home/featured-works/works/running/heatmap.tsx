@@ -207,7 +207,10 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
                     fontSize={12}
                     className="fill-gray-11"
                   >
-                    {firstDayOfMonth.toLocaleDateString('en-US', { month: 'short' })}
+                    {firstDayOfMonth.toLocaleDateString('en-US', {
+                      month: 'short',
+                      timeZone: 'UTC',
+                    })}
                   </text>
                 );
               })}

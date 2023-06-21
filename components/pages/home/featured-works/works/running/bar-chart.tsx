@@ -104,9 +104,10 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
         {data.length > 0
           ? `${data[0].date.toLocaleDateString('en-US', {
               month: 'short',
+              timeZone: 'UTC',
             })} ${data[0].date.getUTCFullYear()} to ${data[data.length - 1].date.toLocaleDateString(
               'en-US',
-              { month: 'short' },
+              { month: 'short', timeZone: 'UTC' },
             )} ${data[data.length - 1].date.getUTCFullYear()}`
           : 'No data'}
       </div>
@@ -137,7 +138,9 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
           }
           <RechartTooltip
             content={({ active, payload, label }) => {
-              const monthName = label ? label.toLocaleDateString('en-US', { month: 'short' }) : '';
+              const monthName = label
+                ? label.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })
+                : '';
               const year = label ? label.getUTCFullYear() : 0;
 
               return payload && active && payload.length > 0 && payload[0].value ? (
