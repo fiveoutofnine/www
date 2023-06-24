@@ -24,6 +24,7 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
         openGraph={{
           type: 'website',
           locale: 'en_US',
+          url: 'https://fiveoutofnine.com',
           site_name: 'fiveoutofnine',
           images: [
             {

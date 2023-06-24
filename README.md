@@ -4,8 +4,8 @@
 
 The site is divided into 4 categories:
 
-- [`/`](https://fiveoutofnine.com), page to feature cool things I've done.
-- [`/blog`](https://fiveoutofnine.com/blog), page listing any blog posts.
+- [`/`](https://fiveoutofnine.com), page featuring cool things I've done.
+- [`/blog`](https://fiveoutofnine.com/blog), page listing things I've written.
 - [`/design`](https://fiveoutofnine.com/design), documentation for my design system.
 - Other projects, pages, etc.
 
