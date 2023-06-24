@@ -21,9 +21,7 @@ const BlogPage: NextPage = () => {
           site_name: 'fiveoutofnine',
           images: [
             {
-              // TODO: replace base URL with `fiveoutofnine.com` before merging
-              // to `main`.
-              url: 'https://www-git-v1-fiveoutofnine.vercel.app/static/og/blog.png',
+              url: 'https://fiveoutofnine.com/static/og/blog.png',
               width: 1200,
               height: 630,
               alt: '5/9 blog open-graph image',

@@ -6,7 +6,7 @@ import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/ra
 import '@rainbow-me/rainbowkit/styles.css';
 import { DefaultSeo } from 'next-seo';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { goerli, mainnet } from 'wagmi/chains';
+import { mainnet } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
@@ -18,7 +18,7 @@ import { Toaster } from '@/components/ui';
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID;
 
 const { chains, provider } = configureChains(
-  [mainnet, goerli],
+  [mainnet],
   [alchemyProvider({ apiKey: alchemyId }), publicProvider()],
 );
 
