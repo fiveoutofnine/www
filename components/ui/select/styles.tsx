@@ -26,31 +26,36 @@ export const selectIconContainerVariants = cva(
           'peer-data-[variant=ghost]:text-gray-11',
         ],
         primary: [
-          'peer-data-[variant=primary]:text-gray-12',
+          'peer-data-[variant=primary]:dark:text-gray-12',
+          'peer-data-[variant=primary]:text-gray-1',
           'peer-data-[variant=secondary]:text-blue-11',
           'peer-data-[variant=outline]:text-blue-9',
           'peer-data-[variant=ghost]:text-blue-9',
         ],
         success: [
-          'peer-data-[variant=primary]:text-gray-12',
+          'peer-data-[variant=primary]:dark:text-gray-12',
+          'peer-data-[variant=primary]:text-gray-1',
           'peer-data-[variant=secondary]:text-green-11',
           'peer-data-[variant=outline]:text-green-9',
           'peer-data-[variant=ghost]:text-green-9',
         ],
         fail: [
-          'peer-data-[variant=primary]:text-gray-12',
+          'peer-data-[variant=primary]:dark:text-gray-12',
+          'peer-data-[variant=primary]:text-gray-1',
           'peer-data-[variant=secondary]:text-red-11',
           'peer-data-[variant=outline]:text-red-9',
           'peer-data-[variant=ghost]:text-red-9',
         ],
         warning: [
-          'peer-data-[variant=primary]:text-gray-1',
+          'peer-data-[variant=primary]:dark:text-gray-1',
+          'peer-data-[variant=primary]:text-gray-12',
           'peer-data-[variant=secondary]:text-yellow-11',
           'peer-data-[variant=outline]:text-yellow-9',
           'peer-data-[variant=ghost]:text-yellow-9',
         ],
         orange: [
-          'peer-data-[variant=primary]:text-gray-12',
+          'peer-data-[variant=primary]:dark:text-gray-12',
+          'peer-data-[variant=primary]:text-gray-1',
           'peer-data-[variant=secondary]:text-orange-11',
           'peer-data-[variant=outline]:text-orange-9',
           'peer-data-[variant=ghost]:text-orange-9',
@@ -127,7 +132,8 @@ export const selectVariants = cva(
         primary: [
           /* primary */
           'data-[variant=primary]:bg-blue-9',
-          'data-[variant=primary]:text-gray-12',
+          'data-[variant=primary]:dark:text-gray-12',
+          'data-[variant=primary]:text-gray-1',
           'data-[variant=primary]:border-blue-7',
           'data-[variant=primary]:hover:border-blue-8',
           'data-[variant=primary]:active:bg-blue-10',
@@ -151,7 +157,8 @@ export const selectVariants = cva(
         success: [
           /* primary */
           'data-[variant=primary]:bg-green-9',
-          'data-[variant=primary]:text-gray-12',
+          'data-[variant=primary]:dark:text-gray-12',
+          'data-[variant=primary]:text-gray-1',
           'data-[variant=primary]:border-green-7',
           'data-[variant=primary]:hover:border-green-8',
           'data-[variant=primary]:active:bg-green-10',
@@ -175,7 +182,8 @@ export const selectVariants = cva(
         fail: [
           /* primary */
           'data-[variant=primary]:bg-red-9',
-          'data-[variant=primary]:text-gray-12',
+          'data-[variant=primary]:dark:text-gray-12',
+          'data-[variant=primary]:text-gray-1',
           'data-[variant=primary]:border-red-7',
           'data-[variant=primary]:hover:border-red-8',
           'data-[variant=primary]:active:bg-red-10',
@@ -199,7 +207,8 @@ export const selectVariants = cva(
         warning: [
           /* primary */
           'data-[variant=primary]:bg-yellow-9',
-          'data-[variant=primary]:text-gray-1',
+          'data-[variant=primary]:dark:text-gray-1',
+          'data-[variant=primary]:text-gray-12',
           'data-[variant=primary]:border-yellow-7',
           'data-[variant=primary]:hover:border-yellow-8',
           'data-[variant=primary]:active:bg-yellow-10',
@@ -223,7 +232,8 @@ export const selectVariants = cva(
         orange: [
           /* primary */
           'data-[variant=primary]:bg-orange-9',
-          'data-[variant=primary]:text-gray-12',
+          'data-[variant=primary]:dark:text-gray-12',
+          'data-[variant=primary]:text-gray-1',
           'data-[variant=primary]:border-orange-7',
           'data-[variant=primary]:hover:border-orange-8',
           'data-[variant=primary]:active:bg-orange-10',
