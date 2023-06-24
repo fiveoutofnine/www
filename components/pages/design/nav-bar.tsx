@@ -54,7 +54,12 @@ const DesignNavBarMobile: FC<DesignNavBarProps> = ({ selected }) => {
     <Dialog.Root open={open && isSmallScreen} onOpenChange={setOpen}>
       <div className="pointer-events-auto sticky top-12 z-popover mb-6 flex h-12 w-full items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:hidden">
         <Dialog.Trigger asChild>
-          <IconButton variant="outline">{open ? <X /> : <Menu />}</IconButton>
+          <IconButton
+            variant="outline"
+            aria-label={open ? 'Close design nav bar' : 'Open design nav bar'}
+          >
+            {open ? <X /> : <Menu />}
+          </IconButton>
         </Dialog.Trigger>
         <ol className="ml-4 flex text-sm">
           <li className="flex items-center text-gray-11">
