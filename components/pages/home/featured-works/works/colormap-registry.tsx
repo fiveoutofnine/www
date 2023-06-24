@@ -196,14 +196,14 @@ const ColormapRegistryFeatureDetail: FC = () => {
       {/* Top gradient to hide overflow */}
       <div
         className={clsx(
-          'pointer-events-none absolute left-0 top-0 h-6 w-full bg-gradient-to-b from-gray-3 to-transparent transition-opacity',
+          'pointer-events-none absolute left-0 top-0 h-6 w-full bg-gradient-to-b from-gray-3 transition-opacity',
           scrollIsAtTop || selected !== undefined ? 'opacity-0' : 'opacity-100',
         )}
       />
       {/* Bottom gradient to hide overflow */}
       <div
         className={clsx(
-          'pointer-events-none absolute bottom-0 left-0 h-6 w-full bg-gradient-to-t from-gray-3 to-transparent transition-opacity',
+          'pointer-events-none absolute bottom-0 left-0 h-6 w-full bg-gradient-to-t from-gray-3 transition-opacity',
           scrollIsAtBottom || selected !== undefined ? 'opacity-0' : 'opacity-100',
         )}
       />

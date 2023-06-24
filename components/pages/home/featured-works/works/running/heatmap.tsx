@@ -279,14 +279,14 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
         {/* Left gradient to hide overflow */}
         <div
           className={clsx(
-            'pointer-events-none absolute bottom-0 left-0 h-[112px] w-4 bg-gradient-to-r from-gray-3 to-transparent transition-opacity',
+            'pointer-events-none absolute bottom-0 left-0 h-[112px] w-4 bg-gradient-to-r from-gray-3 transition-opacity',
             scrollIsAtLeft ? 'opacity-0' : 'opacity-100',
           )}
         />
         {/* Right gradient to hide overflow */}
         <div
           className={clsx(
-            'pointer-events-none absolute bottom-0 right-0 h-[112px] w-4 bg-gradient-to-l from-gray-3 to-transparent transition-opacity',
+            'pointer-events-none absolute bottom-0 right-0 h-[112px] w-4 bg-gradient-to-l from-gray-3 transition-opacity',
             scrollIsAtRight ? 'opacity-0' : 'opacity-100',
           )}
         />

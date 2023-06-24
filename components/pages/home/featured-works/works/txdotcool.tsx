@@ -187,7 +187,7 @@ const TxDotCoolFeatureDetail: FC = () => {
               onChange={(e) => setUserInput(e.target.value)}
             />
             {/* Overflow gradient */}
-            <div className="absolute right-7 top-1 h-6 w-8 bg-gradient-to-l from-gray-2 to-transparent" />
+            <div className="absolute right-7 top-1 h-6 w-8 bg-gradient-to-l from-gray-2" />
             {/* Send button */}
             <IconButton
               size="sm"
