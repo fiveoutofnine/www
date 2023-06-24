@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 
-// Use this to query media elements (e.g. screen size)
+/**
+ * React hook that returns a boolean value indicating whether the current
+ * window matches the given media query string.
+ * @param query Media query string to match.
+ * @returns Boolean value indicating whether the current window matches the
+ * given media query string `query`.
+ */
 export const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState<boolean>(false);
 

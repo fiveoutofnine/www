@@ -1,5 +1,8 @@
 import type { LengthUnit } from '@/lib/types/units';
 
+/**
+ * List of length units.
+ */
 export const LENGTH_UNITS: LengthUnit[] = [
   { name: 'km', scalar: 1 },
   { name: 'mi', scalar: 1 / 1.609, description: '1.609km' },

@@ -1,5 +1,10 @@
 import type { ColormapSegmentData } from '@/lib/types/colormap';
 
+/**
+ * Colormaps added to [`ColormapRegistry`](https://github.com/fiveoutofnine/colormap-registry), a
+ * contract deployed to [`0x0000000012883D1da628e31c0FE52e35DcF95D50`](https://etherscan.io/address/0x0000000012883D1da628e31c0FE52e35DcF95D50)
+ * on Ethereum.
+ */
 export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegmentData }[] = [
   {
     name: 'CMRmap',

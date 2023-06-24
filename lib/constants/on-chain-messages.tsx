@@ -1,3 +1,7 @@
+/**
+ * On-chain messages [`0xA85572Cd96f1643458f17340b6f0D6549Af482F5`](https://etherscan.io/address/0xA85572Cd96f1643458f17340b6f0D6549Af482F5)
+ * (fiveoutofnine.eth) signed to itself on Ethereum.
+ */
 /* eslint-disable prettier/prettier */
 export const FIVEOUTOFNINE_MESSAGES = [
   {

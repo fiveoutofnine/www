@@ -1,3 +1,6 @@
+/**
+ * Random quotes that 5/9 typed pretty fast.
+ */
 /* eslint-disable prettier/prettier */
 export const SHORT_QUOTES = [
   {
