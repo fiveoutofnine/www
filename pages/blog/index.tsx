@@ -48,7 +48,7 @@ const BlogPage: NextPage = () => {
             height={847}
             alt="Chu Totoro walking"
           />
-          <Button variant="secondary" intent="primary" leftIcon={<ChevronLeft />}>
+          <Button variant="secondary" intent="primary" href="/" leftIcon={<ChevronLeft />}>
             Return home
           </Button>
         </ContainerLayout>
