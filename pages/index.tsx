@@ -24,6 +24,17 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
         openGraph={{
           type: 'website',
           locale: 'en_US',
+          site_name: 'fiveoutofnine',
+          images: [
+            {
+              // TODO: replace base URL with `fiveoutofnine.com` before merging
+              // to `main`.
+              url: 'https://www-git-v1-fiveoutofnine.vercel.app/static/og/home.png',
+              width: 1200,
+              height: 630,
+              alt: '5/9 open-graph image',
+            },
+          ],
         }}
         twitter={{
           handle: '@fiveoutofnine',
