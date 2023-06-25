@@ -16,7 +16,7 @@ const ChessFeature: FC = () => {
     <FeatureDisplay
       className="w-full min-[960px]:w-64 col-span-2"
       name="Chess"
-      description="On-chain chess engine"
+      description="Onchain chess engine"
       symbol={
         <svg
           width="24"
@@ -41,7 +41,7 @@ const ChessFeature: FC = () => {
           </Button>
         </Tooltip>
       }
-      tags={[<CategoryTag key={0} category="NFT" />, <CategoryTag key={1} category="On-chain" />]}
+      tags={[<CategoryTag key={0} category="NFT" />, <CategoryTag key={1} category="Onchain" />]}
     >
       <ChessFeatureDetail />
     </FeatureDisplay>

@@ -3,7 +3,7 @@ import { type FC, useEffect, useRef, useState } from 'react';
 import { ArrowUp, ExternalLink, MessageCircle } from 'lucide-react';
 import { usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from 'wagmi';
 
-import { FIVEOUTOFNINE_MESSAGES } from '@/lib/constants/on-chain-messages';
+import { FIVEOUTOFNINE_MESSAGES } from '@/lib/constants/onchain-messages';
 
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
@@ -194,7 +194,7 @@ const TxDotCoolFeatureDetail: FC = () => {
               variant="secondary"
               intent="primary"
               className="absolute right-1 top-1 rounded-full"
-              aria-label="Send on-chain message to fiveoutofnine.eth"
+              aria-label="Send onchain message to fiveoutofnine.eth"
               disabled={userMessage.length === 0 || !sendTransaction || isLoading}
               onClick={(e) => {
                 e.preventDefault();

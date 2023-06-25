@@ -5,14 +5,14 @@ import type { BadgeProps } from '@/components/ui/badge/types';
 
 /* Props */
 type CategoryTagProps = Omit<BadgeProps, 'variant' | 'intent'> & {
-  category: 'NFT' | 'Writing' | 'Web' | 'On-chain';
+  category: 'NFT' | 'Writing' | 'Web' | 'Onchain';
 };
 
 /* Component */
 const CategoryTag: FC<CategoryTagProps> = ({ size, category, ...rest }) => {
   const CATEGORY_TO_COLORS: Record<typeof category, string> = {
     NFT: 'orange',
-    'On-chain': 'warning',
+    Onchain: 'warning',
     Writing: 'success',
     Web: 'primary',
   };

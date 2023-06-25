@@ -17,7 +17,7 @@ const ColormapRegistryFeature: FC = () => {
     <FeatureDisplay
       className="col-span-2 w-full min-[960px]:w-64"
       name="ColormapRegistry"
-      description="On-chain registry"
+      description="Onchain registry"
       symbol={<Github />}
       button={
         <Button
@@ -29,7 +29,7 @@ const ColormapRegistryFeature: FC = () => {
           Open
         </Button>
       }
-      tags={[<CategoryTag key={1} category="On-chain" />]}
+      tags={[<CategoryTag key={1} category="Onchain" />]}
     >
       <ColormapRegistryFeatureDetail />
     </FeatureDisplay>
