@@ -21,6 +21,7 @@ specifiers:
   '@types/react-dom': 18.0.11
   '@typescript-eslint/eslint-plugin': ^5.58.0
   '@typescript-eslint/parser': ^5.0.0
+  '@vercel/analytics': ^1.0.1
   '@vercel/og': ^0.5.7
   '@visx/axis': ^3.1.0
   '@visx/tooltip': ^3.1.2
@@ -72,6 +73,7 @@ dependencies:
   '@types/react': 18.0.35
   '@types/react-dom': 18.0.11
   '@typescript-eslint/parser': 5.58.0_voubu7prgxjfsfbgx5d4sqnwiy
+  '@vercel/analytics': 1.0.1
   '@vercel/og': 0.5.7
   '@visx/axis': 3.1.0_react@18.2.0
   '@visx/tooltip': 3.1.2_biqbaboplfbrettd7655fr4n2y
@@ -2997,6 +2999,10 @@ packages:
       '@vanilla-extract/css': ^1.0.0
     dependencies:
       '@vanilla-extract/css': 1.9.1
+    dev: false
+
+  /@vercel/analytics/1.0.1:
+    resolution: {integrity: sha512-Ux0c9qUfkcPqng3vrR0GTrlQdqNJ2JREn/2ydrVuKwM3RtMfF2mWX31Ijqo1opSjNAq6rK76PwtANw6kl6TAow==}
     dev: false
 
   /@vercel/og/0.5.7:
