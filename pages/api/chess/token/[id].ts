@@ -82,7 +82,8 @@ export default async function handler(
 
   // Overwrite `animation_url` to proxied version on our server to accomodate
   // marketplaces' CSPs.
-  metadata.animation_url = `https://fiveoutofnine.com/api/chess/asset/${id}`;
+  //metadata.animation_url = `https://fiveoutofnine.com/api/chess/asset/${id}`;
+  metadata.animation_url = `https://www-git-chess-nft-tokenuri-fiveoutofnine.vercel.app/api/chess/asset/${id}`;
 
   // Cache response for 30 days.
   res.setHeader('cache-control', 'public, s-maxage=2592000');
