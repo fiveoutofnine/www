@@ -1,15 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import { createClient } from '@supabase/supabase-js';
 import { BigNumber } from 'ethers';
 import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
 
 import { idSchema } from '@/lib/schemas';
-import { supabaseAdmin } from '@/lib/services/supabase';
 import type { ChessNFTMetadata } from '@/lib/types/chess';
 import { validateQuery } from '@/lib/utils';
 
-export const publicClient = createPublicClient({
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
+
+const publicClient = createPublicClient({
   chain: mainnet,
   transport: http(),
 });
