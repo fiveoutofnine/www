@@ -21,7 +21,7 @@ const publicClient = createPublicClient({
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ChessNFTMetadata | Error>,
+  res: NextApiResponse<(ChessNFTMetadata & { image?: string }) | Error>,
 ) {
   const { id } = validateQuery(idSchema, req.query);
 
@@ -32,7 +32,7 @@ export default async function handler(
     .eq('id', id)
     .returns<ChessNFTMetadata[]>();
 
-  let metadata: ChessNFTMetadata;
+  let metadata: ChessNFTMetadata & { image?: string };
   // If there is an error, or if the data is empty, or if there is no data,
   // then attempt to fetch the metadata from Ethereum via the `_tokenURI`
   // function.
@@ -83,6 +83,20 @@ export default async function handler(
   // Overwrite `animation_url` to proxied version on our server to accomodate
   // marketplaces' CSPs.
   metadata.animation_url = `https://fiveoutofnine.com/api/chess/asset/${id}`;
+
+  // Check if image preview has been uploaded to Supabase storage.
+  const { data: imageData, error: imageError } = await supabaseAdmin.storage
+    .from('public')
+    .download(`chess_nft_images/${id}.png`);
+
+  // If the image preview has been uploaded, then add it to the metadata.
+  if (!imageError && imageData) {
+    const { data: image } = await supabaseAdmin.storage
+      .from('chess_nft_images')
+      .getPublicUrl(`${id}.png`);
+
+    metadata.image = image.publicUrl;
+  }
 
   // Cache response for 30 days.
   res.setHeader('cache-control', 'public, s-maxage=2592000');
