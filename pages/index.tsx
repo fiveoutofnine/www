@@ -22,9 +22,9 @@ const CODE = `// Test
 function MyComponent(props) {
   return (
     <div>
-      <h1>Hello, {props.name}!</h1>
+      <h1>Hello, {props.name}! alskdjflkasjdf lkajsd flkasj dlkfa slkdfljaks dflkja sldkflk ajsdflkj aslkdjf lkasdf</h1>
       <p>Good to see you</p>
-	</div>
+    </div>
   );
 }
 
@@ -33,7 +33,7 @@ function MyComponent(props) {
     <div>
       <h1>Hello, {props.name}!</h1>
       <p>Good to see you</p>
-	</div>
+    </div>
   );
 }`;
 
@@ -64,7 +64,11 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
         <ContainerLayout className="flex flex-col space-y-4">
           <FiveoutofnineHeader />
           <FeaturedWorks mileageLogs={mileageLogs} runningLogs={runningLogs} />
-          <CodeBlock fileName="MyComponent.tsx" highlightLines={[3, 4, 5, 6, 7, 8, 11]}>
+          <CodeBlock
+            fileName="MyComponent.tsx"
+            highlightLines={[3, 4, 5, 6, 7, 8, 11]}
+            language="tsx"
+          >
             {CODE}
           </CodeBlock>
         </ContainerLayout>

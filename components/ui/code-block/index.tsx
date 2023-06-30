@@ -1,15 +1,29 @@
 import { type FC, useState } from 'react';
 
+import {
+  codeBlockContainerStyles,
+  codeBlockHeaderFileNameContainerStyles,
+  codeBlockHeaderFileNameIconStyles,
+  codeBlockHeaderFileNameStyles,
+  codeBlockHeaderStyles,
+  codeBlockLineHighlightedStyles,
+  codeBlockLineNumberStyles,
+  codeBlockLineStyles,
+  codeBlockPreStyles,
+  codeBlockStyles,
+} from './styles';
 import type { CodeBlockProps } from './types';
 import clsx from 'clsx';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, File } from 'lucide-react';
 import { Highlight, themes } from 'prism-react-renderer';
+import { twMerge } from 'tailwind-merge';
 
 import { IconButton } from '@/components/ui';
 
 const CodeBlock: FC<CodeBlockProps> = ({
+  className,
   fileName,
-  language = 'tsx',
+  language = 'none',
   highlightLines = [],
   showLineNumbers = true,
   children,
@@ -26,10 +40,13 @@ const CodeBlock: FC<CodeBlockProps> = ({
   };
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-gray-6">
+    <div className={twMerge(clsx(codeBlockContainerStyles, className))}>
       {fileName !== undefined ? (
-        <div className="flex h-10 grow items-center justify-between border-b border-gray-6 bg-gray-2 pl-4 pr-2">
-          <div className="text-sm text-gray-11">{fileName}</div>
+        <div className={codeBlockHeaderStyles}>
+          <div className={codeBlockHeaderFileNameContainerStyles}>
+            <File className={codeBlockHeaderFileNameIconStyles} />
+            <div className={codeBlockHeaderFileNameStyles}>{fileName}</div>
+          </div>
           <IconButton
             size="sm"
             variant="outline"
@@ -44,8 +61,8 @@ const CodeBlock: FC<CodeBlockProps> = ({
       ) : null}
       <Highlight theme={themes.vsDark} code={children} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
-          <pre className="py-5" style={style} {...rest}>
-            <code className="text-xs font-normal leading-5">
+          <pre className={codeBlockPreStyles} style={style} {...rest}>
+            <code className={codeBlockStyles}>
               {tokens.map((line, i) => {
                 const { className, ...restLineProps } = getLineProps({ line });
 
@@ -54,15 +71,13 @@ const CodeBlock: FC<CodeBlockProps> = ({
                     key={i}
                     className={clsx(
                       className,
-                      'px-5',
-                      highlightLines.includes(i + 1)
-                        ? 'bg-blue-5 shadow-[inset_2px_0] shadow-blue-9'
-                        : '',
+                      codeBlockLineStyles,
+                      highlightLines.includes(i + 1) ? codeBlockLineHighlightedStyles : '',
                     )}
                     {...restLineProps}
                   >
                     {showLineNumbers ? (
-                      <div className="mr-4 inline-block w-6 text-gray-11">{i + 1}</div>
+                      <div className={codeBlockLineNumberStyles}>{i + 1}</div>
                     ) : null}
                     {line.map((token, key) => (
                       <span key={key} {...getTokenProps({ token })} />
