@@ -102,9 +102,7 @@ export const ColorSample = ({ scale, index, color, ...rest }) => {
               intent: 'success',
             });
             setCopied(true);
-            setTimeout(() => {
-              setCopied(false);
-            }, 2000);
+            setTimeout(() => setCopied(false), 2000);
           } catch (err) {
             toast({ title: 'Failed to copy to clipboard', description: color, intent: 'fail' });
           }
