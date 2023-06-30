@@ -71,6 +71,13 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
           >
             {CODE}
           </CodeBlock>
+          <CodeBlock highlightLines={[3, 4, 5, 6, 7, 8, 11]} language="tsx">
+            {CODE}
+          </CodeBlock>
+          <CodeBlock language="tsx">{CODE}</CodeBlock>
+          <CodeBlock language="tsx" showLineNumbers={false}>
+            {CODE}
+          </CodeBlock>
         </ContainerLayout>
       </BaseLayout>
     </>

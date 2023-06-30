@@ -16,6 +16,6 @@ export const codeBlockLineNumberStyles = 'mr-4 inline-block w-4 text-end text-gr
 
 export const codeBlockLineStyles = 'px-4 min-w-fit';
 
-export const codeBlockPreStyles = 'py-4 overflow-x-scroll';
+export const codeBlockPreStyles = 'group py-4 overflow-x-scroll';
 
 export const codeBlockStyles = 'text-xs normal leading-5 flex flex-col min-w-fit';

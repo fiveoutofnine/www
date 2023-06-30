@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 
 import {
   codeBlockContainerStyles,
@@ -30,6 +30,11 @@ const CodeBlock: FC<CodeBlockProps> = ({
   ...rest
 }) => {
   const [copied, setCopied] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => setIsMounted(true), []);
+
+  const isMobile = isMounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
 
   const copyToClipboard = () => {
     if (!copied) {
@@ -61,32 +66,50 @@ const CodeBlock: FC<CodeBlockProps> = ({
       ) : null}
       <Highlight theme={themes.vsDark} code={children} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
-          <pre className={codeBlockPreStyles} style={style} {...rest}>
-            <code className={codeBlockStyles}>
-              {tokens.map((line, i) => {
-                const { className, ...restLineProps } = getLineProps({ line });
+          <div className="relative">
+            <pre className={codeBlockPreStyles} style={style} {...rest}>
+              <code className={codeBlockStyles}>
+                {tokens.map((line, i) => {
+                  const { className, ...restLineProps } = getLineProps({ line });
 
-                return (
-                  <div
-                    key={i}
+                  return (
+                    <div
+                      key={i}
+                      className={clsx(
+                        className,
+                        codeBlockLineStyles,
+                        highlightLines.includes(i + 1) ? codeBlockLineHighlightedStyles : '',
+                      )}
+                      {...restLineProps}
+                    >
+                      {showLineNumbers ? (
+                        <div className={codeBlockLineNumberStyles}>{i + 1}</div>
+                      ) : null}
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token })} />
+                      ))}
+                    </div>
+                  );
+                })}
+                {fileName === undefined ? (
+                  <IconButton
+                    size="sm"
                     className={clsx(
-                      className,
-                      codeBlockLineStyles,
-                      highlightLines.includes(i + 1) ? codeBlockLineHighlightedStyles : '',
+                      'absolute right-2 top-2',
+                      isMobile ? 'flex' : 'hidden animate-in fade-in group-hover:flex',
                     )}
-                    {...restLineProps}
+                    variant="outline"
+                    title="Copy to clipboard"
+                    onClick={copyToClipboard}
+                    type="button"
+                    aria-label="Copy to clipboard"
                   >
-                    {showLineNumbers ? (
-                      <div className={codeBlockLineNumberStyles}>{i + 1}</div>
-                    ) : null}
-                    {line.map((token, key) => (
-                      <span key={key} {...getTokenProps({ token })} />
-                    ))}
-                  </div>
-                );
-              })}
-            </code>
-          </pre>
+                    {copied ? <Check /> : <Copy />}
+                  </IconButton>
+                ) : null}
+              </code>
+            </pre>
+          </div>
         )}
       </Highlight>
     </div>
