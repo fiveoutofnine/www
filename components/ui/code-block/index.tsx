@@ -45,7 +45,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
       <Highlight theme={themes.vsDark} code={children} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre className="py-5" style={style} {...rest}>
-            <code className="text-xs leading-5">
+            <code className="text-xs font-normal leading-5">
               {tokens.map((line, i) => {
                 const { className, ...restLineProps } = getLineProps({ line });
 
