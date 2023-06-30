@@ -40,6 +40,7 @@ specifiers:
   postcss: 8.4.21
   prettier: ^2.8.7
   prettier-plugin-tailwindcss: ^0.2.7
+  prism-react-renderer: ^2.0.6
   prop-types: ^15.6.0
   react: 18.2.0
   react-dom: 18.2.0
@@ -88,6 +89,7 @@ dependencies:
   next: 13.3.0_z72xxk7vwlamvgqemvc4ptm4du
   next-seo: 6.0.0_yucv4tfv7v7nrkw2uguegj6e7e
   postcss: 8.4.21
+  prism-react-renderer: 2.0.6_react@18.2.0
   prop-types: 15.8.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -2794,6 +2796,10 @@ packages:
 
   /@types/phoenix/1.5.6:
     resolution: {integrity: sha512-e7jZ6I9uyRGsg7MNwQcarmBvRlbGb9DibbocE9crVnxqsy6C23RMxLWbJ2CQ3vgCW7taoL1L+F02EcjA6ld7XA==}
+    dev: false
+
+  /@types/prismjs/1.26.0:
+    resolution: {integrity: sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==}
     dev: false
 
   /@types/prop-types/15.7.5:
@@ -7494,6 +7500,16 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
+
+  /prism-react-renderer/2.0.6_react@18.2.0:
+    resolution: {integrity: sha512-ERzmAI5UvrcTw5ivfEG20/dYClAsC84eSED5p9X3oKpm0xPV4A5clFK1mp7lPIdKmbLnQYsPTGiOI7WS6gWigw==}
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      '@types/prismjs': 1.26.0
+      clsx: 1.2.1
+      react: 18.2.0
+    dev: false
 
   /process-warning/1.0.0:
     resolution: {integrity: sha512-du4wfLyj4yCZq1VupnVSZmRsPJsNuxoDQFdCFHLaYiEbFBD7QE0a+I4D7hOxrVnh78QE/YipFAj9lXHiXocV+Q==}
