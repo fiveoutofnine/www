@@ -9,7 +9,7 @@ import {
   codeBlockLineHighlightedStyles,
   codeBlockLineNumberStyles,
   codeBlockLineStyles,
-  codeBlockPreStyles,
+  codeBlockPreVariants,
   codeBlockStyles,
 } from './styles';
 import type { CodeBlockProps } from './types';
@@ -36,6 +36,8 @@ const CodeBlock: FC<CodeBlockProps> = ({
 
   const isMobile = isMounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
 
+  const hasFileName = fileName !== undefined;
+
   const copyToClipboard = () => {
     if (!copied) {
       setCopied(true);
@@ -46,7 +48,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
 
   return (
     <div className={twMerge(clsx(codeBlockContainerStyles, className))}>
-      {fileName !== undefined ? (
+      {hasFileName ? (
         <div className={codeBlockHeaderStyles}>
           <div className={codeBlockHeaderFileNameContainerStyles}>
             <File className={codeBlockHeaderFileNameIconStyles} />
@@ -67,7 +69,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
       <Highlight theme={themes.vsDark} code={children} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <div className="relative">
-            <pre className={codeBlockPreStyles} style={style} {...rest}>
+            <pre className={codeBlockPreVariants({ hasFileName })} style={style} {...rest}>
               <code className={codeBlockStyles}>
                 {tokens.map((line, i) => {
                   const { className, ...restLineProps } = getLineProps({ line });
@@ -91,7 +93,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
                     </div>
                   );
                 })}
-                {fileName === undefined ? (
+                {!hasFileName ? (
                   <IconButton
                     size="sm"
                     className={clsx(
