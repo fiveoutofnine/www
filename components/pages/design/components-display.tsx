@@ -1,6 +1,8 @@
 import type { FC } from 'react';
+import { isValidElement } from 'react';
 
 import clsx from 'clsx';
+import { renderToString } from 'react-dom/server';
 import { twMerge } from 'tailwind-merge';
 
 const DesignComponentsDisplay: FC<JSX.IntrinsicElements['div']> = ({
@@ -8,6 +10,7 @@ const DesignComponentsDisplay: FC<JSX.IntrinsicElements['div']> = ({
   children,
   ...rest
 }) => {
+  console.log(isValidElement(children) ? renderToString(children) : '');
   return (
     <div
       className={twMerge(

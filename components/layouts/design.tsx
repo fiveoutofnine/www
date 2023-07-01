@@ -40,14 +40,11 @@ const DesignLayout: FC<DesignLayoutProps> = ({
         {children}
       </blockquote>
     ),
-    code: ({ children, ...rest }: JSX.IntrinsicElements['code']) => {
-      console.log(rest);
-      return (
-        <code className="rounded border border-gray-6 bg-gray-3 px-1 py-0.5 font-normal text-gray-12 before:content-none after:content-none group-[.mdx--link]:text-blue-9">
-          {children}
-        </code>
-      );
-    },
+    code: ({ children }: JSX.IntrinsicElements['code']) => (
+      <code className="rounded border border-gray-6 bg-gray-3 px-1 py-0.5 font-normal text-gray-12 before:content-none after:content-none group-[.mdx--link]:text-blue-9">
+        {children}
+      </code>
+    ),
     h1: ({ children }: JSX.IntrinsicElements['h1']) => (
       <h1 className="mb-4 text-3xl font-semibold tracking-tight text-gray-12 md:text-4xl">
         {children}
