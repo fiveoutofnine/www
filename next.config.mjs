@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const withMDX = require('@next/mdx')({
+import createMDX from '@next/mdx';
+import rehypeMdxCodeProps from 'rehype-mdx-code-props';
+
+const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    // If you use remark-gfm, you'll need to use next.config.mjs
-    // as the package is ESM only
-    // https://github.com/remarkjs/remark-gfm#install
     remarkPlugins: [],
-    rehypePlugins: [],
+    rehypePlugins: [rehypeMdxCodeProps],
     providerImportSource: '@mdx-js/react',
   },
 });
@@ -24,4 +23,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withMDX(nextConfig);
+export default withMDX(nextConfig);
