@@ -9,7 +9,6 @@ import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
 import FeaturedWorks from '@/components/pages/home/featured-works';
 import FiveoutofnineHeader from '@/components/pages/home/header';
-import { CodeBlock } from '@/components/ui';
 
 /* Props */
 type HomePageProps = {
@@ -18,25 +17,6 @@ type HomePageProps = {
 };
 
 /* Page */
-const CODE = `// Test
-function MyComponent(props) {
-  return (
-    <div>
-      <h1>Hello, {props.name}! alskdjflkasjdf lkajsd flkasj dlkfa slkdfljaks dflkja sldkflk ajsdflkj aslkdjf lkasdf</h1>
-      <p>Good to see you</p>
-    </div>
-  );
-}
-
-function MyComponent(props) {
-  return (
-    <div>
-      <h1>Hello, {props.name}!</h1>
-      <p>Good to see you</p>
-    </div>
-  );
-}`;
-
 const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
   return (
     <>
@@ -64,20 +44,6 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
         <ContainerLayout className="flex flex-col space-y-4">
           <FiveoutofnineHeader />
           <FeaturedWorks mileageLogs={mileageLogs} runningLogs={runningLogs} />
-          <CodeBlock
-            fileName="MyComponent.tsx"
-            highlightLines={[3, 4, 5, 6, 7, 8, 11]}
-            language="py"
-          >
-            {CODE}
-          </CodeBlock>
-          <CodeBlock highlightLines={[3, 4, 5, 6, 7, 8, 11]} language="tsx">
-            {CODE}
-          </CodeBlock>
-          <CodeBlock language="tsx">{CODE}</CodeBlock>
-          <CodeBlock language="tsx" showLineNumbers={false}>
-            {CODE}
-          </CodeBlock>
         </ContainerLayout>
       </BaseLayout>
     </>

@@ -17,9 +17,15 @@ import type { CodeBlockProps } from './types';
 import clsx from 'clsx';
 import { Check, Copy, File } from 'lucide-react';
 import { Highlight, themes } from 'prism-react-renderer';
+import Prism from 'prismjs';
 import { twMerge } from 'tailwind-merge';
 
 import { IconButton } from '@/components/ui';
+
+// Add support for additional languagaes
+(typeof global === 'undefined' ? window : global).Prism = Prism;
+require('prismjs/components/prism-python');
+require('prismjs/components/prism-solidity');
 
 const CodeBlock: FC<CodeBlockProps> = ({
   className,
@@ -82,7 +88,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
           </IconButton>
         </div>
       ) : null}
-      <Highlight theme={themes.vsDark} code={children} language={language}>
+      <Highlight prism={Prism} theme={themes.vsDark} code={children} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <div className="relative">
             <pre className={codeBlockPreVariants({ hasFileName })} style={style} {...rest}>
