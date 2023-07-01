@@ -41,21 +41,25 @@ const DesignComponentsDisplay: FC<JSX.IntrinsicElements['div']> = ({
   const code = useMemo(() => {
     const componentChildren = Children.toArray(children).filter((child) => isValidElement(child));
 
-    return prettier.format(
-      `<DesignComponentsDisplay${className ? ` className="${className}"` : ''}>\n${componentChildren
-        .map((child) => getJsxString(child))
-        .join('\n')}</DesignComponentsDisplay>`,
-      {
-        bracketSpacing: true,
-        semi: true,
-        trailingComma: 'all',
-        printWidth: 100,
-        tabWidth: 2,
-        singleQuote: true,
-        parser: 'babel',
-        plugins: [babel],
-      },
-    );
+    return prettier
+      .format(
+        `<DesignComponentsDisplay${
+          className ? ` className="${className}"` : ''
+        }>\n${componentChildren
+          .map((child) => getJsxString(child))
+          .join('\n')}</DesignComponentsDisplay>`,
+        {
+          bracketSpacing: true,
+          semi: true,
+          trailingComma: 'all',
+          printWidth: 100,
+          tabWidth: 2,
+          singleQuote: true,
+          parser: 'babel',
+          plugins: [babel],
+        },
+      )
+      .trim();
   }, [children, className, getJsxString]);
 
   return (
