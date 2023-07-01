@@ -1,5 +1,6 @@
 import { type FC, useEffect, useState } from 'react';
 
+import CodeBlockLanguageLogo from './language-logo';
 import {
   codeBlockContainerStyles,
   codeBlockHeaderFileNameContainerStyles,
@@ -38,6 +39,21 @@ const CodeBlock: FC<CodeBlockProps> = ({
 
   const hasFileName = fileName !== undefined;
 
+  const Icon =
+    language === 'javascript' || language === 'js'
+      ? CodeBlockLanguageLogo.JavaScript
+      : language === 'typescript' || language === 'ts'
+      ? CodeBlockLanguageLogo.TypeScript
+      : language === 'jsx'
+      ? CodeBlockLanguageLogo.React
+      : language === 'tsx'
+      ? CodeBlockLanguageLogo.React
+      : language === 'solidity' || language === 'sol'
+      ? CodeBlockLanguageLogo.Solidity
+      : language === 'python' || language === 'py'
+      ? CodeBlockLanguageLogo.Python
+      : File;
+
   const copyToClipboard = () => {
     if (!copied) {
       setCopied(true);
@@ -51,7 +67,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
       {hasFileName ? (
         <div className={codeBlockHeaderStyles}>
           <div className={codeBlockHeaderFileNameContainerStyles}>
-            <File className={codeBlockHeaderFileNameIconStyles} />
+            <Icon className={codeBlockHeaderFileNameIconStyles} />
             <div className={codeBlockHeaderFileNameStyles}>{fileName}</div>
           </div>
           <IconButton

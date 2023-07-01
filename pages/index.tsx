@@ -67,7 +67,7 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
           <CodeBlock
             fileName="MyComponent.tsx"
             highlightLines={[3, 4, 5, 6, 7, 8, 11]}
-            language="tsx"
+            language="py"
           >
             {CODE}
           </CodeBlock>
