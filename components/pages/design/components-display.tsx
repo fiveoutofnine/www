@@ -45,7 +45,16 @@ const DesignComponentsDisplay: FC<JSX.IntrinsicElements['div']> = ({
       `<DesignComponentsDisplay${className ? ` className="${className}"` : ''}>\n${componentChildren
         .map((child) => getJsxString(child))
         .join('\n')}</DesignComponentsDisplay>`,
-      { parser: 'babel', plugins: [babel] },
+      {
+        bracketSpacing: true,
+        semi: true,
+        trailingComma: 'all',
+        printWidth: 100,
+        tabWidth: 2,
+        singleQuote: true,
+        parser: 'babel',
+        plugins: [babel],
+      },
     );
   }, [children, className, getJsxString]);
 
