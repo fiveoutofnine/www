@@ -1,5 +1,3 @@
-import { LivePreview, LiveProvider } from 'react-live';
-
 import DesignLayout from '@/components/layouts/design';
 import DesignComponentsDisplay from '@/components/pages/design/components-display';
 import { Badge } from '@/components/ui';
@@ -10,16 +8,11 @@ A label used to display the status, category, or emphasis of an item.
 
 ## Size
 
-<LiveProvider
-  scope={{ DesignComponentsDisplay, Badge }}
-  code={`<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
   <Badge size="sm" children="Badge" />
   <Badge size="md" children="Badge" />
   <Badge size="lg" children="Badge" />
-</DesignComponentsDisplay>`}
->
-  <LivePreview />
-</LiveProvider>
+</DesignComponentsDisplay>
 
 ## Variant
 

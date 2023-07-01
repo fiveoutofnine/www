@@ -24,8 +24,12 @@ import { IconButton } from '@/components/ui';
 
 // Add support for additional languagaes
 (typeof global === 'undefined' ? window : global).Prism = Prism;
-require('prismjs/components/prism-python');
+require('prismjs/components/prism-javascript');
+require('prismjs/components/prism-typescript');
+require('prismjs/components/prism-jsx');
+require('prismjs/components/prism-tsx');
 require('prismjs/components/prism-solidity');
+require('prismjs/components/prism-python');
 
 const CodeBlock: FC<CodeBlockProps> = ({
   className,
