@@ -7,7 +7,7 @@ export const codeBlockHeaderFileNameContainerStyles = 'flex items-center space-x
 
 export const codeBlockHeaderFileNameIconStyles = 'w-4 h-4';
 
-export const codeBlockHeaderFileNameStyles = 'text-sm';
+export const codeBlockHeaderFileNameStyles = 'text-sm text-ellipsis overflow-hidden line-clamp-1';
 
 export const codeBlockHeaderStyles =
   'flex h-10 grow items-center justify-between border-b border-gray-6 bg-gray-2 pl-4 pr-2 rounded-top-xl';
@@ -18,7 +18,7 @@ export const codeBlockLineNumberStyles = 'mr-4 inline-block w-4 text-end text-gr
 
 export const codeBlockLineStyles = 'px-4 min-w-fit';
 
-export const codeBlockPreVariants = cva(['group', 'py-4', 'overflow-x-scroll'], {
+export const codeBlockPreVariants = cva(['group', 'py-4', 'overflow-x-scroll', 'my-0'], {
   variants: {
     hasFileName: { true: ['rounded-b-xl'], false: ['rounded-xl'] },
   },
