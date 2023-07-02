@@ -12,7 +12,44 @@ A succinct message that is displayed temporarily.
 
 ## Usage
 
-WIP (will come after `CodeBlock` is implemented).
+First, import and add the `Toaster` component to your app.
+
+```tsx fileName="pages/_app.tsx" language="tsx" highlightLines={[1, 7]}
+import { Toaster } from '@/components/ui';
+
+const App: FC<AppProps> = ({ Component, pageProps }) => {
+  return (
+    <main className={clsx(inter.variable, firaCode.variable)}>
+      <Component {...pageProps} />
+      <Toaster />
+    </main>
+  );
+};
+```
+
+Then, import the `useToast` hook, which returns a `toast` function that displays toasts when called:
+
+```tsx language="tsx" highlightLines={[1, 10, 15]}
+import { useToast } from '@/components/ui';
+
+export const ToastButton = ({
+  title = 'Title',
+  description = 'Swipe right to remove.',
+  intent,
+  action,
+  ...rest
+}) => {
+  const { toast } = useToast();
+
+  return (
+    <Button
+      intent={intent}
+      onClick={() => toast({ title, description, intent, action })}
+      {...rest}
+    />
+  );
+};
+```
 
 ## Default
 
@@ -34,7 +71,10 @@ WIP (will come after `CodeBlock` is implemented).
 
 To add an action to the toast, pass in a [`Button`](/design/component/button) element to the `action` prop. Note that `action` takes in any React node, but it is intended to be a `Button` element that triggers some relevant action.
 
-<DesignComponentsDisplay>
+<DesignComponentsDisplay
+  highlightLines={[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]}
+  sourceInitiallyDisplayed
+>
   <ToastButton
     title="Contract deployed"
     description="Contract deployed to 0x00000000…."
