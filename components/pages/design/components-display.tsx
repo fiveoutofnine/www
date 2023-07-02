@@ -5,7 +5,16 @@ import prettier from 'prettier';
 import babel from 'prettier/parser-babel';
 import { twMerge } from 'tailwind-merge';
 
-import { CodeBlock } from '@/components/ui';
+import {
+  Badge,
+  Button,
+  CodeBlock,
+  HoverCard,
+  IconButton,
+  Select,
+  Toaster,
+  Tooltip,
+} from '@/components/ui';
 
 /* Props */
 type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] & {
@@ -24,7 +33,26 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
     let children: ReactNode | undefined | null;
 
     const componentName =
-      typeof node.type !== 'string' && node.type.name ? node.type.name : 'Unknown';
+      node.type === Badge
+        ? Badge.displayName
+        : node.type === Button
+        ? Button.displayName
+        : node.type === CodeBlock
+        ? CodeBlock.displayName
+        : node.type === HoverCard
+        ? HoverCard.displayName
+        : node.type === IconButton
+        ? IconButton.displayName
+        : node.type === Select
+        ? Select.displayName
+        : node.type === Toaster
+        ? Toaster.displayName
+        : node.type === Tooltip
+        ? Tooltip.displayName
+        : typeof node.type !== 'string' && node.type.name
+        ? node.type.name
+        : 'Unknown';
+
     const propString = Object.entries(node.props)
       .map((prop) => {
         if (prop[0] === 'children') {

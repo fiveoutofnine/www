@@ -53,11 +53,22 @@ To add an action to the toast, pass in a [`Button`](/design/component/button) el
   />
 </DesignComponentsDisplay>
 
-export const ToastButton = ({ title = 'Title', description = 'Swipe right to remove.', intent, action, ...rest }) => {
+export const ToastButton = ({
+  title = 'Title',
+  description = 'Swipe right to remove.',
+  intent,
+  action,
+  ...rest
+}) => {
   const { toast } = useToast();
-
-return <Button intent={intent} onClick={() => toast({ title, description, intent, action })} {...rest} />;
-}
+  return (
+    <Button
+      intent={intent}
+      onClick={() => toast({ title, description, intent, action })}
+      {...rest}
+    />
+  );
+};
 
 export default (props) => (
   <DesignLayout
