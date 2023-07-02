@@ -3,6 +3,7 @@ import { ExternalLink } from 'lucide-react';
 import DesignLayout from '@/components/layouts/design';
 import DesignComponentsDisplay from '@/components/pages/design/components-display';
 import { Button, Toaster, useToast } from '@/components/ui';
+import ToastButton from '@/components/pages/design/toast-button';
 
 # Toast
 
@@ -92,23 +93,6 @@ To add an action to the toast, pass in a [`Button`](/design/component/button) el
     children="Show toast"
   />
 </DesignComponentsDisplay>
-
-export const ToastButton = ({
-  title = 'Title',
-  description = 'Swipe right to remove.',
-  intent,
-  action,
-  ...rest
-}) => {
-  const { toast } = useToast();
-  return (
-    <Button
-      intent={intent}
-      onClick={() => toast({ title, description, intent, action })}
-      {...rest}
-    />
-  );
-};
 
 export default (props) => (
   <DesignLayout

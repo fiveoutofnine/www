@@ -7,19 +7,11 @@ import prettier from 'prettier';
 import babel from 'prettier/parser-babel';
 import { twMerge } from 'tailwind-merge';
 
-import {
-  Badge,
-  Button,
-  CodeBlock,
-  HoverCard,
-  IconButton,
-  Select,
-  Toaster,
-  Tooltip,
-} from '@/components/ui';
+import ToastButton from '@/components/pages/design/toast-button';
+import { Badge, Button, CodeBlock, HoverCard, IconButton, Select, Tooltip } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
-const COMPONENTS = [Badge, Button, CodeBlock, HoverCard, IconButton, Select, Toaster, Tooltip];
+const COMPONENTS = [Badge, Button, CodeBlock, HoverCard, IconButton, Select, ToastButton, Tooltip];
 
 /* Props */
 type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] &
