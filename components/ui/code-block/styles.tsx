@@ -27,7 +27,7 @@ export const codeBlockLineNumberStyles = 'mr-4 inline-block w-4 text-end text-gr
 
 export const codeBlockLineStyles = 'px-4 min-w-fit';
 
-export const codeBlockPreVariants = cva(['group', 'py-4', 'overflow-x-scroll', 'my-0'], {
+export const codeBlockPreVariants = cva(['group', 'py-4', 'px-0', 'overflow-x-scroll', 'my-0'], {
   variants: {
     hasFileName: { true: ['rounded-b-xl', 'rounded-t-none'], false: ['rounded-xl'] },
   },

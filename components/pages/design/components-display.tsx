@@ -1,6 +1,8 @@
 import { Children, type FC, isValidElement, type ReactNode, useCallback, useMemo } from 'react';
 
+import * as Accordion from '@radix-ui/react-accordion';
 import clsx from 'clsx';
+import { ChevronRight } from 'lucide-react';
 import prettier from 'prettier';
 import babel from 'prettier/parser-babel';
 import { twMerge } from 'tailwind-merge';
@@ -15,18 +17,23 @@ import {
   Toaster,
   Tooltip,
 } from '@/components/ui';
+import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
 const COMPONENTS = [Badge, Button, CodeBlock, HoverCard, IconButton, Select, Toaster, Tooltip];
 
 /* Props */
-type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] & {
-  showSource?: boolean;
-};
+type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] &
+  Pick<CodeBlockProps, 'highlightLines'> & {
+    showSource?: boolean;
+    sourceInitiallyDisplayed?: boolean;
+  };
 
 /* Component */
 const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
   className,
+  highlightLines,
   showSource = true,
+  sourceInitiallyDisplayed = false,
   children,
   ...rest
 }) => {
@@ -137,9 +144,23 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
         {children}
       </div>
       {code.length > 0 ? (
-        <CodeBlock language="tsx" roundedTop={false}>
-          {code}
-        </CodeBlock>
+        <Accordion.Root
+          type="single"
+          defaultValue={sourceInitiallyDisplayed ? 'source-code' : undefined}
+          collapsible
+        >
+          <Accordion.Item value="source-code">
+            <Accordion.Trigger className="data-[state='open']:border-b-1 group z-10 flex h-10 w-full items-center space-x-2 border border-gray-6 bg-gray-3 px-4 text-sm text-gray-11 transition-colors hover:border-gray-7 hover:bg-gray-4 hover:text-gray-12 focus:outline-none focus-visible:rounded focus-visible:outline focus-visible:-outline-offset-1 focus-visible:outline-blue-9 active:bg-gray-5 data-[state='closed']:rounded-b-xl data-[state='open']:border-b-0">
+              <ChevronRight className="h-4 w-4 transition-transform group-data-[state='open']:rotate-90" />
+              <span>View source</span>
+            </Accordion.Trigger>
+            <Accordion.Content>
+              <CodeBlock language="tsx" highlightLines={highlightLines} roundedTop={false}>
+                {code}
+              </CodeBlock>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion.Root>
       ) : null}
     </div>
   );
