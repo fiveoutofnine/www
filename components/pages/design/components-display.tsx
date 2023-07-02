@@ -11,7 +11,16 @@ import ToastButton from '@/components/pages/design/toast-button';
 import { Badge, Button, CodeBlock, HoverCard, IconButton, Select, Tooltip } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
-const COMPONENTS = [Badge, Button, CodeBlock, HoverCard, IconButton, Select, ToastButton, Tooltip];
+const COMPONENT_NAMES = [
+  Badge,
+  Button,
+  CodeBlock,
+  HoverCard,
+  IconButton,
+  Select,
+  ToastButton,
+  Tooltip,
+];
 
 /* Props */
 type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] &
@@ -48,9 +57,9 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
       // Loop through the components in the design system to try and match. This
       // way, we also retain the full name, rather than the minified name weback
       // gives.
-      for (let i = 0; i < COMPONENTS.length; ++i) {
-        if (node.type === COMPONENTS[i]) {
-          componentName = COMPONENTS[i].displayName;
+      for (let i = 0; i < COMPONENT_NAMES.length; ++i) {
+        if (node.type === COMPONENT_NAMES[i]) {
+          componentName = COMPONENT_NAMES[i].displayName;
           break;
         }
       }
