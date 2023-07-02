@@ -16,6 +16,8 @@ import {
   Tooltip,
 } from '@/components/ui';
 
+const COMPONENTS = [Badge, Button, CodeBlock, HoverCard, IconButton, Select, Toaster, Tooltip];
+
 /* Props */
 type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] & {
   showSource?: boolean;
@@ -32,27 +34,42 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
     if (!isValidElement(node)) return `${node}`.trimEnd();
     let children: ReactNode | undefined | null;
 
-    const componentName =
-      node.type === Badge
-        ? Badge.displayName
-        : node.type === Button
-        ? Button.displayName
-        : node.type === CodeBlock
-        ? CodeBlock.displayName
-        : node.type === HoverCard
-        ? HoverCard.displayName
-        : node.type === IconButton
-        ? IconButton.displayName
-        : node.type === Select
-        ? Select.displayName
-        : node.type === Toaster
-        ? Toaster.displayName
-        : node.type === Tooltip
-        ? Tooltip.displayName
-        : typeof node.type !== 'string' && node.type.name
-        ? node.type.name
-        : 'Unknown';
+    // Attempt to figure out the component's name.
+    let componentName = undefined;
+    // If it's a string, just return it.
+    if (typeof node.type === 'string') {
+      componentName = node.type;
+    } else {
+      // Loop through the components in the design system to try and match. This
+      // way, we also retain the full name, rather than the minified name weback
+      // gives.
+      for (let i = 0; i < COMPONENTS.length; ++i) {
+        if (node.type === COMPONENTS[i]) {
+          componentName = COMPONENTS[i].displayName;
+          break;
+        }
+      }
+      // If we still don't have a name try the following in order:
+      //     1. Attempt to read `node.type.name`.
+      //     2. Attempt to read `node.type.render.displayName`.
+      //     3. Attempt to read `node.type.render.name`.
+      // If we still don't find a name, return ``Unknown''.
+      if (!componentName) {
+        if (node.type.name) componentName = node.type.name;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        else if (node.type.render && typeof node.type.render === 'function') {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          const { displayName, name } = node.type.render;
+          componentName = displayName || name;
+        }
+      }
+    }
+    // Failed to determine name.
+    componentName = componentName || 'Unknown';
 
+    // Construct string of props.
     const propString = Object.entries(node.props)
       .map((prop) => {
         if (prop[0] === 'children') {
