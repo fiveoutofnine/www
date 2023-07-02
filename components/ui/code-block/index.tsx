@@ -13,10 +13,11 @@ import {
   codeBlockPreVariants,
   codeBlockStyles,
 } from './styles';
+import { theme } from './theme';
 import type { CodeBlockProps } from './types';
 import clsx from 'clsx';
 import { Check, Copy, File } from 'lucide-react';
-import { Highlight, themes } from 'prism-react-renderer';
+import { Highlight } from 'prism-react-renderer';
 import Prism from 'prismjs';
 import { twMerge } from 'tailwind-merge';
 
@@ -93,7 +94,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
           </IconButton>
         </div>
       ) : null}
-      <Highlight prism={Prism} theme={themes.vsDark} code={children} language={language}>
+      <Highlight prism={Prism} theme={theme} code={children} language={language}>
         {({ tokens, getLineProps, getTokenProps }) => (
           <div className="relative">
             <pre

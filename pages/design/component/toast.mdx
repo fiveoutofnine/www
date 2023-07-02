@@ -2,8 +2,8 @@ import { ExternalLink } from 'lucide-react';
 
 import DesignLayout from '@/components/layouts/design';
 import DesignComponentsDisplay from '@/components/pages/design/components-display';
-import { Button, Toaster, useToast } from '@/components/ui';
 import ToastButton from '@/components/pages/design/toast-button';
+import { Button, Toaster, useToast } from '@/components/ui';
 
 # Toast
 
@@ -33,7 +33,7 @@ Then, import the `useToast` hook, which returns a `toast` function that displays
 ```tsx language="tsx" highlightLines={[1, 10, 15]}
 import { useToast } from '@/components/ui';
 
-export const ToastButton = ({
+const ToastButton: FC = ({
   title = 'Title',
   description = 'Swipe right to remove.',
   intent,
