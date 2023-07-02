@@ -132,7 +132,6 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
         )
         .trim();
     } catch (e) {
-      console.error(e);
       return '';
     }
   }, [children, className, getJsxString, showSource]);
