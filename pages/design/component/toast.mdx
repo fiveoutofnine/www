@@ -19,7 +19,7 @@ import { Toaster } from '@/components/ui';
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <main className={clsx(inter.variable, firaCode.variable)}>
+    <main>
       <Component {...pageProps} />
       <Toaster />
     </main>
