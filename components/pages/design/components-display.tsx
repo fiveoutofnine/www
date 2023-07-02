@@ -30,7 +30,13 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
   ...rest
 }) => {
   const getJsxString = useCallback((node: ReactNode): string => {
-    if (!isValidElement(node)) return node ? `\n{\n\`${node}\`\n}\n` : 'undefined';
+    if (!isValidElement(node)) {
+      if (!node) return 'undefined';
+
+      const nodeString = `${node}`;
+      if (nodeString.indexOf('\n') > -1) return `\n{\n\`${node}\`\n}\n`;
+      return nodeString;
+    }
     let children: ReactNode | undefined | null;
 
     // Attempt to figure out the component's name.
