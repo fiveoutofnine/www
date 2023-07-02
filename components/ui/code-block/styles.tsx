@@ -1,16 +1,13 @@
 import { cva } from 'class-variance-authority';
 
-export const codeBlockContainerVariants = cva(
-  ['flex', 'flex-col', 'overflow-hidden', 'border', 'border-gray-6'],
-  {
-    variants: {
-      roundedTop: {
-        true: ['rounded-xl'],
-        false: ['rounded-b-xl', 'rounded-t-none'],
-      },
+export const codeBlockContainerVariants = cva(['flex', 'flex-col', 'border', 'border-gray-6'], {
+  variants: {
+    roundedTop: {
+      true: ['rounded-xl'],
+      false: ['rounded-b-xl', 'rounded-t-none'],
     },
   },
-);
+});
 
 export const codeBlockHeaderFileNameContainerStyles = 'flex items-center space-x-2 text-gray-11';
 

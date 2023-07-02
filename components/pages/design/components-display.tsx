@@ -130,7 +130,7 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
   }, [children, className, getJsxString, showSource]);
 
   return (
-    <div className="grid w-full">
+    <div className="grid w-full grid-cols-1">
       <div
         className={twMerge(
           clsx(
@@ -154,7 +154,7 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
               <ChevronRight className="h-4 w-4 transition-transform group-data-[state='open']:rotate-90" />
               <span>View source</span>
             </Accordion.Trigger>
-            <Accordion.Content>
+            <Accordion.Content className="max-w-full">
               <CodeBlock language="tsx" highlightLines={highlightLines} roundedTop={false}>
                 {code}
               </CodeBlock>
