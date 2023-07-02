@@ -7,16 +7,24 @@ import { twMerge } from 'tailwind-merge';
 
 import { CodeBlock } from '@/components/ui';
 
-const DesignComponentsDisplay: FC<JSX.IntrinsicElements['div']> = ({
+/* Props */
+type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] & {
+  showSource?: boolean;
+};
+
+/* Component */
+const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
   className,
+  showSource = true,
   children,
   ...rest
 }) => {
   const getJsxString = useCallback((node: ReactNode): string => {
     if (!isValidElement(node)) return `${node}`.trimEnd();
-
     let children: ReactNode | undefined | null;
-    const componentName = typeof node.type !== 'string' ? node.type.name : 'Unknown';
+
+    const componentName =
+      typeof node.type !== 'string' && node.type.name ? node.type.name : 'Unknown';
     const propString = Object.entries(node.props)
       .map((prop) => {
         if (prop[0] === 'children') {
@@ -39,35 +47,42 @@ const DesignComponentsDisplay: FC<JSX.IntrinsicElements['div']> = ({
   }, []);
 
   const code = useMemo(() => {
-    const componentChildren = Children.toArray(children).filter((child) => isValidElement(child));
+    if (!showSource) return '';
 
-    return prettier
-      .format(
-        `<DesignComponentsDisplay${
-          className ? ` className="${className}"` : ''
-        }>\n${componentChildren
-          .map((child) => getJsxString(child))
-          .join('\n')}</DesignComponentsDisplay>`,
-        {
-          bracketSpacing: true,
-          semi: true,
-          trailingComma: 'all',
-          printWidth: 100,
-          tabWidth: 2,
-          singleQuote: true,
-          parser: 'babel',
-          plugins: [babel],
-        },
-      )
-      .trim();
-  }, [children, className, getJsxString]);
+    try {
+      const componentChildren = Children.toArray(children).filter((child) => isValidElement(child));
+
+      return prettier
+        .format(
+          `<DesignComponentsDisplay${
+            className ? ` className="${className}"` : ''
+          }>\n${componentChildren
+            .map((child) => getJsxString(child))
+            .join('\n')}</DesignComponentsDisplay>`,
+          {
+            bracketSpacing: true,
+            semi: true,
+            trailingComma: 'all',
+            printWidth: 100,
+            tabWidth: 2,
+            singleQuote: true,
+            parser: 'babel',
+            plugins: [babel],
+          },
+        )
+        .trim();
+    } catch (e) {
+      return '';
+    }
+  }, [children, className, getJsxString, showSource]);
 
   return (
-    <div className="w-full flex-col">
+    <div className="grid w-full">
       <div
         className={twMerge(
           clsx(
-            'grid w-full items-center justify-evenly gap-4 rounded-t-xl border border-b-0 border-gray-6 bg-gray-2 py-8',
+            'grid w-full items-center justify-evenly gap-4 border border-gray-6 bg-gray-2 py-8',
+            code.length > 0 ? 'rounded-t-xl border-b-0' : 'rounded-xl',
             className,
           ),
         )}
@@ -75,9 +90,11 @@ const DesignComponentsDisplay: FC<JSX.IntrinsicElements['div']> = ({
       >
         {children}
       </div>
-      <CodeBlock className="rounded-t-none" language="tsx">
-        {code}
-      </CodeBlock>
+      {code.length > 0 ? (
+        <CodeBlock language="tsx" roundedTop={false}>
+          {code}
+        </CodeBlock>
+      ) : null}
     </div>
   );
 };

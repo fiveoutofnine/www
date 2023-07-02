@@ -1,7 +1,16 @@
 import { cva } from 'class-variance-authority';
 
-export const codeBlockContainerStyles =
-  'flex flex-col overflow-hidden rounded-xl border border-gray-6';
+export const codeBlockContainerVariants = cva(
+  ['flex', 'flex-col', 'overflow-hidden', 'border', 'border-gray-6'],
+  {
+    variants: {
+      roundedTop: {
+        true: ['rounded-xl'],
+        false: ['rounded-b-xl', 'rounded-t-none'],
+      },
+    },
+  },
+);
 
 export const codeBlockHeaderFileNameContainerStyles = 'flex items-center space-x-2 text-gray-11';
 
@@ -20,7 +29,7 @@ export const codeBlockLineStyles = 'px-4 min-w-fit';
 
 export const codeBlockPreVariants = cva(['group', 'py-4', 'overflow-x-scroll', 'my-0'], {
   variants: {
-    hasFileName: { true: ['rounded-b-xl'], false: ['rounded-xl'] },
+    hasFileName: { true: ['rounded-b-xl', 'rounded-t-none'], false: ['rounded-xl'] },
   },
 });
 

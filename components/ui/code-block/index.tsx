@@ -2,7 +2,7 @@ import { type FC, useEffect, useState } from 'react';
 
 import CodeBlockLanguageLogo from './language-logo';
 import {
-  codeBlockContainerStyles,
+  codeBlockContainerVariants,
   codeBlockHeaderFileNameContainerStyles,
   codeBlockHeaderFileNameIconStyles,
   codeBlockHeaderFileNameStyles,
@@ -37,6 +37,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
   language = 'none',
   highlightLines = [],
   showLineNumbers = true,
+  roundedTop = true,
   children,
   ...rest
 }) => {
@@ -73,7 +74,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
   };
 
   return (
-    <div className={twMerge(clsx(codeBlockContainerStyles, className))}>
+    <div className={twMerge(clsx(codeBlockContainerVariants({ roundedTop }), className))}>
       {hasFileName ? (
         <div className={codeBlockHeaderStyles}>
           <div className={codeBlockHeaderFileNameContainerStyles}>
@@ -95,7 +96,11 @@ const CodeBlock: FC<CodeBlockProps> = ({
       <Highlight prism={Prism} theme={themes.vsDark} code={children} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <div className="relative">
-            <pre className={codeBlockPreVariants({ hasFileName })} style={style} {...rest}>
+            <pre
+              className={codeBlockPreVariants({ hasFileName: hasFileName || !roundedTop })}
+              style={style}
+              {...rest}
+            >
               <code className={codeBlockStyles}>
                 {tokens.map((line, i) => {
                   const { className, ...restLineProps } = getLineProps({ line });
@@ -126,7 +131,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
                       'absolute right-2 top-2',
                       isMobile ? 'flex' : 'hidden animate-in fade-in group-hover:flex',
                     )}
-                    variant="outline"
+                    variant="primary"
                     title="Copy to clipboard"
                     onClick={copyToClipboard}
                     type="button"
