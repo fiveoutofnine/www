@@ -23,7 +23,7 @@ export const codeBlockHeaderStyles =
 
 export const codeBlockLineHighlightedStyles = 'bg-blue-4 shadow-[inset_2px_0] shadow-blue-9';
 
-export const codeBlockLineNumberStyles = 'mr-4 inline-block w-4 text-end text-gray-11';
+export const codeBlockLineNumberStyles = 'mr-4 inline-block w-4 text-end text-gray-11 select-none';
 
 export const codeBlockLineStyles = 'px-4 min-w-fit';
 
