@@ -61,8 +61,9 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
         else if (node.type.render && typeof node.type.render === 'function') {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          const { displayName, name } = node.type.render;
-          componentName = displayName || name;
+          const render = node.type.render;
+          if (render.displayName) componentName = render.displayName;
+          else if (render.name) componentName = render.name;
         }
       }
     }
