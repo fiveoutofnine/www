@@ -94,11 +94,10 @@ const CodeBlock: FC<CodeBlockProps> = ({
         </div>
       ) : null}
       <Highlight prism={Prism} theme={themes.vsDark} code={children} language={language}>
-        {({ style, tokens, getLineProps, getTokenProps }) => (
+        {({ tokens, getLineProps, getTokenProps }) => (
           <div className="relative">
             <pre
               className={codeBlockPreVariants({ hasFileName: hasFileName || !roundedTop })}
-              style={style}
               {...rest}
             >
               <code className={codeBlockStyles}>
