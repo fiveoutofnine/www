@@ -46,7 +46,6 @@
     "prop-types": "^15.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-live": "^4.1.3",
     "recharts": "^2.5.0",
     "rehype-mdx-code-props": "^1.0.0",
     "tailwind-merge": "^1.12.0",
