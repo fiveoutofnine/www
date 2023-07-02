@@ -24,6 +24,7 @@ export type PageSlug =
   | '/design/libraries'
   // Design component pages
   | '/design/component/badge'
+  | '/design/component/code-block'
   | '/design/component/button'
   | '/design/component/hover-card'
   | '/design/component/select'

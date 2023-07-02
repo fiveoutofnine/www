@@ -44,6 +44,6 @@ const Tooltip = forwardRef(
     </TooltipPrimitive.Provider>
   ),
 );
-Tooltip.displayName = TooltipPrimitive.Content.displayName;
+Tooltip.displayName = 'Tooltip';
 
 export default Tooltip;

@@ -1,10 +1,11 @@
 import type { AppProps } from 'next/app';
-import { Inter } from 'next/font/google';
+import { Fira_Code, Inter } from 'next/font/google';
 import type { FC } from 'react';
 
 import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { Analytics } from '@vercel/analytics/react';
+import clsx from 'clsx';
 import { DefaultSeo } from 'next-seo';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
@@ -37,6 +38,11 @@ export const client = createClient({
 /* Initialize Fonts */
 const inter = Inter({
   variable: '--inter-font',
+  subsets: ['latin'],
+});
+
+const firaCode = Fira_Code({
+  variable: '--fira-code-font',
   subsets: ['latin'],
 });
 
@@ -89,7 +95,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 
       <WagmiConfig client={client}>
         <RainbowKitProvider modalSize="compact" chains={chains} theme={darkTheme()}>
-          <main className={inter.variable}>
+          <main className={clsx(inter.variable, firaCode.variable)}>
             <Component {...pageProps} />
             <Toaster />
           </main>

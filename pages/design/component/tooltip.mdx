@@ -70,7 +70,7 @@ A popup that displays information related to an element when the element receive
 
 ## Custom content
 
-<DesignComponentsDisplay>
+<DesignComponentsDisplay highlightLines={[3, 4, 5, 6, 7]}>
   <Tooltip content={<Badge size="sm" intent="primary" children="5/9 moment" />} inverted={false}>
     <Button className="w-fit" children="Hover" />
   </Tooltip>
@@ -78,7 +78,10 @@ A popup that displays information related to an element when the element receive
 
 ## Other
 
-<DesignComponentsDisplay className="grid-flow-col grid-rows-2 md:grid-rows-1">
+<DesignComponentsDisplay
+  className="grid-flow-col grid-rows-2 md:grid-rows-1"
+  highlightLines={[2, 5, 8]}
+>
   <Tooltip content="5/9 moment" hasArrow={false}>
     <Button className="w-fit" children="No arrow" />
   </Tooltip>

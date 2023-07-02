@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { FiveoutofnineHoverCard } from './component/hover-card.mdx';
-import { ToastButton } from './component/toast.mdx';
 import clsx from 'clsx';
 import { ArrowRight, ChevronRight, Github } from 'lucide-react';
 
 import DesignLayout from '@/components/layouts/design';
-import { Badge, Button, IconButton, Select, Tooltip } from '@/components/ui';
+import ToastButton from '@/components/pages/design/toast-button';
+import { Badge, Button, CodeBlock, IconButton, Select, Tooltip } from '@/components/ui';
 
 # Design
 
@@ -39,12 +39,24 @@ An open-source design system aiming to be accessible, functional, and provide a 
 
 ## Components
 
-<div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+<div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
   <ComponentFeature href="/design/component/badge">
     <Badge children="Badge" />
   </ComponentFeature>
   <ComponentFeature href="/design/component/button">
     <Button children="Button" />
+  </ComponentFeature>
+  <ComponentFeature
+    className="col-span-2 sm:col-span-1 md:col-span-2 xl:col-span-1"
+    href="/design/component/code-block"
+  >
+    <CodeBlock
+      className="mx-4 w-full"
+      fileName="code-block.sol"
+      language="sol"
+      showLineNumbers={false}
+      children={`if (p & 3 == 1) { if (x*x + y*y - p > 1) return false; } // https://twitter.com/fiveoutofnine/status/1658930303019122688`}
+    />
   </ComponentFeature>
   <ComponentFeature href="/design/component/hover-card">
     <FiveoutofnineHoverCard
@@ -72,13 +84,16 @@ An open-source design system aiming to be accessible, functional, and provide a 
   </ComponentFeature>
 </div>
 
-export const ComponentFeature = ({ href, children }) => {
+export const ComponentFeature = ({ className, href, children }) => {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => setIsMounted(true), []);
   const isMobile = isMounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
   return (
     <div
-      className="group relative flex h-32 w-full items-center justify-center rounded-xl border border-gray-7 bg-gray-2 transition-colors hover:border-gray-8"
+      className={clsx(
+        'group relative flex h-32 w-full items-center justify-center rounded-xl border border-gray-7 bg-gray-2 transition-colors hover:border-gray-8',
+        className,
+      )}
       tabIndex={-1}
     >
       {children}

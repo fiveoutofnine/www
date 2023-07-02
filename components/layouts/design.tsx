@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import { type FC, isValidElement, type ReactNode } from 'react';
 
 import { MDXProvider } from '@mdx-js/react';
 import { NextSeo } from 'next-seo';
@@ -9,6 +9,8 @@ import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
 import DesignNavBar from '@/components/pages/design/nav-bar';
 import DesignPageNav from '@/components/pages/design/page-nav';
+import { CodeBlock } from '@/components/ui';
+import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
 /* Props */
 type DesignLayoutProps = {
@@ -63,6 +65,20 @@ const DesignLayout: FC<DesignLayoutProps> = ({
         {children}
       </p>
     ),
+    pre: ({
+      children,
+      ...rest
+    }: JSX.IntrinsicElements['pre'] & Omit<CodeBlockProps, 'children'>) => {
+      const childrenProps = isValidElement(children) ? children.props : undefined;
+      const language = childrenProps?.className ? childrenProps.className.substring(9) : undefined;
+      const code = typeof childrenProps?.children === 'string' ? childrenProps.children.trim() : '';
+
+      return (
+        <CodeBlock language={language} {...rest}>
+          {code}
+        </CodeBlock>
+      );
+    },
   };
 
   return (

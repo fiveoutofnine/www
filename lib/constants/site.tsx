@@ -31,6 +31,7 @@ export const DESIGN_PAGES: Page[] = [
 export const DESIGN_COMPONENT_PAGES: Page[] = [
   { name: 'Badge', slug: '/design/component/badge' },
   { name: 'Button', slug: '/design/component/button' },
+  { name: 'Code Block', slug: '/design/component/code-block' },
   { name: 'Hover Card', slug: '/design/component/hover-card' },
   { name: 'Select', slug: '/design/component/select' },
   { name: 'Toast', slug: '/design/component/toast' },
