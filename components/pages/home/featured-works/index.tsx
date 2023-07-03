@@ -1,12 +1,5 @@
-import type { FC } from 'react';
-
-import BitTwiddlingFeature from './works/bit-twiddling';
-import ChessFeature from './works/chess';
-import ColormapRegistryFeature from './works/colormap-registry';
-import CoolContractsFeature from './works/cool-contracts';
-import RunningFeature from './works/running';
-import TxDotCoolFeature from './works/txdotcool';
-import TypingFeature from './works/typing';
+import dynamic from 'next/dynamic';
+import { FC } from 'react';
 
 import type { MileageLog } from '@/lib/types/running';
 
@@ -15,6 +8,15 @@ type FeaturedWorksProps = {
   mileageLogs: MileageLog[];
   runningLogs: MileageLog[];
 };
+
+/* Dynamic Imports */
+const BitTwiddlingFeature = dynamic(() => import('./works/bit-twiddling'));
+const ChessFeature = dynamic(() => import('./works/chess') as never);
+const ColormapRegistryFeature = dynamic(() => import('./works/colormap-registry'));
+const CoolContractsFeature = dynamic(() => import('./works/cool-contracts'));
+const RunningFeature = dynamic(() => import('./works/running'));
+const TxDotCoolFeature = dynamic(() => import('./works/txdotcool'));
+const TypingFeature = dynamic(() => import('./works/typing'));
 
 /* Component */
 const FeaturedWorks: FC<FeaturedWorksProps> = ({ mileageLogs, runningLogs }) => {
