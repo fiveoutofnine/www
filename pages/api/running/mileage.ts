@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    // Apple shorcuts sends data as a string with newlines.
+    // Apple shortcuts sends data as a string with newlines.
     const affectedDays: Set<number> = new Set();
     const affectedMonths: Set<number> = new Set();
     const hourlyMileage = req.body.data.split('\n').map((sample: string) => {
