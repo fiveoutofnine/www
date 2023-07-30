@@ -61,7 +61,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({
       </h3>
     ),
     p: ({ children }: JSX.IntrinsicElements['p']) => (
-      <p className="font-normal not-italic text-gray-11 before:content-none after:content-none group-[.mdx--blockquote]:my-0 group-[.mdx--blockquote]:text-blue-12">
+      <p className="font-light not-italic text-gray-11 before:content-none after:content-none group-[.mdx--blockquote]:my-0 group-[.mdx--blockquote]:text-blue-12">
         {children}
       </p>
     ),

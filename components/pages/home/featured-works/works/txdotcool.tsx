@@ -35,7 +35,7 @@ const TxDotCoolFeature: FC = () => {
       }
       button={
         <Tooltip content="WIP">
-          <Button size="sm" href="https://tx.cool" rightIcon={<ExternalLink />} newTab disabled>
+          <Button size="sm" href="https://tx.cool" rightIcon={<ExternalLink />} newTab>
             Visit
           </Button>
         </Tooltip>
