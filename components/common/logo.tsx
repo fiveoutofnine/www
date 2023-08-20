@@ -4,13 +4,19 @@ import type { FC } from 'react';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type LogoProps = {
   className?: string;
   href?: string;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const Logo: FC<LogoProps> = ({ className, href = '/' }) => {
   return (
     <Link

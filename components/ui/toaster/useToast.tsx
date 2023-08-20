@@ -3,11 +3,17 @@ import { type ReactElement, type ReactNode, useEffect, useState } from 'react';
 import { ToastAction } from '.';
 import type { ToastProps } from './types';
 
-/* Constants */
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type Action =
   | {
       type: ActionType['ADD_TOAST'];
@@ -48,7 +54,10 @@ type ToasterToast = ToastProps & {
   action?: ReactElement<typeof ToastAction>;
 };
 
-/* Hook */
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 const useToast = () => {
   const [state, setState] = useState<State>(memoryState);
 
@@ -111,8 +120,8 @@ export const reducer = (state: State, action: Action): State => {
     case 'DISMISS_TOAST': {
       const { toastId } = action;
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
+      // ! Side effects ! - This could be extracted into a `dismissToast()`
+      // action, but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {

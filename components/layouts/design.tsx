@@ -12,7 +12,10 @@ import DesignPageNav from '@/components/pages/design/page-nav';
 import { CodeBlock } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type DesignLayoutProps = {
   category: string;
   name: string;
@@ -21,7 +24,10 @@ type DesignLayoutProps = {
   children?: ReactNode;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const DesignLayout: FC<DesignLayoutProps> = ({
   category,
   name,

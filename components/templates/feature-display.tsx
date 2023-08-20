@@ -3,7 +3,10 @@ import type { FC, ReactNode } from 'react';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type FeatureDisplayProps = {
   className?: string;
   name: string;
@@ -14,7 +17,10 @@ type FeatureDisplayProps = {
   children: ReactNode;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const FeatureDisplay: FC<FeatureDisplayProps> = ({
   className,
   name,

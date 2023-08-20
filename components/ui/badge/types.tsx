@@ -1,8 +1,14 @@
 import { badgeVariants } from './styles';
 import type { VariantProps } from 'class-variance-authority';
 
-/* Variant Props */
+// -----------------------------------------------------------------------------
+// Variant props
+// -----------------------------------------------------------------------------
+
 export type BadgeVariantProps = VariantProps<typeof badgeVariants>;
 
-/* Component Props */
+// -----------------------------------------------------------------------------
+// Component props
+// -----------------------------------------------------------------------------
+
 export type BadgeProps = JSX.IntrinsicElements['div'] & BadgeVariantProps;

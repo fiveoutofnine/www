@@ -39,7 +39,7 @@ export default async function handler(
   if ((error && status !== 406) || (data && data.length === 0) || !data) {
     try {
       // Fetch metadata.
-      const tokenURI = await publicClient.readContract({
+      const tokenURI = (await publicClient.readContract({
         // fiveoutofnine Chess NFT contract
         address: '0xB543F9043b387cE5B3d1F0d916E42D8eA2eBA2E0',
         abi: [
@@ -53,7 +53,7 @@ export default async function handler(
         ],
         functionName: '_tokenURI',
         args: [BigNumber.from(id)],
-      });
+      })) as string;
       const tokenURIParsed = JSON.parse(
         Buffer.from(tokenURI.substring(29), 'base64').toString(),
       ) as ChessNFTMetadata;

@@ -10,13 +10,19 @@ import ContainerLayout from '@/components/layouts/container';
 import FeaturedWorks from '@/components/pages/home/featured-works';
 import FiveoutofnineHeader from '@/components/pages/home/header';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type HomePageProps = {
   mileageLogs: MileageLog[];
   runningLogs: MileageLog[];
 };
 
-/* Page */
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
 const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
   return (
     <>
@@ -50,7 +56,10 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
   );
 };
 
-/* Get Static Props */
+// -----------------------------------------------------------------------------
+// Get static props
+// -----------------------------------------------------------------------------
+
 export const getStaticProps: GetStaticProps = async () => {
   const { data: mileageLogs } = await fetchMileageLogs({ type: 'monthly', limit: 12 });
   const { data: runningLogs } = await fetchRunningLogs();

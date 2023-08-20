@@ -10,13 +10,19 @@ import TypingFeature from './works/typing';
 
 import type { MileageLog } from '@/lib/types/running';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type FeaturedWorksProps = {
   mileageLogs: MileageLog[];
   runningLogs: MileageLog[];
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const FeaturedWorks: FC<FeaturedWorksProps> = ({ mileageLogs, runningLogs }) => {
   return (
     <div className="grid grid-cols-2 gap-4 min-[560px]:grid-cols-4 min-[960px]:grid-cols-6">

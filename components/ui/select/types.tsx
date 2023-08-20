@@ -4,10 +4,16 @@ import { SelectItem } from '.';
 import { selectVariants } from './styles';
 import type { VariantProps } from 'class-variance-authority';
 
-/* Variant Props */
+// -----------------------------------------------------------------------------
+// Variant props
+// -----------------------------------------------------------------------------
+
 export type SelectVariantProps = VariantProps<typeof selectVariants>;
 
-/* Component Props */
+// -----------------------------------------------------------------------------
+// Component props
+// -----------------------------------------------------------------------------
+
 export type SelectItemProps = JSX.IntrinsicElements['option'];
 
 export type SelectProps = Omit<JSX.IntrinsicElements['select'], 'size'> &
@@ -16,7 +22,10 @@ export type SelectProps = Omit<JSX.IntrinsicElements['select'], 'size'> &
     selectSize?: number;
   };
 
-/* Composition */
+// -----------------------------------------------------------------------------
+// Composition
+// -----------------------------------------------------------------------------
+
 export type SelectComposition = {
   Item: typeof SelectItem;
 };

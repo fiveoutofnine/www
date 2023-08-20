@@ -18,16 +18,22 @@ import { formatValueToPrecision } from '@/lib/utils';
 
 import { Select, Tooltip } from '@/components/ui';
 
-/* Props */
+const SQUARE_SIZE = 12;
+const GAP = 2;
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type RunningFeatureDetailHeatmapProps = {
   runningLogs: MileageLog[];
   unit: LengthUnit;
 };
 
-const SQUARE_SIZE = 12;
-const GAP = 2;
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
-/* Component */
 const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
   runningLogs,
   unit,

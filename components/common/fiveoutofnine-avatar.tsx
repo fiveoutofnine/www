@@ -6,13 +6,19 @@ import { twMerge } from 'tailwind-merge';
 
 import avatar from '@/public/avatar.svg';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type FiveoutofnineAvatarProps = {
   className?: string;
   size?: number;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const FiveoutofnineAvatar: FC<FiveoutofnineAvatarProps> = ({ className, size = 40 }) => {
   return (
     <Image

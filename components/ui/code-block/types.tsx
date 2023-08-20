@@ -1,10 +1,16 @@
 import { codeBlockContainerVariants } from './styles';
 import type { VariantProps } from 'class-variance-authority';
 
-/* Variant Props */
+// -----------------------------------------------------------------------------
+// Variant props
+// -----------------------------------------------------------------------------
+
 type CodeBlockVariantProps = VariantProps<typeof codeBlockContainerVariants>;
 
-/* Component Props */
+// -----------------------------------------------------------------------------
+// Component props
+// -----------------------------------------------------------------------------
+
 export type CodeBlockProps = Omit<JSX.IntrinsicElements['pre'], 'children'> &
   CodeBlockVariantProps & {
     fileName?: string;
@@ -19,6 +25,8 @@ export type CodeBlockProps = Omit<JSX.IntrinsicElements['pre'], 'children'> &
       | 'sol'
       | 'python'
       | 'py'
+      | 'bash'
+      | 'sh'
       | 'none';
     highlightLines?: number[];
     showLineNumbers?: boolean;

@@ -4,14 +4,20 @@ import type { ComponentPropsWithoutRef, FC } from 'react';
 
 import { HoverCard } from '@/components/ui';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type LinkPreviewProps = ComponentPropsWithoutRef<typeof Link> & {
   src: string;
   width?: number;
   height?: number;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const LinkPreview: FC<LinkPreviewProps> = ({
   src,
   width = 256,

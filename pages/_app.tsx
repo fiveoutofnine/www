@@ -16,7 +16,10 @@ import '@/styles/globals.css';
 
 import { Toaster } from '@/components/ui';
 
-/* Config */
+// -----------------------------------------------------------------------------
+// RainbowKit + Wagmi config
+// -----------------------------------------------------------------------------
+
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID;
 
 const { chains, provider } = configureChains(
@@ -35,7 +38,10 @@ export const client = createClient({
   provider,
 });
 
-/* Initialize Fonts */
+// -----------------------------------------------------------------------------
+// Fonts
+// -----------------------------------------------------------------------------
+
 const inter = Inter({
   variable: '--inter-font',
   subsets: ['latin'],
@@ -46,7 +52,10 @@ const firaCode = Fira_Code({
   subsets: ['latin'],
 });
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const DESCRIPTION = 'personal website';
 
@@ -97,8 +106,8 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <RainbowKitProvider modalSize="compact" chains={chains} theme={darkTheme()}>
           <main className={clsx(inter.variable, firaCode.variable)}>
             <Component {...pageProps} />
-            <Toaster />
           </main>
+          <Toaster />
         </RainbowKitProvider>
       </WagmiConfig>
       <Analytics />

@@ -5,13 +5,19 @@ import type { PageSlug } from '@/lib/types/site';
 import NavBar from '@/components/common/nav-bar';
 import SeoBase, { type SeoBaseProps } from '@/components/templates/seo-base';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type BaseLayoutProps = SeoBaseProps & {
   pageSlug?: PageSlug;
   children?: ReactNode;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const BaseLayout: FC<BaseLayoutProps> = ({ title, subtitle, pageSlug, children }) => {
   return (
     <>

@@ -4,14 +4,20 @@ import { toastDescriptionVariants, toastTitleVariants, toastVariants } from './s
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import type { VariantProps } from 'class-variance-authority';
 
-/* Variant Props */
+// -----------------------------------------------------------------------------
+// Variant props
+// -----------------------------------------------------------------------------
+
 export type ToastDescriptionVariantProps = VariantProps<typeof toastDescriptionVariants>;
 
 export type ToastTitleVariantProps = VariantProps<typeof toastTitleVariants>;
 
 export type ToastVariantProps = VariantProps<typeof toastVariants>;
 
-/* Component Props */
+// -----------------------------------------------------------------------------
+// Component props
+// -----------------------------------------------------------------------------
+
 export type ToastActionProps = ComponentPropsWithoutRef<typeof ToastPrimitives.Action> &
   Pick<ToastProps, 'intent'>;
 
