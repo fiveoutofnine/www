@@ -3,12 +3,18 @@ import type { FC } from 'react';
 import { Badge } from '@/components/ui';
 import type { BadgeProps } from '@/components/ui/badge/types';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type CategoryTagProps = Omit<BadgeProps, 'variant' | 'intent'> & {
   category: 'NFT' | 'Writing' | 'Web' | 'On-chain';
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const CategoryTag: FC<CategoryTagProps> = ({ size, category, ...rest }) => {
   const CATEGORY_TO_COLORS: Record<typeof category, string> = {
     NFT: 'orange',

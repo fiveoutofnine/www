@@ -2,7 +2,10 @@ import type { FC, ReactElement } from 'react';
 
 import { Button, useToast } from '@/components/ui';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type ToastButtonProps = {
   title?: string;
   description: string;
@@ -10,7 +13,10 @@ type ToastButtonProps = {
   action?: ReactElement;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const ToastButton: FC<ToastButtonProps> = ({
   title = 'Title',
   description = 'Swipe right to remove.',

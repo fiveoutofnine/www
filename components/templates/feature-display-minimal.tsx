@@ -3,7 +3,10 @@ import type { FC, ReactNode } from 'react';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type FeatureDisplayMinimalProps = {
   className?: string;
   name: string;
@@ -12,7 +15,10 @@ type FeatureDisplayMinimalProps = {
   button: ReactNode;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const FeatureDisplayMinimal: FC<FeatureDisplayMinimalProps> = ({
   className,
   name,

@@ -10,12 +10,18 @@ import type { PageSlug } from '@/lib/types/site';
 
 import { Button, IconButton } from '@/components/ui';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type DesignNavBarProps = {
   selected?: PageSlug;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const DesignNavBar: FC<DesignNavBarProps> = (props) => {
   return (
     <Fragment>

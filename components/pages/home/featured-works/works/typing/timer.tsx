@@ -5,14 +5,20 @@ import clsx from 'clsx';
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import { Tooltip } from '@/components/ui';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type TypingFeatureDetailTimerProps = {
   startTime?: Date;
   endTime?: Date;
   fiveoutofnineTime: number;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const TypingFeatureDetailTimer: FC<TypingFeatureDetailTimerProps> = ({
   startTime,
   endTime,

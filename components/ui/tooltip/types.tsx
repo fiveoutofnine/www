@@ -4,10 +4,16 @@ import { tooltipVariants } from './styles';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import type { VariantProps } from 'class-variance-authority';
 
-/* Variant props */
+// -----------------------------------------------------------------------------
+// Variant props
+// -----------------------------------------------------------------------------
+
 type TooltipVariantProps = VariantProps<typeof tooltipVariants>;
 
-/* Component props */
+// -----------------------------------------------------------------------------
+// Component props
+// -----------------------------------------------------------------------------
+
 export type TooltipProps = ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> &
   TooltipVariantProps & {
     content: ReactNode;

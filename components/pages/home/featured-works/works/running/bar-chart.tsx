@@ -17,13 +17,19 @@ import { formatValueToPrecision } from '@/lib/utils';
 
 import { Tooltip } from '@/components/ui';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type RunningFeatureDetailBarChartProps = {
   mileageLogs: MileageLog[];
   unit: LengthUnit;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
   mileageLogs,
   unit,

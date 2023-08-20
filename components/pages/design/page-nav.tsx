@@ -6,12 +6,18 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { DESIGN_COMPONENT_PAGES, DESIGN_PAGES } from '@/lib/constants/site';
 import type { PageSlug } from '@/lib/types/site';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type DesignPageNavProps = {
   pageSlug?: PageSlug;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const DesignPageNav: FC<DesignPageNavProps> = ({ pageSlug }) => {
   const pages = useMemo(() => DESIGN_PAGES.concat(DESIGN_COMPONENT_PAGES), []);
   const prevPage = useMemo(() => {

@@ -16,7 +16,7 @@ import {
 import { theme } from './theme';
 import type { CodeBlockProps } from './types';
 import clsx from 'clsx';
-import { Check, Copy, File } from 'lucide-react';
+import { Check, Copy, File, TerminalSquare } from 'lucide-react';
 import { Highlight } from 'prism-react-renderer';
 import Prism from 'prismjs';
 import { twMerge } from 'tailwind-merge';
@@ -31,6 +31,7 @@ require('prismjs/components/prism-jsx');
 require('prismjs/components/prism-tsx');
 require('prismjs/components/prism-solidity');
 require('prismjs/components/prism-python');
+require('prismjs/components/prism-bash');
 
 const CodeBlock: FC<CodeBlockProps> = ({
   className,
@@ -64,6 +65,8 @@ const CodeBlock: FC<CodeBlockProps> = ({
       ? CodeBlockLanguageLogo.Solidity
       : language === 'python' || language === 'py'
       ? CodeBlockLanguageLogo.Python
+      : language === 'bash' || language === 'sh'
+      ? TerminalSquare
       : File;
 
   const copyToClipboard = () => {

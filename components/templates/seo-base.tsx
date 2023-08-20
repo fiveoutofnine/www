@@ -1,13 +1,19 @@
 import Head from 'next/head';
 import type { FC } from 'react';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export type SeoBaseProps = {
   title?: string;
   subtitle?: string;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const SeoBase: FC<SeoBaseProps> = ({ title = '5/9', subtitle }) => {
   const fullTitle = subtitle && subtitle.length > 0 ? `${title} | ${subtitle}` : title;
 

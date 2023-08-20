@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { type FC, isValidElement, type ReactNode } from 'react';
 
 import { MDXProvider } from '@mdx-js/react';
@@ -12,7 +13,10 @@ import DesignPageNav from '@/components/pages/design/page-nav';
 import { CodeBlock } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type DesignLayoutProps = {
   category: string;
   name: string;
@@ -21,7 +25,10 @@ type DesignLayoutProps = {
   children?: ReactNode;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const DesignLayout: FC<DesignLayoutProps> = ({
   category,
   name,
@@ -30,11 +37,30 @@ const DesignLayout: FC<DesignLayoutProps> = ({
   children,
 }) => {
   const components = {
-    a: ({ children, ...rest }: JSX.IntrinsicElements['a']) => (
-      <a className="mdx--link group font-medium text-blue-9 no-underline hover:underline" {...rest}>
-        {children}
-      </a>
-    ),
+    a: ({ href, children, ...rest }: JSX.IntrinsicElements['a']) => {
+      if (href && href.startsWith('/')) {
+        return (
+          <Link
+            className="mdx--link group font-medium text-blue-9 no-underline hover:underline"
+            href={href}
+          >
+            {children}
+          </Link>
+        );
+      }
+
+      return (
+        <a
+          className="mdx--link group w-fit font-medium text-blue-9 no-underline hover:underline"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          {...rest}
+        >
+          {children}
+        </a>
+      );
+    },
     blockquote: ({ children }: JSX.IntrinsicElements['blockquote']) => (
       <blockquote className="mdx--blockquote group rounded-xl border border-blue-6 bg-blue-3 p-4 text-blue-12">
         {children}

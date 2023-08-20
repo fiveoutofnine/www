@@ -22,14 +22,20 @@ const COMPONENT_NAMES = [
   Tooltip,
 ];
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] &
   Pick<CodeBlockProps, 'highlightLines'> & {
     showSource?: boolean;
     sourceInitiallyDisplayed?: boolean;
   };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
   className,
   highlightLines,

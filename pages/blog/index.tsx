@@ -8,7 +8,6 @@ import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
 import { Button } from '@/components/ui';
 
-/* Page */
 const BlogPage: NextPage = () => {
   return (
     <>

@@ -12,7 +12,10 @@ import type { MileageLog } from '@/lib/types/running';
 import FeatureDisplay from '@/components/templates/feature-display';
 import { IconButton, Tooltip } from '@/components/ui';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type RunningFeatureProps = {
   mileageLogs: MileageLog[];
   runningLogs: MileageLog[];
@@ -20,7 +23,10 @@ type RunningFeatureProps = {
 
 type RunningFeatureDetailProps = RunningFeatureProps;
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const RunningFeature: FC<RunningFeatureProps> = ({ mileageLogs, runningLogs }) => {
   return (
     <FeatureDisplay

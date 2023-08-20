@@ -9,12 +9,18 @@ import type { PageSlug } from '@/lib/types/site';
 import ConnectButton from '@/components/common/connect-button';
 import { Button, IconButton, Tooltip } from '@/components/ui';
 
-/* Props */
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type NavBarProps = {
   selected?: PageSlug;
 };
 
-/* Component */
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 const NavBar: FC<NavBarProps> = ({ selected }) => {
   return (
     <Fragment>

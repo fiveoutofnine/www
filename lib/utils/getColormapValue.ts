@@ -15,8 +15,8 @@ const computeLinearInterpolation = (
   // Clamp the position to the range `[0, 0xff]`.
   position = Math.max(0, Math.min(0xff, position));
 
-  // We loop until we find the segment with the greatest position less
-  // than `position`.
+  // We loop until we find the segment with the greatest position less than
+  // `position`.
   let i = 0;
   while (segmentData[i + 1].position < position) {
     ++i;
@@ -28,8 +28,7 @@ const computeLinearInterpolation = (
   const startIntensity = start.startIntensity;
   const endIntensity = end.endIntensity;
 
-  // Compute the value with a piece-wise linear interpolation on the
-  // segments.
+  // Compute the value with a piece-wise linear interpolation on the segments.
   const change = position - start.position;
   const length = end.position - start.position;
 
