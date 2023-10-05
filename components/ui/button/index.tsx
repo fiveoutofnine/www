@@ -43,9 +43,11 @@ const Button = forwardRef(
       ...rest,
     };
 
-    // Destructure ref from props for Slot component to be type compatible
+    // Destructure `ref` from `props: JSX.IntrinsicElements['button']`, so the
+    // remaining props are type-compatible with `<Link />` for the `<Slot />`
+    // component to merge in.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { ref: _, ...otherProps } = props;
+    const { ref: _, ...rest } = props;
 
     if (href && !newTab) {
       return (
