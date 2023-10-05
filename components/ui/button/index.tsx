@@ -49,7 +49,7 @@ const Button = forwardRef(
 
     if (href && !newTab) {
       return (
-        <Slot {...otherProps}>
+        <Slot {...rest}>
           <Link href={href}>
             {leftIcon && variant !== 'text' ? (
               <span className={buttonIconVariants({ size })}>{leftIcon}</span>
