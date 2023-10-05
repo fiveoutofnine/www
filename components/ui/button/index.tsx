@@ -3,6 +3,7 @@ import { type ForwardedRef, forwardRef } from 'react';
 
 import { buttonIconVariants, buttonVariants } from './styles';
 import type { ButtonProps } from './types';
+import { Slot } from '@radix-ui/react-slot';
 import { cx } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
@@ -42,10 +43,14 @@ const Button = forwardRef(
       ...rest,
     };
 
+    // Destructure ref from props for Slot component to be type compatible
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { ref: _, ...otherProps } = props;
+
     if (href && !newTab) {
       return (
-        <Link href={href} passHref legacyBehavior>
-          <button {...props}>
+        <Slot {...otherProps}>
+          <Link href={href}>
             {leftIcon && variant !== 'text' ? (
               <span className={buttonIconVariants({ size })}>{leftIcon}</span>
             ) : null}
@@ -53,8 +58,8 @@ const Button = forwardRef(
             {rightIcon && variant !== 'text' ? (
               <span className={buttonIconVariants({ size })}>{rightIcon}</span>
             ) : null}
-          </button>
-        </Link>
+          </Link>
+        </Slot>
       );
     }
 
