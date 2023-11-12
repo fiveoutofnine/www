@@ -44,10 +44,15 @@ const FiveoutofnineHeader: FC = () => {
 
       {/* Links (desktop) */}
       <div className="hidden space-x-2 md:flex">
-        <Button intent="primary" href="https://twitter.com/fiveoutofnine" leftIcon={<Twitter />}>
+        <Button
+          intent="primary"
+          href="https://twitter.com/fiveoutofnine"
+          leftIcon={<Twitter />}
+          newTab
+        >
           Twitter
         </Button>
-        <Button href="https://github.com/fiveoutofnine" leftIcon={<Github />}>
+        <Button href="https://github.com/fiveoutofnine" leftIcon={<Github />} newTab>
           GitHub
         </Button>
       </div>
