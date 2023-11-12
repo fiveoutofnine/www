@@ -45,7 +45,7 @@ const Button = forwardRef(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { ref: _, ...restWithoutRef } = props;
 
-    if (href) {
+    if (href && !disabled) {
       return (
         <Slot ref={ref} {...restWithoutRef}>
           <Link href={href} {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
