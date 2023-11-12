@@ -19,6 +19,7 @@ export const buttonVariants = cva(
     'justify-center',
     'items-center',
     'font-medium',
+    'no-underline',
     'transition-colors',
     'focus-visible:outline-none',
     'focus-visible:ring-2',
