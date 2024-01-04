@@ -8,7 +8,7 @@ import { fetchMileageLogs, fetchRunningLogs } from '@/lib/utils';
 import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
 import FeaturedWorks from '@/components/pages/home/featured-works';
-import FiveoutofnineHeader from '@/components/pages/home/header';
+import KentMiguelHeader from '@/components/pages/home/header';
 
 // -----------------------------------------------------------------------------
 // Props
@@ -48,8 +48,8 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
 
       <BaseLayout subtitle="Home" pageSlug="/">
         <ContainerLayout className="flex flex-col space-y-4">
-          <FiveoutofnineHeader />
-          <FeaturedWorks mileageLogs={mileageLogs} runningLogs={runningLogs} />
+          <KentMiguelHeader />
+          <FeaturedWorks />
         </ContainerLayout>
       </BaseLayout>
     </>

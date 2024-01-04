@@ -62,10 +62,10 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <DefaultSeo
-        titleTemplate="%s | 5/9"
-        defaultTitle="5/9"
+        titleTemplate="%s | Kent Miguel"
+        defaultTitle="Kent Miguel"
         description={DESCRIPTION}
-        canonical="https://fiveoutofnine.com"
+        canonical="https://kentmiguel.com"
         themeColor="#000"
         openGraph={{
           type: 'website',
@@ -75,8 +75,8 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           site_name: 'fiveoutofnine',
         }}
         twitter={{
-          handle: '@fiveoutofnine',
-          site: '@fiveoutofnine',
+          handle: '@kmiguel10',
+          site: '@kmiguel10',
           cardType: 'summary_large_image',
         }}
         additionalLinkTags={[

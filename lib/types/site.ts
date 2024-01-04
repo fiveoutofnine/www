@@ -17,6 +17,9 @@ export type ExternalLink = {
  */
 export type PageSlug =
   | '/'
+  | '/resume'
+  | '/projects'
+  | '/about'
   | '/blog'
   // Design pages
   | '/design'
@@ -32,13 +35,11 @@ export type PageSlug =
   | '/design/component/tooltip';
 
 /**
- * Type for an external page linked on [**fiveoutofnine.com**](https://fiveoutofnine.com),
+ * Type for an external page linked on [**fiveoutofnine.com**](https://kentmiguel.com),
  * intended to be part of configuration files (e.g. for the navigation bar
  * component).
  */
-export type PageExternalLink =
-  | 'https://twitter.com/fiveoutofnine'
-  | 'https://github.com/fiveoutofnine';
+export type PageExternalLink = 'https://twitter.com/kmiguel10' | 'https://github.com/kmiguel10';
 
 /**
  * Type for a page on [**fiveoutofnine.com**](https://fiveoutofnine.com),

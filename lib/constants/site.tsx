@@ -1,4 +1,4 @@
-import { Home, Paintbrush2, PenTool } from 'lucide-react';
+import { FileText, FolderKanban, Ghost, Home, PenLine } from 'lucide-react';
 
 import type { Page } from '@/lib/types/site';
 
@@ -8,8 +8,10 @@ import type { Page } from '@/lib/types/site';
  */
 export const NAVBAR_PAGES: Page[] = [
   { name: 'Home', slug: '/', icon: <Home /> },
-  { name: 'Blog', slug: '/blog', icon: <PenTool /> },
-  { name: 'Design', slug: '/design', icon: <Paintbrush2 /> },
+  { name: 'Resume', slug: '/resume', icon: <FileText /> },
+  { name: 'Projects', slug: '/projects', icon: <FolderKanban /> },
+  { name: 'About Me', slug: '/about', icon: <Ghost /> },
+  { name: 'Blog', slug: '/blog', icon: <PenLine /> },
 ];
 
 /**
