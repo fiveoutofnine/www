@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 
+import AboutMe from '../contents/about-me';
 import BitTwiddlingFeature from './works/bit-twiddling';
 import ChessFeature from './works/chess';
 import ColormapRegistryFeature from './works/colormap-registry';
@@ -26,13 +27,14 @@ type FeaturedWorksProps = {
 const FeaturedWorks: FC<FeaturedWorksProps> = ({ mileageLogs, runningLogs }) => {
   return (
     <div className="grid grid-cols-2 gap-4 min-[560px]:grid-cols-4 min-[960px]:grid-cols-6">
-      <ChessFeature />
+      <AboutMe />
+      {/* <ChessFeature />
       <TxDotCoolFeature />
-      <TypingFeature />
+      <TypingFeature /> */}
       <RunningFeature mileageLogs={mileageLogs} runningLogs={runningLogs} />
-      <ColormapRegistryFeature />
+      {/* <ColormapRegistryFeature />
       <BitTwiddlingFeature />
-      <CoolContractsFeature />
+      <CoolContractsFeature /> */}
     </div>
   );
 };

@@ -33,7 +33,7 @@ const { connectors } = getDefaultWallets({
 });
 
 export const client = createClient({
-  autoConnect: true,
+  autoConnect: false, //turned off
   connectors,
   provider,
 });

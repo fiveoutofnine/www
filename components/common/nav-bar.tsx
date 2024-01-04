@@ -33,7 +33,7 @@ const NavBar: FC<NavBarProps> = ({ selected }) => {
 const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
   return (
     <nav className="pointer-events-auto sticky top-0 z-popover hidden h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:flex">
-      <Logo />
+      {/* <Logo /> */}
       {NAVBAR_PAGES.map((page) => {
         const pageSelected = selected === page.slug;
 
@@ -50,7 +50,7 @@ const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
         );
       })}
       <div className="flex-grow" />
-      <ConnectButton />
+      {/* <ConnectButton /> */}
     </nav>
   );
 };
