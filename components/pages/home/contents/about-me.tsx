@@ -5,8 +5,6 @@ import { Scroll, User } from 'lucide-react';
 import ContentDisplay from '@/components/templates/new-templates/content-display';
 import { Button } from '@/components/ui';
 
-ContentDisplay;
-
 const AboutMe = () => {
   return (
     <ContentDisplay
