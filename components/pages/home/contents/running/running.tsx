@@ -29,16 +29,12 @@ const Running = () => {
         .order('year', { ascending: true })
         .order('month');
 
-      console.log('monthlyData', monthlyData);
-
       const runData =
         monthlyData?.map((run) => ({
           date: String(run.month),
           value: run.total_distance,
           year: run.year,
         })) ?? [];
-
-      console.log('RUNDATA', runData);
 
       setRunData(runData);
 
@@ -47,8 +43,6 @@ const Running = () => {
         .from('running')
         .select('date, distance')
         .order('date', { ascending: true });
-
-      console.log('running data', dailyData);
 
       const dailyRunData =
         dailyData?.map((run) => ({
