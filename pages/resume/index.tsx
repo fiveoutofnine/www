@@ -8,7 +8,6 @@ import { NextSeo } from 'next-seo';
 import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
 import KentMiguelHeader from '@/components/pages/home/header';
-import { Button } from '@/components/ui';
 
 const Resume = () => {
   return (

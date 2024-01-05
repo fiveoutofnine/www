@@ -4,7 +4,7 @@ import { CHESS_NFT_FALLBACK, CHESS_NFTS } from '@/lib/constants/chess-nfts';
 import { idSchema } from '@/lib/schemas';
 import supabase from '@/lib/services/supabase';
 import type { ChessFeature } from '@/lib/types/chess';
-import { validateQuery } from '@/lib/utils';
+import validateQuery from '@/lib/utils/validateQuery';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ChessFeature>) {
   const { id } = validateQuery(idSchema, req.query);

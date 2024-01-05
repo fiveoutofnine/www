@@ -7,7 +7,7 @@ import { mainnet } from 'viem/chains';
 
 import { idSchema } from '@/lib/schemas';
 import type { ChessNFTMetadata } from '@/lib/types/chess';
-import { validateQuery } from '@/lib/utils';
+import validateQuery from '@/lib/utils/validateQuery';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

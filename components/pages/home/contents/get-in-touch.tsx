@@ -18,7 +18,7 @@ export default function GetInTouch() {
         </Button>
       }
     >
-      <div className="text-gray-11 p-4 text-sm">
+      <div className="p-4 text-sm text-gray-11">
         <p className="overflow-auto ">
           I am actively looking for job opportunities. My inbox is open and feel free to ask me
           anything!

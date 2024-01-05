@@ -14,7 +14,7 @@ import { Info } from 'lucide-react';
 
 import type { MileageLog } from '@/lib/types/running';
 import type { LengthUnit } from '@/lib/types/units';
-import { formatValueToPrecision } from '@/lib/utils';
+import formatValueToPrecision from '@/lib/utils/formatValueToPrecision';
 
 import { Select, Tooltip } from '@/components/ui';
 

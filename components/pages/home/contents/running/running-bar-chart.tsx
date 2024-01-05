@@ -85,7 +85,7 @@ export default function RunningBarChart({
         >
           <span className="text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
         </Tooltip>
-        <span className="text-gray-11 text-xs">
+        <span className="text-xs text-gray-11">
           {unitName + ' '}
           {unit.description ? (
             <Tooltip content={unit.description} sideOffset={0}>
@@ -96,7 +96,7 @@ export default function RunningBarChart({
           ) : null}
         </span>
       </div>
-      <div className="text-gray-11 mt-0.5 text-xs">
+      <div className="mt-0.5 text-xs text-gray-11">
         {data.length > 0
           ? `${data[0].date.toLocaleDateString('en-US', {
               month: 'short',
@@ -148,7 +148,7 @@ export default function RunningBarChart({
 
               return payload && active && payload.length > 0 && payload[0].value ? (
                 <div
-                  className="border-gray-6 bg-gray-3 items-center rounded border p-2"
+                  className="items-center rounded border border-gray-6 bg-gray-3 p-2"
                   tabIndex={-1}
                 >
                   <div className="font-medium">
@@ -156,9 +156,9 @@ export default function RunningBarChart({
                       {/* @ts-ignore */}
                       {formatValueToPrecision(payload[0].value, 2, false)}
                     </span>
-                    <span className="text-gray-11 text-xs">{`${unitName}/day`}</span>
+                    <span className="text-xs text-gray-11">{`${unitName}/day`}</span>
                   </div>
-                  <div className="text-gray-11 text-xs">{`${monthName} ${year}`}</div>
+                  <div className="text-xs text-gray-11">{`${monthName} ${year}`}</div>
                 </div>
               ) : null;
             }}

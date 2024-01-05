@@ -12,7 +12,7 @@ const Skills = () => {
       name="Skills"
       description="Tech Stack I use"
     >
-      <div className="text-gray-11 px-4 py-4 text-sm">
+      <div className="px-4 py-4 text-sm text-gray-11">
         <ul className="list-disc overflow-auto px-4">
           <li>
             Coding Languages : Solidity, JavaScript, Typescript (Next.js, Vue.js, React.js) , Java

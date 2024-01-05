@@ -28,7 +28,7 @@ export default function RunningDetails({
 
   return (
     <Tabs.Root className="flex h-full w-full" defaultValue="bar-chart" orientation="vertical">
-      <div className="border-gray-6 flex h-full w-10 flex-col items-center justify-between border-r">
+      <div className="flex h-full w-10 flex-col items-center justify-between border-r border-gray-6">
         <Tabs.List className="flex w-10 flex-col items-center space-y-2 p-2">
           {/** Wrap in Icon button */}
           <Tabs.Trigger value="bar-chart" asChild>
@@ -59,7 +59,7 @@ export default function RunningDetails({
             {/* <Grid /> */}
           </Tabs.Trigger>
         </Tabs.List>
-        <div className="border-gray-6 border-t p-2">
+        <div className="border-t border-gray-6 p-2">
           <Tooltip content="Change units" side="left">
             <IconButton size="sm" onClick={handleUnitChange} aria-label="Change units">
               <ArrowLeftRight />

@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { idSchema } from '@/lib/schemas';
 import supabase from '@/lib/services/supabase';
-import { validateQuery } from '@/lib/utils';
+import validateQuery from '@/lib/utils/validateQuery';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<string>) {
   const { id } = validateQuery(idSchema, req.query);

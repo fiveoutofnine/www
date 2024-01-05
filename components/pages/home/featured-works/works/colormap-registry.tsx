@@ -6,7 +6,7 @@ import { LayoutGroup, motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 
 import { COLORMAPS } from '@/lib/constants/colormaps';
-import { getColormapValue } from '@/lib/utils';
+import getColormapValue from '@/lib/utils/getColormapValue';
 
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
