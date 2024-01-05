@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+}
+
 html,
 body,
 main {
@@ -15,7 +18,7 @@ main {
 }
 
 a {
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-9;
+  @apply focus-visible:ring-blue-9 focus-visible:outline-none focus-visible:ring-2;
   color: inherit;
   text-decoration: none;
 }

@@ -18,7 +18,7 @@ const AboutMe = () => {
         </Button>
       }
     >
-      <div className="px-4 py-4 text-sm text-gray-11">
+      <div className="text-gray-11 px-4 py-4 text-sm">
         <p className="overflow-auto">
           I am a full-stack developer with experience in React.js and Vue.js. I also have a strong
           interest in the blockchain technology and web3. I was a previous fullstack developer at

@@ -22,7 +22,7 @@ type FiveoutofnineAvatarProps = {
 const KentMiguelAvatar: FC<FiveoutofnineAvatarProps> = ({ className, size = 40 }) => {
   return (
     <Image
-      className={clsx(twMerge('my-0 rounded-full border border-gray-6', className))}
+      className={clsx(twMerge('border-gray-6 my-0 rounded-full border', className))}
       width={size}
       height={size}
       src={avatar}

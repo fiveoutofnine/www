@@ -1,8 +1,6 @@
-import { cookies } from 'next/headers';
 import { useEffect, useState } from 'react';
 
 import RunningDetails from './running-details';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { createClient } from '@supabase/supabase-js';
 import { Footprints } from 'lucide-react';
 

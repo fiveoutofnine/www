@@ -13,7 +13,7 @@ import {
 
 import type { MileageLog } from '@/lib/types/running';
 import type { LengthUnit } from '@/lib/types/units';
-import { formatValueToPrecision } from '@/lib/utils';
+import { formatValueToPrecision } from '@/lib/utils/formatValueToPrecision';
 
 import { Tooltip } from '@/components/ui';
 
@@ -95,7 +95,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
         >
           <span className="text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
         </Tooltip>
-        <span className="text-xs text-gray-11">
+        <span className="text-gray-11 text-xs">
           {unitName + ' '}
           {unit.description ? (
             <Tooltip content={unit.description} sideOffset={0}>
@@ -106,7 +106,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
           ) : null}
         </span>
       </div>
-      <div className="mt-0.5 text-xs text-gray-11">
+      <div className="text-gray-11 mt-0.5 text-xs">
         {data.length > 0
           ? `${data[0].date.toLocaleDateString('en-US', {
               month: 'short',
@@ -151,7 +151,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
 
               return payload && active && payload.length > 0 && payload[0].value ? (
                 <div
-                  className="items-center rounded border border-gray-6 bg-gray-3 p-2"
+                  className="border-gray-6 bg-gray-3 items-center rounded border p-2"
                   tabIndex={-1}
                 >
                   <div className="font-medium">
@@ -160,9 +160,9 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
                       {/* @ts-ignore */}
                       {formatValueToPrecision(payload[0].value, 2, false)}
                     </span>
-                    <span className="text-xs text-gray-11">{`${unitName}/day`}</span>
+                    <span className="text-gray-11 text-xs">{`${unitName}/day`}</span>
                   </div>
-                  <div className="text-xs text-gray-11">{`${monthName} ${year}`}</div>
+                  <div className="text-gray-11 text-xs">{`${monthName} ${year}`}</div>
                 </div>
               ) : null;
             }}

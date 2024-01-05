@@ -3,7 +3,8 @@ import type { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 
 import type { MileageLog } from '@/lib/types/running';
-import { fetchMileageLogs, fetchRunningLogs } from '@/lib/utils';
+import fetchMileageLogs from '@/lib/utils/fetchMileageLogs';
+import fetchRunningLogs from '@/lib/utils/fetchRunningLogs';
 
 import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';

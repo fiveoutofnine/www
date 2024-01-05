@@ -1,16 +1,15 @@
 import { usePathname } from 'next/navigation';
 import type { FC } from 'react';
 
-import { Download, Github, Linkedin, Twitter } from 'lucide-react';
+import { Download, Github, Linkedin } from 'lucide-react';
 
 import KentMiguelAvatar from '@/components/common/kentmiguel-avatar';
-import LinkPreview from '@/components/templates/link-preview';
 import { Button } from '@/components/ui';
 
 const KentMiguelHeader: FC = () => {
   const currentPath = usePathname();
   return (
-    <div className="relative flex flex-col items-center rounded-xl border border-gray-6 bg-gray-2 p-3 md:flex-row md:justify-between md:rounded-2xl md:p-6">
+    <div className="border-gray-6 bg-gray-2 relative flex flex-col items-center rounded-xl border p-3 md:flex-row md:justify-between md:rounded-2xl md:p-6">
       <div className="jumbo absolute inset-0 z-0 opacity-50"></div>
       <div className="relative z-10 flex h-full w-full items-center">
         <div className="flex w-full items-center">
@@ -20,7 +19,7 @@ const KentMiguelHeader: FC = () => {
           <KentMiguelAvatar className="mr-2 md:hidden" size={40} />
           <div>
             <div className="text-base font-semibold md:text-2xl">Kent Miguel</div>
-            <span className="mt-0.5 text-sm text-gray-11 md:mt-1 md:text-base">
+            <span className="text-gray-11 mt-0.5 text-sm md:mt-1 md:text-base">
               Working on{' '}
               {/* <LinkPreview
               className="font-medium text-gray-12 hover:underline"

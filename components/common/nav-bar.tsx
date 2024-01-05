@@ -32,7 +32,7 @@ const NavBar: FC<NavBarProps> = ({ selected }) => {
 
 const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
   return (
-    <nav className="pointer-events-auto sticky top-0 z-popover hidden h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:flex">
+    <nav className="z-popover border-gray-6 pointer-events-auto sticky top-0 hidden h-12 items-center border-b bg-white px-4 dark:bg-black md:flex">
       {/* <Logo /> */}
       {NAVBAR_PAGES.map((page) => {
         const pageSelected = selected === page.slug;
@@ -40,7 +40,7 @@ const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
         return (
           <Button
             key={page.slug}
-            className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-4' : '')}
+            className={clsx('ml-2', pageSelected ? 'bg-gray-4 cursor-default' : '')}
             variant="ghost"
             href={page.slug}
             disabled={pageSelected}
@@ -57,15 +57,15 @@ const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
 
 const MobileNavBar: FC<NavBarProps> = ({ selected }) => {
   return (
-    <nav className="pointer-events-auto sticky top-0 z-popover flex h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:hidden">
-      <Logo />
+    <nav className="z-popover border-gray-6 pointer-events-auto sticky top-0 flex h-12 items-center border-b bg-white px-4 dark:bg-black md:hidden">
+      {/* <Logo /> */}
       {NAVBAR_PAGES.map((page) => {
         const pageSelected = selected === page.slug;
 
         return (
           <Tooltip key={page.slug} content={page.name}>
             <IconButton
-              className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-4' : '')}
+              className={clsx('ml-2', pageSelected ? 'bg-gray-4 cursor-default' : '')}
               variant="ghost"
               href={page.slug}
               disabled={pageSelected}
@@ -76,7 +76,7 @@ const MobileNavBar: FC<NavBarProps> = ({ selected }) => {
         );
       })}
       <div className="flex-grow" />
-      <ConnectButton />
+      {/* <ConnectButton /> */}
     </nav>
   );
 };
