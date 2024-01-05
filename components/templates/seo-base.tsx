@@ -14,7 +14,7 @@ export type SeoBaseProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-const SeoBase: FC<SeoBaseProps> = ({ title = '5/9', subtitle }) => {
+const SeoBase: FC<SeoBaseProps> = ({ title = 'Kent Miguel', subtitle }) => {
   const fullTitle = subtitle && subtitle.length > 0 ? `${title} | ${subtitle}` : title;
 
   return (

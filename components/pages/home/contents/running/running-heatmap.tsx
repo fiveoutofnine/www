@@ -155,7 +155,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
       <div className="flex items-center justify-between">
         <div className="font-medium">
           <span className="text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
-          <span className="text-gray-11 text-xs">
+          <span className="text-xs text-gray-11">
             {`${unit.spaceBefore ? ' ' : ''}${unit.name}`}{' '}
             {unit.description ? (
               <Tooltip content={unit.description} sideOffset={0}>
@@ -195,7 +195,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
             onPointerMove={handlePointerMove}
             onMouseLeave={hideTooltip}
           >
-            <desc>5/9&apos;s running heatmap for {year}</desc>
+            <desc>Kent Miguel&apos;s running heatmap for {year}</desc>
             {Array(12)
               .fill(null)
               .map((_, month) => {
@@ -249,7 +249,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
                       <path
                         key={`running-heatmap-${x}-${y}`}
                         className={clsx(
-                          'stroke stroke-gray-7 hover:stroke-gray-8 transition-colors',
+                          'stroke stroke-gray-7 transition-colors hover:stroke-gray-8',
                           day === undefined ? 'fill-transparent' : 'fill-blue-9',
                         )}
                         {...props}
@@ -269,7 +269,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
               top={tooltipTop}
               left={tooltipLeft}
               offsetLeft={-SQUARE_SIZE}
-              className="border-gray-6 bg-gray-3 text-gray-12 pointer-events-none absolute left-0 top-0 z-50 rounded border px-2 py-1 text-sm shadow-md transition-colors"
+              className="pointer-events-none absolute left-0 top-0 z-50 rounded border border-gray-6 bg-gray-3 px-2 py-1 text-sm text-gray-12 shadow-md transition-colors"
               style={{}}
             >
               {JSON.parse(tooltipData).value}
@@ -288,20 +288,20 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
         {/* Left gradient to hide overflow */}
         <div
           className={clsx(
-            'from-gray-3 pointer-events-none absolute bottom-0 left-0 h-[112px] w-4 bg-gradient-to-r transition-opacity',
+            'pointer-events-none absolute bottom-0 left-0 h-[112px] w-4 bg-gradient-to-r from-gray-3 transition-opacity',
             scrollIsAtLeft ? 'opacity-0' : 'opacity-100',
           )}
         />
         {/* Right gradient to hide overflow */}
         <div
           className={clsx(
-            'from-gray-3 pointer-events-none absolute bottom-0 right-0 h-[112px] w-4 bg-gradient-to-l transition-opacity',
+            'pointer-events-none absolute bottom-0 right-0 h-[112px] w-4 bg-gradient-to-l from-gray-3 transition-opacity',
             scrollIsAtRight ? 'opacity-0' : 'opacity-100',
           )}
         />
       </div>
       <div className="flex grow items-end justify-end space-x-2">
-        <div className="text-gray-11 flex items-center space-x-1 text-xs">
+        <div className="flex items-center space-x-1 text-xs text-gray-11">
           <span>Less</span>
           <svg
             width="68"

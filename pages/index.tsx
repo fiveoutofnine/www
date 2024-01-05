@@ -31,8 +31,8 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
         openGraph={{
           type: 'website',
           locale: 'en_US',
-          url: 'https://fiveoutofnine.com',
-          site_name: 'fiveoutofnine',
+          url: 'https://kentmiguel.com',
+          site_name: 'kentmiguel',
           images: [
             {
               url: 'https://fiveoutofnine.com/static/og/home.png',
@@ -43,7 +43,7 @@ const HomePage: NextPage<HomePageProps> = ({ mileageLogs, runningLogs }) => {
           ],
         }}
         twitter={{
-          handle: '@fiveoutofnine',
+          handle: '@kmiguel10',
         }}
       />
 
