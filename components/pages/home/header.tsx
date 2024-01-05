@@ -20,7 +20,8 @@ const KentMiguelHeader: FC = () => {
           <div>
             <div className="text-base font-semibold md:text-2xl">Kent Miguel</div>
             <span className="mt-0.5 text-sm text-gray-11 md:mt-1 md:text-base">
-              Working on{' '}
+              Full-Stack Developer , Security Researcher
+              {/* Working on{' '} */}
               {/* <LinkPreview
               className="font-medium text-gray-12 hover:underline"
               href="https://waterfall.market"
