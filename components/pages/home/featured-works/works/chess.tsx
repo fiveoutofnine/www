@@ -3,8 +3,8 @@ import { type FC, useState } from 'react';
 import clsx from 'clsx';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-import type { ChessFeature } from '@/lib/types/chess';
 import { CHESS_NFT_FALLBACK } from '@/lib/constants/chess-nfts';
+import type { ChessFeature } from '@/lib/types/chess';
 
 import ChessPiece from '@/components/common/chess-piece';
 import CategoryTag from '@/components/templates/category-tag';
@@ -14,7 +14,7 @@ import { Button, IconButton, Tooltip } from '@/components/ui';
 const ChessFeature: FC = () => {
   return (
     <FeatureDisplay
-      className="w-full min-[960px]:w-64 col-span-2"
+      className="col-span-2 w-full min-[960px]:w-64"
       name="Chess"
       description="On-chain chess engine"
       symbol={
@@ -35,7 +35,7 @@ const ChessFeature: FC = () => {
         </svg>
       }
       button={
-        <Tooltip content='WIP'>
+        <Tooltip content="WIP">
           <Button size="sm" href="/chess" rightIcon={<ChevronRight />} disabled>
             Play
           </Button>
@@ -81,12 +81,12 @@ const ChessFeatureDetail: FC = () => {
           href={`https://etherscan.io/tx/${nft.txHash}`}
           style={{
             aspectRatio: '1 / 1',
-            transform: 'scale(0.128)', /* Height is hard-coded, so this should always be `0.128` */
+            transform: 'scale(0.128)' /* Height is hard-coded, so this should always be `0.128` */,
             transformOrigin: '0 0',
           }}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label='View NFT mint transaction on Etherscan'
+          aria-label="View NFT mint transaction on Etherscan"
           dangerouslySetInnerHTML={{
             __html: Buffer.from(nft.image, 'base64')
               .toString()
@@ -100,8 +100,8 @@ const ChessFeatureDetail: FC = () => {
         size="sm"
         onClick={fetchPrevMove}
         disabled={nft.tokenId === 0}
-        aria-label='View previous move'
-        >
+        aria-label="View previous move"
+      >
         <ChevronLeft />
       </IconButton>
       <IconButton
@@ -109,8 +109,8 @@ const ChessFeatureDetail: FC = () => {
         size="sm"
         onClick={fetchNextMove}
         disabled={nft.tokenId === 100}
-        aria-label='View next move'
-        >
+        aria-label="View next move"
+      >
         <ChevronRight />
       </IconButton>
 

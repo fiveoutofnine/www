@@ -28,6 +28,7 @@ const { chains, provider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
+  projectId: '6825eba687e5d07335ee40b8d1184913',
   appName: 'Flywheel',
   chains: [...chains],
 });
