@@ -1,3 +1,5 @@
+import ContainerLayout from '@/components/layouts/container';
+
 export default function Page() {
-  return null;
+  return <ContainerLayout></ContainerLayout>;
 }

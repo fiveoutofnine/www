@@ -6,6 +6,7 @@ import Web3Provider from './web3-provider';
 import { Analytics } from '@vercel/analytics/react';
 import clsx from 'clsx';
 
+import NavBar from '@/components/common/nav-bar';
 import { Toaster } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
@@ -47,13 +48,16 @@ export const viewport: Viewport = {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ background: 'var(--gray1)' }}>
+    <html lang="en" className="dark" style={{ background: 'var(--gray1)' }}>
       <body className={clsx(inter.className, 'relative min-h-screen w-full')}>
-        <Web3Provider>{children}</Web3Provider>
+        <Web3Provider>
+          <NavBar />
+          <main className="relative flex grow flex-col">{children}</main>
+          <Toaster />
+        </Web3Provider>
       </body>
-      <Toaster />
       <Analytics />
     </html>
   );

@@ -1,4 +1,4 @@
-import { type FC, Fragment } from 'react';
+import { Fragment } from 'react';
 
 import Logo from './logo';
 import clsx from 'clsx';
@@ -20,7 +20,7 @@ type NavBarProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-const NavBar: FC<NavBarProps> = ({ selected }) => {
+const NavBar: React.FC<NavBarProps> = ({ selected }) => {
   return (
     <Fragment>
       <DesktopNavBar selected={selected} />
@@ -29,7 +29,7 @@ const NavBar: FC<NavBarProps> = ({ selected }) => {
   );
 };
 
-const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
+const DesktopNavBar: React.FC<NavBarProps> = ({ selected }) => {
   return (
     <nav className="pointer-events-auto sticky top-0 z-popover hidden h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:flex">
       <Logo />
@@ -54,7 +54,7 @@ const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
   );
 };
 
-const MobileNavBar: FC<NavBarProps> = ({ selected }) => {
+const MobileNavBar: React.FC<NavBarProps> = ({ selected }) => {
   return (
     <nav className="pointer-events-auto sticky top-0 z-popover flex h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:hidden">
       <Logo />

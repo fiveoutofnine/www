@@ -1,5 +1,3 @@
-import type { FC, ReactNode } from 'react';
-
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -8,14 +6,14 @@ import { twMerge } from 'tailwind-merge';
 // -----------------------------------------------------------------------------
 
 type ContainerLayoutProps = JSX.IntrinsicElements['div'] & {
-  children?: ReactNode;
+  children?: React.ReactNode;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-const ContainerLayout: FC<ContainerLayoutProps> = ({ className, children, ...rest }) => {
+const ContainerLayout: React.FC<ContainerLayoutProps> = ({ className, children, ...rest }) => {
   return (
     <div
       className={twMerge(
