@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { type FC, isValidElement, type ReactNode } from 'react';
 
 import { MDXProvider } from '@mdx-js/react';
-import { NextSeo } from 'next-seo';
 
 import type { PageSlug } from '@/lib/types/site';
 
@@ -29,13 +28,7 @@ type DesignLayoutProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-const DesignLayout: FC<DesignLayoutProps> = ({
-  category,
-  name,
-  description,
-  selected,
-  children,
-}) => {
+const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
   const components = {
     a: ({ href, children, ...rest }: JSX.IntrinsicElements['a']) => {
       if (href && href.startsWith('/')) {
@@ -109,7 +102,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({
 
   return (
     <>
-      <NextSeo
+      {/* <NextSeo
         openGraph={{
           type: 'website',
           locale: 'en_US',
@@ -126,7 +119,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({
             },
           ],
         }}
-      />
+      /> */}
 
       <BaseLayout title="5/9 Design" subtitle={name} pageSlug="/design">
         {/* Note: `pb-6` overrides `pb-4` on small devices. `<DesignNavBar />`

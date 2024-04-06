@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { createClient } from '@supabase/supabase-js';
-import { BigNumber } from 'ethers';
 import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
 
@@ -52,7 +51,7 @@ export default async function handler(
           },
         ],
         functionName: '_tokenURI',
-        args: [BigNumber.from(id)],
+        args: [BigInt(id)],
       })) as string;
       const tokenURIParsed = JSON.parse(
         Buffer.from(tokenURI.substring(29), 'base64').toString(),

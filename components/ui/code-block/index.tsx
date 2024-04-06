@@ -1,3 +1,5 @@
+'use client';
+
 import { type FC, useEffect, useState } from 'react';
 
 import CodeBlockLanguageLogo from './language-logo';
@@ -56,18 +58,18 @@ const CodeBlock: FC<CodeBlockProps> = ({
     language === 'javascript' || language === 'js'
       ? CodeBlockLanguageLogo.JavaScript
       : language === 'typescript' || language === 'ts'
-      ? CodeBlockLanguageLogo.TypeScript
-      : language === 'jsx'
-      ? CodeBlockLanguageLogo.React
-      : language === 'tsx'
-      ? CodeBlockLanguageLogo.React
-      : language === 'solidity' || language === 'sol'
-      ? CodeBlockLanguageLogo.Solidity
-      : language === 'python' || language === 'py'
-      ? CodeBlockLanguageLogo.Python
-      : language === 'bash' || language === 'sh'
-      ? TerminalSquare
-      : File;
+        ? CodeBlockLanguageLogo.TypeScript
+        : language === 'jsx'
+          ? CodeBlockLanguageLogo.React
+          : language === 'tsx'
+            ? CodeBlockLanguageLogo.React
+            : language === 'solidity' || language === 'sol'
+              ? CodeBlockLanguageLogo.Solidity
+              : language === 'python' || language === 'py'
+                ? CodeBlockLanguageLogo.Python
+                : language === 'bash' || language === 'sh'
+                  ? TerminalSquare
+                  : File;
 
   const copyToClipboard = () => {
     if (!copied) {

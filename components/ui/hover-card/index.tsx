@@ -1,3 +1,5 @@
+'use client';
+
 import { type ForwardedRef, forwardRef } from 'react';
 
 import { hoverCardArrowVariants, hoverCardVariants } from './styles';

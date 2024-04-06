@@ -138,16 +138,16 @@ const ChessFeatureDetail: FC = () => {
                     pieceOverlap > 1
                       ? 'bg-purple-9'
                       : nft.userMove.from === index
-                      ? 'bg-blue-3'
-                      : nft.userMove.to === index
-                      ? 'bg-blue-9'
-                      : nft.contractMove.from === index
-                      ? 'bg-red-3'
-                      : nft.contractMove.to === index
-                      ? 'bg-red-9'
-                      : (2709 >> index % 12) & 1
-                      ? 'bg-gray-9'
-                      : 'bg-gray-4',
+                        ? 'bg-blue-3'
+                        : nft.userMove.to === index
+                          ? 'bg-blue-9'
+                          : nft.contractMove.from === index
+                            ? 'bg-red-3'
+                            : nft.contractMove.to === index
+                              ? 'bg-red-9'
+                              : (2709 >> index % 12) & 1
+                                ? 'bg-gray-9'
+                                : 'bg-gray-4',
                   )}
                 >
                   {piece === '1' || piece === '9' ? (

@@ -1,13 +1,11 @@
 import { type FC, useEffect, useRef, useState } from 'react';
 
 import { ArrowUp, ExternalLink, MessageCircle } from 'lucide-react';
-import { usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from 'wagmi';
 
 import { FIVEOUTOFNINE_MESSAGES } from '@/lib/constants/on-chain-messages';
 
 import CategoryTag from '@/components/templates/category-tag';
 import FeatureDisplay from '@/components/templates/feature-display';
-import { useToast } from '@/components/ui';
 import { Button, IconButton } from '@/components/ui';
 
 const TxDotCoolFeature: FC = () => {
@@ -50,20 +48,16 @@ const TxDotCoolFeatureDetail: FC = () => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { toast } = useToast();
-
-  const { config } = usePrepareSendTransaction({
-    request: {
-      chainId: 1,
-      to: process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS,
-      data: `0x${userMessage
-        .split('')
-        .map((_, i) => userMessage.charCodeAt(i).toString(16))
-        .join('')}`,
-    },
+  /* const result = usePrepareTransactionRequest({
+    chainId: 1,
+    to: process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS,
+    data: `0x${userMessage
+      .split('')
+      .map((_, i) => userMessage.charCodeAt(i).toString(16))
+      .join('')}`,
   });
   const { data, sendTransaction } = useSendTransaction({
-    ...config,
+    ...result,
     onError(error) {
       toast({
         title: 'Transaction fail',
@@ -89,9 +83,9 @@ const TxDotCoolFeatureDetail: FC = () => {
         ),
       });
     },
-  });
-  const { isLoading } = useWaitForTransaction({
-    hash: data?.hash,
+  }); */
+  /* const { isLoading } = useWaitForTransactionReceipt({
+    hash: data ?? '0x',
     onError(error) {
       toast({
         title: 'Transaction fail',
@@ -128,7 +122,7 @@ const TxDotCoolFeatureDetail: FC = () => {
         ) : undefined,
       });
     },
-  });
+  }); */
 
   // Scroll messages into view on load.
   useEffect(
@@ -193,12 +187,12 @@ const TxDotCoolFeatureDetail: FC = () => {
               intent="primary"
               className="absolute right-1 top-1 rounded-full"
               aria-label="Send on-chain message to fiveoutofnine.eth"
-              disabled={userMessage.length === 0 || !sendTransaction || isLoading}
+              /* disabled={userMessage.length === 0 || !sendTransaction || isLoading}
               onClick={(e) => {
                 e.preventDefault();
                 setUserInput('');
                 sendTransaction?.();
-              }}
+              }} */
               type="submit"
             >
               <ArrowUp />

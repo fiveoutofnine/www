@@ -15,7 +15,7 @@ declare global {
       SUPABASE_SERVICE_KEY: string;
       // Services
       NEXT_PUBLIC_ALCHEMY_ID: string;
-      NEXT_PUBLIC_WALLLETCONNECT_PROJECT_ID: string;
+      NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: string;
     }
   }
 }

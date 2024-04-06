@@ -1,3 +1,5 @@
+'use client';
+
 import { type FC, type ForwardedRef, forwardRef } from 'react';
 
 import { selectContainerStyles, selectIconContainerVariants, selectVariants } from './styles';

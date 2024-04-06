@@ -1,10 +1,9 @@
 import { Children, type FC, isValidElement, type ReactNode, useCallback, useMemo } from 'react';
 
+import prettier from '@prettier/sync';
 import * as Accordion from '@radix-ui/react-accordion';
 import clsx from 'clsx';
 import { ChevronRight } from 'lucide-react';
-import prettier from 'prettier';
-import babel from 'prettier/parser-babel';
 import { twMerge } from 'tailwind-merge';
 
 import ToastButton from '@/components/pages/design/toast-button';
@@ -133,7 +132,6 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
             tabWidth: 2,
             singleQuote: true,
             parser: 'babel',
-            plugins: [babel],
           },
         )
         .trim();

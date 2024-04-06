@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { NAVBAR_PAGES } from '@/lib/constants/site';
 import type { PageSlug } from '@/lib/types/site';
 
-import ConnectButton from '@/components/common/connect-button';
 import { Button, IconButton, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
@@ -50,7 +49,7 @@ const DesktopNavBar: FC<NavBarProps> = ({ selected }) => {
         );
       })}
       <div className="flex-grow" />
-      <ConnectButton />
+      {/* <ConnectButton /> */}
     </nav>
   );
 };
@@ -76,7 +75,7 @@ const MobileNavBar: FC<NavBarProps> = ({ selected }) => {
         );
       })}
       <div className="flex-grow" />
-      <ConnectButton />
+      {/* <ConnectButton /> */}
     </nav>
   );
 };

@@ -169,6 +169,7 @@ const RunningFeatureDetailBarChart: FC<RunningFeatureDetailBarChartProps> = ({
           />
           <Bar
             dataKey="value"
+            /* @ts-expect-error The type for `Bar` should be correct. */
             shape={({ x, y, width, height }) => (
               <path
                 className="fill-blue-9"
