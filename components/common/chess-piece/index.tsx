@@ -9,6 +9,4 @@ ChessPiece.Pawn = PawnPiece;
 ChessPiece.Queen = QueenPiece;
 ChessPiece.Rook = RookPiece;
 
-ChessPiece.displayName = 'ChessPiece';
-
 export default ChessPiece;
