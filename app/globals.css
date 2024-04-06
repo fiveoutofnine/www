@@ -6,7 +6,7 @@ html,
 body,
 main {
   @apply scroll-pt-20 bg-gray-1 text-gray-12;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 * {
