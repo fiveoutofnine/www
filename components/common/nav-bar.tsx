@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 
+import ConnectButton from './connect-button';
 import Logo from './logo';
 import clsx from 'clsx';
 
@@ -49,7 +50,7 @@ const DesktopNavBar: React.FC<NavBarProps> = ({ selected }) => {
         );
       })}
       <div className="flex-grow" />
-      {/* <ConnectButton /> */}
+      <ConnectButton />
     </nav>
   );
 };
@@ -75,7 +76,7 @@ const MobileNavBar: React.FC<NavBarProps> = ({ selected }) => {
         );
       })}
       <div className="flex-grow" />
-      {/* <ConnectButton /> */}
+      <ConnectButton />
     </nav>
   );
 };
