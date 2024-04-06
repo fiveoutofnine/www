@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import type { FC } from 'react';
 
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -19,7 +18,7 @@ type FiveoutofnineAvatarProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-const FiveoutofnineAvatar: FC<FiveoutofnineAvatarProps> = ({ className, size = 40 }) => {
+const FiveoutofnineAvatar: React.FC<FiveoutofnineAvatarProps> = ({ className, size = 40 }) => {
   return (
     <Image
       className={clsx(twMerge('my-0 rounded-full border border-gray-6', className))}
@@ -30,7 +29,5 @@ const FiveoutofnineAvatar: FC<FiveoutofnineAvatarProps> = ({ className, size = 4
     />
   );
 };
-
-FiveoutofnineAvatar.displayName = 'FiveoutofnineAvatar';
 
 export default FiveoutofnineAvatar;
