@@ -1,9 +1,9 @@
+import FiveoutofnineHeader from './(components)/header';
+import BitTwiddlingFeature from './(components)/works/bit-twiddling';
 import ChessFeature from './(components)/works/chess';
+import CoolContractsFeature from './(components)/works/cool-contracts';
 
 import ContainerLayout from '@/components/layouts/container';
-import BitTwiddlingFeature from '@/components/pages/home/featured-works/works/bit-twiddling';
-import CoolContractsFeature from '@/components/pages/home/featured-works/works/cool-contracts';
-import FiveoutofnineHeader from '@/components/pages/home/header';
 
 export default function Page() {
   return (
