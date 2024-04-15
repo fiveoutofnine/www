@@ -40,8 +40,8 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       fontFamily: {
-        sans: ['var(--inter-font)', ...fontFamily.sans],
-        mono: ['var(--fira-code-font)', ...fontFamily.mono],
+        sans: ['var(--font-inter)', ...fontFamily.sans],
+        mono: ['var(--font-fira-code)', ...fontFamily.mono],
       },
       gridTemplateRows: {
         1: 'repeat(1, minmax(0, 1fr))',

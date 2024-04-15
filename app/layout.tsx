@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Fira_Code, Inter } from 'next/font/google';
 
 import './globals.css';
 import Web3Provider from './web3-provider';
@@ -13,7 +13,9 @@ import { Toaster } from '@/components/ui';
 // Fonts
 // -----------------------------------------------------------------------------
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+
+const firaCode = Fira_Code({ subsets: ['latin'], variable: '--font-fira-code' });
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -21,7 +23,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | 5/9',
+    template: '5/9 | %s',
     default: '5/9',
   },
   description: 'personal website',
@@ -50,8 +52,12 @@ export const viewport: Viewport = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" style={{ background: 'var(--gray1)' }}>
-      <body className={clsx(inter.className, 'relative min-h-screen w-full')}>
+    <html
+      lang="en"
+      className={clsx(inter.variable, firaCode.variable, 'dark')}
+      style={{ background: 'var(--gray1)' }}
+    >
+      <body className="relative flex min-h-screen w-full flex-col">
         <Web3Provider>
           <NavBar />
           <main className="relative flex grow flex-col">{children}</main>
