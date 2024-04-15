@@ -31,13 +31,13 @@ const NavBar: React.FC = () => {
 
   return (
     <Fragment>
-      <DesktopNavBar selected={selected} />
-      <MobileNavBar selected={selected} />
+      <NavBarDesktop selected={selected} />
+      <NavBarMobile selected={selected} />
     </Fragment>
   );
 };
 
-const DesktopNavBar: React.FC<NavBarInternalProps> = ({ selected }) => {
+const NavBarDesktop: React.FC<NavBarInternalProps> = ({ selected }) => {
   return (
     <nav className="pointer-events-auto sticky top-0 z-popover hidden h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:flex">
       <Logo />
@@ -62,7 +62,7 @@ const DesktopNavBar: React.FC<NavBarInternalProps> = ({ selected }) => {
   );
 };
 
-const MobileNavBar: React.FC<NavBarInternalProps> = ({ selected }) => {
+const NavBarMobile: React.FC<NavBarInternalProps> = ({ selected }) => {
   return (
     <nav className="pointer-events-auto sticky top-0 z-popover flex h-12 items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:hidden">
       <Logo />
