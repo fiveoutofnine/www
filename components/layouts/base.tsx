@@ -1,7 +1,5 @@
 import type { FC, ReactNode } from 'react';
 
-import type { PageSlug } from '@/lib/types/site';
-
 import NavBar from '@/components/common/nav-bar';
 import SeoBase, { type SeoBaseProps } from '@/components/templates/seo-base';
 
@@ -10,7 +8,6 @@ import SeoBase, { type SeoBaseProps } from '@/components/templates/seo-base';
 // -----------------------------------------------------------------------------
 
 type BaseLayoutProps = SeoBaseProps & {
-  pageSlug?: PageSlug;
   children?: ReactNode;
 };
 
@@ -18,11 +15,11 @@ type BaseLayoutProps = SeoBaseProps & {
 // Component
 // -----------------------------------------------------------------------------
 
-const BaseLayout: FC<BaseLayoutProps> = ({ title, subtitle, pageSlug, children }) => {
+const BaseLayout: FC<BaseLayoutProps> = ({ title, subtitle, children }) => {
   return (
     <>
       <SeoBase title={title} subtitle={subtitle} />
-      <NavBar selected={pageSlug} />
+      <NavBar />
       <main className="relative flex grow flex-col">{children}</main>
     </>
   );
