@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     creator: '@fiveoutofnine',
-    creatorId: '1',
+    creatorId: '1269561030272643076',
   },
   manifest: '/manifest.json',
 };
