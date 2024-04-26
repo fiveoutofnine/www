@@ -24,7 +24,7 @@ const TypingFeature: React.FC = () => {
       }
       tags={[<CategoryTag key={0} category="Web" />]}
     >
-      <TypingFeatureDetail />
+      <TypingFeatureDetail seed={Math.random()} />
     </FeatureDisplay>
   );
 };

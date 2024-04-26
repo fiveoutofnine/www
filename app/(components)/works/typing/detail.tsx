@@ -10,8 +10,24 @@ import { SHORT_QUOTES } from '@/lib/constants/typing';
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import { IconButton, Tooltip } from '@/components/ui';
 
-const TypingFeatureDetail: React.FC = () => {
-  const [quote, setQuote] = useState<(typeof SHORT_QUOTES)[0]>(SHORT_QUOTES[0]);
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type TypingFeatureDetailProps = {
+  seed: number;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
+  const [quote, setQuote] = useState<(typeof SHORT_QUOTES)[0]>(
+    // We clamp it by `0.99999` in case `seed` is out of bounds (i.e not in the
+    // range `[0, 1)`).
+    SHORT_QUOTES[Math.floor(SHORT_QUOTES.length * Math.min(seed, 0.99999))],
+  );
   const [typedLocked, setTypedLocked] = useState<string>('');
   const [typedPending, setTypedPending] = useState<string>('');
   const [startTime, setStartTime] = useState<Date>();
@@ -107,9 +123,6 @@ const TypingFeatureDetail: React.FC = () => {
     setQuote(newQuote);
     resetTest();
   };
-
-  // Randomize text on page load.
-  useEffect(() => setQuote(getRandomQuote()), []);
 
   // Timer to update WPM.
   useEffect(() => {
