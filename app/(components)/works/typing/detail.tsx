@@ -1,41 +1,16 @@
-import { type ChangeEvent, type FC, useEffect, useMemo, useRef, useState } from 'react';
+'use client';
 
-import TypingFeatureDetailTimer from './timer';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
 import clsx from 'clsx';
-import { ChevronRight, ExternalLink, Keyboard, RotateCw } from 'lucide-react';
+import { ChevronRight, RotateCw } from 'lucide-react';
 
 import { SHORT_QUOTES } from '@/lib/constants/typing';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
-import CategoryTag from '@/components/templates/category-tag';
-import FeatureDisplay from '@/components/templates/feature-display';
-import { Button, IconButton, Tooltip } from '@/components/ui';
+import { IconButton, Tooltip } from '@/components/ui';
 
-const TypingFeature: FC = () => {
-  return (
-    <FeatureDisplay
-      className="col-span-2 w-full min-[560px]:col-span-4 min-[960px]:col-span-2 min-[960px]:w-64"
-      name="Typing"
-      description="I type fast (try racing me)"
-      symbol={<Keyboard />}
-      button={
-        <Button
-          size="sm"
-          href="https://twitter.com/fiveoutofnine/status/1557037492830089217"
-          rightIcon={<ExternalLink />}
-          newTab
-        >
-          Watch
-        </Button>
-      }
-      tags={[<CategoryTag key={0} category="Web" />]}
-    >
-      <TypingFeatureDetail />
-    </FeatureDisplay>
-  );
-};
-
-const TypingFeatureDetail: FC = () => {
+const TypingFeatureDetail: React.FC = () => {
   const [quote, setQuote] = useState<(typeof SHORT_QUOTES)[0]>(SHORT_QUOTES[0]);
   const [typedLocked, setTypedLocked] = useState<string>('');
   const [typedPending, setTypedPending] = useState<string>('');
@@ -74,7 +49,7 @@ const TypingFeatureDetail: FC = () => {
     return res;
   }, [textWords, typedWords]);
 
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
 
     if ((typed.length === 0 && value === ' ') || (typed.endsWith(' ') && value.endsWith(' ')))
@@ -292,6 +267,64 @@ const TypingFeatureDetail: FC = () => {
   );
 };
 
-TypingFeature.displayName = 'TypingFeature';
+// -----------------------------------------------------------------------------
+// Timer
+// -----------------------------------------------------------------------------
 
-export default TypingFeature;
+const TypingFeatureDetailTimer: React.FC<{
+  startTime?: Date;
+  endTime?: Date;
+  fiveoutofnineTime: number;
+}> = ({ startTime, endTime, fiveoutofnineTime }) => {
+  const [timePassed, setTimePassed] = useState<number>();
+
+  // Timer to update the time passed.
+  useEffect(() => {
+    if (!startTime) {
+      setTimePassed(undefined);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const timePassed = (Date.now() - startTime.getTime()) / 1000;
+
+      setTimePassed(timePassed);
+    }, 50);
+
+    if (endTime) {
+      const timePassed = (Date.now() - startTime.getTime()) / 1000;
+
+      setTimePassed(timePassed);
+      clearInterval(interval);
+      return;
+    }
+
+    return () => clearInterval(interval);
+  }, [startTime, endTime]);
+
+  return (
+    <div>
+      <div className="text-[0.625rem] text-gray-11">Time</div>
+      <div className="text-xs text-gray-12">{timePassed ? `${timePassed}s` : '–'}</div>
+      <div className="flex items-center space-x-1">
+        <FiveoutofnineAvatar size={12} />
+        <Tooltip className="font-sans" content="5/9's time" side="bottom">
+          <div
+            className={clsx(
+              'text-[0.625rem] transition-colors',
+              endTime
+                ? timePassed && timePassed < fiveoutofnineTime
+                  ? 'text-red-9'
+                  : 'text-green-9'
+                : 'text-gray-11',
+            )}
+          >
+            {fiveoutofnineTime}s
+          </div>
+        </Tooltip>
+      </div>
+    </div>
+  );
+};
+
+export default TypingFeatureDetail;
