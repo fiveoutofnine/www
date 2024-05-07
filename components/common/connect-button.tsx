@@ -3,13 +3,19 @@
 import { ConnectKitButton } from 'connectkit';
 
 import { Button } from '@/components/ui';
-import { ButtonProps } from '@/components/ui/button/types';
+import type { ButtonProps } from '@/components/ui/button/types';
 
 // ---------------------------------------–-------------------------------------
 // Props
 // ---------------------------------------–-------------------------------------
 
-type ConnectButtonProps = Omit<ButtonProps, 'href' | 'onClick'>;
+type ConnectButtonProps = Omit<
+  ButtonProps,
+  'variant' | 'intent' | 'href' | 'onClick' | 'newTab' | 'type'
+> & {
+  variant?: Exclude<ButtonProps['variant'], 'solid'>;
+  intent?: Exclude<ButtonProps['intent'], 'black'>;
+};
 
 // ---------------------------------------–-------------------------------------
 // Component
@@ -20,7 +26,7 @@ const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
     <ConnectKitButton.Custom>
       {({ isConnected, show, truncatedAddress, ensName }) => {
         return (
-          <Button onClick={show} {...{ variant: 'secondary', ...props }}>
+          <Button onClick={show} {...{ variant: 'secondary', intent: 'none', ...props }}>
             {isConnected ? ensName ?? truncatedAddress : 'Connect'}
           </Button>
         );
