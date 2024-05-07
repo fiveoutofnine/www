@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-
 import { buttonVariants } from './styles';
 import type { VariantProps } from 'class-variance-authority';
 
@@ -13,10 +11,22 @@ export type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 // Component props
 // -----------------------------------------------------------------------------
 
+export type ButtonGroupProps = JSX.IntrinsicElements['div'];
+
 export type ButtonProps = JSX.IntrinsicElements['button'] &
-  ButtonVariantProps & {
+  Omit<ButtonVariantProps, 'variant' | 'intent'> &
+  (
+    | {
+        variant?: 'solid';
+        intent?: 'black';
+      }
+    | {
+        variant?: Exclude<ButtonVariantProps['variant'], 'solid'>;
+        intent?: Exclude<ButtonVariantProps['intent'], 'black'>;
+      }
+  ) & {
     href?: string;
-    leftIcon?: ReactNode;
-    rightIcon?: ReactNode;
+    leftIcon?: React.ReactNode;
+    rightIcon?: React.ReactNode;
     newTab?: boolean;
   };
