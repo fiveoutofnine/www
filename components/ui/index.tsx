@@ -2,6 +2,7 @@ export { default as Accordion } from './accordion';
 export { default as Avatar } from './avatar';
 export { default as Badge } from './badge';
 export { default as Button, ButtonGroup } from './button';
+export { default as Checkbox } from './checkbox';
 export { default as CodeBlock } from './code-block';
 export { default as HoverCard } from './hover-card';
 export { default as IconButton } from './icon-button';
