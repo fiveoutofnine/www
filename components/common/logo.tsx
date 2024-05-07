@@ -18,7 +18,7 @@ type LogoProps = {
 
 const Logo: React.FC<LogoProps> = ({ className, href = '/' }) => {
   return (
-    <Link href={href} className={clsx(twMerge('group h-8 w-8', className))} aria-label="Home">
+    <Link href={href} className={clsx(twMerge('group size-8', className))} aria-label="Home">
       <svg
         width="32"
         height="32"
