@@ -1,42 +1,18 @@
-import { type FC, type PointerEvent, type UIEvent, useCallback, useState } from 'react';
+'use client';
+
+import { useCallback, useState } from 'react';
 
 import { TooltipWithBounds, useTooltip, useTooltipInPortal } from '@visx/tooltip';
 import clsx from 'clsx';
 import { LayoutGroup, motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
 
 import { COLORMAPS } from '@/lib/constants/colormaps';
 import { getColormapValue } from '@/lib/utils';
 
-import CategoryTag from '@/components/templates/category-tag';
-import FeatureDisplay from '@/components/templates/feature-display';
-import { Button, IconButton } from '@/components/ui';
+import { IconButton } from '@/components/ui';
 
-const ColormapRegistryFeature: FC = () => {
-  return (
-    <FeatureDisplay
-      className="col-span-2 w-full min-[960px]:w-64"
-      name="ColormapRegistry"
-      description="On-chain registry"
-      symbol={<Github />}
-      button={
-        <Button
-          size="sm"
-          href="https://github.com/fiveoutofnine/colormap-registry"
-          rightIcon={<ExternalLink />}
-          newTab
-        >
-          Open
-        </Button>
-      }
-      tags={[<CategoryTag key={1} category="On-chain" />]}
-    >
-      <ColormapRegistryFeatureDetail />
-    </FeatureDisplay>
-  );
-};
-
-const ColormapRegistryFeatureDetail: FC = () => {
+const ColormapRegistryFeatureDetail: React.FC = () => {
   const [selected, setSelected] = useState<number>();
   const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
   const [scrollIsAtBottom, setScrollIsAtBottom] = useState<boolean>(false);
@@ -53,7 +29,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
   });
 
   const handlePointerMove = useCallback(
-    (event: PointerEvent<HTMLDivElement>) => {
+    (event: React.PointerEvent<HTMLDivElement>) => {
       // Coordinates should be relative to the container
       const tooltipLeft = ('clientX' in event ? event.clientX : 0) - containerBounds.left;
       showTooltip({ tooltipLeft, tooltipTop: 62 });
@@ -61,7 +37,7 @@ const ColormapRegistryFeatureDetail: FC = () => {
     [showTooltip, containerBounds],
   );
 
-  const handleScroll = (event: UIEvent<HTMLFieldSetElement>) => {
+  const handleScroll = (event: React.UIEvent<HTMLFieldSetElement>) => {
     const target = event.target as HTMLFieldSetElement;
     const scrollTop = target.scrollTop;
     const scrollHeight = target.scrollHeight;
@@ -211,4 +187,4 @@ const ColormapRegistryFeatureDetail: FC = () => {
   );
 };
 
-export default ColormapRegistryFeature;
+export default ColormapRegistryFeatureDetail;

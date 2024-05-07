@@ -1,6 +1,7 @@
 import FiveoutofnineHeader from './(components)/header';
 import BitTwiddlingFeature from './(components)/works/bit-twiddling';
 import ChessFeature from './(components)/works/chess';
+import ColormapRegistryFeature from './(components)/works/colormap-registry';
 import CoolContractsFeature from './(components)/works/cool-contracts';
 import TxDotCoolFeature from './(components)/works/tx-dot-cool';
 import TypingFeature from './(components)/works/typing';
@@ -16,6 +17,7 @@ export default function Page() {
         <ChessFeature />
         <TxDotCoolFeature />
         <TypingFeature />
+        <ColormapRegistryFeature />
         <BitTwiddlingFeature />
         <CoolContractsFeature />
       </div>
