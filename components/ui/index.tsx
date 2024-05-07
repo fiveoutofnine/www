@@ -1,22 +1,9 @@
-import Badge from './badge';
-import Button, { ButtonGroup } from './button';
-import CodeBlock from './code-block';
-import HoverCard from './hover-card';
-import IconButton from './icon-button';
-import Select from './select';
-import Toaster from './toaster';
-import { useToast } from './toaster/useToast';
-import Tooltip from './tooltip';
-
-export {
-  Badge,
-  Button,
-  ButtonGroup,
-  CodeBlock,
-  HoverCard,
-  IconButton,
-  Select,
-  Toaster,
-  Tooltip,
-  useToast,
-};
+export { default as Badge } from './badge';
+export { default as Button, ButtonGroup } from './button';
+export { default as CodeBlock } from './code-block';
+export { default as HoverCard } from './hover-card';
+export { default as IconButton } from './icon-button';
+export { default as Select } from './select';
+export { default as Toaster } from './toaster';
+export { useToast } from './toaster/useToast';
+export { default as Tooltip } from './tooltip';
