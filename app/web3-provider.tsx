@@ -11,7 +11,7 @@ import { base, mainnet } from 'wagmi/chains';
 
 const config = createConfig(
   getDefaultConfig({
-    chains: [mainnet],
+    chains: [base, mainnet],
     transports: {
       [base.id]: http(
         `https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
