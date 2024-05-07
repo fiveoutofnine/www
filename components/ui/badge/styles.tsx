@@ -29,8 +29,7 @@ export const badgeVariants = cva(
       intent: {
         none: [
           'data-[variant=primary]:bg-gray-9',
-          'data-[variant=primary]:dark:text-gray-12',
-          'data-[variant=primary]:text-gray-1',
+          'data-[variant=primary]:text-white',
           'data-[variant=secondary]:bg-gray-3',
           'data-[variant=secondary]:text-gray-11',
           'data-[variant=outline]:bg-gray-3',
@@ -39,8 +38,7 @@ export const badgeVariants = cva(
         ],
         primary: [
           'data-[variant=primary]:bg-blue-9',
-          'data-[variant=primary]:dark:text-gray-12',
-          'data-[variant=primary]:text-gray-1',
+          'data-[variant=primary]:text-white',
           'data-[variant=secondary]:bg-blue-3',
           'data-[variant=secondary]:text-blue-11',
           'data-[variant=outline]:bg-blue-3',
@@ -49,8 +47,7 @@ export const badgeVariants = cva(
         ],
         success: [
           'data-[variant=primary]:bg-green-9',
-          'data-[variant=primary]:dark:text-gray-12',
-          'data-[variant=primary]:text-gray-1',
+          'data-[variant=primary]:text-white',
           'data-[variant=secondary]:bg-green-3',
           'data-[variant=secondary]:text-green-11',
           'data-[variant=outline]:bg-green-3',
@@ -59,8 +56,7 @@ export const badgeVariants = cva(
         ],
         fail: [
           'data-[variant=primary]:bg-red-9',
-          'data-[variant=primary]:dark:text-gray-12',
-          'data-[variant=primary]:text-gray-1',
+          'data-[variant=primary]:text-white',
           'data-[variant=secondary]:bg-red-3',
           'data-[variant=secondary]:text-red-11',
           'data-[variant=outline]:bg-red-3',
@@ -69,8 +65,7 @@ export const badgeVariants = cva(
         ],
         warning: [
           'data-[variant=primary]:bg-yellow-9',
-          'data-[variant=primary]:dark:text-gray-1',
-          'data-[variant=primary]:text-gray-12',
+          'data-[variant=primary]:text-black',
           'data-[variant=secondary]:bg-yellow-3',
           'data-[variant=secondary]:text-yellow-11',
           'data-[variant=outline]:bg-yellow-3',
@@ -79,8 +74,7 @@ export const badgeVariants = cva(
         ],
         orange: [
           'data-[variant=primary]:bg-orange-9',
-          'data-[variant=primary]:dark:text-gray-12',
-          'data-[variant=primary]:text-gray-1',
+          'data-[variant=primary]:text-white',
           'data-[variant=secondary]:bg-orange-3',
           'data-[variant=secondary]:text-orange-11',
           'data-[variant=outline]:bg-orange-3',
