@@ -36,7 +36,7 @@ export const badgeVariants = cva(
           'data-[variant=outline]:text-gray-11',
           'data-[variant=outline]:border-gray-6',
         ],
-        intent: [
+        info: [
           'data-[variant=primary]:bg-blue-9',
           'data-[variant=primary]:text-white',
           'data-[variant=secondary]:bg-blue-3',
