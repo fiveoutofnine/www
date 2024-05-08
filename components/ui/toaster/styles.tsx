@@ -7,7 +7,7 @@ export const toastDescriptionVariants = cva(['text-xs'], {
   variants: {
     intent: {
       none: ['text-gray-11'],
-      primary: ['text-blue-11'],
+      info: ['text-blue-11'],
       success: ['text-green-11'],
       fail: ['text-red-11'],
       warning: ['text-yellow-11'],
@@ -19,7 +19,7 @@ export const toastTitleVariants = cva(['text-sm', 'font-medium'], {
   variants: {
     intent: {
       none: ['text-gray-12'],
-      primary: ['text-blue-12'],
+      info: ['text-blue-12'],
       success: ['text-green-12'],
       fail: ['text-red-12'],
       warning: ['text-yellow-12'],
@@ -33,7 +33,7 @@ export const toastVariants = cva(
     variants: {
       intent: {
         none: ['bg-gray-3', 'border-gray-6'],
-        primary: ['bg-blue-3', 'border-blue-6'],
+        info: ['bg-blue-3', 'border-blue-6'],
         success: ['bg-green-3', 'border-green-6'],
         fail: ['bg-red-3', 'border-red-6'],
         warning: ['bg-yellow-3', 'border-yellow-6'],

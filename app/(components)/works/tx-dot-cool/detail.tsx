@@ -34,13 +34,13 @@ const TxDotCoolFeatureDetail: React.FC = () => {
       toast({
         title: 'Transaction sent',
         description: 'Your message has been sent to fiveoutofnine.eth.',
-        intent: 'primary',
+        intent: 'info',
         action: (
           <Button
             size="sm"
             href={`https://etherscan.io/tx/${data.hash}`}
             rightIcon={<ExternalLink />}
-            intent="primary"
+            intent="info"
             newTab
           >
             View
@@ -149,7 +149,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
             <IconButton
               size="sm"
               variant="secondary"
-              intent="primary"
+              intent="info"
               className="absolute right-1 top-1 rounded-full"
               aria-label="Send on-chain message to fiveoutofnine.eth"
               /* disabled={userMessage.length === 0 || !sendTransaction || isLoading}

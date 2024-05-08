@@ -33,7 +33,7 @@ const ErrorLayout: React.FC<ErrorLayoutProps> = ({ statusCode, children }) => {
       >
         FAIL. REASON: {message}
       </a>
-      <Button href="/" size="md" variant="secondary" intent="primary" className="mt-6">
+      <Button href="/" size="md" variant="secondary" intent="info" className="mt-6">
         Return home
       </Button>
       {children}

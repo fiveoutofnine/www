@@ -121,7 +121,7 @@ export const buttonVariants = cva(
           // Text
           'data-[variant=text]:text-gray-11',
         ],
-        primary: [
+        info: [
           // Primary
           'data-[variant=primary]:bg-blue-9',
           'data-[variant=primary]:text-white',

@@ -61,7 +61,7 @@ export const selectIconContainerVariants = cva(
           'peer-data-[variant=outline]:text-gray-11',
           'peer-data-[variant=ghost]:text-gray-11',
         ],
-        primary: [
+        info: [
           'peer-data-[variant=primary]:text-white',
           'peer-data-[variant=secondary]:text-blue-11',
           'peer-data-[variant=outline]:text-blue-11',
