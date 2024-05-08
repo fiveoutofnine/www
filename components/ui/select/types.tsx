@@ -18,11 +18,11 @@ export type SelectProps = Omit<JSX.IntrinsicElements['select'], 'size'> &
   (
     | {
         variant?: 'solid';
-        intent?: 'black';
+        intent?: 'black' | 'white';
       }
     | {
         variant?: Exclude<SelectVariantProps['variant'], 'solid' | 'text'>;
-        intent?: Exclude<SelectVariantProps['intent'], 'black'>;
+        intent?: Exclude<SelectVariantProps['intent'], 'black' | 'white'>;
       }
   ) & {
     rightIcon?: React.ReactNode;

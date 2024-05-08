@@ -20,6 +20,6 @@ export type BadgeProps = JSX.IntrinsicElements['span'] &
       }
     | {
         variant?: 'secondary';
-        intent?: Exclude<BadgeVariantProps['intent'], 'black'>;
+        intent?: Exclude<BadgeVariantProps['intent'], 'black' | 'white'>;
       }
   );

@@ -249,6 +249,14 @@ export const buttonVariants = cva(
           'data-[variant=solid]:hover:text-black',
           'data-[variant=solid]:hover:bg-transparent',
         ],
+        white: [
+          // Solid
+          'data-[variant=solid]:bg-white',
+          'data-[variant=solid]:text-black',
+          'data-[variant=solid]:border-white',
+          'data-[variant=solid]:hover:text-white',
+          'data-[variant=solid]:hover:bg-transparent',
+        ],
       },
       disabled: {
         true: 'aria-disabled pointer-events-none',

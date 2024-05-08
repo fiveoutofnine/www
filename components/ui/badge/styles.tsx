@@ -88,6 +88,13 @@ export const badgeVariants = cva(
           'data-[variant=outline]:text-white',
           'data-[variant=outline]:border-white',
         ],
+        white: [
+          'data-[variant=primary]:bg-white',
+          'data-[variant=primary]:text-black',
+          'data-[variant=outline]:bg-white',
+          'data-[variant=outline]:text-black',
+          'data-[variant=outline]:border-black',
+        ],
       },
       type: {
         number: [

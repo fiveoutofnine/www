@@ -14,7 +14,7 @@ type ConnectButtonProps = Omit<
   'variant' | 'intent' | 'href' | 'onClick' | 'newTab' | 'type'
 > & {
   variant?: Exclude<ButtonProps['variant'], 'solid'>;
-  intent?: Exclude<ButtonProps['intent'], 'black'>;
+  intent?: Exclude<ButtonProps['intent'], 'black' | 'white'>;
 };
 
 // ---------------------------------------–-------------------------------------

@@ -18,11 +18,11 @@ export type ButtonProps = JSX.IntrinsicElements['button'] &
   (
     | {
         variant?: 'solid';
-        intent?: 'black';
+        intent?: 'black' | 'white';
       }
     | {
         variant?: Exclude<ButtonVariantProps['variant'], 'solid'>;
-        intent?: Exclude<ButtonVariantProps['intent'], 'black'>;
+        intent?: Exclude<ButtonVariantProps['intent'], 'black' | 'white'>;
       }
   ) & {
     href?: string;

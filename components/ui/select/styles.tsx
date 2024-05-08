@@ -96,6 +96,11 @@ export const selectIconContainerVariants = cva(
           'peer-data-[variant=solid]:border-black',
           'peer-data-[variant=solid]:peer-hover:text-black',
         ],
+        white: [
+          'peer-data-[variant=solid]:text-black',
+          'peer-data-[variant=solid]:border-white',
+          'peer-data-[variant=solid]:peer-hover:text-white',
+        ],
       },
       disabled: {
         true: '',
