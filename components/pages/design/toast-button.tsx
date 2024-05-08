@@ -7,7 +7,7 @@ import { Button, toast } from '@/components/ui';
 type ToastButtonProps = {
   title?: string;
   description: string;
-  intent?: 'none' | 'info' | 'success' | 'fail' | 'warning';
+  intent?: 'none' | 'info' | 'success' | 'fail' | 'warning' | 'orange';
   action?: React.ReactElement;
 };
 
