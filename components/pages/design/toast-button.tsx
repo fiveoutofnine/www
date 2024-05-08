@@ -1,6 +1,4 @@
-import type { FC, ReactElement } from 'react';
-
-import { Button, useToast } from '@/components/ui';
+import { Button, toast } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Props
@@ -10,21 +8,20 @@ type ToastButtonProps = {
   title?: string;
   description: string;
   intent?: 'none' | 'info' | 'success' | 'fail' | 'warning';
-  action?: ReactElement;
+  action?: React.ReactElement;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-const ToastButton: FC<ToastButtonProps> = ({
+const ToastButton: React.FC<ToastButtonProps> = ({
   title = 'Title',
   description = 'Swipe right to remove.',
   intent,
   action,
   ...rest
 }) => {
-  const { toast } = useToast();
   return (
     <Button
       intent={intent}

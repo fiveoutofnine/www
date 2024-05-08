@@ -9,6 +9,5 @@ export { default as IconButton } from './icon-button';
 export { default as Radio } from './radio';
 export { default as Select } from './select';
 export { default as Switch } from './switch';
-export { default as Toaster } from './toaster';
-export { useToast } from './toaster/useToast';
+export { default as Toaster, toast } from './toast';
 export { default as Tooltip } from './tooltip';
