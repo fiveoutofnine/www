@@ -12,6 +12,7 @@ export { default as Radio } from './radio';
 export { default as Select } from './select';
 export { default as Switch } from './switch';
 export { default as Table } from './table';
+export { default as Tabs } from './tabs';
 export { default as TextArea } from './text-area';
 export { default as Toaster, toast } from './toast';
 export { default as Tooltip } from './tooltip';
