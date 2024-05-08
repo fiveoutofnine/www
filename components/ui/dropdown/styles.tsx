@@ -25,8 +25,8 @@ export const dropdownCheckboxStyles = [
   'transition-colors',
   'text-gray-12',
   'focus:bg-gray-4',
-  'data-[disabled=true]:pointer-events-none',
-  'data-[disabled=true]:text-gray-11',
+  'data-[disabled]:pointer-events-none',
+  'data-[disabled]:text-gray-11',
 ];
 
 export const dropdownContentStyles = [
@@ -76,8 +76,8 @@ export const dropdownItemVariants = cva(
     'transition-colors',
     'text-gray-12',
     'focus:bg-gray-4',
-    'data-[disabled=true]:pointer-events-none',
-    'data-[disabled=true]:text-gray-11',
+    'data-[disabled]:pointer-events-none',
+    'data-[disabled]:text-gray-11',
   ],
   {
     variants: {
@@ -89,17 +89,14 @@ export const dropdownItemVariants = cva(
   },
 );
 
-export const dropdownLabelVariants = cva(
-  ['px-2', 'py-1.5', 'text-sm', 'font-medium', 'text-gray-12'],
-  {
-    variants: {
-      inset: {
-        true: ['pl-8'],
-        false: [],
-      },
+export const dropdownLabelVariants = cva(['px-2', 'py-1', 'text-xs', 'text-gray-11'], {
+  variants: {
+    inset: {
+      true: ['pl-8'],
+      false: [],
     },
   },
-);
+});
 
 export const dropdownRadioItemContainerStyles = [
   'absolute',
@@ -126,8 +123,8 @@ export const dropdownRadioItemStyles = [
   'transition-colors',
   'text-gray-12',
   'focus:bg-gray-4',
-  'data-[disabled=true]:pointer-events-none',
-  'data-[disabled=true]:text-gray-11',
+  'data-[disabled]:pointer-events-none',
+  'data-[disabled]:text-gray-11',
 ];
 
 export const dropdownSeparatorStyles = ['-mx-1', 'my-1', 'h-px', 'bg-gray-6'];

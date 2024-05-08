@@ -21,6 +21,7 @@ export const popoverVariants = cva(
     'animate-in',
     'fade-in-50',
     'zoom-in-90',
+    'focus:outline-none',
     'data-[side=bottom]:slide-in-from-top-1',
     'data-[side=left]:slide-in-from-right-1',
     'data-[side=right]:slide-in-from-left-1',
