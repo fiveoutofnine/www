@@ -34,16 +34,17 @@ export const checkboxVariants = cva(
     'hover:border-gray-8',
     'focus-visible:ring-2',
     'focus-visible:ring-blue-9',
-    'data-[state=checked]:bg-white',
-    'data-[state=checked]:border-white',
-    'data-[state=checked]:text-black',
+    'data-[state=checked]:bg-blue-9',
+    'data-[state=checked]:border-blue-9',
+    'data-[state=checked]:text-white',
+    'data-[state=checked]:hover:bg-blue-10',
   ],
   {
     variants: {
       size: {
         sm: ['size-3'],
         md: ['size-3.5'],
-        lg: ['size-[1.125rem]'],
+        lg: ['size-4'],
       },
     },
   },

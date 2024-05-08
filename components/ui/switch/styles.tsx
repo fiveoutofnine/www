@@ -24,8 +24,9 @@ export const switchStyles = [
   'focus-visible:ring-2',
   'focus-visible:ring-offset-0',
   'focus-visible:ring-blue-9',
-  'data-[state=checked]:bg-white',
-  'data-[state=checked]:ring-white',
+  'data-[state=checked]:bg-blue-9',
+  'data-[state=checked]:hover:bg-blue-10',
+  'data-[state=checked]:ring-blue-9',
   'data-[state=checked]:focus-visible:ring-blue-9',
 ];
 
@@ -39,7 +40,7 @@ export const switchThumbStyles = [
   'transition-all',
   'data-[state=checked]:translate-x-4',
   'data-[state=unchecked]:translate-x-0',
-  'data-[state=checked]:bg-black',
+  'data-[state=checked]:bg-white',
   'data-[state=unchecked]:bg-gray-9',
   'group-disabled:bg-gray-7',
 ];
