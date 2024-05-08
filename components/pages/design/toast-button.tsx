@@ -9,7 +9,7 @@ import { Button, useToast } from '@/components/ui';
 type ToastButtonProps = {
   title?: string;
   description: string;
-  intent?: 'none' | 'primary' | 'success' | 'fail' | 'warning';
+  intent?: 'none' | 'info' | 'success' | 'fail' | 'warning';
   action?: ReactElement;
 };
 
