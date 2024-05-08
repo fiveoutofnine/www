@@ -6,7 +6,7 @@ import { Tabs } from '@/components/ui';
 
 export default function Page() {
   return (
-    <div className="p-4">
+    <div className="p-0">
       <Tabs.Root>
         <Tabs.List>
           <Tabs.Trigger value="tab_0" icon={<GitPullRequest />} stat={3}>
