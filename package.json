@@ -46,6 +46,7 @@
     "rehype-mdx-code-props": "^1.0.0",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.1.0",
+    "vaul": "^0.9.1",
     "viem": "2.x",
     "wagmi": "^2.5.12",
     "zod": "^3.22.4"

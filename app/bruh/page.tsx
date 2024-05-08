@@ -2,7 +2,7 @@
 
 import { Footprints, Keyboard } from 'lucide-react';
 
-import { Button, Command, Dialog } from '@/components/ui';
+import { Button, Command, Dialog, Drawer } from '@/components/ui';
 import CodeBlockLanguageLogo from '@/components/ui/code-block/language-logo';
 
 export default function Page() {
@@ -30,6 +30,28 @@ export default function Page() {
           </Dialog.Footer>
         </Dialog.Content>
       </Dialog.Root>
+      <Drawer.Root>
+        <Drawer.Trigger asChild>
+          <Button>Open</Button>
+        </Drawer.Trigger>
+        <Drawer.Content>
+          <Drawer.Title>Title</Drawer.Title>
+          <Drawer.Description>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non risus
+            hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor quam.
+          </Drawer.Description>
+          <Drawer.Footer>
+            <Drawer.Close asChild>
+              <Button variant="secondary" intent="none" type="button">
+                Cancel
+              </Button>
+            </Drawer.Close>
+            <Button variant="secondary" intent="success" type="button">
+              Yes, send anyway
+            </Button>
+          </Drawer.Footer>
+        </Drawer.Content>
+      </Drawer.Root>
       <Command.Root className="max-w-lg">
         <Command.Input placeholder="Type to search" />
         <Command.List>

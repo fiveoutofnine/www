@@ -6,6 +6,7 @@ export { default as Checkbox } from './checkbox';
 export { default as CodeBlock } from './code-block';
 export { default as Command } from './command';
 export { default as Dialog } from './dialog';
+export { default as Drawer } from './drawer';
 export { default as HoverCard } from './hover-card';
 export { default as IconButton } from './icon-button';
 export { default as Input } from './input';
