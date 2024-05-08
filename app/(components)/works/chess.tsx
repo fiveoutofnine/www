@@ -37,11 +37,9 @@ const ChessFeature: React.FC = () => {
         </svg>
       }
       button={
-        <Tooltip content="WIP">
-          <Button size="sm" href="/chess" rightIcon={<ChevronRight />} disabled>
-            Play
-          </Button>
-        </Tooltip>
+        <Button size="sm" href="/chess" rightIcon={<ChevronRight />} disabled>
+          Play
+        </Button>
       }
       tags={[<CategoryTag key={0} category="NFT" />, <CategoryTag key={1} category="On-chain" />]}
     >
@@ -77,7 +75,7 @@ const ChessFeatureDetail: React.FC = () => {
 
   return (
     <div className="relative flex h-full w-full space-x-2 p-2">
-      <Tooltip content={nft.name}>
+      <Tooltip content={nft.name} triggerProps={{ asChild: true }}>
         <a
           className="h-full min-w-fit overflow-hidden rounded-lg border border-gray-7 transition-colors hover:border-gray-8"
           href={`https://etherscan.io/tx/${nft.txHash}`}
