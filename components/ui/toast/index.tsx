@@ -54,7 +54,7 @@ const toast: ToastFactoryProps & ToastFactoryComposition = ({
             <span className={clsx(toastIconContainerVariants({ intent }))}>{icon}</span>
           ) : null}
           <div className={clsx(toastContainerStyles)}>
-            <div className={toastTitleVariants({ intent })}>{title}</div>
+            {title ? <div className={toastTitleVariants({ intent })}>{title}</div> : null}
             {description ? (
               typeof description === 'string' || typeof description === 'number' ? (
                 <div className={toastDescriptionVariants({ intent, clip: true })}>
