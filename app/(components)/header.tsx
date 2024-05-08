@@ -43,7 +43,7 @@ const FiveoutofnineHeader: React.FC = () => {
       {/* Links (desktop) */}
       <div className="hidden space-x-2 md:flex">
         <Button
-          intent="primary"
+          intent="info"
           href="https://twitter.com/fiveoutofnine"
           leftIcon={<Twitter />}
           newTab
@@ -58,7 +58,7 @@ const FiveoutofnineHeader: React.FC = () => {
       <div className="mt-4 flex w-full space-x-2 md:hidden">
         <Button
           size="md"
-          intent="primary"
+          intent="info"
           className="w-full"
           href="https://twitter.com/fiveoutofnine"
           leftIcon={<Twitter />}

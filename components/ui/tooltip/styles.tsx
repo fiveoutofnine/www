@@ -9,6 +9,9 @@ export const tooltipArrowVariants = cva(['animate-in', 'fade-in-50', 'shadow-md'
   },
 });
 
+export const tooltipTriggerStyles =
+  'focus:outline-none focus-visible:ring-blue-9 focus-visible:ring-2';
+
 export const tooltipVariants = cva(
   [
     'max-w-[15rem]',

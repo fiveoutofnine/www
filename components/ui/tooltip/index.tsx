@@ -1,51 +1,75 @@
 'use client';
 
-import { type ForwardedRef, forwardRef } from 'react';
+import { forwardRef, Fragment } from 'react';
 
-import { tooltipArrowVariants, tooltipVariants } from './styles';
+import { tooltipArrowVariants, tooltipTriggerStyles, tooltipVariants } from './styles';
 import type { TooltipProps } from './types';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const Tooltip = forwardRef(
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+const Tooltip = forwardRef<React.ElementRef<typeof TooltipPrimitive.Content>, TooltipProps>(
   (
     {
       className,
+      defaultOpen,
+      open,
+      onOpenChange,
       sideOffset = 4,
       content,
-      inverted = true,
+      triggerProps = { asChild: false },
+      inverted = false,
       hasArrow = true,
       noDelay = false,
+      inPortal = true,
       children,
       ...rest
-    }: TooltipProps,
-    ref: ForwardedRef<HTMLDivElement>,
-  ) => (
-    <TooltipPrimitive.Provider delayDuration={noDelay ? 0 : 500}>
-      <TooltipPrimitive.Root>
-        <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
-        <TooltipPrimitive.Portal>
-          <TooltipPrimitive.Content
-            ref={ref}
-            sideOffset={sideOffset}
-            className={twMerge(clsx(tooltipVariants({ inverted }), className))}
-            {...rest}
+    },
+    ref,
+  ) => {
+    const MaybePortal = inPortal ? TooltipPrimitive.Portal : Fragment;
+    const { className: triggerClassName, ...triggerPropsRest } = triggerProps;
+
+    return (
+      <TooltipPrimitive.Provider delayDuration={noDelay ? 0 : 500}>
+        <TooltipPrimitive.Root defaultOpen={defaultOpen} open={open} onOpenChange={onOpenChange}>
+          <TooltipPrimitive.Trigger
+            className={twMerge(clsx(tooltipTriggerStyles, triggerClassName))}
+            {...triggerPropsRest}
           >
-            {hasArrow ? (
-              <TooltipPrimitive.Arrow
-                className={tooltipArrowVariants({ inverted })}
-                width={8}
-                height={4}
-              />
-            ) : null}
-            {content}
-          </TooltipPrimitive.Content>
-        </TooltipPrimitive.Portal>
-      </TooltipPrimitive.Root>
-    </TooltipPrimitive.Provider>
-  ),
+            {children}
+          </TooltipPrimitive.Trigger>
+          <MaybePortal>
+            <TooltipPrimitive.Content
+              ref={ref}
+              sideOffset={sideOffset}
+              className={twMerge(clsx(tooltipVariants({ inverted }), className))}
+              {...rest}
+            >
+              {hasArrow ? (
+                <TooltipPrimitive.Arrow
+                  className={tooltipArrowVariants({ inverted })}
+                  width={8}
+                  height={4}
+                />
+              ) : null}
+              {content}
+            </TooltipPrimitive.Content>
+          </MaybePortal>
+        </TooltipPrimitive.Root>
+      </TooltipPrimitive.Provider>
+    );
+  },
 );
-Tooltip.displayName = 'Tooltip';
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+Tooltip.displayName = TooltipPrimitive.Content.displayName;
 
 export default Tooltip;

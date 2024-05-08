@@ -70,7 +70,7 @@ const NavBarMobile: React.FC<NavBarInternalProps> = ({ selected }) => {
         const pageSelected = selected === page.slug;
 
         return (
-          <Tooltip key={page.slug} content={page.name}>
+          <Tooltip key={page.slug} content={page.name} triggerProps={{ asChild: true }}>
             <IconButton
               className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-4' : '')}
               variant="ghost"

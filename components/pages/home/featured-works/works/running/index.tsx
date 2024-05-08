@@ -80,7 +80,7 @@ const RunningFeatureDetail: FC<RunningFeatureDetailProps> = ({ mileageLogs, runn
           </Tabs.Trigger>
         </Tabs.List>
         <div className="border-t border-gray-6 p-2">
-          <Tooltip content="Change units" side="left">
+          <Tooltip content="Change units" side="left" triggerProps={{ asChild: true }}>
             <IconButton size="sm" onClick={handleUnitChange} aria-label="Change units">
               <ArrowLeftRight />
             </IconButton>
