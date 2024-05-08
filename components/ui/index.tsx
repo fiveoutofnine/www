@@ -4,6 +4,8 @@ export { default as Badge } from './badge';
 export { default as Button, ButtonGroup } from './button';
 export { default as Checkbox } from './checkbox';
 export { default as CodeBlock } from './code-block';
+export { default as Command } from './command';
+export { default as Dialog } from './dialog';
 export { default as HoverCard } from './hover-card';
 export { default as IconButton } from './icon-button';
 export { default as Input } from './input';
