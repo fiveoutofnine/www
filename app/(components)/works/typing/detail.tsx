@@ -259,7 +259,7 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
 
         {/* Buttons */}
         <div className="flex space-x-1">
-          <Tooltip content="Reset">
+          <Tooltip content="Reset" triggerProps={{ asChild: true }}>
             <IconButton
               size="sm"
               disabled={typed.length === 0}
@@ -269,7 +269,7 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
               <RotateCw />
             </IconButton>
           </Tooltip>
-          <Tooltip content="Randomize quote" align="end">
+          <Tooltip content="Randomize quote" align="end" triggerProps={{ asChild: true }}>
             <IconButton size="sm" onClick={changeQuote} aria-label="Randomize quote">
               <ChevronRight />
             </IconButton>

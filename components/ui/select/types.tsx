@@ -1,6 +1,3 @@
-import type { ReactNode } from 'react';
-
-import { SelectItem } from '.';
 import { selectVariants } from './styles';
 import type { VariantProps } from 'class-variance-authority';
 
@@ -17,15 +14,18 @@ export type SelectVariantProps = VariantProps<typeof selectVariants>;
 export type SelectItemProps = JSX.IntrinsicElements['option'];
 
 export type SelectProps = Omit<JSX.IntrinsicElements['select'], 'size'> &
-  SelectVariantProps & {
-    rightIcon?: ReactNode;
+  Omit<SelectVariantProps, 'variant' | 'intent'> &
+  (
+    | {
+        variant?: 'solid';
+        intent?: 'black' | 'white';
+      }
+    | {
+        variant?: Exclude<SelectVariantProps['variant'], 'solid' | 'text'>;
+        intent?: Exclude<SelectVariantProps['intent'], 'black' | 'white'>;
+      }
+  ) & {
+    rightIcon?: React.ReactNode;
     selectSize?: number;
+    fullWidth?: boolean;
   };
-
-// -----------------------------------------------------------------------------
-// Composition
-// -----------------------------------------------------------------------------
-
-export type SelectComposition = {
-  Item: typeof SelectItem;
-};

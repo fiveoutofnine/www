@@ -173,7 +173,7 @@ const RunningFeatureDetailHeatmap: FC<RunningFeatureDetailHeatmapProps> = ({
           aria-label="Select year to view running logs from"
         >
           {yearsLogged.map((year) => (
-            <Select.Item key={year}>{year}</Select.Item>
+            <option key={year}>{year}</option>
           ))}
         </Select>
       </div>

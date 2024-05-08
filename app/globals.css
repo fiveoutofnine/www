@@ -20,6 +20,10 @@ a {
   text-decoration: none;
 }
 
+button {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-9;
+}
+
 @layer utilities {
   .min-h-screen {
     min-height: 100dvh;

@@ -1,13 +1,16 @@
 import { JavaScriptLogo, PythonLogo, ReactLogo, SolidityLogo, TypeScriptLogo } from './logos';
 
-const CodeBlockLanguageLogo = () => null;
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
 
-CodeBlockLanguageLogo.JavaScript = JavaScriptLogo;
-CodeBlockLanguageLogo.Python = PythonLogo;
-CodeBlockLanguageLogo.React = ReactLogo;
-CodeBlockLanguageLogo.Solidity = SolidityLogo;
-CodeBlockLanguageLogo.TypeScript = TypeScriptLogo;
-
-CodeBlockLanguageLogo.displayName = 'CodeBlockLanguageLogo';
+const CodeBlockLanguageLogo = {
+  displayName: 'CodeBlockLanguageLogo',
+  JavaScript: JavaScriptLogo,
+  Python: PythonLogo,
+  React: ReactLogo,
+  Solidity: SolidityLogo,
+  TypeScript: TypeScriptLogo,
+};
 
 export default CodeBlockLanguageLogo;
