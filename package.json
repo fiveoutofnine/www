@@ -42,6 +42,7 @@
     "prop-types": "^15.6.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.4",
     "recharts": "^2.5.0",
     "rehype-mdx-code-props": "^1.0.0",
     "sonner": "^1.4.41",
