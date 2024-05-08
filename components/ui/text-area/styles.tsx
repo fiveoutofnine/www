@@ -8,7 +8,8 @@ export const textAreaVariants = cva(
     'text-sm',
     'text-gray-12',
     'rounded-md',
-    'py-2',
+    // `(input_height_md - height_1_line) / 2 = (36 - (14 * 1.5)) / 2 = 7.5`.
+    'py-[7.5px]',
     'px-2.5',
     'transition-colors',
     'border',
@@ -20,6 +21,7 @@ export const textAreaVariants = cva(
     'focus-visible:ring-blue-9',
     'focus-visible:ring-1',
     'disabled:bg-gray-9',
+    'disabled:border-gray-6',
     'invalid:bg-red-3',
     'invalid:text-red-11',
     'invalid:border-red-7',
