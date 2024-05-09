@@ -231,23 +231,21 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
           <div>
             <div className="text-[0.625rem] text-gray-11">WPM</div>
             <div className="text-xs text-gray-12">{wpm ?? '–'}</div>
-            <Tooltip className="font-sans" content="5/9's WPM" side="bottom">
-              <div className="flex items-center space-x-1">
-                <FiveoutofnineAvatar size={12} />
-                <div
-                  className={clsx(
-                    'text-[0.625rem] transition-colors',
-                    endTime
-                      ? wpm && wpm > quote.wpm
-                        ? 'text-red-9'
-                        : 'text-green-9'
-                      : 'text-gray-11',
-                  )}
-                >
-                  {quote.wpm}
-                </div>
+            <div className="flex items-center space-x-1">
+              <FiveoutofnineAvatar size={12} />
+              <div
+                className={clsx(
+                  'text-[0.625rem] transition-colors',
+                  endTime
+                    ? wpm && wpm > quote.wpm
+                      ? 'text-red-9'
+                      : 'text-green-9'
+                    : 'text-gray-11',
+                )}
+              >
+                {quote.wpm}
               </div>
-            </Tooltip>
+            </div>
           </div>
           {/* Time passed */}
           <TypingFeatureDetailTimer
@@ -259,7 +257,7 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
 
         {/* Buttons */}
         <div className="flex space-x-1">
-          <Tooltip content="Reset" triggerProps={{ asChild: true }}>
+          <Tooltip content="Reset" triggerProps={{ asChild: true }} inverted>
             <IconButton
               size="sm"
               disabled={typed.length === 0}
@@ -269,7 +267,7 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
               <RotateCw />
             </IconButton>
           </Tooltip>
-          <Tooltip content="Randomize quote" align="end" triggerProps={{ asChild: true }}>
+          <Tooltip content="Randomize quote" align="end" triggerProps={{ asChild: true }} inverted>
             <IconButton size="sm" onClick={changeQuote} aria-label="Randomize quote">
               <ChevronRight />
             </IconButton>
@@ -321,20 +319,18 @@ const TypingFeatureDetailTimer: React.FC<{
       <div className="text-xs text-gray-12">{timePassed ? `${timePassed}s` : '–'}</div>
       <div className="flex items-center space-x-1">
         <FiveoutofnineAvatar size={12} />
-        <Tooltip className="font-sans" content="5/9's time" side="bottom">
-          <div
-            className={clsx(
-              'text-[0.625rem] transition-colors',
-              endTime
-                ? timePassed && timePassed < fiveoutofnineTime
-                  ? 'text-red-9'
-                  : 'text-green-9'
-                : 'text-gray-11',
-            )}
-          >
-            {fiveoutofnineTime}s
-          </div>
-        </Tooltip>
+        <div
+          className={clsx(
+            'text-[0.625rem] transition-colors',
+            endTime
+              ? timePassed && timePassed < fiveoutofnineTime
+                ? 'text-red-9'
+                : 'text-green-9'
+              : 'text-gray-11',
+          )}
+        >
+          {fiveoutofnineTime}s
+        </div>
       </div>
     </div>
   );
