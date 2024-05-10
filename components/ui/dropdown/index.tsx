@@ -75,14 +75,21 @@ const DropdownContent = forwardRef<
 const DropdownGroup = DropdownPrimitive.Group;
 
 const DropdownItem = forwardRef<React.ElementRef<typeof DropdownPrimitive.Item>, DropdownItemProps>(
-  ({ className, inset, icon, children, ...rest }, ref) => (
+  ({ className, inset, icon, asChild, children, ...rest }, ref) => (
     <DropdownPrimitive.Item
       ref={ref}
       className={twMerge(clsx(dropdownItemVariants({ inset }), className))}
+      asChild={asChild}
       {...rest}
     >
-      <span dropdown-item-content="">{children}</span>
-      {icon ? <span className={clsx(dropdownItemIconContainerStyles)}>{icon}</span> : null}
+      {asChild ? (
+        children
+      ) : (
+        <Fragment>
+          <span dropdown-item-content="">{children}</span>
+          {icon ? <span className={clsx(dropdownItemIconContainerStyles)}>{icon}</span> : null}
+        </Fragment>
+      )}
     </DropdownPrimitive.Item>
   ),
 );

@@ -91,7 +91,15 @@ const ChessFeatureDetail: React.FC = () => {
                 'scale(0.124)' /* Height is hard-coded, so this should always be `0.124` */,
               transformOrigin: '0 0',
             }}
-            dangerouslySetInnerHTML={{ __html: Buffer.from(nft.image, 'base64').toString() }}
+            dangerouslySetInnerHTML={{
+              __html: Buffer.from(nft.image, 'base64')
+                .toString()
+                // We replace `<section>` with an ID to tighten the selector.
+                // There have been issues with `section` selectors being
+                // erroneously applied to unexpected elements (e.g. extensions).
+                .replace('<section>', '<section id="__fiveoutofnine-chess-display">')
+                .replace('}section{', '}section#__fiveoutofnine-chess-display{'),
+            }}
           />
         </a>
       </Tooltip>

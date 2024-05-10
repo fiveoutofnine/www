@@ -48,7 +48,7 @@ const toast: ToastFactoryProps & ToastFactoryComposition = ({
 }) => {
   return toastSonner.custom(
     (id) => (
-      <div className={twMerge(clsx(toastVariants({ intent }), className))}>
+      <div className={twMerge(clsx(toastVariants({ intent }), className))} tabIndex={-1}>
         <div className="flex w-full items-start gap-2">
           {icon ? (
             <span className={clsx(toastIconContainerVariants({ intent }))}>{icon}</span>
@@ -80,7 +80,7 @@ const toast: ToastFactoryProps & ToastFactoryComposition = ({
         {hasCloseButton ? <ToastCloseButton id={id} intent={intent} /> : null}
       </div>
     ),
-    { unstyled: true, className: 'w-full', ...rest },
+    { unstyled: true, className: 'w-full focus:outline-none', ...rest },
   );
 };
 

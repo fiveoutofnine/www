@@ -147,6 +147,7 @@ export const toastVariants = cva(
     'border',
     'rounded-md',
     'pointer-events-auto',
+    'focus:outline-none',
   ],
   {
     variants: {
