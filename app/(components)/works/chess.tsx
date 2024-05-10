@@ -75,7 +75,7 @@ const ChessFeatureDetail: React.FC = () => {
 
   return (
     <div className="relative flex h-full w-full space-x-2 p-2">
-      <Tooltip content={nft.name} triggerProps={{ asChild: true }}>
+      <Tooltip content={nft.name} triggerProps={{ asChild: true }} inverted>
         <a
           className="h-full min-w-fit overflow-hidden rounded-lg border border-gray-7 transition-colors hover:border-gray-8"
           href={`https://etherscan.io/tx/${nft.txHash}`}
@@ -103,24 +103,28 @@ const ChessFeatureDetail: React.FC = () => {
           />
         </a>
       </Tooltip>
-      <IconButton
-        className="absolute bottom-3 left-1"
-        size="sm"
-        onClick={fetchPrevMove}
-        disabled={nft.tokenId === 0}
-        aria-label="View previous move"
-      >
-        <ChevronLeft />
-      </IconButton>
-      <IconButton
-        className="absolute bottom-3 left-[6.125rem]"
-        size="sm"
-        onClick={fetchNextMove}
-        disabled={nft.tokenId === 100}
-        aria-label="View next move"
-      >
-        <ChevronRight />
-      </IconButton>
+      <Tooltip content="Previous move" align="start" triggerProps={{ asChild: true }} inverted>
+        <IconButton
+          className="absolute bottom-3 left-1"
+          size="sm"
+          onClick={fetchPrevMove}
+          disabled={nft.tokenId === 0}
+          aria-label="View previous move"
+        >
+          <ChevronLeft />
+        </IconButton>
+      </Tooltip>
+      <Tooltip content="Next move" align="end" triggerProps={{ asChild: true }} inverted>
+        <IconButton
+          className="absolute bottom-3 left-[6.125rem]"
+          size="sm"
+          onClick={fetchNextMove}
+          disabled={nft.tokenId === 100}
+          aria-label="View next move"
+        >
+          <ChevronRight />
+        </IconButton>
+      </Tooltip>
 
       <div className="flex w-full flex-col justify-between">
         <div className="mx-auto grid w-[96px] grid-cols-6 grid-rows-6 overflow-hidden rounded border border-gray-6">
