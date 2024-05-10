@@ -19,7 +19,7 @@ const ColormapRegistryFeature: React.FC = () => {
           rightIcon={<ExternalLink />}
           newTab
         >
-          Open
+          Code
         </Button>
       }
       tags={[<CategoryTag key={1} category="On-chain" />]}
