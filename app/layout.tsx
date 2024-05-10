@@ -55,7 +55,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html
       lang="en"
       className={clsx(inter.variable, firaCode.variable, 'dark')}
-      style={{ background: 'var(--gray1)' }}
+      style={{ background: '#000' }}
     >
       <body className="relative flex min-h-screen w-full flex-col">
         <Web3Provider>

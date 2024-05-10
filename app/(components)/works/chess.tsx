@@ -146,7 +146,7 @@ const ChessFeatureDetail: React.FC = () => {
                 <div
                   key={index}
                   className={clsx(
-                    'flex h-4 w-4 items-center justify-center text-[0.5rem]',
+                    'flex size-4 items-center justify-center text-[0.5rem]',
                     pieceOverlap > 1
                       ? 'bg-purple-9'
                       : nft.userMove.from === index
@@ -163,17 +163,17 @@ const ChessFeatureDetail: React.FC = () => {
                   )}
                 >
                   {piece === '1' || piece === '9' ? (
-                    <ChessPiece.Pawn className={clsx('h-3 w-3', pieceColor)} />
+                    <ChessPiece.Pawn className={clsx('size-3', pieceColor)} />
                   ) : piece === '2' || piece === 'a' ? (
-                    <ChessPiece.Bishop className={clsx('h-3 w-3', pieceColor)} />
+                    <ChessPiece.Bishop className={clsx('size-3', pieceColor)} />
                   ) : piece === '3' || piece === 'b' ? (
-                    <ChessPiece.Rook className={clsx('h-3 w-3', pieceColor)} />
+                    <ChessPiece.Rook className={clsx('size-3', pieceColor)} />
                   ) : piece === '4' || piece === 'c' ? (
-                    <ChessPiece.Knight className={clsx('h-3 w-3', pieceColor)} />
+                    <ChessPiece.Knight className={clsx('size-3', pieceColor)} />
                   ) : piece === '5' || piece === 'd' ? (
-                    <ChessPiece.Queen className={clsx('h-3 w-3', pieceColor)} />
+                    <ChessPiece.Queen className={clsx('size-3', pieceColor)} />
                   ) : piece === '6' || piece === 'e' ? (
-                    <ChessPiece.King className={clsx('h-3 w-3', pieceColor)} />
+                    <ChessPiece.King className={clsx('size-3', pieceColor)} />
                   ) : null}
                 </div>
               );
