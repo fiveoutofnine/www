@@ -6,12 +6,12 @@ import ColormapRegistryFeatureDetailModal from './modal';
 import { TooltipWithBounds, useTooltip, useTooltipInPortal } from '@visx/tooltip';
 import clsx from 'clsx';
 import { LayoutGroup, motion } from 'framer-motion';
-import { ArrowLeft, Copy } from 'lucide-react';
+import { ArrowLeft, CaseLower, CaseUpper, Copy } from 'lucide-react';
 
 import { COLORMAPS } from '@/lib/constants/colormaps';
 import { getColormapValue } from '@/lib/utils';
 
-import { IconButton, toast } from '@/components/ui';
+import { Dropdown, IconButton, toast } from '@/components/ui';
 
 const ColormapRegistryFeatureDetail: React.FC = () => {
   const [selected, setSelected] = useState<number>();
@@ -148,13 +148,53 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
                       >
                         <ArrowLeft />
                       </IconButton>
-                      <button
-                        className="flex h-[1.125rem] items-center gap-1 rounded-sm px-1.5 text-xs font-medium text-gray-12 transition-colors hover:bg-gray-5 focus-visible:bg-gray-5"
-                        type="button"
-                      >
-                        {colormap.name}
-                        <Copy className="size-2.5 text-gray-11" />
-                      </button>
+                      <Dropdown.Root>
+                        <Dropdown.Trigger asChild>
+                          <button
+                            className="flex h-[1.125rem] items-center gap-1 rounded-sm px-1.5 text-xs font-medium text-gray-12 transition-colors hover:bg-gray-5 focus-visible:bg-gray-5 data-[state=open]:bg-gray-5"
+                            type="button"
+                          >
+                            {colormap.name}
+                            <Copy className="size-2.5 text-gray-11" />
+                          </button>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content>
+                          <Dropdown.Group>
+                            <Dropdown.Label>Copy ID as</Dropdown.Label>
+                            {[
+                              {
+                                label: 'bytes8',
+                                value: colormap.hash.slice(0, 18),
+                                icon: <CaseLower />,
+                              },
+                              {
+                                label: 'bytes32',
+                                value: colormap.hash,
+                                icon: <CaseUpper />,
+                              },
+                            ].map(({ label, value, icon }) => (
+                              <Dropdown.Item
+                                key={label}
+                                className="cursor-pointer"
+                                icon={icon}
+                                onClick={() => {
+                                  navigator.clipboard.writeText(value);
+                                  toast({
+                                    intent: 'success',
+                                    title: 'Copied ID to clipboard!',
+                                    description: `${value}`,
+                                    hasCloseButton: true,
+                                  });
+                                }}
+                              >
+                                <code className="rounded border border-gray-6 bg-gray-3 px-1 py-0.5 text-xs">
+                                  {label}
+                                </code>
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Group>
+                        </Dropdown.Content>
+                      </Dropdown.Root>
                       <ColormapRegistryFeatureDetailModal data={colormap} />
                     </motion.div>
                     {tooltipOpen && tooltipLeft !== undefined ? (

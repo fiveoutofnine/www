@@ -6,10 +6,10 @@ import type { ColormapSegmentData } from '@/lib/types/colormap';
  * [`0x0000000012883D1da628e31c0FE52e35DcF95D50`](https://etherscan.io/address/0x0000000012883D1da628e31c0FE52e35DcF95D50)
  * on Ethereum.
  */
-export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegmentData }[] = [
+export const COLORMAPS: { name: string; hash: string; data: ColormapSegmentData }[] = [
   {
     name: 'CMRmap',
-    addedTxHash: '0x8184a1c8869377c83679d92038d4210738e6f05f0b01a415cb6895be9bc5b7f6',
+    hash: '0x850ce48e7291439b1e41d21fc3f75dddd97580a4ff94aa9ebdd2bcbd423ea1e8',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -48,7 +48,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'Wistia',
-    addedTxHash: '0x7638effd4e21bb6dd5fe5ea17053b3382d95bbf579f0009c84ada765e71b9232',
+    hash: '0x4f5e8ea8862eff315c110b682ee070b459ba8983a7575c9a9c4c25007039109d',
     data: {
       r: [
         { position: 0x00, startIntensity: 0xe4, endIntensity: 0xe4 },
@@ -77,7 +77,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'autumn',
-    addedTxHash: '0x09b5b20fe29c767abf94a262e7f3a883ce351c29cd3d2edac82937085e7d2e06',
+    hash: '0xf2e92189cb6903b98d854cd74ece6c3fafdb2d3472828a950633fdaa52e05032',
     data: {
       r: [
         { position: 0x00, startIntensity: 0xff, endIntensity: 0xff },
@@ -95,7 +95,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'binary',
-    addedTxHash: '0x09b5b20fe29c767abf94a262e7f3a883ce351c29cd3d2edac82937085e7d2e06',
+    hash: '0xa33e6c7c5627ecabfd54c4d85f9bf04815fe89a91379fcf56ccd8177e086db21',
     data: {
       r: [
         { position: 0x00, startIntensity: 0xff, endIntensity: 0xff },
@@ -113,7 +113,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'bone',
-    addedTxHash: '0xdeccb58b761136fcc5482f584c035220692ce276d13a0dce8e5e5987e0ade324',
+    hash: '0xaa84b30df806b46f859a413cb036bc91466307aec5903fc4635c00a421f25d5c',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -135,7 +135,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'cool',
-    addedTxHash: '0xe5551801b7affcd45caf3397152c18570bb18bf04f46799e3ecfb926474db590',
+    hash: '0x864a6ee98b9b21ac0291523750d637250405c24a6575e1f75cfbd7209a810ce6',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -153,7 +153,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'copper',
-    addedTxHash: '0x4e3c47b320d76d35026059867b07df2ac7d73ae9f8b59f805ffb244fd436ae2e',
+    hash: '0xfd60cd3811f002814944a7d36167b7c9436187a389f2ee476dc883e37dc76bd2',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -172,7 +172,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'gist_rainbow',
-    addedTxHash: '0x02bde01f8ccf9cf6d1ac67aa96e412ed106152d14a8d7c34a0a3a701deae383e',
+    hash: '0xa8309447f8bd3b5e5e88a0abc05080b7682e4456c388b8636d45f5abb2ad2587',
     data: {
       r: [
         { position: 0x00, startIntensity: 0xff, endIntensity: 0xff },
@@ -208,7 +208,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'gist_stern',
-    addedTxHash: '0xd98446705fd122a756e10818007c1cb2d26a4c24a0bbd2a2b755e2b011918ac4',
+    hash: '0x3be719b0c342797212c4cb33fde865ed9cbe486eb67176265bc0869b54dee925',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -230,7 +230,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'gray',
-    addedTxHash: '0x235d6a7ae3a51d8b9d9e2ee3413aaf6c52bf0be222c7c1619a684589a28560b7',
+    hash: '0xca0da6b6309ed2117508207d68a59a18ccaf54ba9aa329f4f60a77481fcf2027',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -248,7 +248,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'hot',
-    addedTxHash: '0x1f7f6ade9815080c4363aadb072e44117920a9fbc4a2894497c98550bdd8a3de',
+    hash: '0x5ccb29670bb9de0e3911d8e47bde627b0e3640e49c3d6a88d51ff699160dfbe1',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x0a, endIntensity: 0x0a },
@@ -270,7 +270,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'hsv',
-    addedTxHash: '0xaa0469abc479fdeec3cb7632bd6bbba67dc1f6b3ae491fdb6c0ad06d4432886a',
+    hash: '0x3de8f27f386dab3dbab473f3cc16870a717fe5692b4f6a45003d175c559dfcba',
     data: {
       r: [
         { position: 0x00, startIntensity: 0xff, endIntensity: 0xff },
@@ -306,7 +306,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'jet',
-    addedTxHash: '0x7a9c4a017fea687b6c52866bdcc9bf85e6665f7824c7552633b44ac752389611',
+    hash: '0x026736ef8439ebcf8e7b8006bf8cb7482ced84d71b900407a9ed63e1b7bfe234',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -334,7 +334,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'spring',
-    addedTxHash: '0x3a7ace4c624aad4f6725a66879fc3d926fe498c097ca9df590ba298775e532b4',
+    hash: '0xc1806ea961848ac00c1f20aa0611529da522a7bd125a3036fe4641b07ee5c61c',
     data: {
       r: [
         { position: 0x00, startIntensity: 0xff, endIntensity: 0xff },
@@ -352,7 +352,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'summer',
-    addedTxHash: '0x9aa9ea3e34407c876696a03e028fb9daab397464946d72473d5e93d34f8c1053',
+    hash: '0x87970b686eb726750ec792d49da173387a567764d691294d764e53439359c436',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -370,7 +370,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'terrain',
-    addedTxHash: '0xe91c6010426a3ff162f03164c84d0968f4937b4fe695c39bd5b6d18fd2e76934',
+    hash: '0xaa6277ab923279cf59d78b9b5b7fb5089c90802c353489571fca3c138056fb1b',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x33, endIntensity: 0x33 },
@@ -400,7 +400,7 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
   },
   {
     name: 'winter',
-    addedTxHash: '0x04597b68ead1418250438dafbac331a8e8a809c4e298e8fc8de2da97008e498b',
+    hash: '0xdc1cecffc00e2f3196daaf53c27e53e6052a86dc875adb91607824d62469b2bf',
     data: {
       r: [
         { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
@@ -413,6 +413,42 @@ export const COLORMAPS: { name: string; addedTxHash: string; data: ColormapSegme
       b: [
         { position: 0x00, startIntensity: 0xff, endIntensity: 0xff },
         { position: 0xff, startIntensity: 0x7f, endIntensity: 0x7f },
+      ],
+    },
+  },
+  {
+    name: 'base-chain',
+    hash: '0xe5ec9a5a3ef46e357143cc14278c12216a0741868448333a333bee0579cb50e7',
+    data: {
+      r: [
+        { position: 0x00, startIntensity: 0x00, endIntensity: 0x00 },
+        { position: 0xff, startIntensity: 0xff, endIntensity: 0xff },
+      ],
+      g: [
+        { position: 0x00, startIntensity: 0x52, endIntensity: 0xff },
+        { position: 0xff, startIntensity: 0xff, endIntensity: 0xff },
+      ],
+      b: [
+        { position: 0x00, startIntensity: 0xff, endIntensity: 0xff },
+        { position: 0xff, startIntensity: 0xff, endIntensity: 0xff },
+      ],
+    },
+  },
+  {
+    name: 'farcaster',
+    hash: '0xe0ac19c2ffc50b0fb5289138b9c918aa1e0975cb0734ce852b29bbbf4de269de',
+    data: {
+      r: [
+        { position: 0x00, startIntensity: 0x8a, endIntensity: 0x00 },
+        { position: 0xff, startIntensity: 0xff, endIntensity: 0xff },
+      ],
+      g: [
+        { position: 0x00, startIntensity: 0x63, endIntensity: 0xff },
+        { position: 0xff, startIntensity: 0xff, endIntensity: 0xff },
+      ],
+      b: [
+        { position: 0x00, startIntensity: 0xd2, endIntensity: 0xff },
+        { position: 0xff, startIntensity: 0xff, endIntensity: 0xff },
       ],
     },
   },

@@ -124,7 +124,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
             {address ? (
               // Only display if address is connected.
               <Dropdown.Root>
-                <Tooltip content="Switch chains" triggerProps={{ asChild: true }} inverted>
+                <Tooltip content="Switch chains" align='start' triggerProps={{ asChild: true }} inverted>
                   <Dropdown.Trigger asChild>
                     <IconButton
                       size="sm"

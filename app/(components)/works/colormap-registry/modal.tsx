@@ -43,8 +43,12 @@ export const ColormapRegistryFeatureDetailModal: React.FC<ColormapRegistryFeatur
             </IconButton>
           </Dialog.Trigger>
         </Tooltip>
-        {/* Prevent the tooltip from getting focused upon dialog open. */}
-        <Dialog.Content className="flex flex-col" onOpenAutoFocus={(e) => e.preventDefault()}>
+        {/* Prevent the tooltip from getting focused upon dialog open/close. */}
+        <Dialog.Content
+          className="flex flex-col"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          onCloseAutoFocus={(e) => e.preventDefault()}
+        >
           <Dialog.Title>{data.name}</Dialog.Title>
           <Dialog.Description>
             The{' '}
@@ -90,10 +94,11 @@ export const ColormapRegistryFeatureDetailModal: React.FC<ColormapRegistryFeatur
           </IconButton>
         </Drawer.Trigger>
       </Tooltip>
-      {/* Prevent the tooltip from getting focused upon drawer open. */}
+      {/* Prevent the tooltip from getting focused upon drawer open/close. */}
       <Drawer.Content
         className="[&_[drawer-content]]:flex [&_[drawer-content]]:flex-col"
         onOpenAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={(e) => e.preventDefault()}
       >
         <Drawer.Title>{data.name}</Drawer.Title>
         <Drawer.Description>
