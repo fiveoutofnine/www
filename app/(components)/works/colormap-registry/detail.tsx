@@ -2,15 +2,16 @@
 
 import { useCallback, useState } from 'react';
 
+import ColormapRegistryFeatureDetailModal from './modal';
 import { TooltipWithBounds, useTooltip, useTooltipInPortal } from '@visx/tooltip';
 import clsx from 'clsx';
 import { LayoutGroup, motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Copy } from 'lucide-react';
 
 import { COLORMAPS } from '@/lib/constants/colormaps';
 import { getColormapValue } from '@/lib/utils';
 
-import { IconButton } from '@/components/ui';
+import { IconButton, toast } from '@/components/ui';
 
 const ColormapRegistryFeatureDetail: React.FC = () => {
   const [selected, setSelected] = useState<number>();
@@ -25,17 +26,36 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
   const { showTooltip, hideTooltip, tooltipOpen, tooltipLeft } = useTooltip<string>({
     tooltipOpen: true,
     tooltipLeft: undefined,
-    tooltipTop: 62,
+    // `(border_offset) + (tooltip_height + colormap_height) / 2 = -2 + (12 + 110) / 2`.
+    tooltipTop: 65,
   });
 
   const handlePointerMove = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
-      // Coordinates should be relative to the container
+      // Coordinates should be relative to the container.
       const tooltipLeft = ('clientX' in event ? event.clientX : 0) - containerBounds.left;
-      showTooltip({ tooltipLeft, tooltipTop: 62 });
+      showTooltip({ tooltipLeft, tooltipTop: 65 });
     },
     [showTooltip, containerBounds],
   );
+
+  const copyColorValue = () => {
+    const position = (0xff * (tooltipLeft ?? 0)) / containerBounds.width;
+    const tooltipColor = getColormapValue(COLORMAPS[selected!].data, position);
+    const tooltipColorHex =
+      '#' +
+      tooltipColor.r.toString(16).padStart(2, '0') +
+      tooltipColor.g.toString(16).padStart(2, '0') +
+      tooltipColor.b.toString(16).padStart(2, '0');
+
+    navigator.clipboard.writeText(tooltipColorHex);
+    toast({
+      intent: 'success',
+      title: 'Copied color value to clipboard!',
+      description: `${tooltipColorHex} at position ${Math.round(position)}.`,
+      hasCloseButton: true,
+    });
+  };
 
   const handleScroll = (event: React.UIEvent<HTMLFieldSetElement>) => {
     const target = event.target as HTMLFieldSetElement;
@@ -57,10 +77,8 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
         tabIndex={-1}
       >
         {COLORMAPS.map((colormap, index) => {
-          const tooltipColor = getColormapValue(
-            colormap.data,
-            (0xff * (tooltipLeft ?? 0)) / containerBounds.width,
-          );
+          const position = (0xff * (tooltipLeft ?? 0)) / containerBounds.width;
+          const tooltipColor = getColormapValue(colormap.data, position);
           const tooltipColorHex =
             '#' +
             tooltipColor.r.toString(16).padStart(2, '0') +
@@ -106,6 +124,7 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
                   ref={containerRef}
                   onPointerMove={handlePointerMove}
                   onMouseLeave={hideTooltip}
+                  onClick={copyColorValue}
                 >
                   <motion.div
                     className="z-10 h-full w-full"
@@ -118,6 +137,7 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 32, opacity: 1 }}
                       transition={{ type: 'spring', delay: 0.1, duration: 0.25 }}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <IconButton
                         size="sm"
@@ -128,29 +148,33 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
                       >
                         <ArrowLeft />
                       </IconButton>
-                      <span className="text-xs font-medium text-gray-12">{colormap.name}</span>
-                      <IconButton
-                        size="sm"
-                        href={`https://etherscan.io/tx/${colormap.addedTxHash}`}
-                        newTab
+                      <button
+                        className="flex h-[1.125rem] items-center gap-1 rounded-sm px-1.5 text-xs font-medium text-gray-12 transition-colors hover:bg-gray-5 focus-visible:bg-gray-5"
+                        type="button"
                       >
-                        <ExternalLink />
-                      </IconButton>
+                        {colormap.name}
+                        <Copy className="size-2.5 text-gray-11" />
+                      </button>
+                      <ColormapRegistryFeatureDetailModal data={colormap} />
                     </motion.div>
                     {tooltipOpen && tooltipLeft !== undefined ? (
                       <>
-                        <hr
-                          className="absolute z-10 h-[6.875rem] transition-colors"
-                          style={{
-                            border: tooltipColorIsDark ? '0.5px solid #fff' : '0.5px solid #000',
-                            transform: `translateX(${tooltipLeft}px)`,
-                          }}
-                        />
+                        <div
+                          className="absolute z-10 flex h-[6.875rem] w-4 cursor-pointer justify-center"
+                          style={{ transform: `translateX(${tooltipLeft - 8}px)` }}
+                        >
+                          <hr
+                            className=" h-full w-[0.5px] transition-colors"
+                            style={{
+                              border: tooltipColorIsDark ? '0.5px solid #fff' : '0.5px solid #000',
+                            }}
+                          />
+                        </div>
                         <TooltipWithBounds
                           key={Math.random()} // Needed for bounds to update correctly
                           left={tooltipLeft}
-                          top={62}
-                          className="pointer-events-none absolute left-0 top-0 z-10 flex h-6 items-center justify-center rounded px-1.5 font-mono text-xs font-medium transition-colors"
+                          top={65} // `(border_offset) + (tooltip_height + colormap_height) / 2 = -2 + (12 + 110) / 2`.
+                          className="pointer-events-none absolute left-0 top-0 z-10 flex h-6 flex-col items-center justify-center gap-0.5 rounded px-1.5 font-mono text-xs font-medium transition-colors"
                           style={{
                             background: tooltipColorHex,
                             color: tooltipColorIsDark ? '#fff' : '#000',
@@ -175,6 +199,7 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
           'pointer-events-none absolute left-0 top-0 h-6 w-full bg-gradient-to-b from-gray-3 transition-opacity',
           scrollIsAtTop || selected !== undefined ? 'opacity-0' : 'opacity-100',
         )}
+        aria-hidden={true}
       />
       {/* Bottom gradient to hide overflow */}
       <div
@@ -182,6 +207,7 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
           'pointer-events-none absolute bottom-0 left-0 h-6 w-full bg-gradient-to-t from-gray-3 transition-opacity',
           scrollIsAtBottom || selected !== undefined ? 'opacity-0' : 'opacity-100',
         )}
+        aria-hidden={true}
       />
     </div>
   );

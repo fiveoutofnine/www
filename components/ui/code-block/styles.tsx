@@ -30,12 +30,16 @@ export const codeBlockActionsVariants = cva(['flex', 'items-center', 'gap-2'], {
 // ---------------------------------------–-------------------------------------
 
 export const codeBlockContainerVariants = cva(
-  ['flex', 'flex-col', 'overflow-hidden', 'border', 'border-gray-6'],
+  ['flex', 'flex-col', 'overflow-hidden', 'border', 'border-gray-6', 'hide-scrollbar'],
   {
     variants: {
       roundedTop: {
         true: ['rounded-xl'],
         false: ['rounded-b-xl', 'rounded-t-none'],
+      },
+      containerized: {
+        true: [],
+        false: ['rounded-none', 'border-x-0', '[&_[code-block-pre]]:rounded-none'],
       },
     },
   },
@@ -48,7 +52,7 @@ export const codeBlockHeaderFileNameIconStyles = 'w-4 h-4';
 export const codeBlockHeaderFileNameStyles = 'text-sm text-ellipsis overflow-hidden line-clamp-1';
 
 export const codeBlockHeaderStyles =
-  'flex h-10 grow items-center justify-between border-b border-gray-6 bg-gray-2 pl-4 pr-2 rounded-top-xl';
+  'flex min-h-10 sticky top-0 z-10 h-10 grow items-center justify-between border-b border-gray-6 bg-gray-2 pl-4 pr-2 rounded-top-xl';
 
 export const codeBlockLineHighlightedStyles = 'bg-blue-4 shadow-[inset_2px_0] shadow-blue-9';
 

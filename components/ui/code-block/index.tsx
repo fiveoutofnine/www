@@ -43,6 +43,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   breakLines = false,
   showLineNumbers = true,
   roundedTop = true,
+  containerized = true,
   children,
   ...rest
 }) => {
@@ -69,9 +70,14 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                     : File;
 
   return (
-    <div className={twMerge(clsx(codeBlockContainerVariants({ roundedTop }), className))}>
+    <div
+      className={twMerge(
+        clsx(codeBlockContainerVariants({ roundedTop, containerized }), className),
+      )}
+      tabIndex={-1}
+    >
       {hasHeader ? (
-        <div className={codeBlockHeaderStyles}>
+        <div className={codeBlockHeaderStyles} code-block-header="">
           <div className={codeBlockHeaderFileNameContainerStyles}>
             <Icon className={codeBlockHeaderFileNameIconStyles} />
             <div className={codeBlockHeaderFileNameStyles}>{fileName}</div>
@@ -85,6 +91,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
             <pre
               className={codeBlockPreVariants({ hasHeader: hasHeader || !roundedTop, breakLines })}
               {...rest}
+              code-block-pre=""
             >
               <code className={clsx(codeBlockStyles)}>
                 {tokens.map((line, i) => {
@@ -99,12 +106,15 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                         highlightLines.includes(i + 1) ? codeBlockLineHighlightedStyles : '',
                       )}
                       {...restLineProps}
+                      code-block-line=""
                     >
                       {showLineNumbers ? (
-                        <div className={codeBlockLineNumberStyles}>{i + 1}</div>
+                        <div className={codeBlockLineNumberStyles} code-block-line-number="">
+                          {i + 1}
+                        </div>
                       ) : null}
                       {line.map((token, key) => (
-                        <span key={key} {...getTokenProps({ token })} />
+                        <span key={key} {...getTokenProps({ token })} code-block-token="" />
                       ))}
                     </div>
                   );
