@@ -5,12 +5,13 @@ import { Footprints } from 'lucide-react';
 import type { MileageLog } from '@/lib/types/running';
 
 import FeatureDisplay from '@/components/templates/feature-display';
+import type { Database } from '@/generated/database.types';
 
 // -----------------------------------------------------------------------------
 // Services
 // -----------------------------------------------------------------------------
 
-const supabase = createClient(
+const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -32,7 +33,7 @@ const RunningFeature: React.FC = async () => {
 
   const mileageLogs: MileageLog[] = (mileageLogData ?? []).map((item) => ({
     date: item.time,
-    value: item.value,
+    value: item.value ?? 0,
   }));
 
   // ---------------------------------------------------------------------------

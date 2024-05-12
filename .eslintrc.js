@@ -27,4 +27,5 @@ module.exports = {
     'prettier/prettier': 'error',
     indent: 'off',
   },
+  ignores: ['/generated/*'],
 };

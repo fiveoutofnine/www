@@ -7,8 +7,9 @@ import { mainnet } from 'viem/chains';
 import { idSchema } from '@/lib/schemas';
 import type { ChessNFTMetadata } from '@/lib/types/chess';
 import { validateQuery } from '@/lib/utils';
+import type { Database } from '@/generated/database.types';
 
-const supabaseAdmin = createClient(
+const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
