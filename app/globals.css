@@ -43,3 +43,29 @@ button {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.recharts-cartesian-grid-horizontal > line {
+  @apply stroke-gray-6;
+}
+
+.recharts-cartesian-grid-vertical > line {
+  @apply stroke-gray-6;
+  stroke-dasharray: 2 2;
+}
+
+.recharts-text {
+  user-select: none;
+  font-weight: 300;
+}
+
+.recharts-tooltip-cursor {
+  @apply fill-gray-5;
+}
+
+.recharts-tooltip-wrapper:focus {
+  outline: none;
+}
+
+.recharts-cartesian-axis-tick-value {
+  @apply fill-gray-11;
+}

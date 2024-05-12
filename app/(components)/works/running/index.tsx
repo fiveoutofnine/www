@@ -31,10 +31,19 @@ const RunningFeature: React.FC = async () => {
     .order('time', { ascending: false })
     .limit(12);
 
-  const mileageLogs: MileageLog[] = (mileageLogData ?? []).map((item) => ({
-    date: item.time,
-    value: item.value ?? 0,
-  }));
+  const mileageLogs: MileageLog[] = (mileageLogData ?? [])
+    .map((item) => ({
+      date: item.time,
+      value: item.value ?? 0,
+    }))
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  /* const { data: lastDay } = await supabase
+    .from('daily_mileage')
+    .select('time')
+    .order('time', { ascending: false })
+    .limit(1);
+  console.log(lastDay); */
 
   // ---------------------------------------------------------------------------
   // Fetch daily running logs
