@@ -1,11 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import type { Database } from '@/generated/database.types';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
+// -----------------------------------------------------------------------------
+// Services
+// -----------------------------------------------------------------------------
+
+const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
+
+// -----------------------------------------------------------------------------
+// API handler
+// -----------------------------------------------------------------------------
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
@@ -72,8 +81,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           .select()
           .gte('time', startDate.toISOString())
           .lt('time', endDate.toISOString());
-        const total = data?.reduce((acc, { value }) => acc + value, 0) ?? 0;
-        return { time: new Date(day), value: total };
+        const total = data?.reduce((acc, { value }) => acc + (value ?? 0), 0) ?? 0;
+        return { time: new Date(day).toISOString(), value: total };
       }),
     );
 
@@ -98,8 +107,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           .select()
           .gte('time', startDate.toISOString())
           .lt('time', endDate.toISOString());
-        const total = data?.reduce((acc, { value }) => acc + value, 0) ?? 0;
-        return { time: new Date(month), value: total };
+        const total = data?.reduce((acc, { value }) => acc + (value ?? 0), 0) ?? 0;
+        return { time: new Date(month).toISOString(), value: total };
       }),
     );
 

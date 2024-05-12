@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     .status(200)
     .send(
       `<script type="text/javascript">w=window;w.addEventListener('DOMContentLoaded',()=>{n=document.querySelector('section').style;n.transformOrigin='top left';a=()=>n.transform='scale('+w.innerWidth/1000+')';a();w.onresize=a});</script>${Buffer.from(
-        data.animation_url.substring(22),
+        data.animation_url?.substring(22) ?? '',
         'base64',
       ).toString()}`,
     );

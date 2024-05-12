@@ -11,6 +11,7 @@ module.exports = {
     'next',
     'prettier',
   ],
+  ignorePatterns: ['/generated/*'],
   overrides: [],
   parser: '@typescript-eslint/parser',
   parserOptions: {

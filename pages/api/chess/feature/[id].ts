@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return;
   }
 
-  const image = data.animation_url.substring(22);
+  const image = data.animation_url?.substring(22) ?? '';
 
   // Cache response for 1 week, revalidate after 1 day.
   res.setHeader('cache-control', 'public, s-maxage=604800, stale-while-revalidate=86400');

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import type { Database } from '@/generated/database.types';
 import { createClient } from '@supabase/supabase-js';
 import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
@@ -8,7 +9,7 @@ import { idSchema } from '@/lib/schemas';
 import type { ChessNFTMetadata } from '@/lib/types/chess';
 import { validateQuery } from '@/lib/utils';
 
-const supabaseAdmin = createClient(
+const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
