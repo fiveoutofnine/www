@@ -37,6 +37,7 @@ const FIVEOUTOFNINE_MESSAGES = [
 // -----------------------------------------------------------------------------
 
 const TxDotCoolFeatureDetail: React.FC = () => {
+  const [mounted, setMounted] = useState<boolean>(false);
   const [userMessage, setUserInput] = useState<string>('');
   const { address } = useAccount();
   const chainId = useChainId();
@@ -48,9 +49,12 @@ const TxDotCoolFeatureDetail: React.FC = () => {
 
   const { isLoading } = useWaitForTransactionReceipt({ hash: data });
 
-  // Scroll messages into view on load.
+  // Scroll messages into view on load and set mounted.
   useEffect(
-    () => messagesEndRef.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' }),
+    () => {
+      setMounted(true);
+      messagesEndRef.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    },
     [],
   );
 
@@ -104,7 +108,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
             <input
               className={clsx(
                 'h-8 w-full rounded-full border border-gray-7 bg-gray-2 pr-7 text-gray-12 transition-all placeholder:text-gray-11 hover:border-gray-8 focus:border-blue-9 focus:outline-none',
-                address ? 'pl-7' : 'pl-3',
+                address && mounted ? 'pl-7' : 'pl-3',
               )}
               type="text"
               name="user-message"
@@ -121,7 +125,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
             />
 
             {/* Chain selector */}
-            {address ? (
+            {address && mounted ? (
               // Only display if address is connected.
               <Dropdown.Root>
                 <Tooltip content="Switch chains" align='start' triggerProps={{ asChild: true }} inverted>
@@ -174,7 +178,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
               </Dropdown.Root>
             ) : null}
 
-            {!address ? (
+            {!address || !mounted ? (
               // Connect wallet
               <ConnectKitButton.Custom>
                 {({ show }) => (
@@ -185,6 +189,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
                       intent="none"
                       className="absolute right-1 top-1 rounded-full"
                       onClick={show}
+                      disabled={!mounted}
                       type="submit"
                     >
                       <Wallet />
