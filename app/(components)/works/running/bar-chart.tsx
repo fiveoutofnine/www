@@ -26,6 +26,7 @@ import { Tooltip } from '@/components/ui';
 type RunningFeatureDetailBarChartProps = {
   mileageLogs: MileageLog[];
   unit: LengthUnit;
+  lastUpdated?: Date;
 };
 
 // -----------------------------------------------------------------------------
@@ -35,13 +36,15 @@ type RunningFeatureDetailBarChartProps = {
 const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> = ({
   mileageLogs,
   unit,
+  lastUpdated,
 }) => {
   // 20.43 is a precomputed value to fit the width when the unit is set to km.
   const [yAxisWidth, setYAxisWidth] = useState<number>(20.43);
 
-  const currentDay = new Date().getUTCDate();
-  const currentMonth = new Date().getUTCMonth();
-  const currentYear = new Date().getUTCFullYear();
+  const currentDate = lastUpdated ? new Date(lastUpdated) : new Date();
+  const currentDay = currentDate.getUTCDate();
+  const currentMonth = currentDate.getUTCMonth();
+  const currentYear = currentDate.getUTCFullYear();
 
   // Calculate the average distance per day for each month.
   const [data, totalDays] = useMemo(() => {

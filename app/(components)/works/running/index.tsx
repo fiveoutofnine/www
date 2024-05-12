@@ -38,12 +38,12 @@ const RunningFeature: React.FC = async () => {
     }))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  /* const { data: lastDay } = await supabase
-    .from('daily_mileage')
+  const { data: lastUpdated } = await supabase
+    .from('hourly_mileage')
     .select('time')
     .order('time', { ascending: false })
-    .limit(1);
-  console.log(lastDay); */
+    .limit(1)
+    .single();
 
   // ---------------------------------------------------------------------------
   // Fetch daily running logs
@@ -83,7 +83,11 @@ const RunningFeature: React.FC = async () => {
       description="I run a lot"
       symbol={<Footprints />}
     >
-      <RunningFeatureDetail mileageLogs={mileageLogs} runningLogs={runningLogs} />
+      <RunningFeatureDetail
+        mileageLogs={mileageLogs}
+        runningLogs={runningLogs}
+        lastUpdated={lastUpdated?.time ? new Date(lastUpdated.time) : undefined}
+      />
     </FeatureDisplay>
   );
 };

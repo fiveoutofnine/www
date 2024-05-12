@@ -18,13 +18,17 @@ import { IconButton, Tabs, Tooltip } from '@/components/ui';
 type RunningFeatureDetailProps = {
   mileageLogs: MileageLog[];
   runningLogs: MileageLog[];
+  lastUpdated?: Date;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({ mileageLogs }) => {
+const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({
+  mileageLogs,
+  lastUpdated,
+}) => {
   const [unitIndex, setUnitIndex] = useState<number>(0);
 
   const handleUnitChange = () => {
@@ -78,6 +82,7 @@ const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({ mileageLogs
             <RunningFeatureDetailBarChart
               mileageLogs={mileageLogs}
               unit={LENGTH_UNITS[unitIndex]}
+              lastUpdated={lastUpdated}
             />
           ),
         },
