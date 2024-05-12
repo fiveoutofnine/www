@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/generated/database.types';
+import { createClient } from '@supabase/supabase-js';
 
 // -----------------------------------------------------------------------------
 // Services
@@ -81,8 +81,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           .select()
           .gte('time', startDate.toISOString())
           .lt('time', endDate.toISOString());
-        const total = data?.reduce((acc, { value }) => acc + (value??0), 0) ?? 0;
-        return { time: (new Date(day)).toISOString(), value: total };
+        const total = data?.reduce((acc, { value }) => acc + (value ?? 0), 0) ?? 0;
+        return { time: new Date(day).toISOString(), value: total };
       }),
     );
 
@@ -107,8 +107,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           .select()
           .gte('time', startDate.toISOString())
           .lt('time', endDate.toISOString());
-        const total = data?.reduce((acc, { value }) => acc + (value??0), 0) ?? 0;
-        return { time: (new Date(month)).toISOString(), value: total };
+        const total = data?.reduce((acc, { value }) => acc + (value ?? 0), 0) ?? 0;
+        return { time: new Date(month).toISOString(), value: total };
       }),
     );
 

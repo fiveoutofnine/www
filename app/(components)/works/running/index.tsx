@@ -1,11 +1,11 @@
 import RunningFeatureDetail from './detail';
+import type { Database } from '@/generated/database.types';
 import { createClient } from '@supabase/supabase-js';
 import { Footprints } from 'lucide-react';
 
 import type { MileageLog } from '@/lib/types/running';
 
 import FeatureDisplay from '@/components/templates/feature-display';
-import type { Database } from '@/generated/database.types';
 
 // -----------------------------------------------------------------------------
 // Services
