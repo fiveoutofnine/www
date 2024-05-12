@@ -11,6 +11,7 @@ module.exports = {
     'next',
     'prettier',
   ],
+  ignorePatterns: ['/generated/*'],
   overrides: [],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -27,5 +28,4 @@ module.exports = {
     'prettier/prettier': 'error',
     indent: 'off',
   },
-  ignores: ['/generated/*'],
 };
