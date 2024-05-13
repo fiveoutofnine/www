@@ -36,12 +36,13 @@ const DesignNavBar: React.FC = () => {
 
 const DesignNavBarDesktop: React.FC<DesignNavBarInternalProps> = ({ selected }) => {
   return (
-    <nav
-      className="hide-scrollbar sticky top-28 -ml-3 hidden min-w-[11rem] max-w-[11rem] flex-col overflow-y-scroll px-0.5 md:flex"
+    <aside
+      className="hide-scrollbar sticky top-28 -ml-3 hidden min-w-[11rem] max-w-[11rem] flex-col overflow-y-scroll px-0.5 focus:outline-none md:flex"
       style={{ height: 'calc(100vh - 11rem)' }}
+      tabIndex={-1}
     >
       <DesignNavBarInternal selected={selected} />
-    </nav>
+    </aside>
   );
 };
 
@@ -94,19 +95,18 @@ const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected })
         const pageSelected = selected === page.slug;
 
         return (
-          <div key={page.slug}>
-            <Button
-              className={clsx(
-                'mt-1 w-full justify-start',
-                pageSelected ? 'cursor-default bg-gray-4' : '',
-              )}
-              variant="ghost"
-              href={page.slug}
-              disabled={pageSelected}
-            >
-              {page.name}
-            </Button>
-          </div>
+          <Button
+            key={page.slug}
+            className={clsx(
+              'mt-1 w-full justify-start',
+              pageSelected ? 'cursor-default bg-gray-5 text-gray-12' : '',
+            )}
+            variant="ghost"
+            href={page.slug}
+            disabled={pageSelected}
+          >
+            {page.name}
+          </Button>
         );
       })}
 
@@ -115,19 +115,18 @@ const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected })
         const pageSelected = selected === page.slug;
 
         return (
-          <div key={page.slug}>
-            <Button
-              className={clsx(
-                'mt-1 w-full justify-start',
-                pageSelected ? 'cursor-default bg-gray-4' : '',
-              )}
-              variant="ghost"
-              href={page.slug}
-              disabled={pageSelected}
-            >
-              {page.name}
-            </Button>
-          </div>
+          <Button
+            key={page.slug}
+            className={clsx(
+              'mt-1 w-full justify-start',
+              pageSelected ? 'cursor-default bg-gray-5 text-gray-12' : '',
+            )}
+            variant="ghost"
+            href={page.slug}
+            disabled={pageSelected}
+          >
+            {page.name}
+          </Button>
         );
       })}
     </Fragment>

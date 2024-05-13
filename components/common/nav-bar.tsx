@@ -47,7 +47,7 @@ const NavBarDesktop: React.FC<NavBarInternalProps> = ({ selected }) => {
         return (
           <Button
             key={page.slug}
-            className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-4' : '')}
+            className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-5 text-gray-12' : '')}
             variant="ghost"
             href={page.slug}
             disabled={pageSelected}
@@ -56,7 +56,7 @@ const NavBarDesktop: React.FC<NavBarInternalProps> = ({ selected }) => {
           </Button>
         );
       })}
-      <div className="flex-grow" />
+      <div className="flex-grow" aria-hidden={true} />
       <ConnectButton />
     </nav>
   );
@@ -72,7 +72,7 @@ const NavBarMobile: React.FC<NavBarInternalProps> = ({ selected }) => {
         return (
           <Tooltip key={page.slug} content={page.name} triggerProps={{ asChild: true }}>
             <IconButton
-              className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-4' : '')}
+              className={clsx('ml-2', pageSelected ? 'cursor-default bg-gray-5 text-gray-12' : '')}
               variant="ghost"
               href={page.slug}
               disabled={pageSelected}
@@ -82,7 +82,7 @@ const NavBarMobile: React.FC<NavBarInternalProps> = ({ selected }) => {
           </Tooltip>
         );
       })}
-      <div className="flex-grow" />
+      <div className="flex-grow" aria-hidden={true} />
       <ConnectButton />
     </nav>
   );
