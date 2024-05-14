@@ -7,7 +7,6 @@ import type { PageSlug } from '@/lib/types/site';
 
 import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
-import DesignNavBar from '@/components/pages/design/nav-bar';
 import DesignPageNav from '@/components/pages/design/page-nav';
 import { CodeBlock } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
@@ -131,7 +130,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
             similar reasons, the `x` padding is set to 0 on small devices is set
             to 0. */}
         <ContainerLayout className="relative flex max-w-[90rem] flex-col space-x-0 px-0 pb-6 pt-0 md:flex-row md:space-x-16">
-          <DesignNavBar selected={selected} />
+          {/* <DesignNavBar selected={selected} /> */}
           <MDXProvider components={components}>
             <article className="prose prose-gray max-w-none grow px-4 dark:prose-invert md:px-0">
               {children}
