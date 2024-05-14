@@ -59,6 +59,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^5.28.6
     version: 5.35.1(react@18.3.1)
+  '@types/mdx':
+    specifier: ^2.0.13
+    version: 2.0.13
   '@types/recharts':
     specifier: ^1.8.29
     version: 1.8.29

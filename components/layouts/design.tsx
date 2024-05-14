@@ -7,7 +7,6 @@ import type { PageSlug } from '@/lib/types/site';
 
 import BaseLayout from '@/components/layouts/base';
 import ContainerLayout from '@/components/layouts/container';
-import DesignPageNav from '@/components/pages/design/page-nav';
 import { CodeBlock } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
@@ -27,7 +26,7 @@ type DesignLayoutProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
+const DesignLayout: FC<DesignLayoutProps> = ({ name, children }) => {
   const components = {
     a: ({ href, children, ...rest }: JSX.IntrinsicElements['a']) => {
       if (href && href.startsWith('/')) {
@@ -135,7 +134,7 @@ const DesignLayout: FC<DesignLayoutProps> = ({ name, selected, children }) => {
             <article className="prose prose-gray max-w-none grow px-4 dark:prose-invert md:px-0">
               {children}
               <hr className="mb-6 mt-6 w-full rounded-full border-gray-6 md:mt-12" />
-              <DesignPageNav pageSlug={selected} />
+              {/* <DesignPageNav pageSlug={selected} /> */}
             </article>
           </MDXProvider>
         </ContainerLayout>
