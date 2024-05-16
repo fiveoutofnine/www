@@ -37,6 +37,7 @@ const CodeBlockActions: React.FC<CodeBlockActionsProps> = ({ code, switcher, inH
     >
       {switcher && switcher.options.length > 1 ? (
         <Select
+          className="backdrop-blur"
           size="sm"
           variant="outline"
           value={switcher.value}
@@ -49,6 +50,7 @@ const CodeBlockActions: React.FC<CodeBlockActionsProps> = ({ code, switcher, inH
         </Select>
       ) : null}
       <IconButton
+        className="backdrop-blur"
         size="sm"
         variant="outline"
         title="Copy to clipboard"
