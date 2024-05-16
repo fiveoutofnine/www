@@ -14,7 +14,6 @@ import { Toaster } from '@/components/ui';
 // -----------------------------------------------------------------------------
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-
 const firaCode = Fira_Code({ subsets: ['latin'], variable: '--font-fira-code' });
 
 // -----------------------------------------------------------------------------
@@ -25,14 +24,10 @@ const title = '5/9';
 const description = 'personal website';
 
 export const metadata: Metadata = {
-  title: {
-    template: `${title} | %s`,
-    default: title,
-  },
+  title,
   description,
-  alternates: {
-    canonical: 'https://fiveoutofnine.com',
-  },
+  keywords: ['fiveoutofnine', '5/9', 'personal', 'website', 'blog'],
+  creator: 'fiveoutofnine',
   openGraph: {
     title,
     description,
@@ -47,13 +42,18 @@ export const metadata: Metadata = {
       },
     ],
     locale: 'en_US',
+    type: 'website',
   },
   twitter: {
+    title,
+    description,
     card: 'summary_large_image',
     creator: '@fiveoutofnine',
     creatorId: '1269561030272643076',
   },
-  keywords: ['fiveoutofnine'],
+  alternates: {
+    canonical: 'https://fiveoutofnine.com',
+  },
   manifest: '/manifest.json',
 };
 

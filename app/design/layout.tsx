@@ -1,8 +1,44 @@
+import type { Metadata } from 'next';
+
 import DesignNavBar from './(components)/nav-bar';
 import DesignPageNav from './(components)/page-nav';
 
 import ContainerLayout from '@/components/layouts/container';
 import { MDXArticle } from '@/components/templates/mdx';
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+const title = '5/9 Design';
+const description = 'open-source and accessible design system';
+
+export const metadata: Metadata = {
+  title: {
+    default: title,
+    template: `${title} | %s`,
+  },
+  description,
+  openGraph: {
+    title,
+    description,
+    url: 'https://fiveoutofnine.com/design',
+    siteName: 'fiveoutofnine',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    title,
+    description,
+    card: 'summary_large_image',
+    creator: '@fiveoutofnine',
+    creatorId: '1269561030272643076',
+  },
+};
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
