@@ -21,21 +21,38 @@ const firaCode = Fira_Code({ subsets: ['latin'], variable: '--font-fira-code' })
 // Metadata
 // -----------------------------------------------------------------------------
 
+const title = '5/9';
+const description = 'personal website';
+
 export const metadata: Metadata = {
   title: {
-    template: '5/9 | %s',
-    default: '5/9',
+    template: `${title} | %s`,
+    default: title,
   },
-  description: 'personal website',
+  description,
   alternates: {
     canonical: 'https://fiveoutofnine.com',
   },
-  keywords: [],
+  openGraph: {
+    title,
+    description,
+    url: 'https://fiveoutofnine.com',
+    images: [
+      {
+        url: 'https://fiveoutofnine.com/static/og/home.png',
+        alt: '5/9 open-graph image',
+        height: 630,
+        width: 1200,
+      },
+    ],
+    locale: 'en_US',
+  },
   twitter: {
     card: 'summary_large_image',
     creator: '@fiveoutofnine',
     creatorId: '1269561030272643076',
   },
+  keywords: ['fiveoutofnine'],
   manifest: '/manifest.json',
 };
 
