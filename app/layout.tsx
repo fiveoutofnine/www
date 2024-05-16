@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     title,
     description,
     url: 'https://fiveoutofnine.com',
+    siteName: 'fiveoutofnine',
     images: [
       {
         url: 'https://fiveoutofnine.com/static/og/home.png',
