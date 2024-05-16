@@ -68,13 +68,13 @@ const DesignNavBarMobile: React.FC<DesignNavBarInternalProps> = ({ selected }) =
             variant="outline"
             aria-label={open ? 'Close design navigation bar' : 'Open design navigation bar'}
           >
-            {open ? <X /> : <Menu />}
+            {open ? <X className="animate-in fade-in" /> : <Menu className="animate-in fade-in" />}
           </IconButton>
         </Drawer.Trigger>
         <ol className="ml-4 flex text-sm">
           <li className="flex items-center text-gray-11">
             {selectedSectionName}
-            <ChevronRight className="mx-1 h-4 w-4" />
+            <ChevronRight className="mx-1 size-4" />
           </li>
           <li className="font-medium text-gray-12">{selectedPageName}</li>
         </ol>
