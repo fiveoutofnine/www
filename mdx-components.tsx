@@ -3,7 +3,7 @@ import { isValidElement } from 'react';
 import DesignComponentsDisplay from './app/design/(components)/components-display';
 import type { MDXComponents } from 'mdx/types';
 
-import { A, Code, H1, H2, H3, P, ToastButton } from '@/components/templates/mdx';
+import { A, Callout, Code, H1, H2, H3, P, ToastButton } from '@/components/templates/mdx';
 import { CodeBlock } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
@@ -30,6 +30,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         </CodeBlock>
       );
     },
+    Callout,
     DesignComponentsDisplay,
     ToastButton,
     ...components,
