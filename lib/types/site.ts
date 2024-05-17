@@ -34,9 +34,7 @@ export type PageSlug =
  * intended to be part of configuration files (e.g. for the navigation bar
  * component).
  */
-export type PageExternalLink =
-  | 'https://twitter.com/fiveoutofnine'
-  | 'https://github.com/fiveoutofnine';
+export type PageExternalLink = 'https://x.com/fiveoutofnine' | 'https://github.com/fiveoutofnine';
 
 /**
  * Type for a page on [**fiveoutofnine.com**](https://fiveoutofnine.com),

@@ -15,7 +15,7 @@ const TypingFeature: React.FC = () => {
       button={
         <Button
           size="sm"
-          href="https://twitter.com/fiveoutofnine/status/1557037492830089217"
+          href="https://x.com/fiveoutofnine/status/1557037492830089217"
           rightIcon={<ExternalLink />}
           newTab
         >

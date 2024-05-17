@@ -1,6 +1,7 @@
-import { Github, Twitter } from 'lucide-react';
+import { Github } from 'lucide-react';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
+import LogoIcon from '@/components/common/logo-icon';
 import LinkPreview from '@/components/templates/link-preview';
 import { Button } from '@/components/ui';
 
@@ -42,12 +43,7 @@ const FiveoutofnineHeader: React.FC = () => {
 
       {/* Links (desktop) */}
       <div className="hidden space-x-2 md:flex">
-        <Button
-          intent="info"
-          href="https://twitter.com/fiveoutofnine"
-          leftIcon={<Twitter />}
-          newTab
-        >
+        <Button intent="info" href="https://x.com/fiveoutofnine" leftIcon={<LogoIcon.X />} newTab>
           Twitter
         </Button>
         <Button href="https://github.com/fiveoutofnine" leftIcon={<Github />} newTab>
@@ -60,8 +56,8 @@ const FiveoutofnineHeader: React.FC = () => {
           size="md"
           intent="info"
           className="w-full"
-          href="https://twitter.com/fiveoutofnine"
-          leftIcon={<Twitter />}
+          href="https://x.com/fiveoutofnine"
+          leftIcon={<LogoIcon.X />}
         >
           Twitter
         </Button>

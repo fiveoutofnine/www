@@ -1,4 +1,4 @@
-[**5/9**](https://twitter.com/fiveoutofnine)'s personal website: [**fiveoutofnine.com**](https://fiveoutofnine.com).
+[**5/9**](https://x.com/fiveoutofnine)'s personal website: [**fiveoutofnine.com**](https://fiveoutofnine.com).
 
 ## Structure
 
