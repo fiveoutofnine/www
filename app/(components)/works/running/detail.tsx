@@ -92,14 +92,10 @@ const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({
             <RunningFeatureDetailHeatmap runningLogs={runningLogs} unit={LENGTH_UNITS[unitIndex]} />
           ),
         },
-      ].map(({ value, ...rest }) => (
-        <Tabs.Content
-          key={value}
-          className="flex h-full grow flex-col overflow-hidden bg-gray-3 p-2"
-          value={value}
-          tabIndex={-1}
-          {...rest}
-        />
+      ].map(({ value, children }) => (
+        <Tabs.Content key={value} value={value} tabIndex={-1} asChild>
+          <div className="flex h-full grow flex-col overflow-hidden bg-gray-3 p-2">{children}</div>
+        </Tabs.Content>
       ))}
     </Tabs.Root>
   );

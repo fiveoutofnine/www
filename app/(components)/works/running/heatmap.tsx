@@ -17,7 +17,7 @@ type RunningFeatureDetailHeatmapProps = {
 // -----------------------------------------------------------------------------
 
 const RunningFeatureDetailHeatmap: React.FC<RunningFeatureDetailHeatmapProps> = () => {
-  return <div />;
+  return <div>Heatmap</div>;
 };
 
 export default RunningFeatureDetailHeatmap;
