@@ -1,12 +1,11 @@
-import { Children, type FC, isValidElement, type ReactNode, useCallback, useMemo } from 'react';
+import { Children, isValidElement } from 'react';
 
-import prettier from '@prettier/sync';
-import * as Accordion from '@radix-ui/react-accordion';
+import DesignComponentsDisplayAccordion from './accordion';
 import clsx from 'clsx';
-import { ChevronRight } from 'lucide-react';
+import prettier from 'prettier';
 import { twMerge } from 'tailwind-merge';
 
-import ToastButton from '@/components/pages/design/toast-button';
+import { ToastButton } from '@/components/templates/mdx';
 import { Badge, Button, CodeBlock, HoverCard, IconButton, Select, Tooltip } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
@@ -35,7 +34,7 @@ type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] &
 // Component
 // -----------------------------------------------------------------------------
 
-const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
+const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
   className,
   highlightLines,
   showSource = true,
@@ -43,7 +42,7 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
   children,
   ...rest
 }) => {
-  const getJsxString = useCallback((node: ReactNode): string => {
+  const getJsxString = (node: React.ReactNode): string => {
     if (!isValidElement(node)) {
       if (!node) return 'undefined';
 
@@ -51,7 +50,7 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
       if (nodeString.indexOf('\n') > -1) return `\n{\n\`${node}\`\n}\n`;
       return nodeString;
     }
-    let children: ReactNode | undefined | null;
+    let children: React.ReactNode | undefined | null;
 
     // Attempt to figure out the component's name.
     let componentName = undefined;
@@ -93,7 +92,7 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
     const propString = Object.entries(node.props)
       .map((prop) => {
         if (prop[0] === 'children') {
-          children = prop[1] as ReactNode;
+          children = prop[1] as React.ReactNode;
           return;
         }
         if (typeof prop[1] === 'string') return `${prop[0]}="${prop[1]}"`;
@@ -109,19 +108,17 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
     return componentChildren.length > 0
       ? `<${componentName} ${propString}>${childrenJsxString}</${componentName}>`
       : `<${componentName} ${propString}/>`;
-  }, []);
+  };
 
-  const code = useMemo(() => {
+  const code = await (async () => {
     if (!showSource) return '';
 
     try {
       const componentChildren = Children.toArray(children).filter((child) => isValidElement(child));
 
-      return prettier
-        .format(
-          `<DesignComponentsDisplay${
-            className ? ` className="${className}"` : ''
-          }>\n${componentChildren
+      return (
+        await prettier.format(
+          `<DesignComponentsDisplay${className ? ` className="${className}"` : ''}>\n${componentChildren
             .map((child) => getJsxString(child))
             .join('\n')}</DesignComponentsDisplay>`,
           {
@@ -134,11 +131,11 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
             parser: 'babel',
           },
         )
-        .trim();
+      ).trim();
     } catch (e) {
       return '';
     }
-  }, [children, className, getJsxString, showSource]);
+  })();
 
   return (
     <div className="grid w-full grid-cols-1">
@@ -155,23 +152,11 @@ const DesignComponentsDisplay: FC<DesignComponentsDisplayProps> = ({
         {children}
       </div>
       {code.length > 0 ? (
-        <Accordion.Root
-          type="single"
-          defaultValue={sourceInitiallyDisplayed ? 'source-code' : undefined}
-          collapsible
-        >
-          <Accordion.Item value="source-code">
-            <Accordion.Trigger className="data-[state='open']:border-b-1 group z-10 flex h-10 w-full items-center space-x-2 border border-gray-6 bg-gray-3 px-4 text-sm text-gray-11 transition-colors hover:border-gray-7 hover:bg-gray-4 hover:text-gray-12 focus:outline-none focus-visible:rounded focus-visible:outline focus-visible:-outline-offset-1 focus-visible:outline-blue-9 active:bg-gray-5 data-[state='closed']:rounded-b-xl data-[state='open']:border-b-0">
-              <ChevronRight className="h-4 w-4 transition-transform group-data-[state='open']:rotate-90" />
-              <span>View source</span>
-            </Accordion.Trigger>
-            <Accordion.Content className="max-w-full">
-              <CodeBlock language="tsx" highlightLines={highlightLines} roundedTop={false}>
-                {code}
-              </CodeBlock>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion.Root>
+        <DesignComponentsDisplayAccordion
+          code={code}
+          highlightLines={highlightLines}
+          sourceInitiallyDisplayed={sourceInitiallyDisplayed}
+        />
       ) : null}
     </div>
   );

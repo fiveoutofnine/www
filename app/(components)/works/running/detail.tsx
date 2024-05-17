@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import RunningFeatureDetailBarChart from './bar-chart';
-import clsx from 'clsx';
+import RunningFeatureDetailHeatmap from './heatmap';
 import { ArrowRightLeft, BarChart, Grid } from 'lucide-react';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
@@ -27,6 +27,7 @@ type RunningFeatureDetailProps = {
 
 const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({
   mileageLogs,
+  runningLogs,
   lastUpdated,
 }) => {
   const [unitIndex, setUnitIndex] = useState<number>(0);
@@ -77,7 +78,6 @@ const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({
       {[
         {
           value: 'running-bar',
-          className: 'flex flex-col p-2',
           children: (
             <RunningFeatureDetailBarChart
               mileageLogs={mileageLogs}
@@ -86,11 +86,16 @@ const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({
             />
           ),
         },
-        { value: 'running-heatmap', children: unitIndex },
-      ].map(({ value, className, ...rest }) => (
+        {
+          value: 'running-heatmap',
+          children: (
+            <RunningFeatureDetailHeatmap runningLogs={runningLogs} unit={LENGTH_UNITS[unitIndex]} />
+          ),
+        },
+      ].map(({ value, ...rest }) => (
         <Tabs.Content
           key={value}
-          className={clsx(className, 'h-full grow overflow-hidden bg-gray-3')}
+          className="flex h-full grow flex-col overflow-hidden bg-gray-3 p-2"
           value={value}
           tabIndex={-1}
           {...rest}

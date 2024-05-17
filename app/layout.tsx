@@ -14,27 +14,45 @@ import { Toaster } from '@/components/ui';
 // -----------------------------------------------------------------------------
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-
 const firaCode = Fira_Code({ subsets: ['latin'], variable: '--font-fira-code' });
 
 // -----------------------------------------------------------------------------
 // Metadata
 // -----------------------------------------------------------------------------
 
+const title = '5/9';
+const description = 'personal website';
+
 export const metadata: Metadata = {
-  title: {
-    template: '5/9 | %s',
-    default: '5/9',
+  title,
+  description,
+  keywords: ['fiveoutofnine', '5/9', 'personal', 'website', 'blog'],
+  creator: 'fiveoutofnine',
+  openGraph: {
+    title,
+    description,
+    url: 'https://fiveoutofnine.com',
+    siteName: 'fiveoutofnine',
+    images: [
+      {
+        url: 'https://fiveoutofnine.com/static/og/home.png',
+        alt: '5/9 Open Graph image',
+        height: 630,
+        width: 1200,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
   },
-  description: 'personal website',
-  alternates: {
-    canonical: 'https://fiveoutofnine.com',
-  },
-  keywords: [],
   twitter: {
+    title,
+    description,
     card: 'summary_large_image',
     creator: '@fiveoutofnine',
     creatorId: '1269561030272643076',
+  },
+  alternates: {
+    canonical: 'https://fiveoutofnine.com',
   },
   manifest: '/manifest.json',
 };
