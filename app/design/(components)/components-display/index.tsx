@@ -103,7 +103,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
       .trim();
 
     const componentChildren = Children.toArray(children);
-    const childrenJsxString = componentChildren.map((child) => getJsxString(child)).join();
+    const childrenJsxString = componentChildren.map((child) => getJsxString(child)).join('');
 
     return componentChildren.length > 0
       ? `<${componentName} ${propString}>${childrenJsxString}</${componentName}>`
@@ -131,7 +131,9 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
             parser: 'babel',
           },
         )
-      ).trim();
+      )
+        .replace('</DesignComponentsDisplay>;', '</DesignComponentsDisplay>')
+        .trim();
     } catch (e) {
       return '';
     }
