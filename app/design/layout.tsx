@@ -36,6 +36,8 @@ export const metadata: Metadata = {
   },
 };
 
+// TODO: https://fiveoutofnine.com/api/og/design?title=${category}&subtitle=${name}&description=${description}
+
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
@@ -53,7 +55,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <DesignNavBar />
       <MDXArticle>
         {children}
-        <hr className="mb-6 mt-6 w-full rounded-full border-gray-6 md:mt-12" />
+        <hr className="mb-6 mt-6 w-full rounded-full border-gray-6 md:mt-12" role="separator" />
         <DesignPageNav />
       </MDXArticle>
     </ContainerLayout>
