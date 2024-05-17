@@ -30,8 +30,7 @@ const ColorScaleSample: React.FC<ColorScaleSampleProps> = ({ scale, index, color
       <button
         id={`${String(scale)}-${index}`}
         className={clsx(
-          'flex h-12 w-full items-center justify-center border border-gray-7 hover:border-gray-8 focus-visible:z-10 focus-visible:rounded focus-visible:border-l focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-9 active:brightness-110',
-          index > 0 ? 'border-l-0' : '',
+          'flex h-12 w-full items-center justify-center border border-gray-7 hover:z-10 hover:border-gray-8 focus:z-10 focus-visible:rounded focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-9 active:brightness-110',
           index === 0 ? 'rounded-l' : index === 11 ? 'rounded-r' : '',
         )}
         style={{
@@ -46,6 +45,7 @@ const ColorScaleSample: React.FC<ColorScaleSampleProps> = ({ scale, index, color
               title: 'Copied to clipboard',
               description: `${String(scale)}${index + 1} - ${color}`,
               intent: 'success',
+              hasCloseButton: true,
             });
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);

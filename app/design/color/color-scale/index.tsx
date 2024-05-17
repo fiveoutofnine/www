@@ -19,7 +19,7 @@ const ColorScale: React.FC<ColorScaleProps> = ({ scale }) => {
   const colors = Object.entries(radixColors[scale]);
 
   return (
-    <div className="flex space-x-0">
+    <div className="flex -space-x-px">
       {colors.map((color, index) => (
         <ColorScaleSample key={index} scale={scale} index={index} color={String(color[1])} />
       ))}
