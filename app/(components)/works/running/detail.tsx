@@ -46,13 +46,13 @@ const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({
               value: 'running-bar',
               label: 'Bar graph',
               icon: <BarChart />,
-              ariaLabel: 'Running bar graph',
+              'aria-label': 'Running bar graph',
             },
             {
               value: 'running-heatmap',
               label: 'Heatmap',
               icon: <Grid />,
-              ariaLabel: 'Running heatmap',
+              'aria-label': 'Running heatmap',
             },
           ].map(({ value, label, icon, ...rest }) => (
             <Tabs.Trigger key={value} value={value} asChild>
