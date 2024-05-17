@@ -1,5 +1,13 @@
 import ColorScale from './color-scale';
 
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Foundations",
+  name: "Color",
+  description: "Accessible and easily maintainable color system.",
+});
+
 # Color
 
 The design system uses [Radix UI colors](https://www.radix-ui.com/colors) to [ensure accessibility](https://www.radix-ui.com/docs/colors/tests) and [easily maintain consistent code/design](https://www.radix-ui.com/docs/colors/palette-composition/understanding-the-scale).
