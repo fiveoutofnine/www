@@ -19,16 +19,6 @@ const FiveoutofnineHeader: React.FC = () => {
             Working on{' '}
             <LinkPreview
               className="font-medium text-gray-12 hover:underline"
-              href="https://waterfall.market"
-              src="/static/waterfall-market-preview.webp"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Waterfall
-            </LinkPreview>{' '}
-            and{' '}
-            <LinkPreview
-              className="font-medium text-gray-12 hover:underline"
               href="https://curta.wtf"
               src="/static/curta-wtf-preview.webp"
               target="_blank"
