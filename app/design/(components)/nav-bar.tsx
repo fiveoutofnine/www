@@ -17,6 +17,7 @@ import { Button, Drawer, IconButton } from '@/components/ui';
 
 type DesignNavBarInternalProps = {
   selected: string;
+  onTrigger?: () => void;
 };
 
 // -----------------------------------------------------------------------------
@@ -81,13 +82,13 @@ const DesignNavBarMobile: React.FC<DesignNavBarInternalProps> = ({ selected }) =
       </div>
 
       <Drawer.Content onOpenAutoFocus={(e) => e.preventDefault()}>
-        <DesignNavBarInternal selected={selected} />
+        <DesignNavBarInternal selected={selected} onTrigger={() => setOpen(false)} />
       </Drawer.Content>
     </Drawer.Root>
   );
 };
 
-const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected }) => {
+const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected, onTrigger }) => {
   return (
     <Fragment>
       <div className="ml-3 text-base font-medium text-gray-12">Foundations</div>
@@ -103,6 +104,7 @@ const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected })
             )}
             variant="ghost"
             href={page.slug}
+            onClick={onTrigger ?? undefined}
             disabled={pageSelected}
           >
             {page.name}
@@ -123,6 +125,7 @@ const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected })
             )}
             variant="ghost"
             href={page.slug}
+            onClick={onTrigger ?? undefined}
             disabled={pageSelected}
           >
             {page.name}
