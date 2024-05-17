@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-
 /**
  * Type for an external link.
  * @param name Name describing the link.
@@ -9,7 +7,7 @@ import type { ReactNode } from 'react';
 export type ExternalLink = {
   name: string;
   href: string;
-  icon?: ReactNode;
+  icon?: React.ReactNode;
 };
 
 /**
@@ -51,5 +49,5 @@ export type PageExternalLink =
 export type Page = {
   name: string;
   slug: PageSlug | PageExternalLink;
-  icon?: ReactNode;
+  icon?: React.ReactNode;
 };
