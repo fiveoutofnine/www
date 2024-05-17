@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://fiveoutofnine.com/static/og/home.png',
-        alt: '5/9 open-graph image',
+        alt: '5/9 Open Graph image',
         height: 630,
         width: 1200,
       },

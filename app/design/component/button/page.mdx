@@ -1,6 +1,13 @@
 import { ChevronRight, Circle, ExternalLink } from 'lucide-react';
 
 import { Button, IconButton } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Button",
+  description: "A widget that enables users to trigger an action or event.",
+});
 
 # Button
 
