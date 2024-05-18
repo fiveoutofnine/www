@@ -109,6 +109,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
         }
         if (typeof prop[1] === 'string') return `${prop[0]}="${prop[1]}"`;
         else if (isValidElement(prop[1])) return `${prop[0]}={${getJsxString(prop[1])}}`;
+        else if (typeof prop[1] === 'object') return `${prop[0]}={${JSON.stringify(prop[1])}}`;
         return `${prop[0]}={${prop[1]}}`;
       })
       .join(' ')

@@ -22,7 +22,7 @@ const Tooltip = forwardRef<React.ElementRef<typeof TooltipPrimitive.Content>, To
       sideOffset = 4,
       content,
       triggerProps = { asChild: false },
-      inverted = false,
+      inverted = true,
       hasArrow = true,
       noDelay = false,
       inPortal = true,

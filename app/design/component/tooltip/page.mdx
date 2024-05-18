@@ -1,0 +1,97 @@
+import { ExternalLink } from 'lucide-react';
+
+import { Badge, Button, Tooltip } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Tooltip",
+  description: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+});
+
+# Tooltip
+
+A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+
+## Side
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-2 md:grid-rows-1">
+  <Tooltip content="5/9 moment" side="top" triggerProps={{ asChild: true }}>
+    <Button children="Top" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="right" triggerProps={{ asChild: true }}>
+    <Button children="Right" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="bottom" triggerProps={{ asChild: true }}>
+    <Button children="Bottom" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="left" triggerProps={{ asChild: true }}>
+    <Button children="Left" />
+  </Tooltip>
+</DesignComponentsDisplay>
+
+## Align
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-6 lg:grid-rows-3">
+  <Tooltip content="5/9 moment" side="top" align="start" triggerProps={{ asChild: true }}>
+    <Button variant="primary" intent="info" children="Top/Start" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="top" align="center" triggerProps={{ asChild: true }}>
+    <Button variant="secondary" intent="info" children="Top/Center" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="top" align="end" triggerProps={{ asChild: true }}>
+    <Button variant="outline" intent="info" children="Top/End" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="right" align="start" triggerProps={{ asChild: true }}>
+    <Button variant="primary" intent="fail" children="Right/Start" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="right" align="center" triggerProps={{ asChild: true }}>
+    <Button variant="secondary" intent="fail" children="Right/Center" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="right" align="end" triggerProps={{ asChild: true }}>
+    <Button variant="outline" intent="fail" children="Right/End" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="bottom" align="start" triggerProps={{ asChild: true }}>
+    <Button variant="primary" intent="success" children="Bottom/Start" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="bottom" align="center" triggerProps={{ asChild: true }}>
+    <Button variant="secondary" intent="success" children="Bottom/Center" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="bottom" align="end" triggerProps={{ asChild: true }}>
+    <Button variant="outline" intent="success" children="Bottom/End" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="left" align="start" triggerProps={{ asChild: true }}>
+    <Button variant="primary" intent="warning" children="Left/Start" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="left" align="center" triggerProps={{ asChild: true }}>
+    <Button variant="secondary" intent="warning" children="Left/Center" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" side="left" align="end" triggerProps={{ asChild: true }}>
+    <Button variant="outline" intent="warning" children="Left/End" />
+  </Tooltip>
+</DesignComponentsDisplay>
+
+## Custom content
+
+<DesignComponentsDisplay highlightLines={[3, 4, 5, 6, 7]}>
+  <Tooltip content={<Badge size="sm" intent="info" children="5/9 moment" />} triggerProps={{ asChild: true }} inverted={false}>
+    <Button children="Hover" />
+  </Tooltip>
+</DesignComponentsDisplay>
+
+## Other
+
+<DesignComponentsDisplay
+  className="grid-flow-col grid-rows-2 md:grid-rows-1"
+  highlightLines={[2, 5, 8]}
+>
+  <Tooltip content="5/9 moment" triggerProps={{ asChild: true }} hasArrow={false}>
+    <Button children="No arrow" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" triggerProps={{ asChild: true }} inverted={false}>
+    <Button children="Not inverted" />
+  </Tooltip>
+  <Tooltip content="5/9 moment" triggerProps={{ asChild: true }} noDelay>
+    <Button children="No delay" />
+  </Tooltip>
+</DesignComponentsDisplay>
