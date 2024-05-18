@@ -40,7 +40,7 @@ const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({
   return (
     <Tabs.Root className="flex h-full w-full" defaultValue="running-bar" orientation="vertical">
       <div className="flex h-full w-10 flex-col items-center justify-between border-r border-gray-6">
-        <Tabs.List className="flex w-10 flex-col items-center gap-2 p-2">
+        <Tabs.List className="flex w-10 flex-col items-center gap-2 p-2 data-[orientation=vertical]:border-r-0">
           {[
             {
               value: 'running-bar',
