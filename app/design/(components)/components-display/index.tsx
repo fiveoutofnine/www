@@ -37,6 +37,7 @@ const COMPONENT_NAMES = [
 type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] &
   Pick<CodeBlockProps, 'highlightLines'> & {
     showSource?: boolean;
+    source?: string;
     sourceInitiallyDisplayed?: boolean;
   };
 
@@ -49,6 +50,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
   highlightLines,
   showSource = true,
   sourceInitiallyDisplayed = false,
+  source,
   children,
   ...rest
 }) => {
@@ -122,6 +124,23 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
 
   const code = await (async () => {
     if (!showSource) return '';
+    else if (source) {
+      // If `source` is provided, skip trying to determine the source from
+      // `children`.
+      try {
+        return await prettier.format(source, {
+          bracketSpacing: true,
+          semi: true,
+          trailingComma: 'all',
+          printWidth: 100,
+          tabWidth: 2,
+          singleQuote: true,
+          parser: 'babel',
+        });
+      } catch (e) {
+        return source;
+      }
+    }
 
     try {
       const componentChildren = Children.toArray(children).filter((child) => isValidElement(child));

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { IconButton, Select, toast } from '..';
 import { codeBlockActionsVariants } from './styles';
-import type { CodeBlockActionsProps } from './types';
+import type { CodeBlockActionsProps, CodeBlockLanguage } from './types';
 import { Check, Copy } from 'lucide-react';
 
 // -----------------------------------------------------------------------------
@@ -41,11 +41,13 @@ const CodeBlockActions: React.FC<CodeBlockActionsProps> = ({ code, switcher, inH
           size="sm"
           variant="outline"
           value={switcher.value}
-          onChange={(e) => switcher.onChange(e.target.value)}
+          onChange={(e) => switcher.onChange(e.target.value as CodeBlockLanguage)}
           aria-label="Select a language for the code block."
         >
           {switcher.options.map((option, index) => (
-            <option key={index}>{option}</option>
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
           ))}
         </Select>
       ) : null}

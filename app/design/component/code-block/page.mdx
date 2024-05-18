@@ -1,3 +1,5 @@
+import CodeBlockSwitcherDemo from './switcher-demo';
+
 import { Badge, CodeBlock } from '@/components/ui';
 import { getDesignPageMetadata } from '@/lib/utils';
 
@@ -43,6 +45,16 @@ const CodeBlock: React.FC = () => {
   <CodeBlock language="tsx" highlightLines={[2, 4]} children={TSX_SAMPLE_CODE} />
 </DesignComponentsDisplay>
 
+## Break lines
+
+<DesignComponentsDisplay className="grid-cols-1 px-4">
+  <CodeBlock showLineNumbers={false} breakLines children="6080604052600080546001600160a01b03191673b543f9043b387ce5b3d1f0d916e42d8ea2eba2e017905534801561003657600080fd5b50604080516101008101825261055c815261059d602082015261031e9181019190915261079d606082015261077560808201526103ae60a0820152610d6c60c0820152610b2a60e082015260005b6008811015610120576000546001600160a01b03166335df5d9f8383600881106100b0576100b06101b1565b60200201516040516001600160e01b031960e084901b168152600481019190915260036024820152604401600060405180830381600087803b1580156100f557600080fd5b505af1158015610109573d6000803e3d6000fd5b505050508080610118906101c7565b915050610084565b50606f5b60778110156101aa576000546040516323b872dd60e01b8152306004820152336024820152604481018390526001600160a01b03909116906323b872dd90606401600060405180830381600087803b15801561017f57600080fd5b505af1158015610193573d6000803e3d6000fd5b5050505080806101a2906101c7565b915050610124565b50506101f0565b634e487b7160e01b600052603260045260246000fd5b60006000198214156101e957634e487b7160e01b600052601160045260246000fd5b5060010190565b603f806101fe6000396000f3fe6080604052600080fdfea26469706673582212206ca923263cabb7e2b15eb7b12771467dfe2a89b488ca0b3c9292114de582bf6164736f6c634300080b0033" />
+</DesignComponentsDisplay>
+
+<Callout intent="none">
+  The above is from [`0xF5A48D9f32dfe700ff502edaa5B2E90EF6d8b39a`](https://etherscan.io/address/0xF5A48D9f32dfe700ff502edaa5B2E90EF6d8b39a), a smart contract by [0age.eth](https://etherscan.io/address/0x0734d56DA60852A03e2Aafae8a36FFd8c12B32f1) that checkmated my [fully on-chain smart contract chess engine](https://etherscan.io/address/0xB543F9043b387cE5B3d1F0d916E42D8eA2eBA2E0) in 8 moves.
+</Callout>
+
 ## Flat top
 
 <DesignComponentsDisplay className="grid-cols-1 px-4 sm:grid-cols-2">
@@ -50,7 +62,16 @@ const CodeBlock: React.FC = () => {
   <CodeBlock language="tsx" roundedTop={false} children={TSX_SAMPLE_CODE} />
 </DesignComponentsDisplay>
 
-## Supported languages
+## Containerized
+
+<DesignComponentsDisplay className="grid-cols-1 px-4 sm:grid-cols-2">
+  <CodeBlock language="tsx" fileName="counter.tsx" containerized={false} children={TSX_SAMPLE_CODE} />
+  <CodeBlock language="tsx" containerized={false} children={TSX_SAMPLE_CODE} />
+</DesignComponentsDisplay>
+
+## Languages
+
+To view the full list of supported languages, see `CodeBlockLanguage` in [`@/components/ui/code-block/types`](https://github.com/fiveoutofnine/www/blob/main/components/ui/code-block/types.tsx).
 
 <DesignComponentsDisplay
   className="grid-cols-1 px-4 sm:grid-cols-2 lg:grid-cols-3"
@@ -103,6 +124,12 @@ const CodeBlock: React.FC = () => {
   />
 </DesignComponentsDisplay>
 
+## Language switcher
+
+<DesignComponentsDisplay className="grid-cols-1 px-4" source={LANGUAGE_SWITCHER_CODE}>
+  <CodeBlockSwitcherDemo />
+</DesignComponentsDisplay>
+
 ## Usage via MDX
 
 To use `CodeBlock` in MDX, either import it or type [**basic Markdown syntax**](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks), which will parse the MDX and render an instance of `CodeBlock`. To provide props, include them after the 3 backticks and specified language.
@@ -124,3 +151,80 @@ export const TSX_SAMPLE_CODE = `const Counter: React.FC = () => {
   const [count, setCount] = useState<number>(0);\n
   return <button onClick={() => setCount(count + 1)}>{count}</button>;
 };`;
+
+export const LANGUAGE_SWITCHER_CODE = `'use client';
+
+import { useState } from 'react';
+
+import { CodeBlock } from '@/components/ui';
+import type { CodeBlockLanguage } from '@/components/ui/code-block/types';
+
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
+const LANGUAGE_OPTIONS: { label: string; value: CodeBlockLanguage }[] = [
+  { label: 'Solidity', value: 'sol' },
+  { label: 'Bytecode', value: 'none' },
+];
+const SOLIDITY_SOURCE = \`// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.25;
+
+contract Counter {
+    uint256 public count;
+
+    function get() public view returns (uint256) {
+        return count;
+    }
+
+    function inc() public {
+        count += 1;
+    }
+
+    function dec() public {
+        count -= 1;
+    }
+}\`;
+const BYTECODE_SOURCE =
+  '6080604052348015600e575f80fd5b506101d98061001c5f395ff3fe608060405234801561000f575f80fd5b506004361061004a575f3560e01c806306661abd1461004e578063371303c01461006c5780636d4ce63c14610076578063b3bcfa8214610094575b5f80fd5b61005661009e565b60405161006391906100f7565b60405180910390f35b6100746100a3565b005b61007e6100bd565b60405161008b91906100f7565b60405180910390f35b61009c6100c5565b005b5f5481565b60015f808282546100b4919061013d565b92505081905550565b5f8054905090565b60015f808282546100d69190610170565b92505081905550565b5f819050919050565b6100f1816100df565b82525050565b5f60208201905061010a5f8301846100e8565b92915050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601160045260245ffd5b5f610147826100df565b9150610152836100df565b925082820190508082111561016a57610169610110565b5b92915050565b5f61017a826100df565b9150610185836100df565b925082820390508181111561019d5761019c610110565b5b9291505056fea264697066735822122020a990357915839cfe47dd4824292037d65dcfbdef8a8f857d1af7318c78bc8964736f6c63430008190033';
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const CodeBlockSwitcherDemo: React.FC = () => {
+  const [language, setLanguage] = useState<CodeBlockLanguage>('sol');
+
+  if (language === 'sol') {
+    return (
+      <CodeBlock
+        language="sol"
+        fileName="Counter.sol"
+        switcher={{
+          options: LANGUAGE_OPTIONS,
+          value: language,
+          onChange: (value) => setLanguage(value),
+        }}
+      >
+        {SOLIDITY_SOURCE}
+      </CodeBlock>
+    );
+  }
+
+  return (
+    <CodeBlock
+      language="none"
+      fileName="Counter.sol bytecode"
+      switcher={{
+        options: LANGUAGE_OPTIONS,
+        value: language,
+        onChange: (value) => setLanguage(value),
+      }}
+      breakLines
+    >
+      {BYTECODE_SOURCE}
+    </CodeBlock>
+  );
+};
+
+export default CodeBlockSwitcherDemo;`;
