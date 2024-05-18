@@ -16,38 +16,40 @@ type CodeBlockVariantProps = VariantProps<typeof codeBlockContainerVariants>;
 export type CodeBlockActionsProps = CodeBlockActionsVariantProps & {
   code: string;
   switcher?: {
-    options: string[];
-    value: string;
-    onChange: (value: string) => void;
+    options: { label: string; value: CodeBlockLanguage }[];
+    value: CodeBlockLanguage;
+    onChange: (value: CodeBlockLanguage) => void;
   };
 };
+
+export type CodeBlockLanguage =
+  | 'javascript'
+  | 'js'
+  | 'typescript'
+  | 'ts'
+  | 'jsx'
+  | 'tsx'
+  | 'solidity'
+  | 'sol'
+  | 'python'
+  | 'py'
+  | 'bash'
+  | 'sh'
+  | 'diff'
+  | 'none';
 
 export type CodeBlockProps = Omit<JSX.IntrinsicElements['pre'], 'children'> &
   CodeBlockVariantProps & {
     fileName?: string;
-    language?:
-      | 'javascript'
-      | 'js'
-      | 'typescript'
-      | 'ts'
-      | 'jsx'
-      | 'tsx'
-      | 'solidity'
-      | 'sol'
-      | 'python'
-      | 'py'
-      | 'bash'
-      | 'sh'
-      | 'diff'
-      | 'none';
+    language?: CodeBlockLanguage;
     logo?: React.FC<JSX.IntrinsicElements['svg']>;
     highlightLines?: number[];
     showLineNumbers?: boolean;
     breakLines?: boolean;
     switcher?: {
-      options: string[];
-      value: string;
-      onChange: (value: string) => void;
+      options: { label: string; value: CodeBlockLanguage }[];
+      value: CodeBlockLanguage;
+      onChange: (value: CodeBlockLanguage) => void;
     };
     children: string;
   };

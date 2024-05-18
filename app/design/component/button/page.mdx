@@ -1,6 +1,6 @@
-import { ChevronRight, Circle, ExternalLink } from 'lucide-react';
+import { Bold, ChevronDown, ChevronRight, Circle, ExternalLink, Italic } from 'lucide-react';
 
-import { Button, IconButton } from '@/components/ui';
+import { Button, ButtonGroup, IconButton } from '@/components/ui';
 import { getDesignPageMetadata } from '@/lib/utils';
 
 export const metadata = getDesignPageMetadata({
@@ -30,7 +30,12 @@ A widget that enables users to trigger an action or event.
   <Button variant="outline" children="Button" />
   <Button variant="ghost" children="Button" />
   <Button variant="text" children="Button" />
+  <Button variant="solid" intent="white" children="Button" />
 </DesignComponentsDisplay>
+
+<Callout intent="none">
+  The last variant `solid` is a special variant that only implements a subset of the intents (and vice versa: the relevant intents may not implement styles for every variant).
+</Callout>
 
 ## Intent
 
@@ -80,6 +85,8 @@ A widget that enables users to trigger an action or event.
   <Button variant="ghost" children="Button" disabled />
   <Button variant="text" children="Button" />
   <Button variant="text" children="Button" disabled />
+  <Button variant="solid" intent="white" children="Button" />
+  <Button variant="solid" intent="white" children="Button" disabled />
 </DesignComponentsDisplay>
 
 ## Icons
@@ -121,4 +128,16 @@ To have the button act as a link, pass in a URL to the `href` prop. To open the 
 >
   <Button children="Home" href="/" rightIcon={<ChevronRight />} />
   <Button children="New tab" href="/" rightIcon={<ExternalLink />} newTab />
+</DesignComponentsDisplay>
+
+## Button group
+
+To group relevant buttons/actions together, use `ButtonGroup`.
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <ButtonGroup>
+    <Button rightIcon={<Bold />} children="Bold" />
+    <Button rightIcon={<Italic />} children="Italic" />
+    <IconButton children={<ChevronDown />} />
+  </ButtonGroup>
 </DesignComponentsDisplay>

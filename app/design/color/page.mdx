@@ -1,14 +1,22 @@
 import ColorScale from './color-scale';
 
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Foundations",
+  name: "Color",
+  description: "Accessible and easily maintainable color system.",
+});
+
 # Color
 
-The design system uses [Radix UI colors](https://www.radix-ui.com/colors) to [ensure accessibility](https://www.radix-ui.com/docs/colors/tests) and [easily maintain consistent code/design](https://www.radix-ui.com/docs/colors/palette-composition/understanding-the-scale).
+The design system uses [Radix UI colors](https://www.radix-ui.com/colors) to [ensure accessibility](https://www.radix-ui.com/colors/docs/palette-composition/composing-a-palette#choosing-text-scales) and [easily maintain consistent code/design](https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale).
 
-Additionally, to make both the integration with [Tailwind CSS](https://tailwindcss.com) and the implementation of light/dark mode switching easy, the design system utilizes [`windy-radix-palette`](https://github.com/brattonross/windy-radix-palette), a Tailwind CSS plugin that adds Radix UI colors as Tailwind classes with dark mode support.
+Additionally, the design system utilizes [`windy-radix-palette`](https://github.com/brattonross/windy-radix-palette), a Tailwind CSS plugin that adds Radix UI colors as Tailwind classes, to integrate with [Tailwind CSS](https://tailwindcss.com) easily.
 
 ## Scales
 
-The following are a subset of the scales by Radix UI used throughout the design system. You can find the complete list of scales on [Radix UI's website](https://www.radix-ui.com/docs/colors/palette-composition/the-scales).
+The following are the subset of the scales by Radix UI used throughout the design system. You can find the complete list of scales on [Radix UI's website](https://www.radix-ui.com/colors/docs/palette-composition/scales) or [compose a custom palette](https://www.radix-ui.com/colors/custom).
 
 ### Gray
 
@@ -18,7 +26,7 @@ The default color scale, labeled `none`.
 
 ### Blue
 
-The primary color scale, labeled `primary`.
+The primary color scale, labeled `info`.
 
 <ColorScale scale="blueDark" />
 

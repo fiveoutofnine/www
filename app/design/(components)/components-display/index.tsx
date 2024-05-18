@@ -6,18 +6,28 @@ import prettier from 'prettier';
 import { twMerge } from 'tailwind-merge';
 
 import { ToastButton } from '@/components/templates/mdx';
-import { Badge, Button, CodeBlock, HoverCard, IconButton, Select, Tooltip } from '@/components/ui';
-import type { CodeBlockProps } from '@/components/ui/code-block/types';
-
-const COMPONENT_NAMES = [
+import {
   Badge,
   Button,
+  ButtonGroup,
   CodeBlock,
   HoverCard,
   IconButton,
   Select,
-  ToastButton,
   Tooltip,
+} from '@/components/ui';
+import type { CodeBlockProps } from '@/components/ui/code-block/types';
+
+const COMPONENT_NAMES = [
+  { component: Badge, displayName: 'Badge' },
+  { component: Button, displayName: 'Button' },
+  { component: ButtonGroup, displayName: 'ButtonGroup' },
+  { component: CodeBlock, displayName: 'CodeBlock' },
+  { component: HoverCard, displayName: 'HoverCard' },
+  { component: IconButton, displayName: 'IconButton' },
+  { component: Select, displayName: 'Select' },
+  { component: ToastButton, displayName: 'ToastButton' },
+  { component: Tooltip, displayName: 'Tooltip' },
 ];
 
 // -----------------------------------------------------------------------------
@@ -27,6 +37,7 @@ const COMPONENT_NAMES = [
 type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] &
   Pick<CodeBlockProps, 'highlightLines'> & {
     showSource?: boolean;
+    source?: string;
     sourceInitiallyDisplayed?: boolean;
   };
 
@@ -39,6 +50,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
   highlightLines,
   showSource = true,
   sourceInitiallyDisplayed = false,
+  source,
   children,
   ...rest
 }) => {
@@ -62,7 +74,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
       // way, we also retain the full name, rather than the minified name
       // webpack gives.
       for (let i = 0; i < COMPONENT_NAMES.length; ++i) {
-        if (node.type === COMPONENT_NAMES[i]) {
+        if (node.type === COMPONENT_NAMES[i].component) {
           componentName = COMPONENT_NAMES[i].displayName;
           break;
         }
@@ -97,13 +109,14 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
         }
         if (typeof prop[1] === 'string') return `${prop[0]}="${prop[1]}"`;
         else if (isValidElement(prop[1])) return `${prop[0]}={${getJsxString(prop[1])}}`;
+        else if (typeof prop[1] === 'object') return `${prop[0]}={${JSON.stringify(prop[1])}}`;
         return `${prop[0]}={${prop[1]}}`;
       })
       .join(' ')
       .trim();
 
     const componentChildren = Children.toArray(children);
-    const childrenJsxString = componentChildren.map((child) => getJsxString(child)).join();
+    const childrenJsxString = componentChildren.map((child) => getJsxString(child)).join('');
 
     return componentChildren.length > 0
       ? `<${componentName} ${propString}>${childrenJsxString}</${componentName}>`
@@ -112,6 +125,23 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
 
   const code = await (async () => {
     if (!showSource) return '';
+    else if (source) {
+      // If `source` is provided, skip trying to determine the source from
+      // `children`.
+      try {
+        return await prettier.format(source, {
+          bracketSpacing: true,
+          semi: true,
+          trailingComma: 'all',
+          printWidth: 100,
+          tabWidth: 2,
+          singleQuote: true,
+          parser: 'babel',
+        });
+      } catch (e) {
+        return source;
+      }
+    }
 
     try {
       const componentChildren = Children.toArray(children).filter((child) => isValidElement(child));
@@ -131,7 +161,9 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
             parser: 'babel',
           },
         )
-      ).trim();
+      )
+        .replace('</DesignComponentsDisplay>;', '</DesignComponentsDisplay>')
+        .trim();
     } catch (e) {
       return '';
     }
