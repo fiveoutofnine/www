@@ -6,18 +6,28 @@ import prettier from 'prettier';
 import { twMerge } from 'tailwind-merge';
 
 import { ToastButton } from '@/components/templates/mdx';
-import { Badge, Button, CodeBlock, HoverCard, IconButton, Select, Tooltip } from '@/components/ui';
-import type { CodeBlockProps } from '@/components/ui/code-block/types';
-
-const COMPONENT_NAMES = [
+import {
   Badge,
   Button,
+  ButtonGroup,
   CodeBlock,
   HoverCard,
   IconButton,
   Select,
-  ToastButton,
   Tooltip,
+} from '@/components/ui';
+import type { CodeBlockProps } from '@/components/ui/code-block/types';
+
+const COMPONENT_NAMES = [
+  { component: Badge, displayName: 'Badge' },
+  { component: Button, displayName: 'Button' },
+  { component: ButtonGroup, displayName: 'ButtonGroup' },
+  { component: CodeBlock, displayName: 'CodeBlock' },
+  { component: HoverCard, displayName: 'HoverCard' },
+  { component: IconButton, displayName: 'IconButton' },
+  { component: Select, displayName: 'Select' },
+  { component: ToastButton, displayName: 'ToastButton' },
+  { component: Tooltip, displayName: 'Tooltip' },
 ];
 
 // -----------------------------------------------------------------------------
@@ -62,7 +72,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
       // way, we also retain the full name, rather than the minified name
       // webpack gives.
       for (let i = 0; i < COMPONENT_NAMES.length; ++i) {
-        if (node.type === COMPONENT_NAMES[i]) {
+        if (node.type === COMPONENT_NAMES[i].component) {
           componentName = COMPONENT_NAMES[i].displayName;
           break;
         }
