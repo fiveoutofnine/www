@@ -66,6 +66,7 @@ export const CodeBlockSwitcherDemo: React.FC = () => {
         value: language,
         onChange: (value) => setLanguage(value),
       }}
+      showLineNumbers={false}
       breakLines
     >
       {BYTECODE_SOURCE}
