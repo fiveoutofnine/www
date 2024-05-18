@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { type ForwardedRef, forwardRef } from 'react';
+import { forwardRef } from 'react';
 
-import { iconButtonIconVariants, iconButtonVariants } from './styles';
+import { iconButtonExtraVariants, iconButtonIconVariants, iconButtonVariants } from './styles';
 import type { IconButtonProps } from './types';
 import { Slot } from '@radix-ui/react-slot';
-import { cx } from 'class-variance-authority';
+import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 const IconButton = forwardRef(
@@ -16,16 +16,17 @@ const IconButton = forwardRef(
       intent = 'none',
       disabled = false,
       href,
-      newTab,
+      newTab = false,
       children,
       ...rest
     }: IconButtonProps,
-    ref: ForwardedRef<HTMLButtonElement>,
+    ref: React.ForwardedRef<HTMLButtonElement>,
   ) => {
     const props = {
       className: twMerge(
-        cx(
+        clsx(
           iconButtonVariants({ size, variant, intent: !disabled ? intent : undefined, disabled }),
+          iconButtonExtraVariants({ size }),
           className,
         ),
       ),
@@ -60,6 +61,10 @@ const IconButton = forwardRef(
     );
   },
 );
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
 
 IconButton.displayName = 'IconButton';
 

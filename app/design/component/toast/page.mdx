@@ -1,0 +1,111 @@
+import { ExternalLink } from 'lucide-react';
+
+import { Button, toast } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Toast",
+  description: "A succinct message that is displayed temporarily.",
+});
+
+# Toast
+
+A succinct message that is displayed temporarily.
+
+## Usage
+
+First, import and add the `Toaster` component to your app's root layout.
+
+```tsx fileName="app/layout.tsx" language="tsx" highlightLines={[1, 9]}
+import { Toaster } from '@/components/ui';
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <main />
+      </body>
+      <Toaster />
+    </html>
+  );
+};
+```
+
+Then, import the `toast` function that displays toasts when called:
+
+```tsx language="tsx" highlightLines={[1, 13]}
+import { toast } from '@/components/ui';
+
+const ToastButton: React.FC<ToastButtonProps> = ({
+  children,
+  intent,
+  title = 'Title',
+  description = 'Some short description.',
+  ...toastPropsRest
+}) => {
+  return (
+    <Button
+      intent={intent}
+      onClick={() => toast({ title, description, intent, ...toastPropsRest })}
+      {...rest}
+    >
+      {children}
+    </Button>
+  );
+};
+```
+
+## Default
+
+<DesignComponentsDisplay>
+  <ToastButton title="Title" description="Swipe right to remove." children="Show toast" />
+</DesignComponentsDisplay>
+
+## Intent
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-3 md:grid-rows-1">
+  <ToastButton intent="none" children="None" />
+  <ToastButton intent="info" children="Info" />
+  <ToastButton intent="fail" children="Fail" />
+  <ToastButton intent="success" children="Success" />
+  <ToastButton intent="warning" children="Warning" />
+  <ToastButton intent="orange" children="Orange" />
+</DesignComponentsDisplay>
+
+## Close button
+
+<DesignComponentsDisplay>
+  <ToastButton title="Title" description="Swipe right to remove." hasCloseButton children="Show toast" />
+</DesignComponentsDisplay>
+
+## With action
+
+To add an action to the toast, pass in a [`Button`](/design/component/button) element to the `action` prop. Note that `action` takes in any React node, but it is intended to be a `Button` element that triggers some relevant action.
+
+<DesignComponentsDisplay
+  className="grid-flow-col grid-rows-1"
+  highlightLines={[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]}
+  sourceInitiallyDisplayed
+>
+  <ToastButton
+    title="Contract deployed"
+    description="Contract deployed to 0x00000000…."
+    intent="success"
+    action={
+      <Button
+        size="sm"
+        intent="success"
+        href="https://etherscan.io/tx/0x0100b7a91f27db8ea706a0f729bf0677e45a8647cf7dd25fc249dce3710bea81"
+        rightIcon={<ExternalLink />}
+        children="View"
+        newTab
+      />
+    }
+    children="Show toast"
+  />
+</DesignComponentsDisplay>
+
+<Callout>
+  Alternatively, an object of type `{ label: string; onClick: (event: MouseEvent<HTMLButtonElement, MoustEvent>) => void }` may be passed in.
+</Callout>

@@ -6,18 +6,16 @@ const withMDX = createMDX({
   options: {
     remarkPlugins: [],
     rehypePlugins: [rehypeMdxCodeProps],
-    providerImportSource: '@mdx-js/react',
   },
 });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
-  swcMinify: false,
-  webpack5: true,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  webpack: (config) => {
-    config.resolve.fallback = { fs: false, net: false, tls: false };
+  webpack(config) {
+    config.experiments = { ...config.experiments, topLevelAwait: true };
+    // Copied from: https://github.com/WalletConnect/walletconnect-monorepo/issues/1908#issuecomment-1487801131
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
 
     return config;
   },

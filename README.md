@@ -1,4 +1,4 @@
-[**5/9**](https://twitter.com/fiveoutofnine)'s personal website: [**fiveoutofnine.com**](https://fiveoutofnine.com).
+[**5/9**](https://x.com/fiveoutofnine)'s personal website: [**fiveoutofnine.com**](https://fiveoutofnine.com).
 
 ## Structure
 
@@ -9,10 +9,19 @@ The site is divided into 4 categories:
 - [`/design`](https://fiveoutofnine.com/design), documentation for my design system.
 - Other projects, pages, etc.
 
-## Running Locally
+## Local development
+
+### Installation
 
 ```sh
 git clone https://github.com/fiveoutofnine/www.git
 pnpm install
 pnpm run dev
+```
+
+### Building
+
+```sh
+supabase gen types typescript --project-id $PROJECT_ID > generated/database.types.ts
+pnpm dlx next build
 ```

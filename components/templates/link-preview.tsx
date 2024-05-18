@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { ComponentPropsWithoutRef, FC } from 'react';
 
 import { HoverCard } from '@/components/ui';
 
@@ -8,7 +7,7 @@ import { HoverCard } from '@/components/ui';
 // Props
 // -----------------------------------------------------------------------------
 
-type LinkPreviewProps = ComponentPropsWithoutRef<typeof Link> & {
+type LinkPreviewProps = React.ComponentPropsWithoutRef<typeof Link> & {
   src: string;
   width?: number;
   height?: number;
@@ -18,7 +17,7 @@ type LinkPreviewProps = ComponentPropsWithoutRef<typeof Link> & {
 // Component
 // -----------------------------------------------------------------------------
 
-const LinkPreview: FC<LinkPreviewProps> = ({
+const LinkPreview: React.FC<LinkPreviewProps> = ({
   src,
   width = 256,
   height = 128,

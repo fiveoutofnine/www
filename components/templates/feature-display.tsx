@@ -1,5 +1,3 @@
-import type { FC, ReactNode } from 'react';
-
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -11,17 +9,17 @@ type FeatureDisplayProps = {
   className?: string;
   name: string;
   description: string;
-  symbol: ReactNode;
-  tags?: ReactNode[];
-  button?: ReactNode;
-  children: ReactNode;
+  symbol: React.ReactNode;
+  tags?: React.ReactNode[];
+  button?: React.ReactNode;
+  children: React.ReactNode;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-const FeatureDisplay: FC<FeatureDisplayProps> = ({
+const FeatureDisplay: React.FC<FeatureDisplayProps> = ({
   className,
   name,
   description,

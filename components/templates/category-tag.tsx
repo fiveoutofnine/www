@@ -1,5 +1,3 @@
-import type { FC } from 'react';
-
 import { Badge } from '@/components/ui';
 import type { BadgeProps } from '@/components/ui/badge/types';
 
@@ -15,12 +13,12 @@ type CategoryTagProps = Omit<BadgeProps, 'variant' | 'intent'> & {
 // Component
 // -----------------------------------------------------------------------------
 
-const CategoryTag: FC<CategoryTagProps> = ({ size, category, ...rest }) => {
+const CategoryTag: React.FC<CategoryTagProps> = ({ size, category, ...rest }) => {
   const CATEGORY_TO_COLORS: Record<typeof category, string> = {
     NFT: 'orange',
     'On-chain': 'warning',
     Writing: 'success',
-    Web: 'primary',
+    Web: 'info',
   };
 
   return (
@@ -31,7 +29,5 @@ const CategoryTag: FC<CategoryTagProps> = ({ size, category, ...rest }) => {
     </Badge>
   );
 };
-
-CategoryTag.displayName = 'CategoryTag';
 
 export default CategoryTag;

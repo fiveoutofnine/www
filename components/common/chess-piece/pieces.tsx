@@ -1,6 +1,4 @@
-import type { FC } from 'react';
-
-export const BishopPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const BishopPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -22,7 +20,7 @@ export const BishopPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...re
   );
 };
 
-export const KingPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const KingPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -44,7 +42,7 @@ export const KingPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest
   );
 };
 
-export const KnightPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const KnightPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -66,7 +64,7 @@ export const KnightPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...re
   );
 };
 
-export const PawnPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const PawnPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -88,7 +86,7 @@ export const PawnPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest
   );
 };
 
-export const QueenPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const QueenPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -110,7 +108,7 @@ export const QueenPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...res
   );
 };
 
-export const RookPiece: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const RookPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"

@@ -1,5 +1,3 @@
-import type { FC, ReactNode } from 'react';
-
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -11,15 +9,15 @@ type FeatureDisplayMinimalProps = {
   className?: string;
   name: string;
   description: string;
-  symbol: ReactNode;
-  button: ReactNode;
+  symbol: React.ReactNode;
+  button: React.ReactNode;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-const FeatureDisplayMinimal: FC<FeatureDisplayMinimalProps> = ({
+const FeatureDisplayMinimal: React.FC<FeatureDisplayMinimalProps> = ({
   className,
   name,
   description,

@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { type ForwardedRef, forwardRef } from 'react';
+import { forwardRef } from 'react';
 
-import { buttonIconVariants, buttonVariants } from './styles';
-import type { ButtonProps } from './types';
+import { buttonGroupStyles, buttonIconVariants, buttonVariants } from './styles';
+import type { ButtonGroupProps, ButtonProps } from './types';
 import { Slot } from '@radix-ui/react-slot';
-import { cx } from 'class-variance-authority';
+import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 const Button = forwardRef(
@@ -18,15 +18,15 @@ const Button = forwardRef(
       href,
       leftIcon,
       rightIcon,
-      newTab,
+      newTab = false,
       children,
       ...rest
     }: ButtonProps,
-    ref: ForwardedRef<HTMLButtonElement>,
+    ref: React.ForwardedRef<HTMLButtonElement>,
   ) => {
     const props = {
       className: twMerge(
-        cx(
+        clsx(
           buttonVariants({ size, variant, intent: !disabled ? intent : undefined, disabled }),
           className,
         ),
@@ -50,11 +50,15 @@ const Button = forwardRef(
         <Slot ref={ref} {...restWithoutRef}>
           <Link href={href} {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
             {leftIcon && variant !== 'text' ? (
-              <span className={buttonIconVariants({ size })}>{leftIcon}</span>
+              <span className={buttonIconVariants({ size })} button-left-icon="">
+                {leftIcon}
+              </span>
             ) : null}
-            <span>{children}</span>
+            <span button-content="">{children}</span>
             {rightIcon && variant !== 'text' ? (
-              <span className={buttonIconVariants({ size })}>{rightIcon}</span>
+              <span className={buttonIconVariants({ size })} button-right-icon="">
+                {rightIcon}
+              </span>
             ) : null}
           </Link>
         </Slot>
@@ -64,17 +68,35 @@ const Button = forwardRef(
     return (
       <button {...props}>
         {leftIcon && variant !== 'text' ? (
-          <span className={buttonIconVariants({ size })}>{leftIcon}</span>
+          <span className={buttonIconVariants({ size })} button-left-icon="">
+            {leftIcon}
+          </span>
         ) : null}
-        <span>{children}</span>
+        <span button-content="">{children}</span>
         {rightIcon && variant !== 'text' ? (
-          <span className={buttonIconVariants({ size })}>{rightIcon}</span>
+          <span className={buttonIconVariants({ size })} button-right-icon="">
+            {rightIcon}
+          </span>
         ) : null}
       </button>
     );
   },
 );
 
-Button.displayName = 'Button';
+const ButtonGroup: React.FC<ButtonGroupProps> = ({ className, children, ...rest }) => {
+  return (
+    <div className={twMerge(clsx(buttonGroupStyles, className))} {...rest}>
+      {children}
+    </div>
+  );
+};
 
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+Button.displayName = 'Button';
+ButtonGroup.displayName = 'ButtonGroup';
+
+export { ButtonGroup };
 export default Button;

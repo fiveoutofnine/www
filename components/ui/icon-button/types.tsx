@@ -12,7 +12,17 @@ export type IconButtonVariantProps = VariantProps<typeof iconButtonVariants>;
 // -----------------------------------------------------------------------------
 
 export type IconButtonProps = JSX.IntrinsicElements['button'] &
-  IconButtonVariantProps & {
+  Omit<IconButtonVariantProps, 'variant' | 'intent'> &
+  (
+    | {
+        variant?: 'solid';
+        intent?: 'black' | 'white';
+      }
+    | {
+        variant?: Exclude<IconButtonVariantProps['variant'], 'solid'>;
+        intent?: Exclude<IconButtonVariantProps['intent'], 'black' | 'white'>;
+      }
+  ) & {
     href?: string;
     newTab?: boolean;
   };

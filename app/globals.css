@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+main {
+  @apply scroll-pt-28 bg-gray-1 text-gray-12 md:scroll-pt-20;
+  font-weight: 300;
+}
+
+* {
+  @apply selection:bg-[#FF00FF] selection:text-white;
+  box-sizing: border-box;
+}
+
+a {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-9;
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-9;
+}
+
+@layer utilities {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+  .h-screen {
+    height: 100dvh;
+  }
+}
+
+/* For WebKit-based browsers (Chrome, Safari, and Opera) */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.recharts-cartesian-grid-horizontal > line {
+  @apply stroke-gray-6;
+}
+
+.recharts-cartesian-grid-vertical > line {
+  @apply stroke-gray-6;
+  stroke-dasharray: 2 2;
+}
+
+.recharts-text {
+  user-select: none;
+  font-weight: 300;
+}
+
+.recharts-tooltip-cursor {
+  @apply fill-gray-5;
+}
+
+.recharts-tooltip-wrapper:focus {
+  outline: none;
+}
+
+.recharts-cartesian-axis-tick-value {
+  @apply fill-gray-11;
+}

@@ -1,0 +1,55 @@
+import ColorScale from './color-scale';
+
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Foundations",
+  name: "Color",
+  description: "Accessible and easily maintainable color system.",
+});
+
+# Color
+
+The design system uses [Radix UI colors](https://www.radix-ui.com/colors) to [ensure accessibility](https://www.radix-ui.com/colors/docs/palette-composition/composing-a-palette#choosing-text-scales) and [easily maintain consistent code/design](https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale).
+
+Additionally, the design system utilizes [`windy-radix-palette`](https://github.com/brattonross/windy-radix-palette), a Tailwind CSS plugin that adds Radix UI colors as Tailwind classes, to integrate with [Tailwind CSS](https://tailwindcss.com) easily.
+
+## Scales
+
+The following are the subset of the scales by Radix UI used throughout the design system. You can find the complete list of scales on [Radix UI's website](https://www.radix-ui.com/colors/docs/palette-composition/scales) or [compose a custom palette](https://www.radix-ui.com/colors/custom).
+
+### Gray
+
+The default color scale, labeled `none`.
+
+<ColorScale scale="grayDark" />
+
+### Blue
+
+The primary color scale, labeled `info`.
+
+<ColorScale scale="blueDark" />
+
+### Red
+
+The color scale for fail states, labeled `fail`.
+
+<ColorScale scale="redDark" />
+
+### Green
+
+The color scale for success states, labeled `success`.
+
+<ColorScale scale="greenDark" />
+
+### Yellow
+
+The color scale for warning states, labeled `warning`.
+
+<ColorScale scale="yellowDark" />
+
+### Orange
+
+Just an orange color scale, labeled `orange`.
+
+<ColorScale scale="orangeDark" />

@@ -13,10 +13,11 @@ module.exports = {
     '^@/public/(.*)$',
     '^@/lib/(.*)$',
     '^@/components/(.*)$',
+    '^@/app/(.*)$',
     '^@/pages/(.*)$',
   ],
   importOrderSortSpecifiers: true,
   importOrderSeparation: true,
   importOrderCaseInsensitive: true,
-  plugins: ['@trivago/prettier-plugin-sort-imports', require('prettier-plugin-tailwindcss')],
+  plugins: ['@trivago/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
 };

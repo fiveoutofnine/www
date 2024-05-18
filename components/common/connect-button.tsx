@@ -1,89 +1,43 @@
-import type { FC } from 'react';
+'use client';
 
-import { ConnectButton as RainbowConnect } from '@rainbow-me/rainbowkit';
-import { Network, Wallet } from 'lucide-react';
+import { ConnectKitButton } from 'connectkit';
+import { Wallet } from 'lucide-react';
 
 import { Button } from '@/components/ui';
+import type { ButtonProps } from '@/components/ui/button/types';
 
-// -----------------------------------------------------------------------------
+// ---------------------------------------–-------------------------------------
 // Props
-// -----------------------------------------------------------------------------
+// ---------------------------------------–-------------------------------------
 
-type ConnectButtonProps = {
-  className?: string;
+type ConnectButtonProps = Omit<
+  ButtonProps,
+  'variant' | 'intent' | 'href' | 'onClick' | 'newTab' | 'type'
+> & {
+  variant?: Exclude<ButtonProps['variant'], 'solid'>;
+  intent?: Exclude<ButtonProps['intent'], 'black' | 'white'>;
 };
 
-// -----------------------------------------------------------------------------
+// ---------------------------------------–-------------------------------------
 // Component
-// -----------------------------------------------------------------------------
+// ---------------------------------------–-------------------------------------
 
-const ConnectButton: FC<ConnectButtonProps> = ({ className }) => {
+const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
   return (
-    <RainbowConnect.Custom>
-      {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
-        const ready = mounted;
-        const connected = ready && account && chain;
-
+    <ConnectKitButton.Custom>
+      {({ isConnected, show, truncatedAddress, ensName }) => {
         return (
-          <div
-            className={className}
-            {...(!ready && {
-              'aria-hidden': true,
-              style: {
-                opacity: 0,
-                pointerEvents: 'none',
-                userSelect: 'none',
-              },
-            })}
+          <Button
+            leftIcon={!isConnected ? <Wallet /> : undefined}
+            onClick={show}
+            {...{ variant: isConnected ? 'secondary' : 'primary', intent: 'none', ...props }}
           >
-            {(() => {
-              if (!connected) {
-                return (
-                  <Button
-                    variant="primary"
-                    intent="none"
-                    onClick={openConnectModal}
-                    leftIcon={<Wallet />}
-                    type="button"
-                  >
-                    Connect
-                  </Button>
-                );
-              }
-
-              if (chain.unsupported) {
-                return (
-                  <Button
-                    variant="secondary"
-                    intent="fail"
-                    onClick={openChainModal}
-                    leftIcon={<Network />}
-                    type="button"
-                  >
-                    Switch network
-                  </Button>
-                );
-              }
-
-              return (
-                <Button
-                  variant="secondary"
-                  intent="none"
-                  onClick={openAccountModal}
-                  leftIcon={<Wallet />}
-                  type="button"
-                >
-                  {account.displayName}
-                </Button>
-              );
-            })()}
-          </div>
+            {isConnected ? ensName ?? truncatedAddress : 'Connect'}
+          </Button>
         );
       }}
-    </RainbowConnect.Custom>
+    </ConnectKitButton.Custom>
   );
 };
-
-ConnectButton.displayName = 'ConnectButton';
 
 export default ConnectButton;

@@ -1,6 +1,4 @@
-import type { FC } from 'react';
-
-export const JavaScriptLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const JavaScriptLogo: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -22,7 +20,7 @@ export const JavaScriptLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ..
   );
 };
 
-export const PythonLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const PythonLogo: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -46,7 +44,7 @@ export const PythonLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ...res
   );
 };
 
-export const ReactLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const ReactLogo: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -74,7 +72,7 @@ export const ReactLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest
   );
 };
 
-export const SolidityLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const SolidityLogo: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -102,7 +100,7 @@ export const SolidityLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ...r
   );
 };
 
-export const TypeScriptLogo: FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const TypeScriptLogo: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"

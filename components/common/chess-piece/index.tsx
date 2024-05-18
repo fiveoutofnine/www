@@ -1,14 +1,16 @@
 import { BishopPiece, KingPiece, KnightPiece, PawnPiece, QueenPiece, RookPiece } from './pieces';
 
-const ChessPiece = () => null;
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
 
-ChessPiece.Bishop = BishopPiece;
-ChessPiece.King = KingPiece;
-ChessPiece.Knight = KnightPiece;
-ChessPiece.Pawn = PawnPiece;
-ChessPiece.Queen = QueenPiece;
-ChessPiece.Rook = RookPiece;
-
-ChessPiece.displayName = 'ChessPiece';
+const ChessPiece = {
+  Bishop: BishopPiece,
+  King: KingPiece,
+  Knight: KnightPiece,
+  Pawn: PawnPiece,
+  Queen: QueenPiece,
+  Rook: RookPiece,
+};
 
 export default ChessPiece;

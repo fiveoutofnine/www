@@ -1,0 +1,76 @@
+import { Badge } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Badge",
+  description: "A label used to display the status, category, or emphasis of an item.",
+});
+
+# Badge
+
+A label used to display the status, category, or emphasis of an item.
+
+## Size
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <Badge size="sm" children="Badge" />
+  <Badge size="md" children="Badge" />
+  <Badge size="lg" children="Badge" />
+</DesignComponentsDisplay>
+
+## Variant
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <Badge variant="primary" children="Badge" />
+  <Badge variant="outline" children="Badge" />
+  <Badge variant="secondary" children="Badge" />
+</DesignComponentsDisplay>
+
+## Intent
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-6 lg:grid-rows-3">
+  <Badge variant="primary" intent="none" children="Badge" />
+  <Badge variant="outline" intent="none" children="Badge" />
+  <Badge variant="secondary" intent="none" children="Badge" />
+  <Badge variant="primary" intent="info" children="Badge" />
+  <Badge variant="outline" intent="info" children="Badge" />
+  <Badge variant="secondary" intent="info" children="Badge" />
+  <Badge variant="primary" intent="fail" children="Badge" />
+  <Badge variant="outline" intent="fail" children="Badge" />
+  <Badge variant="secondary" intent="fail" children="Badge" />
+  <Badge variant="primary" intent="success" children="Badge" />
+  <Badge variant="outline" intent="success" children="Badge" />
+  <Badge variant="secondary" intent="success" children="Badge" />
+  <Badge variant="primary" intent="warning" children="Badge" />
+  <Badge variant="outline" intent="warning" children="Badge" />
+  <Badge variant="secondary" intent="warning" children="Badge" />
+  <Badge variant="primary" intent="orange" children="Badge" />
+  <Badge variant="outline" intent="orange" children="Badge" />
+  <Badge variant="secondary" intent="orange" children="Badge" />
+</DesignComponentsDisplay>
+
+<Callout intent="none">
+  There are also intents `black` and `white` that only implement variants `primary` and `outline` that aren't displayed here.
+</Callout>
+
+## Type
+
+There are two types of badges: `text` and `number`, with `text` as the default. Unlike `text`, `number` renders a smaller `x`-padding and enforces a minimum aspect ratio of `1 / 1`.
+
+### Number
+
+`number` should be used when displaying numbers such as statistics.
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-3">
+  <Badge variant="primary" type="number" children={5} />
+  <Badge variant="outline" type="number" children={5} />
+  <Badge variant="secondary" type="number" children={5} />
+  <Badge variant="primary" type="number" children={55555} />
+  <Badge variant="outline" type="number" children={55555} />
+  <Badge variant="secondary" type="number" children={55555} />
+</DesignComponentsDisplay>
+
+<Callout>
+  `number` badges intentionally doesn't check its children for type. It's intended for numbers, but other types implementing `.toString()` will work as well.
+</Callout>
