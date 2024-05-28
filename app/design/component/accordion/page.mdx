@@ -1,0 +1,91 @@
+import { AccordionContainerDemo, AccordionNormalDemo } from './demo';
+
+import { Accordion } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Accordion",
+  description: "A vertically stacked set of interactive headings that each reveal a section of content.",
+});
+
+# Accordion
+
+A vertically stacked set of interactive headings that each reveal a section of content.
+
+## Variant
+
+<DesignComponentsDisplay className="grid-flow-row grid-cols-1 px-8 gap-6 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2" source={DEMO_CODE}>
+  <AccordionNormalDemo />
+  <AccordionContainerDemo />
+</DesignComponentsDisplay>
+
+<Callout>
+  Requires the `'use client'` directive if [React Server Components](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) are being used.
+</Callout>
+
+export const DEMO_CODE = `'use client';
+
+import { Accordion } from '@/components/ui';
+
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
+const ITEMS = [
+  {
+    trigger: 'How do you make fully on-chain music?',
+    content: 'put the bytes on-chain in the right order',
+  },
+  { trigger: 'How do you run faster?', content: 'move your legs faster and step farther' },
+  { trigger: 'How do you type faster?', content: 'type the words faster and in the right order' },
+];
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const AccordionContainerDemo: React.FC = () => {
+  return (
+    <Accordion.Root type="multiple">
+      {ITEMS.map(({ trigger, content }, index) => (
+        <Accordion.Item
+          key={index}
+          className="not-prose"
+          variant="container"
+          value={\`accordion_container_\${index}\`}
+        >
+          <Accordion.Trigger className="not-prose" variant="container">
+            {trigger}
+          </Accordion.Trigger>
+          <Accordion.Content className="not-prose" variant="container">
+            {content}
+          </Accordion.Content>
+        </Accordion.Item>
+      ))}
+    </Accordion.Root>
+  );
+};
+
+export const AccordionNormalDemo: React.FC = () => {
+  return (
+    <Accordion.Root type="multiple">
+      {ITEMS.map(({ trigger, content }, index) => (
+        <Accordion.Item
+          key={index}
+          className="not-prose"
+          variant="normal"
+          value={\`accordion_normal_\${index}\`}
+        >
+          <Accordion.Trigger className="not-prose" variant="normal">
+            {trigger}
+          </Accordion.Trigger>
+          <Accordion.Content className="not-prose" variant="normal">
+            {content}
+          </Accordion.Content>
+        </Accordion.Item>
+      ))}
+    </Accordion.Root>
+  );
+};
+`;

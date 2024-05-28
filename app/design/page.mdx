@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { ArrowRight, ChevronRight, Github } from 'lucide-react';
 
+import DesignAccordionFeature from './(components)/accordion-feature';
 import ComponentFeature from './(components)/component-feature';
 import { FiveoutofnineHoverCard } from './component/hover-card/page.mdx';
 
@@ -40,16 +41,16 @@ An open-source design system aiming to be accessible, functional, and provide a 
 ## Components
 
 <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+  <ComponentFeature className="px-4" href="/design/component/accordion">
+    <DesignAccordionFeature />
+  </ComponentFeature>
   <ComponentFeature href="/design/component/badge">
     <Badge children="Badge" />
   </ComponentFeature>
   <ComponentFeature href="/design/component/button">
     <Button children="Button" />
   </ComponentFeature>
-  <ComponentFeature
-    className="col-span-2 sm:col-span-1 md:col-span-2 xl:col-span-1"
-    href="/design/component/code-block"
-  >
+  <ComponentFeature href="/design/component/code-block">
     <CodeBlock
       className="mx-4 w-full"
       fileName="code-block.sol"
