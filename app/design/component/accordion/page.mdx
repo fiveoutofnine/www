@@ -13,16 +13,16 @@ export const metadata = getDesignPageMetadata({
 
 A vertically stacked set of interactive headings that each reveal a section of content.
 
+<Callout>
+  Requires the `'use client'` directive if [React Server Components](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) are being used.
+</Callout>
+
 ## Variant
 
 <DesignComponentsDisplay className="grid-flow-row grid-cols-1 px-8 gap-6 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2" source={DEMO_CODE}>
   <AccordionNormalDemo />
   <AccordionContainerDemo />
 </DesignComponentsDisplay>
-
-<Callout>
-  Requires the `'use client'` directive if [React Server Components](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) are being used.
-</Callout>
 
 export const DEMO_CODE = `'use client';
 
