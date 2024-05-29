@@ -1,0 +1,41 @@
+import { AvatarFallbackDemo } from './demo';
+
+import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+# Avatar
+
+<Callout>
+  Requires the `'use client'` directive if [React Server Components](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) are being used.
+</Callout>
+
+## Size
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <FiveoutofnineAvatar className="not-prose" size={40} />
+  <FiveoutofnineAvatar className="not-prose" size={64} />
+  <FiveoutofnineAvatar className="not-prose" size={80} />
+</DesignComponentsDisplay>
+
+## Fallback
+
+While `src` is loading (or there's an error), the contents inside `Avatar.Fallback` will be displayed.
+
+<DesignComponentsDisplay highlightLines={[5]} source={FALLBACK_DEMO_CODE}>
+  <AvatarFallbackDemo />
+</DesignComponentsDisplay>
+
+<Callout intent="none">
+  Note that the `src` attribute is intentionally set to an invalid value to demonstrate the fallback behavior.
+</Callout>
+
+export const SIZE_DEMO_CODE = ``
+
+export const FALLBACK_DEMO_CODE = `export const AvatarFallbackDemo: React.FC = () => {
+  return (
+    <Avatar.Root size={64}>
+      <Avatar.Image src="INVALID_SRC" alt="Invalid image source." />
+      <Avatar.Fallback>Fallback</Avatar.Fallback>
+    </Avatar.Root>
+  );
+};`;

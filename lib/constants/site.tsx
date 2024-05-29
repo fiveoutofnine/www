@@ -30,6 +30,7 @@ export const DESIGN_PAGES: Page[] = [
  */
 export const DESIGN_COMPONENT_PAGES: Page[] = [
   { name: 'Accordion', slug: '/design/component/accordion' },
+  { name: 'Avatar', slug: '/design/component/avatar' },
   { name: 'Badge', slug: '/design/component/badge' },
   { name: 'Button', slug: '/design/component/button' },
   { name: 'Code Block', slug: '/design/component/code-block' },

@@ -22,6 +22,7 @@ export type PageSlug =
   | '/design/libraries'
   // Design component pages
   | '/design/component/accordion'
+  | '/design/component/avatar'
   | '/design/component/badge'
   | '/design/component/code-block'
   | '/design/component/button'

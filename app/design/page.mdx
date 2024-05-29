@@ -8,6 +8,7 @@ import DesignAccordionFeature from './(components)/accordion-feature';
 import ComponentFeature from './(components)/component-feature';
 import { FiveoutofnineHoverCard } from './component/hover-card/page.mdx';
 
+import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import { Badge, Button, CodeBlock, IconButton, Select, Tooltip } from '@/components/ui';
 
 # Design
@@ -43,6 +44,9 @@ An open-source design system aiming to be accessible, functional, and provide a 
 <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
   <ComponentFeature className="px-4" href="/design/component/accordion">
     <DesignAccordionFeature />
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/avatar">
+    <FiveoutofnineAvatar className="not-prose" size={48} />
   </ComponentFeature>
   <ComponentFeature href="/design/component/badge">
     <Badge children="Badge" />
