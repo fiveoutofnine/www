@@ -6,7 +6,9 @@ import { Drawer as DrawerPrimitive } from 'vaul';
 
 export type DrawerCloseProps = React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Close>;
 
-export type DrawerContentProps = React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>;
+export type DrawerContentProps = React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
+  contentContainerProps?: JSX.IntrinsicElements['div'];
+};
 
 export type DrawerDescriptionProps = React.ComponentPropsWithoutRef<
   typeof DrawerPrimitive.Description

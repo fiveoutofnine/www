@@ -17,6 +17,7 @@ import { Button, Drawer, IconButton } from '@/components/ui';
 
 type DesignNavBarInternalProps = {
   selected: string;
+  scrollTop?: number;
   onTrigger?: () => void;
 };
 
@@ -36,19 +37,41 @@ const DesignNavBar: React.FC = () => {
 };
 
 const DesignNavBarDesktop: React.FC<DesignNavBarInternalProps> = ({ selected }) => {
+  const [scrollTop, setScrollTop] = useState<number>(0);
+  const [scrollIsAtBottom, setScrollIsAtBottom] = useState<boolean>(false);
+
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
+    const scrollTop = target.scrollTop;
+    const scrollHeight = target.scrollHeight;
+    const clientHeight = target.clientHeight;
+
+    setScrollTop(scrollTop);
+    setScrollIsAtBottom(scrollHeight - scrollTop <= clientHeight);
+  };
+
   return (
     <aside
-      className="hide-scrollbar sticky top-28 -ml-3 hidden min-w-[11rem] max-w-[11rem] flex-col overflow-y-scroll px-0.5 focus:outline-none md:flex"
+      className={clsx(
+        'hide-scrollbar design--desktop group sticky top-28 -ml-3 hidden min-w-[11rem] max-w-[11rem] flex-col overflow-y-scroll px-0.5 focus:outline-none md:flex',
+        // Note that the height on this gradient overflow indicator is greater
+        // because it requires more clarity than the dividers directly below
+        // each sections' title that there's more to scroll.
+        'after:pointer-events-none after:sticky after:bottom-0 after:left-0 after:z-[35] after:min-h-8 after:w-full after:bg-gradient-to-t after:from-gray-1 after:transition-opacity after:content-[""]',
+        scrollIsAtBottom ? 'after:opacity-0' : 'after:opacity-100',
+      )}
       style={{ height: 'calc(100vh - 11rem)' }}
+      onScroll={handleScroll}
       tabIndex={-1}
     >
-      <DesignNavBarInternal selected={selected} />
+      <DesignNavBarInternal selected={selected} scrollTop={scrollTop} />
     </aside>
   );
 };
 
 const DesignNavBarMobile: React.FC<DesignNavBarInternalProps> = ({ selected }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [scrollTop, setScrollTop] = useState<number>(0);
   const isSmallScreen = useMediaQuery('(max-width: 768px)'); // `md` breakpoint
 
   const [selectedSectionName, selectedPageName] = useMemo(() => {
@@ -60,6 +83,13 @@ const DesignNavBarMobile: React.FC<DesignNavBarInternalProps> = ({ selected }) =
 
     return ['', ''];
   }, [selected]);
+
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
+    const scrollTop = target.scrollTop;
+
+    setScrollTop(scrollTop);
+  };
 
   return (
     <Drawer.Root open={open && isSmallScreen} onOpenChange={setOpen}>
@@ -81,17 +111,46 @@ const DesignNavBarMobile: React.FC<DesignNavBarInternalProps> = ({ selected }) =
         </ol>
       </div>
 
-      <Drawer.Content onOpenAutoFocus={(e) => e.preventDefault()}>
-        <DesignNavBarInternal selected={selected} onTrigger={() => setOpen(false)} />
+      <Drawer.Content
+        className="design--mobile group"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        contentContainerProps={{ onScroll: handleScroll }}
+      >
+        <DesignNavBarInternal
+          selected={selected}
+          scrollTop={scrollTop}
+          onTrigger={() => setOpen(false)}
+        />
       </Drawer.Content>
     </Drawer.Root>
   );
 };
 
-const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected, onTrigger }) => {
+const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({
+  selected,
+  scrollTop,
+  onTrigger,
+}) => {
+  // Scroll is at the top if the user hasn't scrolled yet.
+  const scrollBreakpoint1 = (scrollTop ?? 0) <= 4;
+  // Scroll has scrolled past the 1st section. `36` is the height and margin of
+  // a page button, `16` is the margin between any 2 sections, and `4` is the
+  // the margin for the 2nd section's 1st page button.
+  const scrollBreakpoint2 = (scrollTop ?? 0) <= 36 * DESIGN_PAGES.length + 16 + 4;
+
   return (
     <Fragment>
-      <div className="ml-3 text-base font-medium text-gray-12">Foundations</div>
+      <div
+        className={clsx(
+          'sticky top-0 z-40 pl-3 text-base font-medium text-gray-12',
+          'group-[.design--desktop]:bg-gray-1 group-[.design--desktop]:after:from-gray-1',
+          'group-[.design--mobile]:bg-gray-2 group-[.design--mobile]:after:from-gray-2',
+          'after:pointer-events-none after:absolute after:left-0 after:top-6 after:z-[35] after:h-6 after:w-full after:bg-gradient-to-b after:transition-opacity after:content-[""]',
+          scrollBreakpoint1 ? 'after:opacity-0' : 'after:opacity-100',
+        )}
+      >
+        Foundations
+      </div>
       {DESIGN_PAGES.map((page) => {
         const pageSelected = selected === page.slug;
 
@@ -99,7 +158,7 @@ const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected, o
           <Button
             key={page.slug}
             className={clsx(
-              'mt-1 w-full justify-start',
+              'mt-1 min-h-8 w-full justify-start',
               pageSelected ? 'cursor-default bg-gray-5 text-gray-12' : '',
             )}
             variant="ghost"
@@ -112,7 +171,17 @@ const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected, o
         );
       })}
 
-      <div className="ml-3 mt-4 text-base font-medium text-gray-12">Components</div>
+      <div
+        className={clsx(
+          'sticky top-6 z-40 mt-4 pl-3 text-base font-medium text-gray-12',
+          'group-[.design--desktop]:bg-gray-1 group-[.design--desktop]:after:from-gray-1',
+          'group-[.design--mobile]:bg-gray-2 group-[.design--mobile]:after:from-gray-2',
+          'after:pointer-events-none after:absolute after:left-0 after:top-6 after:z-[35] after:h-6 after:w-full after:bg-gradient-to-b after:transition-opacity after:content-[""]',
+          scrollBreakpoint2 ? 'after:opacity-0' : 'after:opacity-100',
+        )}
+      >
+        Components
+      </div>
       {DESIGN_COMPONENT_PAGES.map((page) => {
         const pageSelected = selected === page.slug;
 
@@ -120,7 +189,7 @@ const DesignNavBarInternal: React.FC<DesignNavBarInternalProps> = ({ selected, o
           <Button
             key={page.slug}
             className={clsx(
-              'mt-1 w-full justify-start',
+              'mt-1 min-h-8 w-full justify-start',
               pageSelected ? 'cursor-default bg-gray-5 text-gray-12' : '',
             )}
             variant="ghost"
