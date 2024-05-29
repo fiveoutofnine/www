@@ -3,7 +3,15 @@ import { AvatarFallbackDemo } from './demo';
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import { getDesignPageMetadata } from '@/lib/utils';
 
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Avatar",
+  description: "An image element with a fallback to display visual content about a user.",
+});
+
 # Avatar
+
+An image element with a fallback to display visual content about a user.
 
 <Callout>
   Requires the `'use client'` directive if [React Server Components](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) are being used.
