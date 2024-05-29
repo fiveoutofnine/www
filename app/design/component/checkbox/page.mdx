@@ -1,0 +1,42 @@
+import { Checkbox } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Checkbox",
+  description: "A control that allows the user to toggle between checked and not checked.",
+});
+
+# Checkbox
+
+A control that allows the user to toggle between checked and not checked.
+
+## Size
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <div className="flex items-center gap-1">
+    <Checkbox id="checkbox_size_sm" size="sm" />
+    <label htmlFor="checkbox_size_sm" className="text-xs font-medium text-gray-12" children="Checkbox" />
+  </div>
+  <div className="flex items-center gap-1.5">
+    <Checkbox id="checkbox_size_md" size="md" />
+    <label htmlFor="checkbox_size_md" className="text-sm font-medium text-gray-12" children="Checkbox" />
+  </div>
+  <div className="flex items-center gap-2">
+    <Checkbox id="checkbox_size_lg" size="lg" />
+    <label htmlFor="checkbox_size_lg" className="text-base font-medium text-gray-12" children="Checkbox" />
+  </div>
+</DesignComponentsDisplay>
+
+## Disabled
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <div className="flex items-center gap-1.5">
+    <Checkbox id="checkbox_disabled_false" />
+    <label htmlFor="checkbox_disabled_false" className="text-sm font-medium text-gray-12" children="Checkbox" />
+  </div>
+  <div className="flex items-center gap-1.5">
+    <Checkbox id="checkbox_disabled_true" disabled />
+    <label htmlFor="checkbox_disabled_true" className="text-sm font-medium text-gray-11" children="Checkbox" />
+  </div>
+</DesignComponentsDisplay>

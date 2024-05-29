@@ -9,7 +9,7 @@ import ComponentFeature from './(components)/component-feature';
 import { FiveoutofnineHoverCard } from './component/hover-card/page.mdx';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
-import { Badge, Button, CodeBlock, IconButton, Select, Tooltip } from '@/components/ui';
+import { Badge, Button, Checkbox, CodeBlock, IconButton, Select, Tooltip } from '@/components/ui';
 
 # Design
 
@@ -52,6 +52,12 @@ An open-source design system aiming to be accessible, functional, and provide a 
     <Badge children="Badge" />
   </ComponentFeature>
   <ComponentFeature href="/design/component/button">
+    <div className="flex items-center gap-1.5">
+      <Checkbox id="checkbox" size="md" />
+      <label htmlFor="checkbox" className="text-sm font-medium text-gray-12" children="Checkbox" />
+    </div>
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/checkbox">
     <Button children="Button" />
   </ComponentFeature>
   <ComponentFeature href="/design/component/code-block">

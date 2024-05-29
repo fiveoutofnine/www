@@ -5,11 +5,13 @@ import clsx from 'clsx';
 import prettier from 'prettier';
 import { twMerge } from 'tailwind-merge';
 
+import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import { ToastButton } from '@/components/templates/mdx';
 import {
   Badge,
   Button,
   ButtonGroup,
+  Checkbox,
   CodeBlock,
   HoverCard,
   IconButton,
@@ -22,12 +24,15 @@ const COMPONENT_NAMES = [
   { component: Badge, displayName: 'Badge' },
   { component: Button, displayName: 'Button' },
   { component: ButtonGroup, displayName: 'ButtonGroup' },
+  { component: Checkbox, displayName: 'Checkbox' },
   { component: CodeBlock, displayName: 'CodeBlock' },
   { component: HoverCard, displayName: 'HoverCard' },
   { component: IconButton, displayName: 'IconButton' },
   { component: Select, displayName: 'Select' },
   { component: ToastButton, displayName: 'ToastButton' },
   { component: Tooltip, displayName: 'Tooltip' },
+  // Other
+  { component: FiveoutofnineAvatar, displayName: 'FiveoutofnineAvatar' },
 ];
 
 // -----------------------------------------------------------------------------

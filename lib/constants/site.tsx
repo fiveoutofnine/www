@@ -33,6 +33,7 @@ export const DESIGN_COMPONENT_PAGES: Page[] = [
   { name: 'Avatar', slug: '/design/component/avatar' },
   { name: 'Badge', slug: '/design/component/badge' },
   { name: 'Button', slug: '/design/component/button' },
+  { name: 'Checkbox', slug: '/design/component/checkbox' },
   { name: 'Code Block', slug: '/design/component/code-block' },
   { name: 'Hover Card', slug: '/design/component/hover-card' },
   { name: 'Select', slug: '/design/component/select' },

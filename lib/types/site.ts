@@ -24,6 +24,7 @@ export type PageSlug =
   | '/design/component/accordion'
   | '/design/component/avatar'
   | '/design/component/badge'
+  | '/design/component/checkbox'
   | '/design/component/code-block'
   | '/design/component/button'
   | '/design/component/hover-card'
