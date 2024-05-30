@@ -7,6 +7,7 @@ import {
   accordionContentVariants,
   accordionItemVariants,
   accordionTriggerChevronStyles,
+  accordionTriggerContentStyles,
   accordionTriggerVariants,
 } from './styles';
 import type {
@@ -62,7 +63,9 @@ const AccordionTrigger = forwardRef<
       className={twMerge(clsx(accordionTriggerVariants({ variant }), className))}
       {...props}
     >
-      {children}
+      <span className={clsx(accordionTriggerContentStyles)} accordion-trigger-content="">
+        {children}
+      </span>
       <ChevronRight className={clsx(accordionTriggerChevronStyles)} />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
