@@ -142,6 +142,7 @@ export const radioDetailedIndicatorIconVariants = cva(
 export const radioDetailedIndicatorVariants = cva(
   [
     'size-3.5',
+    'min-w-3.5',
     'rounded-full',
     'aspect-square',
     'flex',

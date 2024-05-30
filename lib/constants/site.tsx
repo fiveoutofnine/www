@@ -36,6 +36,7 @@ export const DESIGN_COMPONENT_PAGES: Page[] = [
   { name: 'Checkbox', slug: '/design/component/checkbox' },
   { name: 'Code Block', slug: '/design/component/code-block' },
   { name: 'Hover Card', slug: '/design/component/hover-card' },
+  { name: 'Radio', slug: '/design/component/radio' },
   { name: 'Select', slug: '/design/component/select' },
   { name: 'Toast', slug: '/design/component/toast' },
   { name: 'Tooltip', slug: '/design/component/tooltip' },
