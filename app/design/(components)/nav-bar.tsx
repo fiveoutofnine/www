@@ -115,6 +115,11 @@ const DesignNavBarMobile: React.FC<DesignNavBarInternalProps> = ({ selected }) =
         className="design--mobile group"
         onOpenAutoFocus={(e) => e.preventDefault()}
         contentContainerProps={{ onScroll: handleScroll }}
+        // This positions the top of the drawer to be `0.5rem` below the two nav
+        // bars on small screens. Note that we don't need this to be responsive
+        // to account for when there's only 1 nav bar present on large screens
+        // because the drawer is set to be closed on large screens.
+        style={{ maxHeight: 'calc(100vh - 6.5rem' }}
       >
         <DesignNavBarInternal
           selected={selected}
