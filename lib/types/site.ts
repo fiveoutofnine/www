@@ -30,6 +30,7 @@ export type PageSlug =
   | '/design/component/hover-card'
   | '/design/component/radio'
   | '/design/component/select'
+  | '/design/component/switch'
   | '/design/component/toast'
   | '/design/component/tooltip';
 

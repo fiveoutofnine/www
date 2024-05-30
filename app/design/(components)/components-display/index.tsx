@@ -16,6 +16,7 @@ import {
   HoverCard,
   IconButton,
   Select,
+  Switch,
   Tooltip,
 } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
@@ -29,6 +30,7 @@ const COMPONENT_NAMES = [
   { component: HoverCard, displayName: 'HoverCard' },
   { component: IconButton, displayName: 'IconButton' },
   { component: Select, displayName: 'Select' },
+  { component: Switch, displayName: 'Switch' },
   { component: ToastButton, displayName: 'ToastButton' },
   { component: Tooltip, displayName: 'Tooltip' },
   // Other

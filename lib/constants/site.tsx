@@ -38,6 +38,7 @@ export const DESIGN_COMPONENT_PAGES: Page[] = [
   { name: 'Hover Card', slug: '/design/component/hover-card' },
   { name: 'Radio', slug: '/design/component/radio' },
   { name: 'Select', slug: '/design/component/select' },
+  { name: 'Switch', slug: '/design/component/switch' },
   { name: 'Toast', slug: '/design/component/toast' },
   { name: 'Tooltip', slug: '/design/component/tooltip' },
 ];

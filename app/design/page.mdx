@@ -10,7 +10,16 @@ import DesignRadioFeature from './(components)/radio-feature';
 import { FiveoutofnineHoverCard } from './component/hover-card/page.mdx';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
-import { Badge, Button, Checkbox, CodeBlock, IconButton, Select, Tooltip } from '@/components/ui';
+import {
+  Badge,
+  Button,
+  Checkbox,
+  CodeBlock,
+  IconButton,
+  Select,
+  Switch,
+  Tooltip,
+} from '@/components/ui';
 
 # Design
 
@@ -88,6 +97,12 @@ An open-source design system aiming to be accessible, functional, and provide a 
   </ComponentFeature>
   <ComponentFeature href="/design/component/select">
     <Select aria-label="Select" children={<option children="Select" />} />
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/switch">
+    <div className="flex items-center gap-2">
+      <Switch id="switch" aria-labelledby="switch_label" />
+      <label id="switch_label" htmlFor="switch" className="text-sm font-medium text-gray-12" children="Switch" />
+    </div>
   </ComponentFeature>
   <ComponentFeature href="/design/component/toast">
     <ToastButton children="Toast" />
