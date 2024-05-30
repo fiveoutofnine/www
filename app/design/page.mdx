@@ -52,14 +52,14 @@ An open-source design system aiming to be accessible, functional, and provide a 
   <ComponentFeature href="/design/component/badge">
     <Badge children="Badge" />
   </ComponentFeature>
-  <ComponentFeature href="/design/component/checkbox">
-    <div className="flex items-center gap-1.5">
-      <Checkbox id="checkbox" size="md" />
-      <label htmlFor="checkbox" className="text-sm font-medium text-gray-12" children="Checkbox" />
-    </div>
-  </ComponentFeature>
   <ComponentFeature href="/design/component/button">
     <Button children="Button" />
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/checkbox">
+    <div className="flex items-center gap-1.5">
+      <Checkbox id="checkbox" size="md" aria-labelledby="checkbox_label" />
+      <label id="checkbox_label" htmlFor="checkbox" className="text-sm font-medium text-gray-12" children="Checkbox" />
+    </div>
   </ComponentFeature>
   <ComponentFeature href="/design/component/code-block">
     <CodeBlock
@@ -87,7 +87,7 @@ An open-source design system aiming to be accessible, functional, and provide a 
     <DesignRadioFeature />
   </ComponentFeature>
   <ComponentFeature href="/design/component/select">
-    <Select children={<option children="Select" />} />
+    <Select aria-label="Select" children={<option children="Select" />} />
   </ComponentFeature>
   <ComponentFeature href="/design/component/toast">
     <ToastButton children="Toast" />
