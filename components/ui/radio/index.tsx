@@ -37,6 +37,7 @@ const RadioItem = forwardRef<React.ElementRef<typeof RadioPrimitive.Item>, Radio
   ({ className, type = 'normal', ...rest }, ref) => {
     // Generate ID for radio items that are of `type` `detailed`.
     const id = useId();
+    const labelId = `${id}-label`;
 
     if (type === 'normal') {
       return (
@@ -61,6 +62,7 @@ const RadioItem = forwardRef<React.ElementRef<typeof RadioPrimitive.Item>, Radio
       <RadioPrimitive.Item
         id={id}
         className={twMerge(clsx(radioDetailedItemVariants({ intent }), className))}
+        aria-labelledby={labelId}
         {...rest_}
       >
         <div className="flex items-center gap-2.5">
@@ -68,7 +70,7 @@ const RadioItem = forwardRef<React.ElementRef<typeof RadioPrimitive.Item>, Radio
             <div className={radioDetailedIconContainerVariants({ intent })}>{icon}</div>
           ) : null}
           <div className="flex flex-col gap-0.5">
-            <label htmlFor={id} className={radioDetailedTitleVariants({ intent })}>
+            <label id={labelId} htmlFor={id} className={radioDetailedTitleVariants({ intent })}>
               {title}
             </label>
             {description ? (

@@ -54,8 +54,8 @@ export const RadioTypeDemo: React.FC = () => {
   return (
     <Radio.Group className="flex flex-col gap-4">
       <div className="flex items-center gap-1.5">
-        <Radio.Item id="radio_type_normal" value="1" type="normal" />
-        <label htmlFor="radio_type_normal" className="text-sm font-medium text-gray-12">
+        <Radio.Item id="radio_type_normal" value="1" type="normal" aria-labelledby="radio_type_normal" />
+        <label id="radio_type_normal_label" htmlFor="radio_type_normal" className="text-sm font-medium text-gray-12">
           Normal
         </label>
       </div>
@@ -77,20 +77,20 @@ export const RadioNormalDemo: React.FC = () => {
   return (
     <Radio.Group>
       <div className="flex items-center gap-1.5">
-        <Radio.Item id="radio_normal_1" value="1" type="normal" />
-        <label htmlFor="radio_normal_1" className="text-sm font-medium text-gray-12">
+        <Radio.Item id="radio_normal_1" value="1" type="normal" aria-labelledby="radio_normal_1_label" />
+        <label id="radio_normal_1_label" htmlFor="radio_normal_1" className="text-sm font-medium text-gray-12">
           Option 0
         </label>
       </div>
       <div className="flex items-center gap-1.5">
-        <Radio.Item id="radio_normal_2" value="2" type="normal" disabled />
-        <label htmlFor="radio_normal_2" className="text-sm font-medium text-gray-12">
+        <Radio.Item id="radio_normal_2" value="2" type="normal" aria-labelledby="radio_normal_2_label" disabled />
+        <label id="radio_normal_2_label" htmlFor="radio_normal_2" className="text-sm font-medium text-gray-12">
           Option 1
         </label>
       </div>
       <div className="flex items-center gap-1.5">
-        <Radio.Item id="radio_normal_3" value="3" type="normal" />
-        <label htmlFor="radio_normal_3" className="text-sm font-medium text-gray-12">
+        <Radio.Item id="radio_normal_3" value="3" type="normal" aria-labelledby="radio_normal_3_label" />
+        <label id="radio_normal_3_label" htmlFor="radio_normal_3" className="text-sm font-medium text-gray-12">
           Option 2
         </label>
       </div>
