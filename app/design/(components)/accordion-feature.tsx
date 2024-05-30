@@ -26,7 +26,7 @@ const DesignAccordionFeature: React.FC = () => {
         <Accordion.Trigger variant="container">Accordion</Accordion.Trigger>
         <Accordion.Content className="relative overflow-hidden p-0" variant="container">
           <div className="hide-scrollbar overflow-x-scroll p-3" onScroll={handleScroll}>
-            <div className="w-fit text-nowrap pr-3">
+            <div className="w-fit whitespace-nowrap text-nowrap pr-3">
               Good Evening, “⁵⁄₉” was a 24 month sociological study conducted by Harvard University.
               We are now complete with our study. Thank you for your time.
             </div>
