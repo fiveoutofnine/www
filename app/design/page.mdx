@@ -6,6 +6,7 @@ import { ArrowRight, ChevronRight, Github } from 'lucide-react';
 
 import DesignAccordionFeature from './(components)/accordion-feature';
 import ComponentFeature from './(components)/component-feature';
+import DesignRadioFeature from './(components)/radio-feature';
 import { FiveoutofnineHoverCard } from './component/hover-card/page.mdx';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
@@ -81,6 +82,9 @@ An open-source design system aiming to be accessible, functional, and provide a 
         />
       }
     />
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/radio">
+    <DesignRadioFeature />
   </ComponentFeature>
   <ComponentFeature href="/design/component/select">
     <Select children={<option children="Select" />} />
