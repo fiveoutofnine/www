@@ -40,6 +40,7 @@ export const DESIGN_COMPONENT_PAGES: Page[] = [
   { name: 'Radio', slug: '/design/component/radio' },
   { name: 'Select', slug: '/design/component/select' },
   { name: 'Switch', slug: '/design/component/switch' },
+  { name: 'Tabs', slug: '/design/component/tabs' },
   { name: 'Text Area', slug: '/design/component/text-area' },
   { name: 'Toast', slug: '/design/component/toast' },
   { name: 'Tooltip', slug: '/design/component/tooltip' },

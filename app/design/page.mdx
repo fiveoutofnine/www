@@ -7,6 +7,7 @@ import { ArrowRight, ChevronRight, Github } from 'lucide-react';
 import DesignAccordionFeature from './(components)/accordion-feature';
 import ComponentFeature from './(components)/component-feature';
 import DesignRadioFeature from './(components)/radio-feature';
+import DesignTabsFeature from './(components)/tabs-feature';
 import { FiveoutofnineHoverCard } from './component/hover-card/page.mdx';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
@@ -108,6 +109,9 @@ An open-source design system aiming to be accessible, functional, and provide a 
       <Switch id="switch" aria-labelledby="switch_label" />
       <label id="switch_label" htmlFor="switch" className="text-sm font-medium text-gray-12" children="Switch" />
     </div>
+  </ComponentFeature>
+  <ComponentFeature className="px-4" href="/design/component/tabs">
+    <DesignTabsFeature />
   </ComponentFeature>
   <ComponentFeature className="p-4" href="/design/component/text-area">
     {/* Min. height set to be equal to size `md` input. */}

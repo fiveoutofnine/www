@@ -1,0 +1,208 @@
+import { TabsHorizontalDemo, TabsIconStatDemo, TabsLinkDemo, TabsVerticalDemo } from './demo';
+
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Tabs",
+  description: "A set of layered sections of content that display one panel of content at a time.",
+});
+
+# Tabs
+
+A set of layered sections of content that display one panel of content at a time.
+
+<Callout>
+  Requires the `'use client'` directive if [React Server Components](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components) are being used.
+</Callout>
+
+## Orientation
+
+<DesignComponentsDisplay
+  className="grid-flow-col grid-rows-2 px-8 sm:grid-rows-1 md:grid-rows-2 lg:grid-rows-1"
+  source={ORIENTATION_DEMO_CODE}
+>
+  <TabsHorizontalDemo />
+  <TabsVerticalDemo />
+</DesignComponentsDisplay>
+
+## Disabled
+
+<DesignComponentsDisplay
+  className="grid-flow-col grid-rows-2 px-8 sm:grid-rows-1 md:grid-rows-2 lg:grid-rows-1"
+  source={ORIENTATION_DEMO_CODE}
+>
+  <TabsHorizontalDemo disabled />
+  <TabsVerticalDemo disabled />
+</DesignComponentsDisplay>
+
+## Icons/stats
+
+<DesignComponentsDisplay className="flex px-4" highlightLines={[15, 18, 21]} source={ICON_STAT_DEMO_CODE}>
+  <TabsIconStatDemo />
+</DesignComponentsDisplay>
+
+<Callout intent="none">
+  The above is from [555 (1000 × ⁵⁄₉)](https:/github.com/fiveoutofnine/555), a ⁵⁄₉-themed NFT to commemorate me running 10000km in 555 days of running everyday. The code snippet above highlights the [fully onchain audio](https://github.com/fiveoutofnine/555/blob/main/src/utils/FiveFiveFiveAudio.sol) aspect of the project.
+</Callout>
+
+## Link
+
+To have the tab trigger buttons act as links, pass in a URL to the `href` prop. To open the link in a new tab, use the `newTab` prop. Note that the final component will be rendered as a `<a>` element, so browser features like right-clicking to open in a new tab will work.
+
+<DesignComponentsDisplay highlightLines={[13, 16]} source={LINK_DEMO_CODE}>
+  <TabsLinkDemo />
+</DesignComponentsDisplay>
+
+export const ORIENTATION_DEMO_CODE = `'use client';
+
+import { Tabs } from '@/components/ui';
+
+export const TabsHorizontalDemo: React.FC = () => {
+  return (
+    <Tabs.Root
+      className="rounded-lg border border-gray-6"
+      orientation="horizontal"
+      defaultValue="1"
+    >
+      <Tabs.List className="px-2">
+        <Tabs.Trigger value="1">Tab 1</Tabs.Trigger>
+        <Tabs.Trigger value="2">Tab 2</Tabs.Trigger>
+        <Tabs.Trigger value="3">Tab 3</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="1">Content 1</Tabs.Content>
+      <Tabs.Content value="2">Content 2</Tabs.Content>
+      <Tabs.Content value="3">Content 3</Tabs.Content>
+    </Tabs.Root>
+  );
+};
+
+export const TabsVerticalDemo: React.FC = () => {
+  return (
+    <Tabs.Root
+      className="flex rounded-lg border border-gray-6"
+      orientation="vertical"
+      defaultValue="1"
+    >
+      <Tabs.List>
+        <Tabs.Trigger value="1">Tab 1</Tabs.Trigger>
+        <Tabs.Trigger value="2">Tab 2</Tabs.Trigger>
+        <Tabs.Trigger value="3">Tab 3</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="1">Content 1</Tabs.Content>
+      <Tabs.Content value="2">Content 2</Tabs.Content>
+      <Tabs.Content value="3">Content 3</Tabs.Content>
+    </Tabs.Root>
+  );
+};`;
+
+export const DISABLED_DEMO_CODE = `'use client';
+
+import { Tabs } from '@/components/ui';
+
+export const TabsHorizontalDemo: React.FC = () => {
+  return (
+    <Tabs.Root
+      className="rounded-lg border border-gray-6 [&>[role='tabpanel']]:w-32"
+      orientation="horizontal"
+      defaultValue="1"
+    >
+      <Tabs.List className="px-2">
+        <Tabs.Trigger value="1" disabled>Tab 1</Tabs.Trigger>
+        <Tabs.Trigger value="2" disabled>Tab 2</Tabs.Trigger>
+        <Tabs.Trigger value="3" disabled>Tab 3</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="1">Content 1</Tabs.Content>
+      <Tabs.Content value="2">Content 2</Tabs.Content>
+      <Tabs.Content value="3">Content 3</Tabs.Content>
+    </Tabs.Root>
+  );
+};
+
+export const TabsVerticalDemo: React.FC = () => {
+  return (
+    <Tabs.Root
+      className="flex rounded-lg border border-gray-6 [&>[role='tabpanel']]:w-32"
+      orientation="vertical"
+      defaultValue="1"
+    >
+      <Tabs.List>
+        <Tabs.Trigger value="1" disabled>Tab 1</Tabs.Trigger>
+        <Tabs.Trigger value="2" disabled>Tab 2</Tabs.Trigger>
+        <Tabs.Trigger value="3" disabled>Tab 3</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="1">Content 1</Tabs.Content>
+      <Tabs.Content value="2">Content 2</Tabs.Content>
+      <Tabs.Content value="3">Content 3</Tabs.Content>
+    </Tabs.Root>
+  );
+};`;
+
+export const ICON_STAT_DEMO_CODE = `'use client';
+
+import { CircleDot, Code, GitPullRequestArrow } from 'lucide-react';
+
+import { CodeBlock, Tabs } from '@/components/ui';
+
+export const TabsIconStatDemo: React.FC = () => {
+  return (
+    <Tabs.Root
+      className="max-w-lg grow overflow-hidden rounded-lg border border-gray-6 [&>[role='tabpanel']]:h-80"
+      orientation="horizontal"
+      defaultValue="1"
+    >
+      <Tabs.List className="px-2">
+        <Tabs.Trigger value="1" icon={<Code />}>
+          Code
+        </Tabs.Trigger>
+        <Tabs.Trigger value="2" icon={<CircleDot />}>
+          Issues
+        </Tabs.Trigger>
+        <Tabs.Trigger value="3" icon={<GitPullRequestArrow />} stat={1}>
+          Pull requests
+        </Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content className="p-0" value="1">
+        <CodeBlock
+          className="max-h-full overflow-y-scroll border-0"
+          language="sol"
+          fileName="GenerateAudioOutput.s.sol"
+          containerized={false}
+        >
+          {FIVEFIVEFIVE_SCRIPT}
+        </CodeBlock>
+      </Tabs.Content>
+      <Tabs.Content value="2" asChild>
+        {/* Omitted */}
+      </Tabs.Content>
+      <Tabs.Content className="p-0" value="3" asChild>
+        {/* Omitted */}
+      </Tabs.Content>
+    </Tabs.Root>
+  );
+};`;
+
+export const LINK_DEMO_CODE = `'use client';
+
+import { Tabs } from '@/components/ui';
+
+export const TabsLinkDemo: React.FC = () => {
+  return (
+    <Tabs.Root
+      className="rounded-lg border border-gray-6"
+      orientation="horizontal"
+      defaultValue="1"
+    >
+      <Tabs.List className="px-2">
+        <Tabs.Trigger value="1" href="#link">
+          Tab 1
+        </Tabs.Trigger>
+        <Tabs.Trigger value="2" href="#link" newTab>
+          Tab 2 (new tab)
+        </Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="1">Content 1</Tabs.Content>
+      <Tabs.Content value="2">Content 2</Tabs.Content>
+    </Tabs.Root>
+  );
+};`;
