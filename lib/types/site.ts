@@ -28,6 +28,7 @@ export type PageSlug =
   | '/design/component/code-block'
   | '/design/component/button'
   | '/design/component/hover-card'
+  | '/design/component/input'
   | '/design/component/radio'
   | '/design/component/select'
   | '/design/component/switch'
