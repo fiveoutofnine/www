@@ -2,6 +2,7 @@ import { Children, isValidElement } from 'react';
 
 import DesignComponentsDisplayAccordion from './accordion';
 import clsx from 'clsx';
+import { Circle } from 'lucide-react';
 import prettier from 'prettier';
 import { twMerge } from 'tailwind-merge';
 
@@ -34,6 +35,7 @@ const COMPONENT_NAMES = [
   { component: ToastButton, displayName: 'ToastButton' },
   { component: Tooltip, displayName: 'Tooltip' },
   // Other
+  { component: Circle, displayName: 'Circle' },
   { component: FiveoutofnineAvatar, displayName: 'FiveoutofnineAvatar' },
 ];
 
