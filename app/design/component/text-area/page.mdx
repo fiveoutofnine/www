@@ -1,0 +1,39 @@
+import { TextArea } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Text Area",
+  description: "A widget that enables users to provide multiline plain text data.",
+});
+
+# Text Area
+
+A widget that enables users to provide multiline plain text data.
+
+## Resizable
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-2 px-8 sm:grid-rows-1 md:grid-rows-2 lg:grid-rows-1">
+  <TextArea placeholder="Enter text..." resizable={false} />
+  <TextArea placeholder="Enter text..." resizable={true} />
+</DesignComponentsDisplay>
+
+<Callout>
+  The `resizable` prop only applies to the height of the component.
+</Callout>
+
+## Disabled
+
+<DesignComponentsDisplay>
+  <TextArea placeholder="Enter text..." disabled={true} />
+</DesignComponentsDisplay>
+
+## Invalid
+
+<DesignComponentsDisplay>
+  <TextArea minLength={32} placeholder="Enter text (min. 32)..." defaultValue="Some short text." />
+</DesignComponentsDisplay>
+
+<Callout intent="none">
+  The example above uses the `minLength` prop to enforce a minimum length of 32 characters and provides a shorter default value.
+</Callout>

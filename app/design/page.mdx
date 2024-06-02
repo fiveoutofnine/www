@@ -19,6 +19,7 @@ import {
   Input,
   Select,
   Switch,
+  TextArea,
   Tooltip,
 } from '@/components/ui';
 
@@ -107,6 +108,10 @@ An open-source design system aiming to be accessible, functional, and provide a 
       <Switch id="switch" aria-labelledby="switch_label" />
       <label id="switch_label" htmlFor="switch" className="text-sm font-medium text-gray-12" children="Switch" />
     </div>
+  </ComponentFeature>
+  <ComponentFeature className="p-4" href="/design/component/text-area">
+    {/* Min. height set to be equal to size `md` input. */}
+    <TextArea className="min-h-9 max-h-full" placeholder="Text Area" resizable />
   </ComponentFeature>
   <ComponentFeature href="/design/component/toast">
     <ToastButton children="Toast" />
