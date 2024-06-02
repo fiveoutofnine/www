@@ -1,0 +1,42 @@
+import { Checkbox } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Checkbox",
+  description: "A control that allows the user to toggle between checked and not checked.",
+});
+
+# Checkbox
+
+A control that allows the user to toggle between checked and not checked.
+
+## Size
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <div className="flex items-center gap-1">
+    <Checkbox id="checkbox_size_sm" size="sm" aria-labelledby="checkbox_size_sm_label" />
+    <label id="checkbox_size_sm_label" htmlFor="checkbox_size_sm" className="text-xs font-medium text-gray-12" children="Checkbox" />
+  </div>
+  <div className="flex items-center gap-1.5">
+    <Checkbox id="checkbox_size_md" size="md" aria-labelledby="checkbox_size_md_label" />
+    <label id="checkbox_size_md_label" htmlFor="checkbox_size_md" className="text-sm font-medium text-gray-12" children="Checkbox" />
+  </div>
+  <div className="flex items-center gap-2">
+    <Checkbox id="checkbox_size_lg" size="lg" aria-labelledby="checkbox_size_lg_label" />
+    <label id="checkbox_size_lg_label" htmlFor="checkbox_size_lg" className="text-base font-medium text-gray-12" children="Checkbox" />
+  </div>
+</DesignComponentsDisplay>
+
+## Disabled
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <div className="flex items-center gap-1.5">
+    <Checkbox id="checkbox_disabled_false" aria-labelledby="checkbox_disabled_false_label" />
+    <label id="checkbox_disabled_false_label" htmlFor="checkbox_disabled_false" className="text-sm font-medium text-gray-12" children="Checkbox" />
+  </div>
+  <div className="flex items-center gap-1.5">
+    <Checkbox id="checkbox_disabled_true" aria-labelledby="checkbox_disabled_true_label" disabled />
+    <label id="checkbox_disabled_true_label" htmlFor="checkbox_disabled_true" className="text-sm font-medium text-gray-11" children="Checkbox" />
+  </div>
+</DesignComponentsDisplay>

@@ -36,25 +36,34 @@ const DrawerClose = DrawerPrimitive.Close;
 const DrawerContent = forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
   DrawerContentProps
->(({ className, children, ...rest }, ref) => (
-  <DrawerPortal>
-    <DrawerOverlay />
-    <DrawerPrimitive.Content
-      ref={ref}
-      className={twMerge(clsx(drawerContentStyles, className))}
-      {...rest}
-    >
-      <div className={clsx(drawerContentHandleContainerStyles)}>
-        <div className={clsx(drawerContentHandleStyles)} />
-      </div>
-      {/* We wrap the inner contents so the overflow scrolls are dealt with
+>(({ className, contentContainerProps, children, ...rest }, ref) => {
+  const { className: contentContainerClassName, ...contentContainerRest } =
+    contentContainerProps ?? {};
+
+  return (
+    <DrawerPortal>
+      <DrawerOverlay />
+      <DrawerPrimitive.Content
+        ref={ref}
+        className={twMerge(clsx(drawerContentStyles, className))}
+        {...rest}
+      >
+        <div className={clsx(drawerContentHandleContainerStyles)}>
+          <div className={clsx(drawerContentHandleStyles)} />
+        </div>
+        {/* We wrap the inner contents so the overflow scrolls are dealt with
           properly without messing up other components of `<Drawer />`. */}
-      <div className={clsx(drawerContentContainerStyles)} drawer-content="">
-        {children}
-      </div>
-    </DrawerPrimitive.Content>
-  </DrawerPortal>
-));
+        <div
+          className={twMerge(clsx(drawerContentContainerStyles, contentContainerClassName))}
+          drawer-content=""
+          {...contentContainerRest}
+        >
+          {children}
+        </div>
+      </DrawerPrimitive.Content>
+    </DrawerPortal>
+  );
+});
 
 const DrawerDescription = forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Description>,

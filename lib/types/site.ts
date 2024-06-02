@@ -21,11 +21,19 @@ export type PageSlug =
   | '/design/color'
   | '/design/libraries'
   // Design component pages
+  | '/design/component/accordion'
+  | '/design/component/avatar'
   | '/design/component/badge'
+  | '/design/component/checkbox'
   | '/design/component/code-block'
   | '/design/component/button'
   | '/design/component/hover-card'
+  | '/design/component/input'
+  | '/design/component/radio'
   | '/design/component/select'
+  | '/design/component/switch'
+  | '/design/component/tabs'
+  | '/design/component/text-area'
   | '/design/component/toast'
   | '/design/component/tooltip';
 

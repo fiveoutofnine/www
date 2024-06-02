@@ -1,0 +1,25 @@
+import { Switch } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Switch",
+  description: "A control that allows the user to toggle between checked and not checked.",
+});
+
+# Switch
+
+A control that allows the user to toggle between checked and not checked.
+
+## Disabled
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-1">
+  <div className="flex items-center gap-1.5">
+    <Switch id="switch_disabled_false" aria-labelledby="switch_disabled_false_label" />
+    <label id="switch_disabled_false_label" htmlFor="switch_disabled_false" className="text-sm font-medium text-gray-12" children="Switch" />
+  </div>
+  <div className="flex items-center gap-1.5">
+    <Switch id="switch_disabled_true" aria-labelledby="switch_disabled_true_label" disabled />
+    <label id="switch_disabled_true_label" htmlFor="switch_disabled_true" className="text-sm font-medium text-gray-11" children="Switch" />
+  </div>
+</DesignComponentsDisplay>

@@ -4,10 +4,25 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { ArrowRight, ChevronRight, Github } from 'lucide-react';
 
+import DesignAccordionFeature from './(components)/accordion-feature';
 import ComponentFeature from './(components)/component-feature';
+import DesignRadioFeature from './(components)/radio-feature';
+import DesignTabsFeature from './(components)/tabs-feature';
 import { FiveoutofnineHoverCard } from './component/hover-card/page.mdx';
 
-import { Badge, Button, CodeBlock, IconButton, Select, Tooltip } from '@/components/ui';
+import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
+import {
+  Badge,
+  Button,
+  Checkbox,
+  CodeBlock,
+  IconButton,
+  Input,
+  Select,
+  Switch,
+  TextArea,
+  Tooltip,
+} from '@/components/ui';
 
 # Design
 
@@ -40,16 +55,25 @@ An open-source design system aiming to be accessible, functional, and provide a 
 ## Components
 
 <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+  <ComponentFeature className="px-4" href="/design/component/accordion">
+    <DesignAccordionFeature />
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/avatar">
+    <FiveoutofnineAvatar className="not-prose" size={48} />
+  </ComponentFeature>
   <ComponentFeature href="/design/component/badge">
     <Badge children="Badge" />
   </ComponentFeature>
   <ComponentFeature href="/design/component/button">
     <Button children="Button" />
   </ComponentFeature>
-  <ComponentFeature
-    className="col-span-2 sm:col-span-1 md:col-span-2 xl:col-span-1"
-    href="/design/component/code-block"
-  >
+  <ComponentFeature href="/design/component/checkbox">
+    <div className="flex items-center gap-1.5">
+      <Checkbox id="checkbox" size="md" aria-labelledby="checkbox_label" />
+      <label id="checkbox_label" htmlFor="checkbox" className="text-sm font-medium text-gray-12" children="Checkbox" />
+    </div>
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/code-block">
     <CodeBlock
       className="mx-4 w-full"
       fileName="code-block.sol"
@@ -71,8 +95,27 @@ An open-source design system aiming to be accessible, functional, and provide a 
       }
     />
   </ComponentFeature>
+  <ComponentFeature className="px-4" href="/design/component/input">
+    <Input placeholder="Input" />
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/radio">
+    <DesignRadioFeature />
+  </ComponentFeature>
   <ComponentFeature href="/design/component/select">
-    <Select children={<option children="Select" />} />
+    <Select aria-label="Select" children={<option children="Select" />} />
+  </ComponentFeature>
+  <ComponentFeature href="/design/component/switch">
+    <div className="flex items-center gap-2">
+      <Switch id="switch" aria-labelledby="switch_label" />
+      <label id="switch_label" htmlFor="switch" className="text-sm font-medium text-gray-12" children="Switch" />
+    </div>
+  </ComponentFeature>
+  <ComponentFeature className="px-4" href="/design/component/tabs">
+    <DesignTabsFeature />
+  </ComponentFeature>
+  <ComponentFeature className="p-4" href="/design/component/text-area">
+    {/* Min. height set to be equal to size `md` input. */}
+    <TextArea className="min-h-9 max-h-full" placeholder="Text Area" resizable />
   </ComponentFeature>
   <ComponentFeature href="/design/component/toast">
     <ToastButton children="Toast" />

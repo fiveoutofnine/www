@@ -43,6 +43,8 @@ export const accordionTriggerChevronStyles = [
   'group-data-[state=open]:rotate-90',
 ];
 
+export const accordionTriggerContentStyles = ['line-clamp-1', 'grow', 'text-left'];
+
 export const accordionTriggerVariants = cva(
   [
     'group',

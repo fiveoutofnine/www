@@ -1,0 +1,80 @@
+import { Circle, Hash } from 'lucide-react';
+
+import { Input } from '@/components/ui';
+import { getDesignPageMetadata } from '@/lib/utils';
+
+export const metadata = getDesignPageMetadata({
+  category: "Components",
+  name: "Input",
+  description: "A widget that enables users to provide data.",
+});
+
+# Input
+
+A widget that enables users to provide data.
+
+## Size
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-3 px-8 sm:grid-rows-1 md:grid-rows-3 lg:grid-rows-1 [&>*]:w-fit">
+  <Input size="sm" placeholder="Small" />
+  <Input size="md" placeholder="Medium" />
+  <Input size="lg" placeholder="Large" />
+</DesignComponentsDisplay>
+
+## Prefix/suffix
+
+To provide an icon prefix or suffix, use the `leftIcon` and `rightIcon` props, respectively. To provide a text prefix or suffix, use the `prefix` and `suffix` props, respectively. Note that the component is typed to only take in one of `(prefix, leftIcon)` and one of `(suffix, rightIcon)` (i.e. it only accepts at most one of each).
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-9 px-8 sm:grid-rows-3 md:grid-rows-9 lg:grid-rows-3 [&>*]:w-fit">
+  <Input size="sm" placeholder="Small" leftIcon={<Circle />} rightIcon={<Circle />} containerized={false} />
+  <Input size="sm" placeholder="Small" leftIcon={<Circle />} rightIcon={<Circle />} containerized={true} />
+  <Input size="sm" placeholder="Small" prefix="https://" suffix=".com" />
+  <Input size="md" placeholder="Medium" leftIcon={<Circle />} rightIcon={<Circle />} containerized={false} />
+  <Input size="md" placeholder="Medium" leftIcon={<Circle />} rightIcon={<Circle />} containerized={true} />
+  <Input size="md" placeholder="Medium" prefix="https://" suffix=".com" />
+  <Input size="lg" placeholder="Large" leftIcon={<Circle />} rightIcon={<Circle />} containerized={false} />
+  <Input size="lg" placeholder="Large" leftIcon={<Circle />} rightIcon={<Circle />} containerized={true} />
+  <Input size="lg" placeholder="Large" prefix="https://" suffix=".com" />
+</DesignComponentsDisplay>
+
+<Callout>
+  The `containerized` prop only applies to containers for `leftIcon` and `rightIcon`.
+</Callout>
+
+## Disabled
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-3 px-8 sm:grid-rows-1 md:grid-rows-3 lg:grid-rows-1 [&>*]:w-fit">
+  <Input placeholder="Placeholder" leftIcon={<Circle />} rightIcon={<Circle />} containerized={false} disabled />
+  <Input placeholder="Placeholder" leftIcon={<Circle />} rightIcon={<Circle />} containerized={true} disabled />
+  <Input placeholder="Placeholder" prefix="https://" suffix=".com" disabled />
+</DesignComponentsDisplay>
+
+## Invalid
+
+<DesignComponentsDisplay className="grid-flow-col grid-rows-3 px-8 sm:grid-rows-1 md:grid-rows-3 lg:grid-rows-1 [&>*]:w-fit">
+  <Input
+    pattern="[0-9]+"
+    placeholder="Enter a number"
+    defaultValue="Enter a number"
+    leftIcon={<Hash />}
+    containerized={false}
+  />
+  <Input
+    pattern="[0-9]+"
+    placeholder="Enter a number"
+    defaultValue="Enter a number"
+    leftIcon={<Hash />}
+    containerized={true}
+  />
+  <Input
+    pattern="1592"
+    placeholder="π[4:8]"
+    defaultValue="π[4:8]"
+    prefix="3.14"
+    suffix="6535"
+  />
+</DesignComponentsDisplay>
+
+<Callout intent="none">
+  The example above uses the `pattern` prop to enforce numeric inputs and provides invalid, text, default values.
+</Callout>

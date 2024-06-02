@@ -2,18 +2,24 @@ import { Children, isValidElement } from 'react';
 
 import DesignComponentsDisplayAccordion from './accordion';
 import clsx from 'clsx';
+import { Circle } from 'lucide-react';
 import prettier from 'prettier';
 import { twMerge } from 'tailwind-merge';
 
+import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
 import { ToastButton } from '@/components/templates/mdx';
 import {
   Badge,
   Button,
   ButtonGroup,
+  Checkbox,
   CodeBlock,
   HoverCard,
   IconButton,
+  Input,
   Select,
+  Switch,
+  TextArea,
   Tooltip,
 } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
@@ -22,12 +28,19 @@ const COMPONENT_NAMES = [
   { component: Badge, displayName: 'Badge' },
   { component: Button, displayName: 'Button' },
   { component: ButtonGroup, displayName: 'ButtonGroup' },
+  { component: Checkbox, displayName: 'Checkbox' },
   { component: CodeBlock, displayName: 'CodeBlock' },
   { component: HoverCard, displayName: 'HoverCard' },
   { component: IconButton, displayName: 'IconButton' },
+  { component: Input, displayName: 'Input' },
   { component: Select, displayName: 'Select' },
+  { component: Switch, displayName: 'Switch' },
+  { component: TextArea, displayName: 'TextArea' },
   { component: ToastButton, displayName: 'ToastButton' },
   { component: Tooltip, displayName: 'Tooltip' },
+  // Other
+  { component: Circle, displayName: 'Circle' },
+  { component: FiveoutofnineAvatar, displayName: 'FiveoutofnineAvatar' },
 ];
 
 // -----------------------------------------------------------------------------
