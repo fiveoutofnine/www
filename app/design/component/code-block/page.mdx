@@ -140,12 +140,12 @@ To use `CodeBlock` in MDX, either import it or type [**basic Markdown syntax**](
     fileName="Example.tsx"
     language="tsx"
     showLineNumbers={false}
-    children="const Example = () => <div />;"
+    children="const Example: React.FC = () => <div />;"
   />
 </div>
 
 export const MARKDOWN_SAMPLE_CODE =
-  '```tsx fileName="Example.tsx" showLineNumbers={false}\nconst Example = () => <div />;\n```';
+  '```tsx fileName="Example.tsx" showLineNumbers={false}\nconst Example: React.FC = () => <div />;\n```';
 
 export const TSX_SAMPLE_CODE = `const Counter: React.FC = () => {
   const [count, setCount] = useState<number>(0);\n
