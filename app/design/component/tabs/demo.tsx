@@ -58,7 +58,7 @@ export const TabsVerticalDemo: React.FC<{ disabled?: boolean }> = ({ disabled = 
 export const TabsIconStatDemo: React.FC = () => {
   return (
     <Tabs.Root
-      className="max-w-lg grow overflow-hidden rounded-lg border border-gray-6 [&>[role='tabpanel']]:h-80"
+      className="max-w-lg grow overflow-hidden border-gray-6 sm:rounded-lg sm:border [&>[role='tabpanel']]:h-80"
       orientation="horizontal"
       defaultValue="1"
     >
