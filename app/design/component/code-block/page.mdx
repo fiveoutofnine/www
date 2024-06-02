@@ -41,6 +41,8 @@ const CodeBlock: React.FC = () => {
 
 ## Highlight lines
 
+To highlight lines, provide an array of 1-indexed line numbers into the `highlightLines` prop.
+
 <DesignComponentsDisplay className="grid-cols-1 px-4">
   <CodeBlock language="tsx" highlightLines={[2, 4]} children={TSX_SAMPLE_CODE} />
 </DesignComponentsDisplay>
