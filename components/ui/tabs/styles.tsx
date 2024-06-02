@@ -18,11 +18,13 @@ export const tabsListStyles = [
   'data-[orientation=horizontal]:border-b',
   'data-[orientation=horizontal]:gap-3',
   'data-[orientation=horizontal]:overflow-x-scroll',
+  'data-[orientation=horizontal]:overflow-y-hidden',
   'data-[orientation=vertical]:py-2',
   'data-[orientation=vertical]:items-start',
   'data-[orientation=vertical]:flex-col',
   'data-[orientation=vertical]:border-r',
   'data-[orientation=vertical]:gap-1',
+  'data-[orientation=vertical]:overflow-x-hidden',
   'data-[orientation=vertical]:overflow-y-scroll',
 ];
 
