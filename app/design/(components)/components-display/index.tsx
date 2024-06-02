@@ -19,6 +19,7 @@ import {
   Input,
   Select,
   Switch,
+  TextArea,
   Tooltip,
 } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
@@ -34,6 +35,7 @@ const COMPONENT_NAMES = [
   { component: Input, displayName: 'Input' },
   { component: Select, displayName: 'Select' },
   { component: Switch, displayName: 'Switch' },
+  { component: TextArea, displayName: 'TextArea' },
   { component: ToastButton, displayName: 'ToastButton' },
   { component: Tooltip, displayName: 'Tooltip' },
   // Other

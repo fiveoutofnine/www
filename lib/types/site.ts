@@ -32,6 +32,7 @@ export type PageSlug =
   | '/design/component/radio'
   | '/design/component/select'
   | '/design/component/switch'
+  | '/design/component/text-area'
   | '/design/component/toast'
   | '/design/component/tooltip';
 
