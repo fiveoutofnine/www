@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import DesignNavBar from './(components)/nav-bar';
 import DesignPageNav from './(components)/page-nav';
+import 'katex/dist/katex.min.css';
 
 import ContainerLayout from '@/components/layouts/container';
 import { Article } from '@/components/templates/mdx';

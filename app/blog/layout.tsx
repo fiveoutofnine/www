@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import 'katex/dist/katex.min.css';
+
 import ContainerLayout from '@/components/layouts/container';
 import { Article } from '@/components/templates/mdx';
 
