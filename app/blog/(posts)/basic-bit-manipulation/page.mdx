@@ -1,5 +1,12 @@
 import BlogHeader from '@/app/blog/(components)/header';
 
+import { getBlogPageMetadata } from '@/lib/utils';
+
+export const metadata = getBlogPageMetadata({
+  slug: "basic-bit-manipulation",
+  description: "Bit operations and how to use them to gain more granular control of your code.",
+});
+
 <BlogHeader slug="basic-bit-manipulation" />
 
 Transacting on Ethereum is extremely expensive, so sometimes, it makes sense to aim for more granular control over your code. One way to achieve this is to utilize bit operations! They can also be quite useful outside of optimization. I’ve posted a few bit twiddling techniques to my Twitter [@fiveoutofnine](https://twitter.com/fiveoutofnine):
