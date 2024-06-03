@@ -31,8 +31,10 @@ const FeatureDisplay: React.FC<FeatureDisplayProps> = ({
   return (
     <div
       className={twMerge(
-        clsx('flex h-64 w-64 flex-col overflow-hidden rounded-xl border border-gray-6 bg-gray-2'),
-        className,
+        clsx(
+          'flex h-64 w-64 flex-col overflow-hidden rounded-xl border border-gray-6 bg-gray-2',
+          className,
+        ),
       )}
     >
       {/* Header */}

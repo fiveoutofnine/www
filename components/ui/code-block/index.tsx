@@ -101,9 +101,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                     <div
                       key={i}
                       className={clsx(
-                        className,
                         codeBlockLineVariants({ breakLines }),
                         highlightLines.includes(i + 1) ? codeBlockLineHighlightedStyles : '',
+                        className,
                       )}
                       {...restLineProps}
                       code-block-line=""
