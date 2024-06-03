@@ -10,6 +10,8 @@ const Article: React.FC<JSX.IntrinsicElements['article']> = ({ className, ...res
           'prose-h1:mb-4',
           'prose-h2:mb-2 prose-h2:mt-6 prose-h2:md:mb-4 prose-h2:md:mt-12',
           'prose-h3:mb-2 prose-h3:mt-5 prose-h3:md:mb-4 prose-h3:md:mt-6',
+          'prose-blockquote:border-gray-6',
+          'prose-li:marker:text-gray-11',
           className,
         ),
       )}
