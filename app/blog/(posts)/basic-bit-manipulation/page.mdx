@@ -593,14 +593,15 @@ The checks we make in order, summarized into a table:
 
 ### Computing `masks` and `boardShifts`
 Since the largest mask is 18 bits, and $9\cdot 18 < 256$, we can safely reserve 18 bits for each "word" within `uint256 masks`:
+
 $$
 \begin{align*}
 &\texttt{HORIZONTAL} \\
 &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 1)\\
-&\mathbin{|}(\texttt{BR_TO_TL_DIAGONAL} &\texttt{<< } &18\cdot 2)\\
+&\mathbin{|}(\texttt{BR\_TO\_TL\_DIAGONAL} &\texttt{<< } &18\cdot 2)\\
 &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 3)\\
 &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 4)\\
-&\mathbin{|}(\texttt{BL_TO_TR_DIAGONAL} &\texttt{<< } &18\cdot 5)\\
+&\mathbin{|}(\texttt{BL\_TO\_TR\_DIAGONAL} &\texttt{<< } &18\cdot 5)\\
 &\mathbin{|}(\texttt{HORIZONTAL}        &\texttt{<< } &18\cdot 6)\\
 &\mathbin{|}(\texttt{HORIZONTAL}        &\texttt{<< } &18\cdot 7)\\
 &=\texttt{0xFC003F00CCC186106187030306184003F}
