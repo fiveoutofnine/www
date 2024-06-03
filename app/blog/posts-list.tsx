@@ -5,14 +5,15 @@ import { POSTS } from './posts';
 const BlogPostsList: React.FC = () => {
   // Iterate through posts and store the last post in each year.
   const firstPostInYear: Map<number, string> = new Map();
-  POSTS.toSorted((a, b) => a.date.getTime() - b.date.getTime()).forEach(({ date, slug }) =>
-    firstPostInYear.set(date.getUTCFullYear(), slug),
-  );
+  [...POSTS]
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
+    .forEach(({ date, slug }) => firstPostInYear.set(date.getUTCFullYear(), slug));
 
   return (
     <ul className="not-prose w-full -space-y-px">
-      {POSTS.toSorted((a, b) => b.date.getTime() - a.date.getTime()).map(
-        ({ slug, title, date }) => {
+      {[...POSTS]
+        .sort((a, b) => b.date.getTime() - a.date.getTime())
+        .map(({ slug, title, date }) => {
           const year = date.getUTCFullYear();
 
           return (
@@ -46,8 +47,7 @@ const BlogPostsList: React.FC = () => {
               </Link>
             </li>
           );
-        },
-      )}
+        })}
     </ul>
   );
 };
