@@ -1,5 +1,5 @@
 export { default as A } from './a';
-export { default as MDXArticle } from './article';
+export { default as Article } from './article';
 export { default as Callout } from './callout';
 export { default as Code } from './code';
 export { default as H1 } from './h1';

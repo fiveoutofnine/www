@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const MDXArticle: React.FC<JSX.IntrinsicElements['article']> = ({ className, ...rest }) => {
+const Article: React.FC<JSX.IntrinsicElements['article']> = ({ className, ...rest }) => {
   return (
     <article
       className={twMerge(
@@ -18,4 +18,4 @@ const MDXArticle: React.FC<JSX.IntrinsicElements['article']> = ({ className, ...
   );
 };
 
-export default MDXArticle;
+export default Article;

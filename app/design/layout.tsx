@@ -4,7 +4,7 @@ import DesignNavBar from './(components)/nav-bar';
 import DesignPageNav from './(components)/page-nav';
 
 import ContainerLayout from '@/components/layouts/container';
-import { MDXArticle } from '@/components/templates/mdx';
+import { Article } from '@/components/templates/mdx';
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -65,11 +65,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     // set to 0 on small devices is set to 0.
     <ContainerLayout className="relative flex max-w-[90rem] flex-col space-x-0 px-0 pb-6 pt-0 md:flex-row md:space-x-16">
       <DesignNavBar />
-      <MDXArticle>
+      <Article>
         {children}
         <hr className="mb-6 mt-6 w-full rounded-full border-gray-6 md:mt-12" role="separator" />
         <DesignPageNav />
-      </MDXArticle>
+      </Article>
     </ContainerLayout>
   );
 }

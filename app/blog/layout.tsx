@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import ContainerLayout from '@/components/layouts/container';
-import { MDXArticle } from '@/components/templates/mdx';
+import { Article } from '@/components/templates/mdx';
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <ContainerLayout className="flex max-w-3xl flex-col">
-      <MDXArticle className="px-0">{children}</MDXArticle>
+      <Article className="px-0">{children}</Article>
     </ContainerLayout>
   );
 }
