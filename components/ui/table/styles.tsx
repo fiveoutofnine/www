@@ -5,6 +5,8 @@ export const tableCaptionStyles = ['text-gray-11', 'mt-2', 'text-xs'];
 export const tableCellStyles = [
   'px-3',
   'align-middle',
+  'first:pl-4',
+  'last:pr-4',
   'group-[.table--header]:py-0',
   'group-[.table--body]:py-3',
   'group-[.table--footer]:py-0',
@@ -27,6 +29,8 @@ export const tableHeadStyles = [
   'py-0',
   'px-3',
   'border-b',
+  'first:pl-4',
+  'last:pr-4',
   'border-gray-6',
   'text-left',
   'align-middle',

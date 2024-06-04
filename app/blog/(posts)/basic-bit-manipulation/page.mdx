@@ -538,7 +538,7 @@ Now, suppose we apply it at the square of index `1`:
 This is incorrect.
 The correct positions to apply them for each mask are shown below:
 
-<Table.Root className="my-0">
+<Table.Root className="my-0" containerClassName="-mx-4 w-screen sm:mx-0 sm:w-full">
   <Table.Header>
     <Table.Row>
       <Table.Head>Bitmask</Table.Head>
@@ -623,7 +623,7 @@ Try working through them on paper!
 ### Checking if a player won
 
 For each selected square, the corresponding pair of bits in the mask are `0b11`, or 3 in decimal representation.
-All other bits are `0`.
+All other bits (i.e. those that aren't included by the mask) are `0`.
 Then, if the selected portion denotes squares entirely played by either player, it should be a scalar multiple of the mask that was used:
 
 * If `0b01` (1 in decimal) represents a square played by player 0, and all the selected squares were played by player 0, the selected portion should equal $\frac{\mathrm{MASK}}{3}$.
@@ -639,11 +639,11 @@ This is more efficient to check, so let's go with this.
 
 `x` denotes the position the code is at, and `-` denotes bits that have been bitshifted off (and thus no longer relevant).
 
-```sol
-// @return 0 if ongoing, 1 if player 0 has won, and 2 if player 1 has won.
+```sol fileName="TicTacToe.sol"
+/// @return 0 if ongoing, 1 if player 0 has won, and 2 if player 1 has won.
 function checkGameState(uint256 _board) internal pure returns (uint256) {
-    // Last 4 bits denote information about whether the game is over and whose turn it is to
-    // play, so we ignore them.
+    // Last 4 bits denote information about whether the game is over and whose
+    // turn it is to play, so we ignore them.
     _board >>= 4;
     // • • •
     // • • •
@@ -705,129 +705,140 @@ function checkGameStateHelper(uint256 _board, uint256 _mask)
 
 ## Check game ending state w/ while loop (bonus)
 
-This section is just for fun (+has some cool bit twiddling patterns).
+<Callout>
+  This section is just for fun (and has some cool bit twiddling patterns).
+</Callout>
 
-### Intuition
+The code above looks kinda ugly/redundant.
+Let's use a `while` loop instead, so we don't have `checkGameStateHelper` so many times.
+We can do this by bitpacking the win-pattern-checking masks consecutively into a `uint256 masks` (in the order they are used), as well as bitpacking the number of bits the board is shifted by after each check into a `uint256 boardShifts`.
 
-The code above looks kinda ugly/redundant. Let's use a `while` loop instead, so we don't have `checkGameStateHelper` in so many lines. We can do this by bitpacking the win-pattern-checking masks consecutively into a `uint256 masks` (in the order they are used), as well as bitpacking the number of bits the board is shifted by after each check into a `uint256 boardShifts`.
+Then, starting at index 0, we can iterate through the board masks and apply the board shifts after each check to make our way through the entire board as follows:
 
-We make the checks in the following order:
-| Bitmask              | Right Shift to Board After Check |
-| :------------------- | :------------------------------: |
-| `HORIZONTAL`         | 0                                |
-| `VERTICAL`           | 0                                |
-| `BR_TO_TL_DIAGONAL`  | 2                                |
-| `VERTICAL`           | 2                                |
-| `VERTICAL`           | 0                                |
-| `BL_TO_TR_DIAGONAL`  | 2                                |
-| `HORIZONTAL`         | 6                                |
-| `HORIZONTAL`         | 0                                |
-
-<details>
-    <summary><i>Derivation</i></summary>
-
-```
-There are 8 possible game ending scenarios for each player. Let * denote the bit
-we analyze from, and ^ denote the line we analyze:
-In board position
-                                         • • •
-                                         • • •
-                                         • • *,
-    1. • • •
-       • • •    (HORIZONTAL)
-       ^ ^ ^
-
-    2. • • ^
-       • • ^    (VERTICAL)
-       • • ^
-
-    3. ^ • •
-       • ^ •    (BR_TO_TL_DIAGONAL)
-       • • ^
-In board position
-                                         • • •
-                                         • • •
-                                         • * •,
-                      (bitshift right by 2 from previous position)
-    4. • ^ •
-       • ^ •    (VERTICAL)
-       • ^ •
-In board position
-                                         • • •
-                                         • • •
-                                         * • •,
-                      (bitshift right by 2 from previous position)
-    5. ^ • •
-       ^ • •    (VERTICAL)
-       ^ • •
-
-    6. • • ^
-       • ^ •    (BL_TO_TR_DIAGONAL)
-       ^ • •
-In board position
-                                         • • •
-                                         • • *
-                                         • • •,
-                      (bitshift right by 2 from previous position)
-    7. • • •
-       ^ ^ ^    (HORIZONTAL)
-       • • •
-In board position
-                                         • • *
-                                         • • •
-                                         • • •,
-                      (bitshift right by 6 from previous position)
-    8. ^ ^ ^
-       • • •    (HORIZONTAL)
-       • • •
-
-The checks we make in order, summarized into a table:
-         | Bitmask                     | Right Shift to The Board After Check |
-         |-----------------------------|--------------------------------------|
-         | HORIZONTAL                  | 0                                    |
-         | VERTICAL                    | 0                                    |
-         | BR_TO_TL_DIAGONAL           | 2                                    |
-         | VERTICAL                    | 2                                    |
-         | VERTICAL                    | 0                                    |
-         | BL_TO_TR_DIAGONAL           | 2                                    |
-         | HORIZONTAL                  | 6                                    |
-         | HORIZONTAL                  | 0                                    |
-```
-</details>
+<Table.Root className="my-0" containerClassName="-mx-4 w-screen sm:mx-0 sm:w-full">
+  <Table.Header>
+    <Table.Row>
+      <Table.Head>Board</Table.Head>
+      <Table.Head>Bitmask</Table.Head>
+      <Table.Head>Check</Table.Head>
+      <Table.Head>Shift</Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell rowSpan={3}>
+        <TicTacToeBoardGraphic highlightIndices={[8]} />
+      </Table.Cell>
+      <Table.Cell>`HORIZONTAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[6, 7, 8]} />
+      </Table.Cell>
+      <Table.Cell>0</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`VERTICAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2, 5, 8]} />
+      </Table.Cell>
+      <Table.Cell>0</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`BR_TO_TL_DIAGONAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 4, 8]} />
+      </Table.Cell>
+      <Table.Cell>2</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[7]} />
+      </Table.Cell>
+      <Table.Cell>`VERTICAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[1, 4, 7]} />
+      </Table.Cell>
+      <Table.Cell>2</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell rowSpan={2}>
+        <TicTacToeBoardGraphic highlightIndices={[6]} />
+      </Table.Cell>
+      <Table.Cell>`VERTICAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 3, 6]} />
+      </Table.Cell>
+      <Table.Cell>0</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`BL_TO_TR_DIAGONAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2, 4, 6]} />
+      </Table.Cell>
+      <Table.Cell>2</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[5]} />
+      </Table.Cell>
+      <Table.Cell>`HORIZONTAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[3, 4, 5]} />
+      </Table.Cell>
+      <Table.Cell>6</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2]} />
+      </Table.Cell>
+      <Table.Cell>`HORIZONTAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[3, 4, 5]} />
+      </Table.Cell>
+      <Table.Cell>0</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
 
 ### Computing `masks` and `boardShifts`
+
 Since the largest mask is 18 bits, and $9\cdot 18 < 256$, we can safely reserve 18 bits for each "word" within `uint256 masks`:
 
+<MathDisplay className="[&>span]:my-0">
 $$
 \begin{align*}
-&\texttt{HORIZONTAL} \\
-&\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 1)\\
-&\mathbin{|}(\texttt{BR\_TO\_TL\_DIAGONAL} &\texttt{<< } &18\cdot 2)\\
-&\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 3)\\
-&\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 4)\\
-&\mathbin{|}(\texttt{BL\_TO\_TR\_DIAGONAL} &\texttt{<< } &18\cdot 5)\\
-&\mathbin{|}(\texttt{HORIZONTAL}        &\texttt{<< } &18\cdot 6)\\
-&\mathbin{|}(\texttt{HORIZONTAL}        &\texttt{<< } &18\cdot 7)\\
-&=\texttt{0xFC003F00CCC186106187030306184003F}
+  &\texttt{HORIZONTAL} \\
+  &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 1)\\
+  &\mathbin{|}(\texttt{BR\_TO\_TL\_DIAGONAL} &\texttt{<< } &18\cdot 2)\\
+  &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 3)\\
+  &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 4)\\
+  &\mathbin{|}(\texttt{BL\_TO\_TR\_DIAGONAL} &\texttt{<< } &18\cdot 5)\\
+  &\mathbin{|}(\texttt{HORIZONTAL}        &\texttt{<< } &18\cdot 6)\\
+  &\mathbin{|}(\texttt{HORIZONTAL}        &\texttt{<< } &18\cdot 7)\\
+  &=\texttt{0xFC003F00CCC186106187030306184003F}
 \end{align*}
 $$
+</MathDisplay>
 
-Next, since the largest shift is 6, we can safely use 3 bits ($(1\ll3 = 8) < 6$) for each "word" within `uint256 boardShifts`:
+Next, since the largest shift is 6, we can safely use 3 bits (`0b111 > 6`) for each "word" within `uint256 boardShifts`:
+
+<MathDisplay className="[&>span]:my-0">
 $$
 \begin{align*}
-&0\\
-&\mathbin{|}(0 \texttt{ << } 3\cdot 1)\\
-&\mathbin{|}(2 \texttt{ << } 3\cdot 2)\\
-&\mathbin{|}(2 \texttt{ << } 3\cdot 3)\\
-&\mathbin{|}(0 \texttt{ << } 3\cdot 4)\\
-&\mathbin{|}(2 \texttt{ << } 3\cdot 5)\\
-&\mathbin{|}(6 \texttt{ << } 3\cdot 6)\\
-&=\texttt{0x190480}
+  &0\\
+  &\mathbin{|}(0 \texttt{ << } 3\cdot 1)\\
+  &\mathbin{|}(2 \texttt{ << } 3\cdot 2)\\
+  &\mathbin{|}(2 \texttt{ << } 3\cdot 3)\\
+  &\mathbin{|}(0 \texttt{ << } 3\cdot 4)\\
+  &\mathbin{|}(2 \texttt{ << } 3\cdot 5)\\
+  &\mathbin{|}(6 \texttt{ << } 3\cdot 6)\\
+  &=\texttt{0x190480}
 \end{align*}
 $$
+</MathDisplay>
 
 ### Implementation
-```solidity
+
+```sol fileName="TicTacToe.sol"
 function checkGameStateWithWhile(uint256 _board) internal pure returns (uint256) {
     // Last 4 bits denote information about whether the game is over and whose turn
     // it is toplay, so we ignore them.
@@ -863,6 +874,7 @@ function checkGameStateWithWhile(uint256 _board) internal pure returns (uint256)
 ```
 
 ## Conclusion
+
 > So many people see low-level solidity optimizations from people like @transmissions11
 > and think that it's the key to optimizing their project
 >
@@ -875,6 +887,7 @@ It's easy to get caught up in tactical tricks to make near-obsolete optimization
 Of course, it's always fun to discover and share tricks like this! But many of them (especially bit twiddling) have *extremely* niche applications, so ask yourself whether it really makes sense to obfuscate your code for small optimizations before applying them.
 
 ### Extra Reading/Resources
+
 If you want to see some more advanced stuff, check out:
 
 * Lists
@@ -885,7 +898,7 @@ If you want to see some more advanced stuff, check out:
 * Books
     * Hacker's Delight 2nd Edition
         * [Amazon](https://www.amazon.com/Hackers-Delight-2nd-Henry-Warren/dp/0321842685)
-        * IPFS URI: [`ipfs://bafykbzacedcjrpilvhgfkt5ampruid6qpwdcvjh2gpo44z6dqg5oq7hryysk4`](https://ipfs.io/ipfs/bafykbzacedcjrpilvhgfkt5ampruid6qpwdcvjh2gpo44z6dqg5oq7hryysk4)
+        * [IPFS URI](https://ipfs.io/ipfs/bafykbzacedcjrpilvhgfkt5ampruid6qpwdcvjh2gpo44z6dqg5oq7hryysk4)
     * [Chapter 1: "Bit Wizardry" of "Matters Computational"](https://www.jjj.de/fxt/fxtbook.pdf)
 * Other
     * [`fiveoutofnine/on-chain-chess`](https://github.com/fiveoutofnine/fiveoutofnine-chess)
@@ -893,10 +906,11 @@ If you want to see some more advanced stuff, check out:
     * [Reciprocal Multiplication, a tutorial](http://homepage.divms.uiowa.edu/~jones/bcd/divide.html)
         
 ### Acknowledgements
+
 Thanks to people that helped proofread and give suggestions :)
 * [sudolabel](https://x.com/sudolabel)
 * [emre](https://x.com/emrecolako)
 * [virtual](https://x.com/9dd4134)
 * [0xsomnus](https://x.com/0xsomnus)
 
-If you found this helpful, consider following me on Twitter [@fiveoutofnine](https://x.com/fiveoutofnine).
+If you found this helpful, consider following me on X [@fiveoutofnine](https://x.com/fiveoutofnine).
