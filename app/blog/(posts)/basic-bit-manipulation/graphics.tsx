@@ -263,7 +263,7 @@ export const SHRGraphic: React.FC = () => {
 export const XORGraphic: React.FC = () => {
   const A = ['0', '1', '0', '1'];
   const B = ['0', '0', '1', '1'];
-  const C = ['1', '0', '0', '0'];
+  const C = ['0', '1', '1', '0'];
 
   return (
     <svg
