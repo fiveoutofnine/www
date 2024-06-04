@@ -83,7 +83,7 @@ First, here are the basic bitwise operators used in the following tic-tac-toe ex
       <ANDGraphic />
     </div>
     <Callout className="my-0" size="sm" intent="none">
-      Since `&` only accepts" the bit if both numbers' bits are `1`, you can construct a bitmask to select which bits of a number you want to read. For example, for some number $m$, if we want to read every other bit, we can compute `m & 1010...1010`.
+      Since `&` only "accepts" the bit if both numbers' bits are `1`, you can construct a bitmask to select which bits of a number you want to read. For example, for some number $m$, if we want to read every other bit, we can compute `m & 1010...1010`.
     </Callout>
   </Grid.Cell>
   <Grid.Cell>
@@ -97,7 +97,7 @@ First, here are the basic bitwise operators used in the following tic-tac-toe ex
       <ORGraphic />
     </div>
     <Callout className="my-0" size="sm" intent="none">
-      Since `|` accepts" the bit as long as either numbers' bits are `1`, you can write a number's bits into another number, as long as the first number's bits in the same position are all `0`.
+      Since `|` "accepts" the bit as long as either numbers' bits are `1`, you can write a number's bits into another number, as long as the first number's bits in the same position are all `0`.
     </Callout>
   </Grid.Cell>
   <Grid.Cell className="col-span-1 sm:col-span-2">
@@ -131,7 +131,8 @@ When a move is inputted by a player, we have to validate a few things:
 * The player is 1 of the 2 players in the game.
 * It's the player's turn to play a move.
 
-Next, we have to check that the move is legal. If it is, we apply the move.
+Next, we have to check that the move is legal.
+If it is, we apply the move.
 
 Finally, we must check if the game has ended (i.e. either player has formed 3 consecutive dots).
 
@@ -160,13 +161,13 @@ function playMove(position) {
 
 Now that we have an idea of all the information to store, let's come up with a representation in code.
 Keep in mind that the design should allow for efficient computation: the code will read the data and compute with it, so operations such as accessing, decoding, and storing should be cheap.
-Once we achieve both, we can look towards using as few bits as possible because storage costs are (generally) the most expensive on the EVM.
+Once we achieve both, since the game has to be stored fully on-chain and storage costs are (generally) the most expensive operation on the EVM, we can look towards using as few bits as possible.
 
 ### Base representation
 
 A naive approach might look something like:
 
-```sol showLineNumbers={false}
+```sol
 struct Game {
     uint8[9] board; // 0 = empty, 1 = player 0, 2 = player 1
     bool turn; // false = player 0, true = player 1
@@ -180,8 +181,8 @@ struct Game {
 
 If I was satisfied with this, I would make sure `struct Game` was [tightly packed](https://dev.to/javier123454321/solidity-gas-optimizations-pt-3-packing-structs-23f4), then proceed.
 
-However, `uint8[9] board` uses a lot of unnecessary reads/writes, and we don't need 8 bits to store data for a position on the board.
-Since there are only 3 valid states, 2 bits ($2^2=4$) are enough.
+However, `uint8[9] board` uses a lot of unnecessary reads/writes, and we don't need 8 bits to store data for a single position on the board.
+Since there are only 3 valid states, 2 bits are enough ($2^2=4$).
 Next, `bool turn` can easily be 1 bit: 0 if false, 1 if true.
 Lastly, because `bool hasGameEnded`, `bool playerZeroWon`, and `bool playerOneWon` work in conjunction to express the state of the game (only 4 possibilities), we can combine them into 2 bits:
 
@@ -193,25 +194,35 @@ Lastly, because `bool hasGameEnded`, `bool playerZeroWon`, and `bool playerOneWo
 Altogether, we use just 21 bits (down from $8 \cdot 9 + 8 + 8 + 8 + 8 = 104$ when using the struct above) to represent everything:
 
 ```none showLineNumbers={false}
+
+┌─────────────────────────── First 2 * 9 = 18 bits denote the board
+│                   ┌─────── Next 2 bits denote whether game is ongoing
+├──────────────────┐├──┐┌─┬─ Last bit denotes whose turn it is to play
 [000000000000000000][00][0]
-    • First 2 * 9 = 18 bits denote the board
-    • Next 2 bits denote whether game is ongoing
-    • Last bit denotes whose turn it is to play
 ```
 
 ### Bitpacking games into `uint256`s instead of using structs
 
-If we were to use a struct, we'd have to use `uint24`, so, instead, let's store the players' addresses separately in 2 mappings and store the game data in a third mapping:
+If we were to use a struct to store the game states, we'd have to use `uint24` because it's the smallest unit that fits 21 bits, which would waste 3 bits.
+Instead, let's store the players' addresses in 2 other mappings and have a third mapping exclusively to store game states:
 
-```sol
+```sol highlightLines={[3]}
 mapping(uint256 => address) public playerZeros;
 mapping(uint256 => address) public playerOnes;
 mapping(uint256 => uint256) public games;
 ```
 
-This way, we can store the games' data slightly cheaper [by bitpacking consecutive games' data](https://x.com/fiveoutofnine/status/1488627467245932545). The idea is to reduce as many zero slot writes as possible because writing to zero slots costs 20k gas, whereas writing to nonzero slots only costs 5k gas. We achieve this by bitpacking as many games' data into a `uint256` (in this case, $\left\lfloor\frac{256}{21}\right\rfloor=12$, so we can fit up to 12 games in 1 `uint256`). This way, only every $12n^{\mathrm{th}}$ game will cost 20k gas to store, and every other game will only cost 5k gas. Retrieval and writing remains efficient:
+This allows us to [bitpack consecutive games' data](https://x.com/fiveoutofnine/status/1488627467245932545) together and store it slightly cheaper.
 
-```sol
+<Callout intent="none">
+  The idea is to reduce as many zero slot writes as possible because writing to zero slots costs 20k gas, whereas writing to nonzero slots only costs 5k gas.
+</Callout>
+
+We achieve this by bitpacking as many games' data into a `uint256` (in this case, $\left\lfloor\frac{256}{21}\right\rfloor=12$, so we can fit up to 12 games in 1 `uint256`).
+This way, only every $12n^{\mathrm{th}}$ game will cost 20k gas to store, and every other game will only cost 5k gas.
+Reading and writing remain efficient:
+
+```sol fileName="TicTacToe.sol"
 // Each `uint256` value has 12 games bitpacked into it.
 mapping(uint256 => uint256) public gameStates;
 
@@ -249,9 +260,12 @@ function writeGame(uint256 _gameId, uint256 _gameState) external {
 
 ### Final representation
 
-Now, we have 3 mappings to keep track of all games' data and players. With this set-up, storing each new game to storage costs roughly
+Now, we have 3 mappings to keep track of all games' data and players.
+With this set-up, storing each new game to storage costs roughly
 
-$$20000 + 20000 + \frac{20000 + 5000 \cdot 12}{13} \approx 46154$$
+<div className='max-w-full flex items-center justify-center overflow-x-scroll p-4 border border-gray-6 bg-gray-3 rounded-lg [&>p]:my-0'>
+  $$20000 + 20000 + \frac{20000 + 5000 \cdot 12}{13} \approx 46154$$
+</div>
 
 gas on average (2 zero slot writes for each of the players' addresses, and $\approx 6154$ gas for the game's state).
 
