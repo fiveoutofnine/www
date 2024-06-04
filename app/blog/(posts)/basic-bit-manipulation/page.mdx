@@ -1,6 +1,13 @@
 import clsx from 'clsx';
 
-import { ANDGraphic, ORGraphic, SHLGraphic, SHRGraphic, XORGraphic } from './graphics';
+import {
+  ANDGraphic,
+  ORGraphic,
+  SHLGraphic,
+  SHRGraphic,
+  TicTacToeBoardGraphic,
+  XORGraphic,
+} from './graphics';
 
 import BlogHeader from '@/app/blog/(components)/header';
 
@@ -263,22 +270,26 @@ function writeGame(uint256 _gameId, uint256 _gameState) external {
 Now, we have 3 mappings to keep track of all games' data and players.
 With this set-up, storing each new game to storage costs roughly
 
-<div className='max-w-full flex items-center justify-center overflow-x-scroll p-4 border border-gray-6 bg-gray-3 rounded-lg [&>p]:my-0'>
-  $$20000 + 20000 + \frac{20000 + 5000 \cdot 12}{13} \approx 46154$$
-</div>
+<MathDisplay>
+  $$20000 + 20000 + \frac{20000 + 5000 \cdot 12}{13} \approx 46154\text{ gas}$$
+</MathDisplay>
 
-gas on average (2 zero slot writes for each of the players' addresses, and $\approx 6154$ gas for the game's state).
+on average (2 zero slot writes for each of the players' addresses, and $\approx 6154$ gas for the game's state).
 
-However, since addresses are only 160 bits, we can remove a write to storage by bitpacking the game's state with one of the players' addresses. Let's arbitrarily pick player zero's address for this. Combined, we have:
-```solidity
+Since addresses are only 160 bits, we can remove a write to storage by bitpacking the game's state with one of the players' addresses.
+Let's arbitrarily pick player zero's address for this.
+Combined, we have:
+
+```sol
 // The first 21 bits are games' data, and the remaining 160 bits are player 0
 // addresses.
 mapping(uint256 => uint256) public playerZerosAndGames;
 mapping(uint256 => address) public playerOnes;
 ```
 
-Again, retrieval and writing is efficient:
-```solidity
+Again, reading and writing remain efficient:
+
+```sol fileName="TicTacToe.sol"
 uint256 internal currentGameId;
 
 function createNewGame(address _playerZero, address _playerOne) {
@@ -299,17 +310,33 @@ function writeGame(uint256 _gameId, uint256 _gameState) external {
     playerZerosAndGames[_gameId] = (_gameState << 160) | playerZero;
 }
 ```
-> *Note: in this particular case, since we need a minimum of 2 storage slots per new game anyway (2 player addresses already exceed 1 32-byte word), cutting down on the number of bits used to represent the game is not necessary—all else equal, using 96 bits ($256 - 160 = 96$) is just as efficient. However, I thought I'd describe the process here anyway, for when it might be applicable.*
 
-## Fine-tuning the Representation
-For tic-tac-toe, the representation above is good enough. But if it were a different application, there might be extra considerations to take. These are highly dependent on the situation, but here are some common ones:
+<Callout intent="none">
+  In this particular case, since we need a minimum of 2 storage slots per new game anyway (2 player addresses already exceed 2 32-byte words), cutting down on the number of bits used to represent the game is not necessary&mdash;all else equal, using 96 bits ($256 - 160 = 96$) is just as efficient. However, I thought I'd describe the process here anyway, for when it might be applicable.
+</Callout>
 
-### Frequently Accessed Data
-The ordering of the first/last $n$ bits might help save on computation: they only require one of `>>` or `&` to access. Thus, if some information needs to be accessed more frequently than the others, it'd probably be wise to place it at the start/end.
+## Fine-tuning the representation
 
-### Structuring Data To Remove Expensive Computation (Use The Value Itself!)
-An expensive computation on the EVM is the switch statement. Keeping this in mind, it may be wise to structure your representation to remove them. For example, suppose a 3-bit portion maps to 8 different outputs:
-```solidity
+For tic-tac-toe, the representation above is good enough.
+But if it were a different application, there might be extra considerations to take.
+These are highly dependent on the situation, so here are some common patterns:
+
+### Frequently accessed data
+
+The ordering of the first/last $n$ bits might help save on computation: they only require one of `>>` or `&` to access.
+Thus, if some information needs to be accessed more frequently than the others, it'd probably be wise to place it at the start/end.
+
+### Structuring data to remove expensive computations
+
+<Callout>
+  The main example here is more precisely described as a "branchless optimization," but the more general pattern of using the value itself to compute the result can be quite useful for other situations too.
+</Callout>
+
+An expensive computation on the EVM (and most computers) are [branch instructions](https://en.wikipedia.org/wiki/Branch_(computer_science)).
+Keeping this in mind, it may be wise to structure your representation to remove them.
+For example, suppose a 3-bit value `portion` maps to 8 different outputs as follows:
+
+```sol
 if      (portion == 0) return  3;
 else if (portion == 1) return  7;
 else if (portion == 2) return 12;
@@ -320,8 +347,10 @@ else if (portion == 6) return  3;
 else                   return 15;
 ```
 
-Instead, you could use `portion` as a value itself! The following code block is equivalent to the series of if/else statements above:
-```solidity
+Instead, you could use `portion` as a value itself as part of the computation!
+The following code block is equivalent to the series of if/else statements above:
+
+```sol
 //   value << wordSize * index
 // ----------------------------
 //   (  15 <<        4 *     7)
@@ -334,44 +363,66 @@ Instead, you could use `portion` as a value itself! The following code block is 
 // | (   3 <<        4 *     0)
 // = 0xF39D6C73.
 //
-// 15 is just 0b1111 (i.e. masks 4 bits).
+// 15 is just 0b1111 (i.e. masks the 4 least significant bits).
 // `portion << 2` is the same thing as `portion * 4`.
-// We multiply by 2 because each word is 4 bits long.
+// We "multiply" by 4 because each word is 4 bits long.
 return (0xF39D6C73 >> (portion << 2)) & 15;
 ```
-*See: [How to turn `if` blocks into 3 bit operations for small gas savings.](https://x.com/fiveoutofnine/status/1491894008049811458)*
 
-On a related note, you can often structure your representation and assign values in a way that allows for efficient group conditional checks (i.e. form it in a way that makes it easy to categorize). Some simple examples:
+<Callout>
+  For a real-world example, see [this post](https://x.com/fiveoutofnine/status/1491894008049811458).
+</Callout>
+
+On a related note, you can often structure your representation and assign values in a way that allows for efficient group conditional checks (i.e. form it in a way that makes it easy to categorize).
+Some simple examples:
+
 * if the value is even, perform `x`, otherwise perform `y`;
 * if the value is greater than m, perform `x`, otherwise perform `y`;
 * if the value is a multiple of 8, perform `x`, otherwise perform `y`;
 * if the value's 2nd to 5th bits are `010`, perform `x`, otherwise perform `y`.
 
-You can also combine one or more of these to form composite checks. For example, if the value is even and greater than `m`, perform `x`, otherwise perform `y`.
+You can also combine one or more of these to form composite checks.
+For example, if the value is even and greater than `m`, perform `x`, otherwise perform `y`.
 
-*See [Chess-generateMoves](https://github.com/fiveoutofnine/fiveoutofnine-chess/blob/44e06ea20721a40950565cfc79523c4ed377e800/src/Chess.sol#L130) in [Chess.sol](https://github.com/fiveoutofnine/fiveoutofnine-chess/blob/main/src/Chess.sol).*
+<Callout>
+  For heavy usage of this concept in a [live deployment](https://etherscan.io/address/0xB543F9043b387cE5B3d1F0d916E42D8eA2eBA2E0), see [`generateMoves`](https://github.com/fiveoutofnine/fiveoutofnine-chess/blob/44e06ea20721a40950565cfc79523c4ed377e800/src/Chess.sol#L130) from [`Chess.sol`](https://github.com/fiveoutofnine/fiveoutofnine-chess/blob/main/src/Chess.sol).
+</Callout>
 
+### Pedantic bit packing: is 21 bits good enough?
 
-### Pedantic Bit Packing: Is 21 Bits Good Enough?
-You may have realized that, for the tic-tac-toe example, we use 2 bits ($2^2 = 4$ total possibilities) per position, when there are only 3 possible states (empty, occupied by player 0, or occupied by player 1). Why not save 3 bits ($222222222_3$ is 15 bits long) by using a base 3 representation? We can then use just 18 bits ($15 + 3 = 18$) instead of 21—isn't this better?
+You may have realized that we use 2 bits ($2^2 = 4$ total possibilities) per position for the tic-tac-toe example when there are only 3 possible states (empty, occupied by player 0, or occupied by player 1).
+Why not save 3 more bits ($222222222_3$ is 15 bits long) by using a base 3 representation for the board instead?
+We can then use just 18 bits ($15 + 3 = 18$)&mdash;isn't this better?
 
-Not really. Besides the point that we bitpack the game data with player 0's address, consider the following: 18 bits allows us to store 14 ($\left\lfloor\frac{256}{18}\right\rfloor=14$) games per `uint256`, which means it costs $\frac{20000 + 5000\cdot 13}{14}\approx 6071$ gas on average to store a game's data. Comparatively, 21 bits allows us to store 12 games per `uint256`, or $\frac{20000 + 5000\cdot 11}{12} = 6520$ gas on average. Although 449 gas is saved" on the storage side, decoding and encoding base 3 is considerably more expensive with many division and mod operations (vs almost entirely using bit operations)$^{[1]}$.
+Not really.
+Besides the point that we bitpack the game data with player 0's address, consider the following: 18 bits allows us to store 14 ($\left\lfloor\frac{256}{18}\right\rfloor=14$) games per `uint256`, which means it costs $\frac{20000 + 5000\cdot 13}{14}\approx 6071$ gas on average to store a game's data.
+Comparatively, 21 bits allows us to store 12 games per `uint256`, or $\frac{20000 + 5000\cdot 11}{12} = 6520$ gas on average.
+Although 449 gas is "saved" on the storage side, decoding and encoding base 3 is considerably more expensive with many division and mod operations (vs almost entirely using bit operations)<sup>1</sup>.
 
-Valid reasons (maybe) to be that pedantic about the number of bits is that (1) it results in major gas savings or (2) computation complexity for encoding/decoding is not an issue (e.g. it is only encoded/decoded in a view function). [On-chain art](https://www.0xchain.art/) is a category of projects/communities that are open to excessive efforts to compress storage, as well as a realm where it [generally] makes sense to do so.
+Valid reasons (maybe) to be that pedantic about the number of bits is that (1) it results in major gas savings, or (2) computation complexity for encoding/decoding is not an issue (e.g. it's only encoded/decoded in a view function).
+[On-chain art](https://www.0xchain.art/) is a category of projects/communities that are open to excessive efforts to compress storage, as well as a realm where it often makes sense to.
 
-> $^{[1]}$ We also end up using the extra slot to make a slight optimization in checking whether a player won. See subsection "Checking If a Player Won" in section "Check Game Ending State".
+<Callout intent="none">
+  <sup>1</sup> We also later end up using the extra slot to make a slight optimization in checking whether a player won.
+  See subsection [Checking if a player won](#checking-if-a-player-won).
+</Callout>
 
-## User Validation
-Recall that our player 0 is stored in `mapping(uint256 => uint256) public playerZerosAndGames`, where the first 160 bits represent player 0, and player 1 is stored in `mapping(uint256 => address) public playerOnes`. Thus, to check that `msg.sender` is either player 0 or player 1, we have:
+## User validation
 
-```solidity
+Recall that our player 0 is stored in `mapping(uint256 => uint256) public playerZerosAndGames`, where the first 160 bits represent player 0, and player 1 is stored in `mapping(uint256 => address) public playerOnes`.
+Thus, to check that `msg.sender` is either player 0 or player 1, we have:
+
+```sol highlightLines={[4]}
 address playerZero = address(uint160(playerZerosAndGames[_gameId]));
 address playerOne = playerOnes[_gameId];
 
 require(msg.sender == playerZero || msg.sender == playerOne);
 ```
-Next, to check whether it's `msg.sender`'s turn to play, recall that the last bit of the board denotes whose turn it is to play: 0 if it's player 0's turn, and 1 if it's player 1's turn. In terms of bit operations: if `board & 1 == 0`, it is player 0's turn, and if `board & 1 == 1`, it is player 1's turn.
-```solidity
+
+Next, to check whether it's `msg.sender`'s turn to play, recall that the last bit of the board denotes whose turn it is to play: 0 if it's player 0's turn, and 1 if it's player 1's turn.
+In bit operations: if `board & 1 == 0`, it is player 0's turn, and if `board & 1 == 1`, it is player 1's turn.
+
+```sol highlightLines={[10, 12]}
 uint256 playerZeroAndGame = playerZerosAndGames[_gameId];
 // Store it in memory to compute upon, then push it to storage later all at once.
 // We access the game by bitshifting `playerZeroAndGame` to the right by 160.
@@ -387,35 +438,43 @@ require(
 );
 ```
 
-## Move Validation
-After we have verified that `msg.sender` is the correct address to play, we must verify whether the move they inputted is valid. There are 2 necessary checks for this:
+## Move validation
+
+After we have verified that `msg.sender` is the correct address to play, we must verify whether the move they inputted is valid.
+There are 2 necessary checks for this:
+
 1. the game is not over,
 2. and the position they inputted must be empty on the board.
 
-Recall that if the 3rd to 2nd last bits are `00`, the game is still ongoing. Therefore, checking whether the game is not over is as simple as accessing those 2 bits, and checking if they equal 0:
-```solidity
+Recall that if the 3rd to 2nd last bits are `00`, the game is still ongoing.
+Therefore, checking whether the game is not over is as simple as reading those 2 bits and checking if they equal 0:
+
+```sol highlightLines={[2]}
 // 3 is just 0b11 (i.e. masks 2 bits)
 require((inMemGame >> 1) & 3 == 0);
 ```
 
 Next, let `_index` denote the user's input, where they correspond to the following positions of the board:
-```
-8 7 6
-5 4 3
-2 1 0
-```
 
-Then, accessing the position corresponding to `_index` is just a matter of shifting to the correct position and, once again, masking 2 bits with 3 (`0b11`). This value must equal 0 (i.e. the square is empty) for the move to be valid:
-```solidity
+<div className="w-full flex justify-center">
+  <TicTacToeBoardGraphic value='876543210' />
+</div>
+
+Then, accessing the position corresponding to `_index` is just a matter of shifting to the correct position and, once again, masking 2 bits with 3 (`0b11`).
+This value must equal 0 (i.e. the square is empty) for the move to be valid:
+
+```sol highlightLines={[4]}
 // First, bit shift right by 3 to get the relevant bits (i.e. just the bits
 // denoting the board). Then, we bit shift to the correct position by shifting
 // right by `_index << 1` bits (note: each position takes up 2 bits).
 require(((inMemGame >> 3) >> (_index << 1)) & 3 == 0);
 ```
 
-## Check Game Ending State
+## Check game ending state
+
 ### Intuition
 There are 4 possible ways for a player to win:
+
 1. form a horizontal line of 3,
 2. form a vertical line of 3,
 3. form a diagonal line of 3 from the bottom right corner to the top left corner,
@@ -423,10 +482,14 @@ There are 4 possible ways for a player to win:
 
 If either player has satisfied one of those, the game is over. How do we determine that?
 
-Well, for each winning pattern, we can select the bits that correspond to the squares in that pattern. Then, if these bits all represent squares played entirely by player 0 or entirely by player 1, the game is over.
+Well, for each winning pattern, we can select the bits that correspond to the squares in that pattern.
+Then, if these bits all represent squares played entirely by player 0 or entirely by player 1, the game is over.
 
-### Winning Pattern Bitmasks
-Recall from earlier that we can select bits with the `&` operator and a mask. Let's denote
+### Winning pattern bitmasks
+
+Recall from earlier that we can select bits with the `&` operator and a mask.
+Let's denote
+
 1. `HORIZONTAL` for rows of 3,
 2. `VERTICAL` for columns of 3,
 3. `BR_TO_TL_DIAGONAL` for the diagonal from the bottom right corner of the board to the top left corner,
@@ -434,7 +497,7 @@ Recall from earlier that we can select bits with the `&` operator and a mask. Le
 
 The following code block shows how they're computed (remember each square is represented by 2 bits):
 
-```solidity
+```sol
 //     1. 00 00 00
 //        00 00 00
 //        11 11 11
@@ -457,8 +520,10 @@ uint256 internal constant BR_TO_TL_DIAGONAL = 0x30303;
 uint256 internal constant BL_TO_TR_DIAGONAL = 0x333;
 ```
 
-### Applying The Bitmasks
+### Applying the bitmasks
+
 The position we apply the mask on is also important. For example, if we apply the horizontal bit mask at the square of index `0`, we (correctly) select the following squares marked by `x`:
+
 ```
 • • •
 • • •
@@ -466,6 +531,7 @@ x x x
 ```
 
 Now, suppose we apply it at the square of index `1`:
+
 ```
 • • •
 • • x
@@ -473,6 +539,7 @@ x x •
 ```
 
 This is incorrect. The correct positions to apply them for each mask are shown below:
+
 ```
 --------------------------------------------------
 | Bitmask           | Applied At | Selected Bits |
@@ -510,18 +577,29 @@ This is incorrect. The correct positions to apply them for each mask are shown b
 |                   | x • •      | x • •         |
 --------------------------------------------------
 ```
+
 Try working through them on paper!
 
-### Checking If a Player Won
-For each selected square, the corresponding pair of bits in the mask are `0b11`, or 3 in decimal representation. All other bits are `0`. Then, if the selected portion denotes squares entirely played by either player, it should be a scalar multiple of the mask that was used:
+### Checking if a player won
+
+For each selected square, the corresponding pair of bits in the mask are `0b11`, or 3 in decimal representation.
+All other bits are `0`.
+Then, if the selected portion denotes squares entirely played by either player, it should be a scalar multiple of the mask that was used:
+
 * If `0b01` (1 in decimal) represents a square played by player 0, and all the selected squares were played by player 0, the selected portion should equal $\frac{\mathrm{MASK}}{3}$.
 * Similarly, if `0b10` (2 in decimal) represents a square played by player 1, and all the selected squares were played by player 1, the selected portion should equal $\frac{2\cdot\mathrm{MASK}}{3}$.
 
-This is fairly efficient to check, but we can do slightly better. If we use `0b00` for empty squares, `0b01` for player 0, and `0b10` for player 1, `0b11` represents nothing. What happens if we use `0b11` instead of `0b10` for player 1's moves? The selected portion should equal $\mathrm{MASK}$, instead of $\frac{2\cdot\mathrm{MASK}}{3}$! This is more efficient to check, so let's go with this.
+This is fairly efficient to check, but we can do slightly better.
+If we use `0b00` for empty squares, `0b01` for player 0, and `0b10` for player 1, `0b11` represents nothing.
+What happens if we use `0b11` instead of `0b10` for player 1's moves?
+The selected portion should equal $\mathrm{MASK}$, instead of $\frac{2\cdot\mathrm{MASK}}{3}$!
+This is more efficient to check, so let's go with this.
 
 ### Implementation
+
 `x` denotes the position the code is at, and `-` denotes bits that have been bitshifted off (and thus no longer relevant).
-```solidity
+
+```sol
 // @return 0 if ongoing, 1 if player 0 has won, and 2 if player 1 has won.
 function checkGameState(uint256 _board) internal pure returns (uint256) {
     // Last 4 bits denote information about whether the game is over and whose turn it is to
@@ -585,10 +663,12 @@ function checkGameStateHelper(uint256 _board, uint256 _mask)
 }
 ```
 
-## Check Game Ending State w/ While Loop (bonus)
+## Check game ending state w/ while loop (bonus)
+
 This section is just for fun (+has some cool bit twiddling patterns).
 
 ### Intuition
+
 The code above looks kinda ugly/redundant. Let's use a `while` loop instead, so we don't have `checkGameStateHelper` in so many lines. We can do this by bitpacking the win-pattern-checking masks consecutively into a `uint256 masks` (in the order they are used), as well as bitpacking the number of bits the board is shifted by after each check into a `uint256 boardShifts`.
 
 We make the checks in the following order:
@@ -769,7 +849,7 @@ If you want to see some more advanced stuff, check out:
     * [Chapter 1: "Bit Wizardry" of "Matters Computational"](https://www.jjj.de/fxt/fxtbook.pdf)
 * Other
     * [`fiveoutofnine/on-chain-chess`](https://github.com/fiveoutofnine/fiveoutofnine-chess)
-    * [Fast Inverse Square Root — A Quake III Algorithm](https://youtu.be/p8u_k2LIZyo) (a lot of people's first exposure to bit twiddling)
+    * [Fast Inverse Square Root &mdash; A Quake III Algorithm](https://youtu.be/p8u_k2LIZyo) (a lot of people's first exposure to bit twiddling)
     * [Reciprocal Multiplication, a tutorial](http://homepage.divms.uiowa.edu/~jones/bcd/divide.html)
         
 ### Acknowledgements

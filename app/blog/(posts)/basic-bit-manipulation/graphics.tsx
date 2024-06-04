@@ -260,6 +260,43 @@ export const SHRGraphic: React.FC = () => {
   );
 };
 
+export const TicTacToeBoardGraphic: React.FC<{ value?: string }> = ({ value }) => {
+  return (
+    <svg
+      /* 3 columns: 24 * 3 - 2 */
+      width="70"
+      /* 3 rows: 24 * 3 - 2 */
+      height="70"
+      viewBox="0 0 70 70"
+      xmlns="http://www.w3.org/2000/svg"
+      role="figure"
+    >
+      <title>Tic-tac-toe Board</title>
+      <desc>Graphical illustration of a Tic-tac-toe board.</desc>
+      <defs>
+        <marker id="arrow-head" orient="auto" markerWidth="5" markerHeight="4" refX="3" refY="2">
+          <path className="fill-gray-11" d="M0,0v4L5,2LZ" />
+        </marker>
+        <marker
+          id="arrow-head-highlight"
+          orient="auto"
+          markerWidth="5"
+          markerHeight="4"
+          refX="3"
+          refY="2"
+        >
+          <path className="fill-orange-11" d="M0,0v4L5,2LZ" />
+        </marker>
+      </defs>
+      {[...Array(9)].map((_, i) => (
+        <Bit key={i} x={i % 3} y={Math.floor(i / 3)}>
+          {value?.at(i) || 8 - i}
+        </Bit>
+      ))}
+    </svg>
+  );
+};
+
 export const XORGraphic: React.FC = () => {
   const A = ['0', '1', '0', '1'];
   const B = ['0', '0', '1', '1'];
