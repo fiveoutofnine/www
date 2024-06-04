@@ -457,7 +457,7 @@ require((inMemGame >> 1) & 3 == 0);
 Next, let `_index` denote the user's input, where they correspond to the following positions of the board:
 
 <div className="w-full flex justify-center">
-  <TicTacToeBoardGraphic value='876543210' />
+  <TicTacToeBoardGraphic />
 </div>
 
 Then, accessing the position corresponding to `_index` is just a matter of shifting to the correct position and, once again, masking 2 bits with 3 (`0b11`).
@@ -473,6 +473,7 @@ require(((inMemGame >> 3) >> (_index << 1)) & 3 == 0);
 ## Check game ending state
 
 ### Intuition
+
 There are 4 possible ways for a player to win:
 
 1. form a horizontal line of 3,
@@ -524,59 +525,98 @@ uint256 internal constant BL_TO_TR_DIAGONAL = 0x333;
 
 The position we apply the mask on is also important. For example, if we apply the horizontal bit mask at the square of index `0`, we (correctly) select the following squares marked by `x`:
 
-```
-• • •
-• • •
-x x x
-```
+<div className="w-full flex justify-center">
+  <TicTacToeBoardGraphic value="ooooooxxx" highlightIndices={[6, 7, 8]} />
+</div>
 
 Now, suppose we apply it at the square of index `1`:
 
-```
-• • •
-• • x
-x x •
-```
+<div className="w-full flex justify-center">
+  <TicTacToeBoardGraphic value="oooooxxxo" highlightIndices={[5, 6, 7]} />
+</div>
 
-This is incorrect. The correct positions to apply them for each mask are shown below:
+This is incorrect.
+The correct positions to apply them for each mask are shown below:
 
-```
---------------------------------------------------
-| Bitmask           | Applied At | Selected Bits |
-|===================|============|===============|
-|                   | • • •      | • • •         |
-|                   | • • •      | • • •         |
-|                   | • • x      | x x x         |
-|                   |------------|---------------|
-|                   | • • •      | • • •         |
-|  HORIZONTAL       | • • x      | x x x         |
-|                   | • • •      | • • •         |
-|                   |------------|---------------|
-|                   | • • x      | x x x         |
-|                   | • • •      | • • •         |
-|                   | • • •      | • • •         |
-|===================|============|===============|
-|                   | • • •      | • • x         |
-|                   | • • •      | • • x         |
-|                   | • • x      | • • x         |
-|                   |------------|---------------|
-|                   | • • •      | • x •         |
-| VERTICAL          | • • •      | • x •         |
-|                   | • x •      | • x •         |
-|                   |------------|---------------|
-|                   | • • •      | x • •         |
-|                   | • • •      | x • •         |
-|                   | x • •      | x • •         |
-|===================|============|===============|
-|                   | • • •      | x • •         |
-| BR_TO_TL_DIAGONAL | • • •      | • x •         |
-|                   | • • x      | • • x         |
-|===================|============|===============|
-|                   | • • •      | • • x         |
-| BL_TO_TR_DIAGONAL | • • •      | • x •         |
-|                   | x • •      | x • •         |
---------------------------------------------------
-```
+<Table.Root className="my-0">
+  <Table.Header>
+    <Table.Row>
+      <Table.Head>Bitmask</Table.Head>
+      <Table.Head>Applied at</Table.Head>
+      <Table.Head>Selected bits</Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell rowSpan={3}>`HORIZONTAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[8]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[6, 7, 8]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[5]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[3, 4, 5]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 1, 2]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell rowSpan={3}>`VERTICAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[8]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2, 5, 8]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[7]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[1, 4, 7]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[6]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 3, 6]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`BR_TO_TL_DIAGONAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[8]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 4, 8]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`BL_TO_TR_DIAGONAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[6]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2, 4, 6]} />
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
 
 Try working through them on paper!
 

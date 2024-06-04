@@ -15,7 +15,7 @@ import {
   P,
   ToastButton,
 } from '@/components/templates/mdx';
-import { CodeBlock } from '@/components/ui';
+import { CodeBlock, Table } from '@/components/ui';
 import type { CodeBlockProps } from '@/components/ui/code-block/types';
 
 import DesignComponentsDisplay from '@/app/design/(components)/components-display';
@@ -49,6 +49,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Grid,
     DesignComponentsDisplay,
     MathDisplay,
+    Table,
     ToastButton,
     ...components,
   };

@@ -260,7 +260,10 @@ export const SHRGraphic: React.FC = () => {
   );
 };
 
-export const TicTacToeBoardGraphic: React.FC<{ value?: string }> = ({ value }) => {
+export const TicTacToeBoardGraphic: React.FC<{ value?: string; highlightIndices?: number[] }> = ({
+  value,
+  highlightIndices,
+}) => {
   return (
     <svg
       /* 3 columns: 24 * 3 - 2 */
@@ -273,26 +276,22 @@ export const TicTacToeBoardGraphic: React.FC<{ value?: string }> = ({ value }) =
     >
       <title>Tic-tac-toe Board</title>
       <desc>Graphical illustration of a Tic-tac-toe board.</desc>
-      <defs>
-        <marker id="arrow-head" orient="auto" markerWidth="5" markerHeight="4" refX="3" refY="2">
-          <path className="fill-gray-11" d="M0,0v4L5,2LZ" />
-        </marker>
-        <marker
-          id="arrow-head-highlight"
-          orient="auto"
-          markerWidth="5"
-          markerHeight="4"
-          refX="3"
-          refY="2"
-        >
-          <path className="fill-orange-11" d="M0,0v4L5,2LZ" />
-        </marker>
-      </defs>
-      {[...Array(9)].map((_, i) => (
-        <Bit key={i} x={i % 3} y={Math.floor(i / 3)}>
-          {value?.at(i) || 8 - i}
-        </Bit>
-      ))}
+      {/* First, draw the non-highlighted squares. */}
+      {[...Array(9)].map((_, i) =>
+        !highlightIndices?.includes(i) ? (
+          <Bit key={i} x={i % 3} y={Math.floor(i / 3)}>
+            {value?.at(i) || 8 - i}
+          </Bit>
+        ) : null,
+      )}
+      {/* Next, draw the highlighted squares. */}
+      {[...Array(9)].map((_, i) =>
+        highlightIndices?.includes(i) ? (
+          <Bit key={i} x={i % 3} y={Math.floor(i / 3)} highlight>
+            {value?.at(i) || 8 - i}
+          </Bit>
+        ) : null,
+      )}
     </svg>
   );
 };
