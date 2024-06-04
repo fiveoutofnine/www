@@ -875,17 +875,18 @@ function checkGameStateWithWhile(uint256 _board) internal pure returns (uint256)
 
 ## Conclusion
 
-> So many people see low-level solidity optimizations from people like @transmissions11
-> and think that it's the key to optimizing their project
->
-> but what they don't realize is that the real savings come from efficient and well-designed mechanisms and architectures
-
-Source: [*Tweet by 0xSubway*](https://x.com/0xSubway/status/1506130207417126912)
+<Blockquote source={{ label: '0xSubway', url: 'https://x.com/i/status/1506130207417126912' }}>
+  So many people see low-level solidity optimizations from people like [@transmissions11](https://x.com/transmissions11)
+  and think that it's the key to optimizing their project
+  <br />
+  but what they don't realize is that the real savings come from efficient and well-designed mechanisms and architectures
+</Blockquote>
 
 It's easy to get caught up in tactical tricks to make near-obsolete optimizations to your smart contracts.
 Most of the techniques I shared on X were never even intended to be "optimization tips," (bit twiddling can be quite useful outside of optimization), but I sort of ended up falling down that hole.
 
-Of course, it's always fun to discover and share tricks like this! But many of them (especially bit twiddling) have *extremely* niche applications, so ask yourself whether it really makes sense to obfuscate your code for small optimizations before applying them.
+Of course, it's always fun to discover and share tricks like this!
+But many of them (especially bit twiddling) have *extremely* niche applications, so ask yourself whether it really makes sense to obfuscate your code for small optimizations before applying them.
 
 ### Extra reading/resources
 
