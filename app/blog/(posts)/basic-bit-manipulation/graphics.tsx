@@ -367,9 +367,10 @@ const Arrow: React.FC<{
 
   return (
     <path
-      className={clsx('fill-none', highlight ? 'stroke-orange-11' : 'stroke-gray-11')}
+      className={clsx('stroke fill-none', highlight ? 'stroke-orange-11' : 'stroke-gray-11')}
       markerEnd={highlight ? 'url(#arrow-head-highlight)' : 'url(#arrow-head)'}
       d={`M${p1x},${p1y}L${p2x - dx},${p2y - dy}`}
+      strokeLinecap="round"
     />
   );
 };

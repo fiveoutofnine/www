@@ -51,7 +51,7 @@ First, here are the basic bitwise operators used in the following tic-tac-toe ex
     <Blockquote source={{ url: 'https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shifts' }}>
       Digits are moved, or *shifted*, to the right. Zeros replace the discarded bits.
     </Blockquote>
-    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
       <SHRGraphic />
     </div>
     <Callout className="my-0" size="sm" intent="none">
@@ -65,7 +65,7 @@ First, here are the basic bitwise operators used in the following tic-tac-toe ex
     <Blockquote source={{ url: 'https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shifts' }}>
       Digits are moved, or _shifted_, to the left. Zeros replace the discarded bits.
     </Blockquote>
-    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
       <SHLGraphic />
     </div>
     <Callout className="my-0" size="sm" intent="none">
@@ -79,11 +79,11 @@ First, here are the basic bitwise operators used in the following tic-tac-toe ex
     <Blockquote>
       For each pair of digits, compute 1 if both are 1; otherwise, compute 0.
     </Blockquote>
-    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
       <ANDGraphic />
     </div>
     <Callout className="my-0" size="sm" intent="none">
-      Since `&` only “accepts” the bit if both numbers' bits are `1`, you can construct a bitmask to select which bits of a number you want to read. For example, for some number $m$, if we want to read every other bit, we can compute `m & 1010...1010`.
+      Since `&` only accepts" the bit if both numbers' bits are `1`, you can construct a bitmask to select which bits of a number you want to read. For example, for some number $m$, if we want to read every other bit, we can compute `m & 1010...1010`.
     </Callout>
   </Grid.Cell>
   <Grid.Cell>
@@ -93,11 +93,11 @@ First, here are the basic bitwise operators used in the following tic-tac-toe ex
     <Blockquote>
       For each pair of digits, compute 1 if either is 1; otherwise, compute 0.
     </Blockquote>
-    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
       <ORGraphic />
     </div>
     <Callout className="my-0" size="sm" intent="none">
-      Since `|` “accepts” the bit as long as either numbers' bits are `1`, you can write a number's bits into another number, as long as the first number's bits in the same position are all `0`.
+      Since `|` accepts" the bit as long as either numbers' bits are `1`, you can write a number's bits into another number, as long as the first number's bits in the same position are all `0`.
     </Callout>
   </Grid.Cell>
   <Grid.Cell className="col-span-1 sm:col-span-2">
@@ -107,7 +107,7 @@ First, here are the basic bitwise operators used in the following tic-tac-toe ex
     <Blockquote>
       For each pair of digits, compute 1 if they differ. Otherwise, compute 0.
     </Blockquote>
-    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
       <XORGraphic />
     </div>
     <Callout className="my-0 prose-ul:inline-block" size="sm" intent="none">
@@ -341,7 +341,7 @@ You can also combine one or more of these to form composite checks. For example,
 ### Pedantic Bit Packing: Is 21 Bits Good Enough?
 You may have realized that, for the tic-tac-toe example, we use 2 bits ($2^2 = 4$ total possibilities) per position, when there are only 3 possible states (empty, occupied by player 0, or occupied by player 1). Why not save 3 bits ($222222222_3$ is 15 bits long) by using a base 3 representation? We can then use just 18 bits ($15 + 3 = 18$) instead of 21—isn't this better?
 
-Not really. Besides the point that we bitpack the game data with player 0's address, consider the following: 18 bits allows us to store 14 ($\left\lfloor\frac{256}{18}\right\rfloor=14$) games per `uint256`, which means it costs $\frac{20000 + 5000\cdot 13}{14}\approx 6071$ gas on average to store a game's data. Comparatively, 21 bits allows us to store 12 games per `uint256`, or $\frac{20000 + 5000\cdot 11}{12} = 6520$ gas on average. Although 449 gas is “saved” on the storage side, decoding and encoding base 3 is considerably more expensive with many division and mod operations (vs almost entirely using bit operations)$^{[1]}$.
+Not really. Besides the point that we bitpack the game data with player 0's address, consider the following: 18 bits allows us to store 14 ($\left\lfloor\frac{256}{18}\right\rfloor=14$) games per `uint256`, which means it costs $\frac{20000 + 5000\cdot 13}{14}\approx 6071$ gas on average to store a game's data. Comparatively, 21 bits allows us to store 12 games per `uint256`, or $\frac{20000 + 5000\cdot 11}{12} = 6520$ gas on average. Although 449 gas is saved" on the storage side, decoding and encoding base 3 is considerably more expensive with many division and mod operations (vs almost entirely using bit operations)$^{[1]}$.
 
 Valid reasons (maybe) to be that pedantic about the number of bits is that (1) it results in major gas savings or (2) computation complexity for encoding/decoding is not an issue (e.g. it is only encoded/decoded in a view function). [On-chain art](https://www.0xchain.art/) is a category of projects/communities that are open to excessive efforts to compress storage, as well as a realm where it [generally] makes sense to do so.
 
