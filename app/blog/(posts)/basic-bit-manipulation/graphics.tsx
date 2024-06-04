@@ -13,7 +13,9 @@ export const ANDGraphic: React.FC = () => {
 
   return (
     <svg
+      /* 6 columns: 24 * 6 - 5 */
       width="139"
+      /* 4 rows and 8px padding for 16px caption: 24 * 4 - 3 + (8 + 16) */
       height="117"
       viewBox="0 0 139 117"
       xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +77,9 @@ export const ORGraphic: React.FC = () => {
 
   return (
     <svg
+      /* 6 columns: 24 * 6 - 5 */
       width="139"
+      /* 4 rows and 8px padding for 16px caption: 24 * 4 - 3 + (8 + 16) */
       height="117"
       viewBox="0 0 139 117"
       xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +141,9 @@ export const SHLGraphic: React.FC = () => {
 
   return (
     <svg
+      /* 10 columns: 24 * 10 - 9 */
       width="231"
+      /* 3 rows and 8px padding for 16px caption: 24 * 3 - 2 + (8 + 16) */
       height="94"
       viewBox="0 0 231 94"
       xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +203,9 @@ export const SHRGraphic: React.FC = () => {
 
   return (
     <svg
+      /* 10 columns: 24 * 10 - 9 */
       width="231"
+      /* 3 rows and 8px padding for 16px caption: 24 * 3 - 2 + (8 + 16) */
       height="94"
       viewBox="0 0 231 94"
       xmlns="http://www.w3.org/2000/svg"
@@ -259,7 +267,9 @@ export const XORGraphic: React.FC = () => {
 
   return (
     <svg
+      /* 6 columns: 24 * 6 - 5 */
       width="139"
+      /* 4 rows and 8px padding for 16px caption: 24 * 4 - 3 + (8 + 16) */
       height="117"
       viewBox="0 0 139 117"
       xmlns="http://www.w3.org/2000/svg"
