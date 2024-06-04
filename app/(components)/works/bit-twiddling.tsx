@@ -1,4 +1,4 @@
-import { ExternalLink, PenTool } from 'lucide-react';
+import { ChevronRight, PenTool } from 'lucide-react';
 
 import FeatureDisplayMinimal from '@/components/templates/feature-display-minimal';
 import { Button } from '@/components/ui';
@@ -11,12 +11,7 @@ const BitTwiddlingFeature: React.FC = () => {
       description="Basic bit manipulation"
       symbol={<PenTool />}
       button={
-        <Button
-          size="sm"
-          rightIcon={<ExternalLink />}
-          href="https://hackmd.io/@fiveoutofnine/Skl9eRbX9"
-          newTab
-        >
+        <Button size="sm" rightIcon={<ChevronRight />} href="/blog/basic-bit-manipulation">
           Read
         </Button>
       }
