@@ -1,3 +1,7 @@
+import clsx from 'clsx';
+
+import { ANDGraphic, ORGraphic, SHLGraphic, SHRGraphic, XORGraphic } from './graphics';
+
 import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
@@ -9,113 +13,160 @@ export const metadata = getBlogPageMetadata({
 
 <BlogHeader slug="basic-bit-manipulation" />
 
-Transacting on Ethereum is extremely expensive, so sometimes, it makes sense to aim for more granular control over your code. One way to achieve this is to utilize bit operations! They can also be quite useful outside of optimization. I’ve posted a few bit twiddling techniques to my Twitter [@fiveoutofnine](https://twitter.com/fiveoutofnine):
-* [quick/small mapping](https://twitter.com/fiveoutofnine/status/1489997746526322688)
-* [bitpacking consecutive data to reduce storage costs](https://twitter.com/fiveoutofnine/status/1488627467245932545)
-* [`if` blocks with 3 bit operations](https://twitter.com/fiveoutofnine/status/1491894008049811458)
-* [basic operations](https://twitter.com/fiveoutofnine/status/1488498870153715712)
-* [loop through some numbers without an array](https://twitter.com/fiveoutofnine/status/1488374330258034692) +[extra](https://twitter.com/fiveoutofnine/status/1488577514607976449)
+Transacting on Ethereum is extremely expensive, so sometimes, it makes sense to aim for more granular control over your code.
+One way to achieve this is to utilize [bitwise operations](#bitwise-operators), like the bit twiddling techniques I've posted on X [@fiveoutofnine](https://x.com/fiveoutofnine):
 
-These operations/tricks are pretty different from other aspects of coding, so it may be fairly esoteric to those without experience. Although I tried to give an application example with each Tweet, it’s still hard to see where/how to apply them yourself. A good example of a project with more extensive applications/context is my [on-chain chess engine](https://github.com/fiveoutofnine/fiveoutofnine-chess), but the contracts are probably a bit hard to follow for beginners.
+* [quick/small mapping](https://x.com/fiveoutofnine/status/1489997746526322688)
+* [bitpacking consecutive data to reduce storage costs](https://x.com/fiveoutofnine/status/1488627467245932545)
+* [`if` blocks with 3 bit operations](https://x.com/fiveoutofnine/status/1491894008049811458)
+* [basic operations](https://x.com/fiveoutofnine/status/1488498870153715712)
+* [loop through some numbers without an array](https://x.com/fiveoutofnine/status/1488374330258034692) +[extra](https://x.com/fiveoutofnine/status/1488577514607976449)
+
+These operations/tricks are pretty different from other aspects of coding, so it may be fairly esoteric to those without experience.
+Although I tried to give an application example with each post, it's still hard to see where/how to apply them yourself.
+A good example of a project with more extensive applications is my [on-chain chess engine](https://github.com/fiveoutofnine/fiveoutofnine-chess), but the contracts are probably a bit hard to follow for beginners.
 
 In this post, I attempt to explain some of these tricks and explain my thought process when applying them with a much simpler game: tic-tac-toe.
 
-## Basic Bit Operations
-First, here are the basic bit operations that are used in this tic-tac-toe example: `>>`, `<<`, `&`, `|`, and `^`. Feel free to skip this section if you are already familiar with them!
+## Bitwise operators
 
-### `>>` (SHR)
-> Digits are moved, or *shifted*, to the right. [*Source.*](https://en.wikipedia.org/wiki/Bitwise_operation)
+<Callout>
+  Feel free to [skip](/blog/basic-bit-manipulation#overview-of-tic-tac-toe) this section if you are already familiar with bitwise operators.
+</Callout>
 
-Example: `1010 >> 1 = 101` (in decimal: `10 >> 1 = 5`)
+First, here are the basic bitwise operators used in the following tic-tac-toe example: `>>`, `<<`, `&`, `|`, and `^`.
 
-Note: shifting an integer $m$ right by $n$ bits results in $\left\lfloor\frac{m}{2^{n}}\right\rfloor$.
+<Grid.Root
+  className={clsx(
+    'sm:grid-cols-2',
+    'prose-blockquote:my-0',
+    'prose-p:text-sm prose-p:leading-normal prose-p:my-3',
+    '[&_[mdx-blockquote-content]]:p-2 [&_[mdx-blockquote-content]]:pl-3.5',
+  )}
+>
+  <Grid.Cell>
+    <Grid.CellTitle>
+      `>>` (SHR)
+    </Grid.CellTitle>
+    <Blockquote source={{ url: 'https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shifts' }}>
+      Digits are moved, or *shifted*, to the right. Zeros replace the discarded bits.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+      <SHRGraphic />
+    </div>
+    <Callout className="my-0" size="sm" intent="none">
+      Shifting an integer $m$ right by $n$ bits results in $\left\lfloor\frac{m}{2^{n}}\right\rfloor$.
+    </Callout>
+  </Grid.Cell>
+  <Grid.Cell>
+    <Grid.CellTitle>
+      `<<` (SHL)
+    </Grid.CellTitle>
+    <Blockquote source={{ url: 'https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shifts' }}>
+      Digits are moved, or _shifted_, to the left. Zeros replace the discarded bits.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+      <SHLGraphic />
+    </div>
+    <Callout className="my-0" size="sm" intent="none">
+      Shifting an integer $m$ left by $n$ bits results in $m\cdot 2^{n}$.
+    </Callout>
+  </Grid.Cell>
+  <Grid.Cell>
+    <Grid.CellTitle>
+      `&` (AND)
+    </Grid.CellTitle>
+    <Blockquote>
+      For each pair of digits, compute 1 if both are 1; otherwise, compute 0.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+      <ANDGraphic />
+    </div>
+    <Callout className="my-0" size="sm" intent="none">
+      Since `&` only “accepts” the bit if both numbers' bits are `1`, you can construct a bitmask to select which bits of a number you want to read. For example, for some number $m$, if we want to read every other bit, we can compute `m & 1010...1010`.
+    </Callout>
+  </Grid.Cell>
+  <Grid.Cell>
+    <Grid.CellTitle>
+      `|` (OR)
+    </Grid.CellTitle>
+    <Blockquote>
+      For each pair of digits, compute 1 if either is 1; otherwise, compute 0.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+      <ORGraphic />
+    </div>
+    <Callout className="my-0" size="sm" intent="none">
+      Since `|` “accepts” the bit as long as either numbers' bits are `1`, you can write a number's bits into another number, as long as the first number's bits in the same position are all `0`.
+    </Callout>
+  </Grid.Cell>
+  <Grid.Cell className="col-span-1 sm:col-span-2">
+    <Grid.CellTitle>
+      `^` (XOR)
+    </Grid.CellTitle>
+    <Blockquote>
+      For each pair of digits, compute 1 if they differ. Otherwise, compute 0.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg">
+      <XORGraphic />
+    </div>
+    <Callout className="my-0 prose-ul:inline-block" size="sm" intent="none">
+      `^` can be helpful in conjunction with `&` and `|` when overwriting a number's bits with another set of bits.
+    </Callout>
+  </Grid.Cell>
+</Grid.Root>
 
-### `<<` (SHL)
-> Digits are moved, or *shifted*, to the left. [*Source.*](https://en.wikipedia.org/wiki/Bitwise_operation)
+Try working through the examples and notes to gain some foundational intuition.
 
-Example: `1010 << 2 = 101000` (in decimal: `10 << 2 = 40`).
-
-Note: shifting an integer $m$ left by $n$ bits results in $m\cdot 2^{n}$.
-
-### `&` (AND)
-> A bitwise AND is a binary operation that takes two equal-length binary representations and performs the logical AND operation on each pair of the corresponding bits. Thus, if both bits in the compared position are 1, the bit in the resulting binary representation is 1 (1 × 1 = 1); otherwise, the result is 0 (1 × 0 = 0 and 0 × 0 = 0). [*Source.*](https://en.wikipedia.org/wiki/Bitwise_operation)
-
-Example:
-```
-  0101 (in decimal: 5)
-& 0011 (in decimal: 3)
-= 0001 (in decimal: 1).
-```
-
-Note: since `&` only “accepts” the bit if both numbers’ bits are `1`, you can construct a bitmask to select which bits of a number you want to read. For example, for some number $m$, if we want to read every other bit, we can compute `m & 1010...1010`.
-
-### `|` (OR)
-> A bitwise OR is a binary operation that takes two bit patterns of equal length and performs the logical inclusive OR operation on each pair of corresponding bits. The result in each position is 0 if both bits are 0, while otherwise the result is 1. [*Source.*](https://en.wikipedia.org/wiki/Bitwise_operation)
-
-Example:
-```
-  0101 (in decimal: 5)
-| 0011 (in decimal: 3)
-= 0111 (in decimal: 7)
-```
-
-Note: since `|` “accepts” the bit as long as either numbers’ bits are `1`, you can write a number’s bits into another number, as long as the first number’s bits in the same position are all `0`.
-
-### `^` (XOR)
-> A bitwise XOR is a binary operation that takes two bit patterns of equal length and performs the logical exclusive OR operation on each pair of corresponding bits. The result in each position is 1 if only one of the bits is 1, but will be 0 if both are 0 or both are 1. In this we perform the comparison of two bits, being 1 if the two bits are different, and 0 if they are the same. [*Source.*](https://en.wikipedia.org/wiki/Bitwise_operation)
-
-Example:
-```
-  0101 (in decimal: 5)
-^ 0011 (in decimal: 3)
-= 0110 (in decimal: 6)
-```
-
-Note: `^` can be helpful in conjunction with `&` and `|` when overwriting a number’s bits with another set of bits. For example, suppose we want to overwrite `10010`’s last 3 bits (i.e. `010`) with `101`:
-* First, we construct the bitmask to select the bits we want (in this case, all bits except for the last 3) with `^`: `11111 ^ 00111 = 11000`.
-* Next, we “delete” (replace with `0`) `10010`’s last 3 bits with `&`: `10010 & (11000) = 10000`.
-* Finally, we write in `101`, the desired bits, with `|`: `10000 | 00101 = 10101`.
-* Altogether, we have `(10010 & (1111 ^ 111)) | 101 = 101010`.
-
-> Note: numbers in this section with only 0s and 1s are in binary representation unless otherwise specified.
-
-Try working through the examples and notes to gain some foundational intuition!
+<Callout>
+  Numbers in this section with only 0s and 1s are in binary representation unless otherwise specified.
+</Callout>
 
 ## Overview of Tic-tac-toe
-Before writing the contract, let’s lay out the basic things required for a game of tic-tac-toe. It is a 2 player game, and each player only has 1 type of move they can play (i.e. placing their respective symbols into an open square). When a move is inputted by a player, we have to validate a few things:
-* The player is 1 of the 2 players in the game.
-* It is the player’s turn to play a move.
 
-Next, we have to check that the move is legal.
+Before writing the contract, let's lay out the basic things required for a game of tic-tac-toe.
+It's a 2-player game, and each player only has 1 type of move they can play (i.e. placing their respective symbol into an unoccupied square).
+When a move is inputted by a player, we have to validate a few things:
+
+* The player is 1 of the 2 players in the game.
+* It's the player's turn to play a move.
+
+Next, we have to check that the move is legal. If it is, we apply the move.
 
 Finally, we must check if the game has ended (i.e. either player has formed 3 consecutive dots).
 
 Writing this out as pseudocode in a function called `playMove`, we have:
-```solidity
-function playMove(position):
+
+```sol showLineNumbers={false}
+function playMove(position) {
     // Player validation
-    if ("player is not one of the 2 in the game")
-        revert Error();
-    if ("it is not the player's turn")
-        revert Error();
+    if ("player is not one of the 2 in the game") revert Error();
+    if ("it is not the player's turn") revert Error();
 
     // Move validation
-    if ("the position has already been played in the board")
-        revert Error();
+    if ("the position has already been played in the board") revert Error();
 
+    // Apply move.
     applyMove(position)
 
     // Game ending scenario
-    if ("either player has formed 3 consecutive dots")
+    if ("either player has formed 3 consecutive dots") {
         ("set the winner and end the game")
+    }
+}
 ```
 
-## Board/Game State Representation
-Now that we have an idea of all the information to store, let’s come up with a representation in code. Keep in mind that the design should allow for efficient computation: the code will read the data and compute with it, so operations such as accessing, decoding, and storing should be cheap. Once we achieve both, we can look towards using as few bits as possible because storage costs are (generally) the most expensive on the EVM.
+## Board/game state representation
 
-### Base Representation
+Now that we have an idea of all the information to store, let's come up with a representation in code.
+Keep in mind that the design should allow for efficient computation: the code will read the data and compute with it, so operations such as accessing, decoding, and storing should be cheap.
+Once we achieve both, we can look towards using as few bits as possible because storage costs are (generally) the most expensive on the EVM.
+
+### Base representation
+
 A naive approach might look something like:
-```solidity
+
+```sol showLineNumbers={false}
 struct Game {
     uint8[9] board; // 0 = empty, 1 = player 0, 2 = player 1
     bool turn; // false = player 0, true = player 1
@@ -129,30 +180,38 @@ struct Game {
 
 If I was satisfied with this, I would make sure `struct Game` was [tightly packed](https://dev.to/javier123454321/solidity-gas-optimizations-pt-3-packing-structs-23f4), then proceed.
 
-However, `uint8[9] board` uses a lot of unnecessary reads/writes, and we don’t need 8 bits to store data for a position on the board; since there are only 3 valid states, 2 bits ($2^2=4$) are enough. Next, `bool turn` can easily be 1 bit: 0 if false, 1 if true. Lastly, because `bool hasGameEnded`, `bool playerZeroWon`, and `bool playerOneWon` work in conjunction to express the state of the game (only 4 possibilities), we can combine them into 2 bits:
+However, `uint8[9] board` uses a lot of unnecessary reads/writes, and we don't need 8 bits to store data for a position on the board.
+Since there are only 3 valid states, 2 bits ($2^2=4$) are enough.
+Next, `bool turn` can easily be 1 bit: 0 if false, 1 if true.
+Lastly, because `bool hasGameEnded`, `bool playerZeroWon`, and `bool playerOneWon` work in conjunction to express the state of the game (only 4 possibilities), we can combine them into 2 bits:
+
 * the game is ongoing (`00`),
 * player zero has won (`10`),
 * player one has won (`11`),
 * and game is a draw (`01`).
 
 Altogether, we use just 21 bits (down from $8 \cdot 9 + 8 + 8 + 8 + 8 = 104$ when using the struct above) to represent everything:
-```
+
+```none showLineNumbers={false}
 [000000000000000000][00][0]
     • First 2 * 9 = 18 bits denote the board
     • Next 2 bits denote whether game is ongoing
     • Last bit denotes whose turn it is to play
 ```
 
-### Bitpacking Games Into `uint256`s Instead of Using Structs
-If we were to use a struct, we’d have to use `uint24`, so, instead, let’s store the players’ addresses separately in 2 mappings and store the game data in a third mapping:
-```solidity
+### Bitpacking games into `uint256`s instead of using structs
+
+If we were to use a struct, we'd have to use `uint24`, so, instead, let's store the players' addresses separately in 2 mappings and store the game data in a third mapping:
+
+```sol
 mapping(uint256 => address) public playerZeros;
 mapping(uint256 => address) public playerOnes;
 mapping(uint256 => uint256) public games;
 ```
 
-This way, we can store the games’ data slightly cheaper [by bitpacking consecutive games’ data](https://twitter.com/fiveoutofnine/status/1488627467245932545). The idea is to reduce as many zero slot writes as possible because writing to zero slots costs 20k gas, whereas writing to nonzero slots only costs 5k gas. We achieve this by bitpacking as many games’ data into a `uint256` (in this case, $\left\lfloor\frac{256}{21}\right\rfloor=12$, so we can fit up to 12 games in 1 `uint256`). This way, only every $12n^{\mathrm{th}}$ game will cost 20k gas to store, and every other game will only cost 5k gas. Retrieval and writing remains efficient:
-```solidity
+This way, we can store the games' data slightly cheaper [by bitpacking consecutive games' data](https://x.com/fiveoutofnine/status/1488627467245932545). The idea is to reduce as many zero slot writes as possible because writing to zero slots costs 20k gas, whereas writing to nonzero slots only costs 5k gas. We achieve this by bitpacking as many games' data into a `uint256` (in this case, $\left\lfloor\frac{256}{21}\right\rfloor=12$, so we can fit up to 12 games in 1 `uint256`). This way, only every $12n^{\mathrm{th}}$ game will cost 20k gas to store, and every other game will only cost 5k gas. Retrieval and writing remains efficient:
+
+```sol
 // Each `uint256` value has 12 games bitpacked into it.
 mapping(uint256 => uint256) public gameStates;
 
@@ -188,14 +247,15 @@ function writeGame(uint256 _gameId, uint256 _gameState) external {
 }
 ```
 
-### Final Representation
-Now, we have 3 mappings to keep track of all games’ data and players. With this set-up, storing each new game to storage costs roughly
+### Final representation
+
+Now, we have 3 mappings to keep track of all games' data and players. With this set-up, storing each new game to storage costs roughly
 
 $$20000 + 20000 + \frac{20000 + 5000 \cdot 12}{13} \approx 46154$$
 
-gas on average (2 zero slot writes for each of the players’ addresses, and $\approx 6154$ gas for the game’s state).
+gas on average (2 zero slot writes for each of the players' addresses, and $\approx 6154$ gas for the game's state).
 
-However, since addresses are only 160 bits, we can remove a write to storage by bitpacking the game’s state with one of the players’ addresses. Let’s arbitrarily pick player zero’s address for this. Combined, we have:
+However, since addresses are only 160 bits, we can remove a write to storage by bitpacking the game's state with one of the players' addresses. Let's arbitrarily pick player zero's address for this. Combined, we have:
 ```solidity
 // The first 21 bits are games' data, and the remaining 160 bits are player 0
 // addresses.
@@ -225,13 +285,13 @@ function writeGame(uint256 _gameId, uint256 _gameState) external {
     playerZerosAndGames[_gameId] = (_gameState << 160) | playerZero;
 }
 ```
-> *Note: in this particular case, since we need a minimum of 2 storage slots per new game anyway (2 player addresses already exceed 1 32-byte word), cutting down on the number of bits used to represent the game is not necessary—all else equal, using 96 bits ($256 - 160 = 96$) is just as efficient. However, I thought I’d describe the process here anyway, for when it might be applicable.*
+> *Note: in this particular case, since we need a minimum of 2 storage slots per new game anyway (2 player addresses already exceed 1 32-byte word), cutting down on the number of bits used to represent the game is not necessary—all else equal, using 96 bits ($256 - 160 = 96$) is just as efficient. However, I thought I'd describe the process here anyway, for when it might be applicable.*
 
 ## Fine-tuning the Representation
 For tic-tac-toe, the representation above is good enough. But if it were a different application, there might be extra considerations to take. These are highly dependent on the situation, but here are some common ones:
 
 ### Frequently Accessed Data
-The ordering of the first/last $n$ bits might help save on computation: they only require one of `>>` or `&` to access. Thus, if some information needs to be accessed more frequently than the others, it’d probably be wise to place it at the start/end.
+The ordering of the first/last $n$ bits might help save on computation: they only require one of `>>` or `&` to access. Thus, if some information needs to be accessed more frequently than the others, it'd probably be wise to place it at the start/end.
 
 ### Structuring Data To Remove Expensive Computation (Use The Value Itself!)
 An expensive computation on the EVM is the switch statement. Keeping this in mind, it may be wise to structure your representation to remove them. For example, suppose a 3-bit portion maps to 8 different outputs:
@@ -265,13 +325,13 @@ Instead, you could use `portion` as a value itself! The following code block is 
 // We multiply by 2 because each word is 4 bits long.
 return (0xF39D6C73 >> (portion << 2)) & 15;
 ```
-*See: [How to turn `if` blocks into 3 bit operations for small gas savings.](https://twitter.com/fiveoutofnine/status/1491894008049811458)*
+*See: [How to turn `if` blocks into 3 bit operations for small gas savings.](https://x.com/fiveoutofnine/status/1491894008049811458)*
 
 On a related note, you can often structure your representation and assign values in a way that allows for efficient group conditional checks (i.e. form it in a way that makes it easy to categorize). Some simple examples:
 * if the value is even, perform `x`, otherwise perform `y`;
 * if the value is greater than m, perform `x`, otherwise perform `y`;
 * if the value is a multiple of 8, perform `x`, otherwise perform `y`;
-* if the value’s 2nd to 5th bits are `010`, perform `x`, otherwise perform `y`.
+* if the value's 2nd to 5th bits are `010`, perform `x`, otherwise perform `y`.
 
 You can also combine one or more of these to form composite checks. For example, if the value is even and greater than `m`, perform `x`, otherwise perform `y`.
 
@@ -279,9 +339,9 @@ You can also combine one or more of these to form composite checks. For example,
 
 
 ### Pedantic Bit Packing: Is 21 Bits Good Enough?
-You may have realized that, for the tic-tac-toe example, we use 2 bits ($2^2 = 4$ total possibilities) per position, when there are only 3 possible states (empty, occupied by player 0, or occupied by player 1). Why not save 3 bits ($222222222_3$ is 15 bits long) by using a base 3 representation? We can then use just 18 bits ($15 + 3 = 18$) instead of 21—isn’t this better?
+You may have realized that, for the tic-tac-toe example, we use 2 bits ($2^2 = 4$ total possibilities) per position, when there are only 3 possible states (empty, occupied by player 0, or occupied by player 1). Why not save 3 bits ($222222222_3$ is 15 bits long) by using a base 3 representation? We can then use just 18 bits ($15 + 3 = 18$) instead of 21—isn't this better?
 
-Not really. Besides the point that we bitpack the game data with player 0’s address, consider the following: 18 bits allows us to store 14 ($\left\lfloor\frac{256}{18}\right\rfloor=14$) games per `uint256`, which means it costs $\frac{20000 + 5000\cdot 13}{14}\approx 6071$ gas on average to store a game’s data. Comparatively, 21 bits allows us to store 12 games per `uint256`, or $\frac{20000 + 5000\cdot 11}{12} = 6520$ gas on average. Although 449 gas is “saved” on the storage side, decoding and encoding base 3 is considerably more expensive with many division and mod operations (vs almost entirely using bit operations)$^{[1]}$.
+Not really. Besides the point that we bitpack the game data with player 0's address, consider the following: 18 bits allows us to store 14 ($\left\lfloor\frac{256}{18}\right\rfloor=14$) games per `uint256`, which means it costs $\frac{20000 + 5000\cdot 13}{14}\approx 6071$ gas on average to store a game's data. Comparatively, 21 bits allows us to store 12 games per `uint256`, or $\frac{20000 + 5000\cdot 11}{12} = 6520$ gas on average. Although 449 gas is “saved” on the storage side, decoding and encoding base 3 is considerably more expensive with many division and mod operations (vs almost entirely using bit operations)$^{[1]}$.
 
 Valid reasons (maybe) to be that pedantic about the number of bits is that (1) it results in major gas savings or (2) computation complexity for encoding/decoding is not an issue (e.g. it is only encoded/decoded in a view function). [On-chain art](https://www.0xchain.art/) is a category of projects/communities that are open to excessive efforts to compress storage, as well as a realm where it [generally] makes sense to do so.
 
@@ -674,7 +734,7 @@ function checkGameStateWithWhile(uint256 _board) internal pure returns (uint256)
 >
 > but what they don't realize is that the real savings come from efficient and well-designed mechanisms and architectures
 
-Source: [*Tweet by 0xSubway*](https://twitter.com/0xSubway/status/1506130207417126912)
+Source: [*Tweet by 0xSubway*](https://x.com/0xSubway/status/1506130207417126912)
 
 It's easy to get caught up in tactical tricks to make near-obsolete optimizations to your smart contracts. In fact, most of the techniques I shared on Twitter were never even intended to be "optimization tips," (bit twiddling can be quite useful outside of optimization) but I sort of ended up falling down that hole.
 
@@ -700,9 +760,9 @@ If you want to see some more advanced stuff, check out:
         
 ### Acknowledgements
 Thanks to people that helped proofread and give suggestions :)
-* [sudolabel](https://twitter.com/sudolabel)
-* [emre](https://twitter.com/emrecolako)
-* [virtual](https://twitter.com/9dd4134)
-* [0xsomnus](https://twitter.com/0xsomnus)
+* [sudolabel](https://x.com/sudolabel)
+* [emre](https://x.com/emrecolako)
+* [virtual](https://x.com/9dd4134)
+* [0xsomnus](https://x.com/0xsomnus)
 
-If you found this helpful, consider following me on Twitter [@fiveoutofnine](https://twitter.com/fiveoutofnine).
+If you found this helpful, consider following me on Twitter [@fiveoutofnine](https://x.com/fiveoutofnine).
