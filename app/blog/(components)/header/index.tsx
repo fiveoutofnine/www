@@ -1,8 +1,9 @@
-import { POSTS } from '../../posts';
 import BlogHeaderCopyLinkButton from './copy-link-button';
 
 import { H1 } from '@/components/templates/mdx';
 import RelativeDate from '@/components/templates/relative-date';
+
+import { POSTS } from '@/app/blog/posts';
 
 // -----------------------------------------------------------------------------
 // Props
