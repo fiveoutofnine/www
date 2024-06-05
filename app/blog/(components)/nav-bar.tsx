@@ -30,6 +30,9 @@ const BlogNavBar: React.FC = () => {
   const marginBottomProgress = useTransform(() => -24);
   const translateYProgress = useTransform(() => -48 * (1 - scrollProgress.get()));
 
+  // If there is no post found, return early with a spacer.
+  if (!post) return <div className="mb-6" aria-hidden={true} />;
+
   return (
     <motion.div
       className="pointer-events-auto sticky top-12 z-[99] flex h-12 w-full items-center border-b border-gray-6 bg-white px-4 dark:bg-black md:hidden"
