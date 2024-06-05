@@ -12,7 +12,7 @@ const getBlogPageMetadata = ({
   const title = POSTS.find((post) => post.slug === slug)?.title || '5/9 Blog Post';
   const images = [
     {
-      url: `https://fiveoutofnine.com/api/og/design?title=${title}&description=${description}`,
+      url: `https://fiveoutofnine.com/api/og/blog?title=${title}&description=${description}`,
       alt: `Open Graph image for ${title}`,
       width: 1200,
       height: 630,
