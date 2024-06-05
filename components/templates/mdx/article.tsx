@@ -31,7 +31,7 @@ const Article: React.FC<ArticleProps> = ({ className, fullBleedCodeBlocks = fals
                 'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-xl md:[&_[code-block-container]]:border-x',
                 // Pre
                 '[&_[code-block-pre]]:rounded-none',
-                'md:[&_[code-block-pre]]:rounded-xl',
+                'md:[&_[code-block-pre]]:rounded-b-xl',
               )
             : '',
           className,
