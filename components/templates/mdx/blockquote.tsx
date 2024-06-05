@@ -20,14 +20,17 @@ const Blockquote: React.FC<
         aria-hidden={true}
       />
       <div
-        className="w-full p-3 pl-4 text-base leading-normal [&>*]:my-0"
+        className="w-full py-3 pl-5 pr-4 text-base leading-normal [&>*]:my-0"
         mdx-blockquote-content=""
       >
         {children}
       </div>
       {source ? (
         <div
-          className="flex w-full gap-1.5 border-t border-gray-6 py-1.5 pl-4 pr-3 text-xs font-normal not-italic leading-4 text-gray-11"
+          // The right padding is intentionally shorter (even after adjusting
+          // for the index) than the left side by 4px because the indent makes
+          // the left side appear more cramped.
+          className="flex w-full gap-1.5 border-t border-gray-6 py-1.5 pl-5 pr-4 text-xs font-normal not-italic leading-4 text-gray-11"
           mdx-blockquote-source-content=""
         >
           <span className="pt-0.5 text-gray-11">
