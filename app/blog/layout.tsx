@@ -61,7 +61,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     // set to 0 on small devices is set to 0.
     <ContainerLayout className="relative flex max-w-3xl flex-col px-0 pb-6 pt-0">
       <BlogNavBar />
-      <Article>{children}</Article>
+      <Article fullBleedCodeBlocks>{children}</Article>
     </ContainerLayout>
   );
 }

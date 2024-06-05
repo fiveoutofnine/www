@@ -74,6 +74,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       className={twMerge(
         clsx(codeBlockContainerVariants({ roundedTop, containerized }), className),
       )}
+      code-block-container=""
       tabIndex={-1}
     >
       {hasHeader ? (

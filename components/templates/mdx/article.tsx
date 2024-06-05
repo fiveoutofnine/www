@@ -1,7 +1,19 @@
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const Article: React.FC<JSX.IntrinsicElements['article']> = ({ className, ...rest }) => {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type ArticleProps = JSX.IntrinsicElements['article'] & {
+  fullBleedCodeBlocks?: boolean;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+const Article: React.FC<ArticleProps> = ({ className, fullBleedCodeBlocks = false, ...rest }) => {
   return (
     <article
       className={twMerge(
@@ -12,6 +24,16 @@ const Article: React.FC<JSX.IntrinsicElements['article']> = ({ className, ...res
           'prose-h3:mb-2 prose-h3:mt-5 prose-h3:md:mb-4 prose-h3:md:mt-6',
           'prose-blockquote:border-gray-6',
           'prose-li:text-gray-11 prose-li:marker:text-gray-9',
+          fullBleedCodeBlocks
+            ? clsx(
+                // Container
+                '[&_[code-block-container]]:-mx-4 [&_[code-block-container]]:rounded-none [&_[code-block-container]]:border-x-0',
+                'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-xl md:[&_[code-block-container]]:border-x',
+                // Pre
+                '[&_[code-block-pre]]:rounded-none',
+                'md:[&_[code-block-pre]]:rounded-xl',
+              )
+            : '',
           className,
         ),
       )}

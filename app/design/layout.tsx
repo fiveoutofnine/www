@@ -66,7 +66,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     // set to 0 on small devices is set to 0.
     <ContainerLayout className="relative flex max-w-[90rem] flex-col space-x-0 px-0 pb-6 pt-0 md:flex-row md:space-x-16">
       <DesignNavBar />
-      <Article>
+      <Article fullBleedCodeBlocks={false}>
         {children}
         <hr className="mb-6 mt-6 w-full rounded-full border-gray-6 md:mt-12" role="separator" />
         <DesignPageNav />
