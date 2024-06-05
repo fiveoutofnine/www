@@ -9,8 +9,13 @@ import { toast } from '@/components/ui';
 const H3: React.FC<JSX.IntrinsicElements['h3']> = ({ children, ...rest }) => {
   const pathname = usePathname();
 
-  if (typeof children === 'string') {
-    const id = children
+  const stringChildren: string[] = (
+    Array.isArray(children) ? children : [typeof children === 'string' ? children : '']
+  ).filter((child) => typeof child === 'string' && child.length > 0);
+
+  if (stringChildren.length > 0) {
+    const id = stringChildren
+      .join('-')
       .toLowerCase()
       .replace(/[^\w\s-]/g, '') // Remove special characters
       .replace(/\s+/g, '-') // Replace spaces with hyphens
@@ -33,7 +38,7 @@ const H3: React.FC<JSX.IntrinsicElements['h3']> = ({ children, ...rest }) => {
             });
           }}
         >
-          {children}
+          <span>{children}</span>
           <Link className="hidden size-4 text-gray-11 animate-in fade-in-50 group-hover:flex group-focus-visible:flex" />
         </a>
       </h3>
