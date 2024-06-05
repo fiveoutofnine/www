@@ -37,13 +37,12 @@ export const calloutVariants = cva(
     'flex',
     'w-full',
     'overflow-hidden',
-    'p-3',
   ],
   {
     variants: {
       size: {
-        sm: ['text-xs', 'gap-1.5', 'rounded-md', 'leading-4'],
-        md: ['text-sm', 'gap-2', 'rounded-lg', 'leading-6'],
+        sm: ['text-xs', 'gap-1.5', 'p-2', 'rounded-md', 'leading-4'],
+        md: ['text-sm', 'gap-2', 'p-3', 'rounded-lg', 'leading-6'],
       },
       intent: {
         none: ['bg-gray-3', 'text-gray-12', 'border-gray-6'],

@@ -74,6 +74,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       className={twMerge(
         clsx(codeBlockContainerVariants({ roundedTop, containerized }), className),
       )}
+      code-block-container=""
       tabIndex={-1}
     >
       {hasHeader ? (
@@ -101,9 +102,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                     <div
                       key={i}
                       className={clsx(
-                        className,
                         codeBlockLineVariants({ breakLines }),
                         highlightLines.includes(i + 1) ? codeBlockLineHighlightedStyles : '',
+                        className,
                       )}
                       {...restLineProps}
                       code-block-line=""

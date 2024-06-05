@@ -30,37 +30,57 @@ import { twMerge } from 'tailwind-merge';
 
 export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({ className, ...rest }, ref) => (
-    <tbody ref={ref} className={twMerge(clsx(tableBodyStyles, className))} {...rest} />
+    <tbody
+      ref={ref}
+      className={twMerge(clsx(tableBodyStyles, className))}
+      table-body=""
+      {...rest}
+    />
   ),
 );
 
 export const TableCaption = forwardRef<HTMLTableCaptionElement, TableCaptionProps>(
   ({ className, ...rest }, ref) => (
-    <caption ref={ref} className={twMerge(clsx(tableCaptionStyles, className))} {...rest} />
+    <caption
+      ref={ref}
+      className={twMerge(clsx(tableCaptionStyles, className))}
+      table-caption=""
+      {...rest}
+    />
   ),
 );
 
 export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
   ({ className, ...rest }, ref) => (
-    <td ref={ref} className={twMerge(clsx(tableCellStyles, className))} {...rest} />
+    <td ref={ref} className={twMerge(clsx(tableCellStyles, className))} table-cell="" {...rest} />
   ),
 );
 
 export const TableFooter = forwardRef<HTMLTableSectionElement, TableFooterProps>(
   ({ className, ...rest }, ref) => (
-    <tfoot ref={ref} className={twMerge(clsx(tableFooterStyles, className))} {...rest} />
+    <tfoot
+      ref={ref}
+      className={twMerge(clsx(tableFooterStyles, className))}
+      table-footer=""
+      {...rest}
+    />
   ),
 );
 
 export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
   ({ className, ...rest }, ref) => (
-    <th ref={ref} className={twMerge(clsx(tableHeadStyles, className))} {...rest} />
+    <th ref={ref} className={twMerge(clsx(tableHeadStyles, className))} table-head="" {...rest} />
   ),
 );
 
 export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>(
   ({ className, ...rest }, ref) => (
-    <thead ref={ref} className={twMerge(clsx(tableHeaderStyles, className))} {...rest} />
+    <thead
+      ref={ref}
+      className={twMerge(clsx(tableHeaderStyles, className))}
+      table-header=""
+      {...rest}
+    />
   ),
 );
 
@@ -77,6 +97,7 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     <tr
       ref={ref}
       className={twMerge(clsx(tableRowStyles, className))}
+      table-row=""
       data-subcomponent={isSubComponent}
       {...rest}
     />

@@ -29,8 +29,8 @@ const FeatureDisplayMinimal: React.FC<FeatureDisplayMinimalProps> = ({
       className={twMerge(
         clsx(
           'flex h-[4.5rem] items-center justify-between rounded-xl border border-gray-6 bg-gray-2 px-4',
+          className,
         ),
-        className,
       )}
     >
       <div className="flex items-center">

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import { Fira_Code, Inter } from 'next/font/google';
+import { Inter } from 'next/font/google';
+import LocalFont from 'next/font/local';
 
 import './globals.css';
 import Web3Provider from './web3-provider';
@@ -14,7 +15,13 @@ import { Toaster } from '@/components/ui';
 // -----------------------------------------------------------------------------
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const firaCode = Fira_Code({ subsets: ['latin'], variable: '--font-fira-code' });
+// We load Fira Code locally because Google Font's `@font-face` definition
+// leaves out some important glyphs for a mono font (such as [box drawing
+// characters](http://unicode.org/charts/PDF/U2500.pdf)).
+const firaCode = LocalFont({
+  src: '../public/static/fonts/FiraCode-VariableFont_wght.ttf',
+  variable: '--font-fira-code',
+});
 
 // -----------------------------------------------------------------------------
 // Metadata

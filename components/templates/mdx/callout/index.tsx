@@ -28,11 +28,11 @@ const Callout: React.FC<CalloutProps> = ({
             : Lightbulb;
 
   return (
-    <div className={twMerge(clsx(calloutVariants({ size, intent }), className))}>
+    <div className={twMerge(clsx(calloutVariants({ size, intent }), className))} mdx-callout="">
       <span className={calloutIconContainerVariants({ size })}>
         <Icon className={calloutIconVariants({ size, intent })} />
       </span>
-      {children}
+      <span mdx-callout-content="">{children}</span>
     </div>
   );
 };

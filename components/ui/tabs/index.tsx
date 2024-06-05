@@ -102,7 +102,9 @@ const TabsTrigger = forwardRef(
       >
         <span className={clsx(tabsTriggerContentStyles)}>
           {icon ? <span className={clsx(tabsTriggerIconStyles)}>{icon}</span> : null}
-          <span className="group-data-[orientation=vertical]:mr-auto">{children}</span>
+          <span className="group-data-[orientation=vertical]:mr-auto" tab-content-trigger="">
+            {children}
+          </span>
           {stat !== undefined ? (
             <Badge
               className={clsx(tabsTriggerStatStyles)}

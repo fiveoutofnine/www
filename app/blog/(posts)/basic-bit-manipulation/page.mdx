@@ -1,0 +1,910 @@
+import clsx from 'clsx';
+
+import {
+  ANDGraphic,
+  ORGraphic,
+  SHLGraphic,
+  SHRGraphic,
+  TicTacToeBoardGraphic,
+  XORGraphic,
+} from './graphics';
+
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+export const metadata = getBlogPageMetadata({
+  slug: "basic-bit-manipulation",
+  description: "Bit operations and how to use them to gain more granular control of your code.",
+});
+
+<BlogHeader slug="basic-bit-manipulation" />
+
+Transacting on Ethereum is extremely expensive, so sometimes, it makes sense to aim for more granular control over your code.
+One way to achieve this is to utilize [bitwise operations](#bitwise-operators), like in the bit twiddling techniques I've posted on X [@fiveoutofnine](https://x.com/fiveoutofnine):
+
+* [quick/small mapping](https://x.com/i/status/1489997746526322688)
+* [bitpacking consecutive data to reduce storage costs](https://x.com/i/status/1488627467245932545)
+* [`if` blocks with 3 bit operations](https://x.com/i/status/1491894008049811458)
+* [basic operations](https://x.com/i/status/1488498870153715712)
+* [loop through some numbers without an array](https://x.com/i/status/1488374330258034692) +[extra](https://x.com/i/status/1488577514607976449)
+
+These operations/tricks are pretty different from other types of programming, so it may be fairly esoteric.
+Although I tried to give an application example with each post, it's still hard to see where/how to apply them yourself.
+A good example of a project with more extensive applications is my [on-chain chess engine](https://github.com/fiveoutofnine/fiveoutofnine-chess), but the contracts are probably a bit hard to follow for beginners.
+
+In this post, I attempt to explain some of these tricks and explain my thought process when applying them with a much simpler game: Tic-tac-toe.
+
+## Bitwise operators
+
+<Callout>
+  Feel free to [skip](/blog/basic-bit-manipulation#overview-of-tic-tac-toe) this section if you are already familiar with bitwise operators.
+</Callout>
+
+First, here are the basic bitwise operators used in the following Tic-tac-toe example: `>>`, `<<`, `&`, `|`, and `^`.
+
+<Grid.Root
+  className={clsx(
+    'sm:grid-cols-2',
+    'prose-blockquote:my-0',
+    'prose-p:text-sm prose-p:leading-normal prose-p:my-3',
+    '[&_[mdx-blockquote-content]]:p-2 [&_[mdx-blockquote-content]]:pl-3.5',
+    '[&_[mdx-blockquote-source-content]]:pl-3.5 [&_[mdx-blockquote-source-content]]:pr-2',
+  )}
+>
+  <Grid.Cell>
+    <Grid.CellTitle>
+      `>>` (SHR)
+    </Grid.CellTitle>
+    <Blockquote source={{ url: 'https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shifts' }}>
+      Digits are moved, or *shifted*, to the right. Zeros replace the discarded bits.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
+      <SHRGraphic />
+    </div>
+    <Callout className="my-0" size="sm" intent="none">
+      Shifting an integer $m$ right by $n$ bits results in $\left\lfloor\frac{m}{2^{n}}\right\rfloor$.
+    </Callout>
+  </Grid.Cell>
+  <Grid.Cell>
+    <Grid.CellTitle>
+      `<<` (SHL)
+    </Grid.CellTitle>
+    <Blockquote source={{ url: 'https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shifts' }}>
+      Digits are moved, or _shifted_, to the left. Zeros replace the discarded bits.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
+      <SHLGraphic />
+    </div>
+    <Callout className="my-0" size="sm" intent="none">
+      Shifting an integer $m$ left by $n$ bits results in $m\cdot 2^{n}$.
+    </Callout>
+  </Grid.Cell>
+  <Grid.Cell>
+    <Grid.CellTitle>
+      `&` (AND)
+    </Grid.CellTitle>
+    <Blockquote>
+      For each pair of digits, compute 1 if both are 1; otherwise, compute 0.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
+      <ANDGraphic />
+    </div>
+    <Callout className="my-0" size="sm" intent="none">
+      Since `&` only "accepts" the bit if both numbers' bits are `1`, you can construct a bitmask to select which bits of a number you want to read. For example, for some number $m$, if we want to read every other bit, we can compute `m & 1010...1010`.
+    </Callout>
+  </Grid.Cell>
+  <Grid.Cell>
+    <Grid.CellTitle>
+      `|` (OR)
+    </Grid.CellTitle>
+    <Blockquote>
+      For each pair of digits, compute 1 if either is 1; otherwise, compute 0.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
+      <ORGraphic />
+    </div>
+    <Callout className="my-0" size="sm" intent="none">
+      Since `|` "accepts" the bit as long as either numbers' bits are `1`, you can write a number's bits into another number, as long as the first number's bits in the same position are all `0`.
+    </Callout>
+  </Grid.Cell>
+  <Grid.Cell className="col-span-1 sm:col-span-2">
+    <Grid.CellTitle>
+      `^` (XOR)
+    </Grid.CellTitle>
+    <Blockquote>
+      For each pair of digits, compute 1 if they differ. Otherwise, compute 0.
+    </Blockquote>
+    <div className="w-full flex items-center justify-center p-4 my-3 border border-gray-6 rounded-lg select-none">
+      <XORGraphic />
+    </div>
+    <Callout className="my-0 prose-ul:inline-block" size="sm" intent="none">
+      `^` can be helpful in conjunction with `&` and `|` when overwriting a number's bits with another set of bits.
+    </Callout>
+  </Grid.Cell>
+</Grid.Root>
+
+Try working through the examples and notes to gain some foundational intuition.
+
+<Callout>
+  Numbers in this section with only 0s and 1s are in binary representation unless otherwise specified.
+</Callout>
+
+## Overview of Tic-tac-toe
+
+Before writing the contract, let's lay out the basic things required for a game of Tic-tac-toe.
+It's a 2-player game, and each player only has 1 type of move they can play (i.e. placing their respective symbol into an unoccupied square).
+When a move is inputted by a player, we have to validate a few things:
+
+* The player is 1 of the 2 players in the game.
+* It's the player's turn to play a move.
+
+Next, we have to check that the move is legal.
+If it is, we apply the move.
+
+Finally, we must check if the game has ended (i.e. either player has formed 3 consecutive dots).
+
+Writing this out as pseudocode in a function called `playMove`, we have:
+
+```sol showLineNumbers={false}
+function playMove(position) {
+    // Player validation
+    if ("player is not one of the 2 in the game") revert Error();
+    if ("it is not the player's turn") revert Error();
+
+    // Move validation
+    if ("the position has already been played in the board") revert Error();
+
+    // Apply move.
+    applyMove(position)
+
+    // Game ending scenario
+    if ("either player has formed 3 consecutive dots") {
+        ("set the winner and end the game")
+    }
+}
+```
+
+## Board/game state representation
+
+Now that we have an idea of all the information to store, let's come up with a representation in code.
+Keep in mind that the design should allow for efficient computation: the code will read the data and compute with it, so operations such as accessing, decoding, and storing should be cheap.
+Once we achieve both, since the game has to be stored fully on-chain and storage costs are (generally) the most expensive operation on the EVM, we can look towards using as few bits as possible.
+
+### Base representation
+
+A naive approach might look something like:
+
+```sol
+struct Game {
+    uint8[9] board; // 0 = empty, 1 = player 0, 2 = player 1
+    bool turn; // false = player 0, true = player 1
+    bool hasGameEnded;
+    bool playerZeroWon; // only set if `hasGameEnded` is true
+    bool playerOneWon; // only set if `hasGameEnded` is true
+    address playerZero;
+    address playerOne;
+}
+```
+
+If we were satisfied with this, we would make sure `struct Game` was [tightly packed](https://dev.to/javier123454321/solidity-gas-optimizations-pt-3-packing-structs-23f4), then proceed.
+
+However, `uint8[9] board` uses a lot of unnecessary reads/writes, and we don't need 8 bits to store data for a single position on the board.
+Since there are only 3 valid states, 2 bits are enough ($2^2=4$).
+Next, `bool turn` can easily be 1 bit: 0 if false, 1 if true.
+Lastly, because `bool hasGameEnded`, `bool playerZeroWon`, and `bool playerOneWon` work in conjunction to express the state of the game (only 4 possibilities), we can combine them into 2 bits:
+
+* the game is ongoing (`00`),
+* player zero has won (`10`),
+* player one has won (`11`),
+* and game is a draw (`01`).
+
+Altogether, we use just 21 bits (down from $8 \cdot 9 + 8 + 8 + 8 + 8 = 104$ when using the struct above) to represent everything:
+
+```none showLineNumbers={false}
+
+┌─────────────────────────── First 2 * 9 = 18 bits denote the board
+│                   ┌─────── Next 2 bits denote whether game is ongoing
+├──────────────────┐├──┐┌─┬─ Last bit denotes whose turn it is to play
+[000000000000000000][00][0]
+```
+
+### Bitpacking games into `uint256`s instead of using structs
+
+If we were to use a struct to store the game states, we'd have to use `uint24` because it's the smallest unit that fits 21 bits, which would waste 3 bits.
+Instead, let's store the players' addresses in 2 other mappings and have a third mapping exclusively to store game states:
+
+```sol highlightLines={[3]}
+mapping(uint256 => address) public playerZeros;
+mapping(uint256 => address) public playerOnes;
+mapping(uint256 => uint256) public games;
+```
+
+This allows us to [bitpack consecutive games' data](https://x.com/i/status/1488627467245932545) together and store it slightly cheaper.
+
+<Callout intent="none">
+  The idea is to reduce as many zero slot writes as possible because writing to zero slots costs 20k gas, whereas writing to nonzero slots only costs 5k gas.
+</Callout>
+
+We achieve this by bitpacking as many games' data into a `uint256` (in this case, $\left\lfloor\frac{256}{21}\right\rfloor=12$, so we can fit up to 12 games in 1 `uint256`).
+This way, only every $12n^{\mathrm{th}}$ game will cost 20k gas to store, and every other game will only cost 5k gas.
+Reading and writing remain efficient:
+
+```sol fileName="TicTacToe.sol"
+// Each `uint256` value has 12 games bitpacked into it.
+mapping(uint256 => uint256) public gameStates;
+
+// Each game is 21 bits, so the desired mask is
+// `0b111111111111111111111 = 0x1FFFFF` (21 `1`s).
+uint256 internal constant GAME_MASK = 0x1FFFFF;
+
+function retrieveGame(uint256 _gameId) external view returns (uint256) {
+    // Divide by 12 and take mod 12 because 12 games are bit packed into
+    // each `uint256`.
+    uint256 key = _gameId / 12;
+    uint256 index = _gameId % 12;
+
+    // Bit shift by `21 * index` to get to the desired game.
+    return (gameStates[key] >> (21 * index)) & GAME_MASK;
+}
+
+function writeGame(uint256 _gameId, uint256 _gameState) external {
+    uint256 key = _gameId / 12;
+    uint256 index = _gameId % 12;
+
+    // Read the entire `uint256` into memory first because it's cheaper to make all
+    // modifications in memory before writing the final result to storage.
+    uint256 gameUint256 = gameStates[key];
+
+    // This process overwrites whatever exists in the desired 21 bit slot with
+    // `_gameState` (see `XOR` in "Basic Bit Operations").
+    gameUint256 &= type(uint256).max ^ (GAME_MASK << index);
+    gameUint256 |= _gameState << (index * 21);
+
+    // Write to storage.
+    gameStates[key] = gameUint256;
+}
+```
+
+### Final representation
+
+Now, we have 3 mappings to keep track of all games' data and players.
+With this set-up, storing each new game to storage costs roughly
+
+<MathDisplay>
+  $$20000 + 20000 + \frac{20000 + 5000 \cdot 12}{13} \approx 46154\text{ gas}$$
+</MathDisplay>
+
+on average (2 zero slot writes for each of the players' addresses, and $\approx 6154$ gas for the game's state).
+
+Since addresses are only 160 bits, we can remove a write to storage by bitpacking the game's state with one of the players' addresses.
+Let's arbitrarily pick player zero's address for this.
+Combined, we have:
+
+```sol
+// The first 21 bits are games' data, and the remaining 160 bits are player 0
+// addresses.
+mapping(uint256 => uint256) public playerZerosAndGames;
+mapping(uint256 => address) public playerOnes;
+```
+
+Again, reading and writing remain efficient:
+
+```sol fileName="TicTacToe.sol"
+uint256 internal currentGameId;
+
+function createNewGame(address _playerZero, address _playerOne) {
+    uint256 gameId = currentGameId++;
+    // The first 21 bits are the game. We don't need to set anything for this
+    // because the all bits are 0 for the starting position.
+    playerZerosAndGames[gameId] = uint256(uint160(_playerZero));
+    playerOnes[gameId] = _playerOne;
+}
+
+function retrieveGame(uint256 _gameId) external view returns (uint256) {
+    return playerZerosAndGames[_gameId] >> 160;
+}
+
+function writeGame(uint256 _gameId, uint256 _gameState) external {
+    uint160 playerZero = uint160(playerZerosAndGames[_gameId]);
+    // Bit shift `_gameState` left by 160 to make space for player 0's address.
+    playerZerosAndGames[_gameId] = (_gameState << 160) | playerZero;
+}
+```
+
+<Callout intent="none">
+  In this particular case, since we need a minimum of 2 storage slots per new game anyway (2 player addresses already exceed 2 32-byte words), cutting down on the number of bits used to represent the game is not necessary&mdash;all else equal, using 96 bits ($256 - 160 = 96$) is just as efficient.
+  However, I thought I'd describe the process here anyway, for when it might be applicable.
+</Callout>
+
+## Fine-tuning the representation
+
+For Tic-tac-toe, the representation above is good enough.
+But if it were a different application, there might be extra considerations to take.
+These are highly dependent on the situation, so here are some common patterns:
+
+### Frequently accessed data
+
+The ordering of the first/last $n$ bits might help save on computation: they only require one of `>>` or `&` to access.
+Thus, if some information needs to be accessed more frequently than the others, it'd probably be wise to place it at the start/end.
+
+### Structuring data to remove expensive computations
+
+<Callout>
+  The main example here is more precisely described as a "branchless optimization," but the more general pattern of using the value itself to compute the result can be quite useful for other situations too.
+</Callout>
+
+An expensive computation on the EVM (and most computers) are [branch instructions](https://en.wikipedia.org/wiki/Branch_(computer_science)).
+Keeping this in mind, it may be wise to structure your representation to remove them.
+For example, suppose a 3-bit value `portion` maps to 8 different outputs as follows:
+
+```sol
+if      (portion == 0) return  3;
+else if (portion == 1) return  7;
+else if (portion == 2) return 12;
+else if (portion == 3) return  6;
+else if (portion == 4) return 13;
+else if (portion == 5) return  9;
+else if (portion == 6) return  3;
+else                   return 15;
+```
+
+Instead, we can use `portion` as a value itself as part of the computation!
+The following code block is equivalent to the series of if/else statements above:
+
+```sol
+//   value << wordSize * index
+// ----------------------------
+//   (  15 <<        4 *     7)
+// | (   3 <<        4 *     6)
+// | (   9 <<        4 *     5)
+// | (  13 <<        4 *     4)
+// | (   6 <<        4 *     3)
+// | (  12 <<        4 *     2)
+// | (   7 <<        4 *     1)
+// | (   3 <<        4 *     0)
+// = 0xF39D6C73.
+//
+// 15 is just 0b1111 (i.e. masks the 4 least significant bits).
+// `portion << 2` is the same thing as `portion * 4`.
+// We "multiply" by 4 because each word is 4 bits long.
+return (0xF39D6C73 >> (portion << 2)) & 15;
+```
+
+<Callout>
+  For a real-world example, see [this post](https://x.com/i/status/1491894008049811458).
+</Callout>
+
+On a related note, you can often structure your representation and assign values in a way that allows for efficient group conditional checks (i.e. form it in a way that makes it easy to categorize).
+Some simple examples:
+
+* if the value is even, perform `x`, otherwise perform `y`;
+* if the value is greater than m, perform `x`, otherwise perform `y`;
+* if the value is a multiple of 8, perform `x`, otherwise perform `y`;
+* if the value's 2nd to 5th bits are `010`, perform `x`, otherwise perform `y`.
+
+You can also combine one or more of these to form composite checks.
+For example, if the value is even and greater than `m`, perform `x`, otherwise perform `y`.
+
+<Callout>
+  For heavy usage of this concept in a [live deployment](https://etherscan.io/address/0xB543F9043b387cE5B3d1F0d916E42D8eA2eBA2E0), see [`generateMoves`](https://github.com/fiveoutofnine/fiveoutofnine-chess/blob/44e06ea20721a40950565cfc79523c4ed377e800/src/Chess.sol#L130) from [`Chess.sol`](https://github.com/fiveoutofnine/fiveoutofnine-chess/blob/main/src/Chess.sol).
+</Callout>
+
+### Pedantic bit packing: is 21 bits good enough?
+
+You may have realized that we use 2 bits ($2^2 = 4$ total possibilities) per position for the Tic-tac-toe example when there are only 3 possible states (empty, occupied by player 0, or occupied by player 1).
+Why not save 3 more bits ($222222222_3$ is 15 bits long) by using a base 3 representation for the board instead?
+We can then use just 18 bits ($15 + 3 = 18$)&mdash;isn't this better?
+
+Not really.
+Besides the point that we bitpack the game data with player 0's address, consider the following: 18 bits allows us to store 14 ($\left\lfloor\frac{256}{18}\right\rfloor=14$) games per `uint256`, which means it costs $\frac{20000 + 5000\cdot 13}{14}\approx 6071$ gas on average to store a game's data.
+Comparatively, 21 bits allows us to store 12 games per `uint256`, or $\frac{20000 + 5000\cdot 11}{12} = 6520$ gas on average.
+Although 449 gas is "saved" on the storage side, decoding and encoding base 3 is considerably more expensive with many division and mod operations (vs almost entirely using bit operations)<sup>1</sup>.
+
+Valid reasons (maybe) to be that pedantic about the number of bits is that (1) it results in major gas savings, or (2) computation complexity for encoding/decoding is not an issue (e.g. it's only encoded/decoded in a view function).
+[On-chain art](https://www.0xchain.art/) is a category of projects/communities that are open to excessive efforts to compress storage, as well as a realm where it often makes sense to.
+
+<Callout intent="none">
+  <sup>1</sup> We also later end up using the extra slot to make a slight optimization in checking whether a player won.
+  See subsection [Checking if a player won](#checking-if-a-player-won).
+</Callout>
+
+## User validation
+
+Recall that our player 0 is stored in `mapping(uint256 => uint256) public playerZerosAndGames`, where the first 160 bits represent player 0, and player 1 is stored in `mapping(uint256 => address) public playerOnes`.
+Thus, to check that `msg.sender` is either player 0 or player 1, we have:
+
+```sol highlightLines={[4]}
+address playerZero = address(uint160(playerZerosAndGames[_gameId]));
+address playerOne = playerOnes[_gameId];
+
+require(msg.sender == playerZero || msg.sender == playerOne);
+```
+
+Next, to check whether it's `msg.sender`'s turn to play, recall that the last bit of the board denotes whose turn it is to play: 0 if it's player 0's turn, and 1 if it's player 1's turn.
+In bit operations: if `board & 1 == 0`, it is player 0's turn, and if `board & 1 == 1`, it is player 1's turn.
+
+```sol highlightLines={[10, 12]}
+uint256 playerZeroAndGame = playerZerosAndGames[_gameId];
+// Store it in memory to compute upon, then push it to storage later all at once.
+// We access the game by bitshifting `playerZeroAndGame` to the right by 160.
+uint256 inMemGame = playerZeroAndGame >> 160;
+address playerZero = address(uint160(playerZeroAndGame));
+
+// `inMemGame & 1` retrieves whose turn it is to play.
+require(
+    // `msg.sender` is player 0, and it is their turn.
+    (msg.sender == playerZero && inMemGame & 1 == 0)
+        // `msg.sender` is player 1, and it is their turn.
+        || (msg.sender == playerOnes[_boardId] && inMemGame & 1 == 1)
+);
+```
+
+## Move validation
+
+After we have verified that `msg.sender` is the correct address to play, we must verify whether the move they inputted is valid.
+There are 2 necessary checks for this:
+
+1. the game is not over,
+2. and the position they inputted must be empty on the board.
+
+Recall that if the 3rd to 2nd last bits are `00`, the game is still ongoing.
+Therefore, checking whether the game is not over is as simple as reading those 2 bits and checking if they equal 0:
+
+```sol highlightLines={[2]}
+// 3 is just 0b11 (i.e. masks 2 bits)
+require((inMemGame >> 1) & 3 == 0);
+```
+
+Next, let `_index` denote the user's input, where they correspond to the following positions of the board:
+
+<div className="w-full flex justify-center">
+  <TicTacToeBoardGraphic />
+</div>
+
+Then, accessing the position corresponding to `_index` is just a matter of shifting to the correct position and, once again, masking 2 bits with 3 (`0b11`).
+This value must equal 0 (i.e. the square is empty) for the move to be valid:
+
+```sol highlightLines={[4]}
+// First, bit shift right by 3 to get the relevant bits (i.e. just the bits
+// denoting the board). Then, we bit shift to the correct position by shifting
+// right by `_index << 1` bits (note: each position takes up 2 bits).
+require(((inMemGame >> 3) >> (_index << 1)) & 3 == 0);
+```
+
+## Check game ending state
+
+### Intuition
+
+There are 4 possible ways for a player to win:
+
+1. form a horizontal line of 3,
+2. form a vertical line of 3,
+3. form a diagonal line of 3 from the bottom right corner to the top left corner,
+4. and form a diagonal line of 3 from the bottom left corner to the top right corner.
+
+If either player has satisfied one of those, the game is over. How do we determine that?
+
+Well, for each winning pattern, we can select the bits that correspond to the squares in that pattern.
+Then, if these bits all represent squares played entirely by player 0 or entirely by player 1, the game is over.
+
+### Winning pattern bitmasks
+
+Recall from earlier that we can select bits with the `&` operator and a mask.
+Let's denote
+
+1. `HORIZONTAL` for rows of 3,
+2. `VERTICAL` for columns of 3,
+3. `BR_TO_TL_DIAGONAL` for the diagonal from the bottom right corner of the board to the top left corner,
+4. and `BL_TO_TR_DIAGONAL` for the diagonal from the bottom left corner of the board to the top right corner.
+
+The following code block shows how they're computed (remember each square is represented by 2 bits):
+
+```sol
+//     1. 00 00 00
+//        00 00 00
+//        11 11 11
+//     => 0b111111 = 0x3F
+uint256 internal constant HORIZONTAL = 0x3F;
+//     2. 00 00 11
+//        00 00 11
+//        00 00 11
+//     => 0b11000011000011 = 0x30C3
+uint256 internal constant VERTICAL = 0x30C3;
+//     3. 11 00 00
+//        00 11 00
+//        00 00 11
+//     => 0b110000001100000011 = 0x30303
+uint256 internal constant BR_TO_TL_DIAGONAL = 0x30303;
+//     4. 00 00 11
+//        00 11 00
+//        11 -- --
+//     => 0b1100110011 = 0x333
+uint256 internal constant BL_TO_TR_DIAGONAL = 0x333;
+```
+
+### Applying the bitmasks
+
+The position we apply the mask on is also important. For example, if we apply the horizontal bit mask at the square of index `0`, we (correctly) select the following squares marked by `x`:
+
+<div className="w-full flex justify-center">
+  <TicTacToeBoardGraphic value="ooooooxxx" highlightIndices={[6, 7, 8]} />
+</div>
+
+Now, suppose we apply it at the square of index `1`:
+
+<div className="w-full flex justify-center">
+  <TicTacToeBoardGraphic value="oooooxxxo" highlightIndices={[5, 6, 7]} />
+</div>
+
+This is incorrect.
+The correct positions to apply them for each mask are shown below:
+
+<Table.Root className="my-0" containerClassName="-mx-4 w-screen md:mx-0 md:w-full">
+  <Table.Header>
+    <Table.Row>
+      <Table.Head>Bitmask</Table.Head>
+      <Table.Head>Applied at</Table.Head>
+      <Table.Head>Selected bits</Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell rowSpan={3}>`HORIZONTAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[8]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[6, 7, 8]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[5]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[3, 4, 5]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 1, 2]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell rowSpan={3}>`VERTICAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[8]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2, 5, 8]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[7]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[1, 4, 7]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[6]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 3, 6]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`BR_TO_TL_DIAGONAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[8]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 4, 8]} />
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`BL_TO_TR_DIAGONAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[6]} />
+      </Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2, 4, 6]} />
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
+
+Try working through them on paper!
+
+### Checking if a player won
+
+For each selected square, the corresponding pair of bits in the mask are `0b11`, or 3 in decimal representation.
+All other bits (i.e. those that aren't included by the mask) are `0`.
+Then, if the selected portion denotes squares entirely played by either player, it should be a scalar multiple of the mask that was used:
+
+* If `0b01` (1 in decimal) represents a square played by player 0, and all the selected squares were played by player 0, the selected portion should equal $\frac{\mathrm{MASK}}{3}$.
+* Similarly, if `0b10` (2 in decimal) represents a square played by player 1, and all the selected squares were played by player 1, the selected portion should equal $\frac{2\cdot\mathrm{MASK}}{3}$.
+
+This is fairly efficient to check, but we can do slightly better.
+If we use `0b00` for empty squares, `0b01` for player 0, and `0b10` for player 1, `0b11` represents nothing.
+What happens if we use `0b11` instead of `0b10` for player 1's moves?
+The selected portion should equal $\mathrm{MASK}$, instead of $\frac{2\cdot\mathrm{MASK}}{3}$!
+This is more efficient to check, so let's go with this.
+
+### Implementation
+
+`x` denotes the position the code is at, and `-` denotes bits that have been bitshifted off (and thus no longer relevant).
+
+```sol fileName="TicTacToe.sol"
+/// @return 0 if ongoing, 1 if player 0 has won, and 2 if player 1 has won.
+function checkGameState(uint256 _board) internal pure returns (uint256) {
+    // Last 4 bits denote information about whether the game is over and whose
+    // turn it is to play, so we ignore them.
+    _board >>= 4;
+    // • • •
+    // • • •
+    // • • x
+
+    uint256 gameState = checkGameStateHelper(_board, HORIZONTAL);
+    if (gameState != 0) return gameState;
+
+    gameState = checkGameStateHelper(_board, VERTICAL);
+    if (gameState != 0) return gameState;
+
+    gameState = checkGameStateHelper(_board, BR_TO_TL_DIAGONAL);
+    if (gameState != 0) return gameState;
+
+    _board >>= 2;
+    // • • •
+    // • • •
+    // • x -
+    gameState = checkGameStateHelper(_board, VERTICAL);
+    if (gameState != 0) return gameState;
+
+    _board >>= 2;
+    // • • •
+    // • • •
+    // x - -
+    gameState = checkGameStateHelper(_board, VERTICAL);
+    if (gameState != 0) return gameState;
+    gameState = checkGameStateHelper(_board, BL_TO_TR_DIAGONAL);
+    if (gameState != 0) return gameState;
+
+    _board >>= 2;
+    // • • •
+    // • • x
+    // - - -
+    gameState = checkGameStateHelper(_board, HORIZONTAL);
+    if (gameState != 0) return gameState;
+
+    _board >>= 6;
+    // • • x
+    // - - -
+    // - - -
+    gameState = checkGameStateHelper(_board, HORIZONTAL);
+    if (gameState != 0) return gameState;
+
+    return 0;
+}
+
+function checkGameStateHelper(uint256 _board, uint256 _mask)
+    internal pure
+    returns (uint256)
+{
+    return (_board & _mask) == _mask
+        ? 2 // All squares are player 1's.
+        : (_board & _mask) == (_mask / 3)
+            ? 1 // All square are player 0's.
+            : 0; // No win situation.
+}
+```
+
+## Check game ending state w/ while loop (bonus)
+
+<Callout>
+  This section is just for fun (and has some cool bit twiddling patterns).
+</Callout>
+
+The code above looks kinda ugly/redundant.
+Let's use a `while` loop instead, so we don't have `checkGameStateHelper` so many times.
+We can do this by bitpacking the win-pattern-checking masks consecutively into a `uint256 masks` (in the order they are used), as well as bitpacking the number of bits the board is shifted by after each check into a `uint256 boardShifts`.
+
+Then, starting at index 0, we can iterate through the board masks and apply the board shifts after each check to make our way through the entire board as follows:
+
+<Table.Root className="my-0" containerClassName="-mx-4 w-screen md:mx-0 md:w-full">
+  <Table.Header>
+    <Table.Row>
+      <Table.Head>Board</Table.Head>
+      <Table.Head>Bitmask</Table.Head>
+      <Table.Head>Check</Table.Head>
+      <Table.Head>Shift</Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell rowSpan={3}>
+        <TicTacToeBoardGraphic highlightIndices={[8]} />
+      </Table.Cell>
+      <Table.Cell>`HORIZONTAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[6, 7, 8]} />
+      </Table.Cell>
+      <Table.Cell>0</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`VERTICAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2, 5, 8]} />
+      </Table.Cell>
+      <Table.Cell>0</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`BR_TO_TL_DIAGONAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 4, 8]} />
+      </Table.Cell>
+      <Table.Cell>2</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[7]} />
+      </Table.Cell>
+      <Table.Cell>`VERTICAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[1, 4, 7]} />
+      </Table.Cell>
+      <Table.Cell>2</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell rowSpan={2}>
+        <TicTacToeBoardGraphic highlightIndices={[6]} />
+      </Table.Cell>
+      <Table.Cell>`VERTICAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[0, 3, 6]} />
+      </Table.Cell>
+      <Table.Cell>0</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>`BL_TO_TR_DIAGONAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2, 4, 6]} />
+      </Table.Cell>
+      <Table.Cell>2</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[5]} />
+      </Table.Cell>
+      <Table.Cell>`HORIZONTAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[3, 4, 5]} />
+      </Table.Cell>
+      <Table.Cell>6</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[2]} />
+      </Table.Cell>
+      <Table.Cell>`HORIZONTAL`</Table.Cell>
+      <Table.Cell>
+        <TicTacToeBoardGraphic highlightIndices={[3, 4, 5]} />
+      </Table.Cell>
+      <Table.Cell>0</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table.Root>
+
+### Computing `masks` and `boardShifts`
+
+Since the largest mask is 18 bits, and $9\cdot 18 < 256$, we can safely reserve 18 bits for each "word" within `uint256 masks`:
+
+<MathDisplay className="[&>span]:my-0">
+$$
+\begin{align*}
+  &\texttt{HORIZONTAL} \\
+  &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 1)\\
+  &\mathbin{|}(\texttt{BR\_TO\_TL\_DIAGONAL} &\texttt{<< } &18\cdot 2)\\
+  &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 3)\\
+  &\mathbin{|}(\texttt{VERTICAL}          &\texttt{<< } &18\cdot 4)\\
+  &\mathbin{|}(\texttt{BL\_TO\_TR\_DIAGONAL} &\texttt{<< } &18\cdot 5)\\
+  &\mathbin{|}(\texttt{HORIZONTAL}        &\texttt{<< } &18\cdot 6)\\
+  &\mathbin{|}(\texttt{HORIZONTAL}        &\texttt{<< } &18\cdot 7)\\
+  &=\texttt{0xFC003F00CCC186106187030306184003F}
+\end{align*}
+$$
+</MathDisplay>
+
+Next, since the largest shift is 6, we can safely use 3 bits (`0b111 > 6`) for each "word" within `uint256 boardShifts`:
+
+<MathDisplay className="[&>span]:my-0">
+$$
+\begin{align*}
+  &0\\
+  &\mathbin{|}(0 \texttt{ << } 3\cdot 1)\\
+  &\mathbin{|}(2 \texttt{ << } 3\cdot 2)\\
+  &\mathbin{|}(2 \texttt{ << } 3\cdot 3)\\
+  &\mathbin{|}(0 \texttt{ << } 3\cdot 4)\\
+  &\mathbin{|}(2 \texttt{ << } 3\cdot 5)\\
+  &\mathbin{|}(6 \texttt{ << } 3\cdot 6)\\
+  &=\texttt{0x190480}
+\end{align*}
+$$
+</MathDisplay>
+
+### Implementation
+
+```sol fileName="TicTacToe.sol"
+function checkGameStateWithWhile(uint256 _board) internal pure returns (uint256) {
+    // Last 4 bits denote information about whether the game is over and whose turn
+    // it is toplay, so we ignore them.
+    _board >>= 4;
+
+    uint256 masks = 0xFC003F00CCC186106187030306184003F;
+
+    // Since the largest shift is 6, we can safely reserve 3 bits (1 << 3 = 8 < 6) for each
+    // shift:
+    //                                      0
+    //                                      | (0 << 3 * 1)
+    //                                      | (2 << 3 * 2)
+    //                                      | (2 << 3 * 3)
+    //                                      | (0 << 3 * 4)
+    //                                      | (2 << 3 * 5)
+    //                                      | (6 << 3 * 6)
+    //                                      = 0x190480
+    uint256 boardShifts = 0x190480;
+
+    while (masks != 0) {
+        // 0x3FFFF = 0b11...11 (18 1's)
+        uint256 mask = masks & 0x3FFFF;
+        if (_board & mask == mask) return 2;
+        else if (_board & mask == (mask / 3)) return 1;
+
+        _board >>= (boardShifts & 7);
+        masks >>= 18;
+        boardShifts >>= 3;
+    }
+
+    return 0;
+}
+```
+
+## Conclusion
+
+<Blockquote source={{ label: '0xSubway', url: 'https://x.com/i/status/1506130207417126912' }}>
+  So many people see low-level solidity optimizations from people like [@transmissions11](https://x.com/transmissions11)
+  and think that it's the key to optimizing their project
+  <br />
+  but what they don't realize is that the real savings come from efficient and well-designed mechanisms and architectures
+</Blockquote>
+
+It's easy to get caught up in tactical tricks to make near-obsolete optimizations to your smart contracts.
+Most of the techniques I shared on X were never even intended to be "optimization tips," (bit twiddling can be quite useful outside of optimization), but I sort of ended up falling down that hole.
+
+Of course, it's always fun to discover and share tricks like this!
+But many of them (especially bit twiddling) have *extremely* niche applications, so ask yourself whether it really makes sense to obfuscate your code for small optimizations before applying them.
+
+### Extra reading/resources
+
+If you want to see some more advanced stuff, check out:
+
+* Lists
+  * Sean Anderson's [Bit Twiddling Hacks](https://graphics.stanford.edu/~seander/bithacks.html)
+  * [The Aggregate Magic Algorithms](http://aggregate.org/MAGIC/)
+  * [HAKHEM](http://www.inwap.com/pdp10/hbaker/hakmem/hakmem.html)
+  * [Assembly Language Lab](http://www.azillionmonkeys.com/qed/asmexample.html)
+* Books
+  * Hacker's Delight 2nd Edition ([Amazon](https://www.amazon.com/Hackers-Delight-2nd-Henry-Warren/dp/0321842685), [IPFS URI](https://ipfs.io/ipfs/bafykbzacedcjrpilvhgfkt5ampruid6qpwdcvjh2gpo44z6dqg5oq7hryysk4))
+  * [Chapter 1: "Bit Wizardry" of "Matters Computational"](https://www.jjj.de/fxt/fxtbook.pdf)
+* Other
+  * [`fiveoutofnine/on-chain-chess`](https://github.com/fiveoutofnine/fiveoutofnine-chess)
+  * [Fast Inverse Square Root &mdash; A Quake III Algorithm](https://youtu.be/p8u_k2LIZyo) (a lot of people's first exposure to bit twiddling)
+  * [Reciprocal Multiplication, a tutorial](http://homepage.divms.uiowa.edu/~jones/bcd/divide.html)
+
+If you found this helpful, consider following me on X [@fiveoutofnine](https://x.com/fiveoutofnine).
