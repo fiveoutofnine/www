@@ -21,19 +21,19 @@ export const metadata = getBlogPageMetadata({
 <BlogHeader slug="basic-bit-manipulation" />
 
 Transacting on Ethereum is extremely expensive, so sometimes, it makes sense to aim for more granular control over your code.
-One way to achieve this is to utilize [bitwise operations](#bitwise-operators), like the bit twiddling techniques I've posted on X [@fiveoutofnine](https://x.com/fiveoutofnine):
+One way to achieve this is to utilize [bitwise operations](#bitwise-operators), like in the bit twiddling techniques I've posted on X [@fiveoutofnine](https://x.com/fiveoutofnine):
 
-* [quick/small mapping](https://x.com/fiveoutofnine/status/1489997746526322688)
-* [bitpacking consecutive data to reduce storage costs](https://x.com/fiveoutofnine/status/1488627467245932545)
-* [`if` blocks with 3 bit operations](https://x.com/fiveoutofnine/status/1491894008049811458)
-* [basic operations](https://x.com/fiveoutofnine/status/1488498870153715712)
-* [loop through some numbers without an array](https://x.com/fiveoutofnine/status/1488374330258034692) +[extra](https://x.com/fiveoutofnine/status/1488577514607976449)
+* [quick/small mapping](https://x.com/i/status/1489997746526322688)
+* [bitpacking consecutive data to reduce storage costs](https://x.com/i/status/1488627467245932545)
+* [`if` blocks with 3 bit operations](https://x.com/i/status/1491894008049811458)
+* [basic operations](https://x.com/i/status/1488498870153715712)
+* [loop through some numbers without an array](https://x.com/i/status/1488374330258034692) +[extra](https://x.com/i/status/1488577514607976449)
 
-These operations/tricks are pretty different from other aspects of coding, so it may be fairly esoteric to those without experience.
+These operations/tricks are pretty different from other types of programming, so it may be fairly esoteric.
 Although I tried to give an application example with each post, it's still hard to see where/how to apply them yourself.
 A good example of a project with more extensive applications is my [on-chain chess engine](https://github.com/fiveoutofnine/fiveoutofnine-chess), but the contracts are probably a bit hard to follow for beginners.
 
-In this post, I attempt to explain some of these tricks and explain my thought process when applying them with a much simpler game: tic-tac-toe.
+In this post, I attempt to explain some of these tricks and explain my thought process when applying them with a much simpler game: Tic-tac-toe.
 
 ## Bitwise operators
 
@@ -41,7 +41,7 @@ In this post, I attempt to explain some of these tricks and explain my thought p
   Feel free to [skip](/blog/basic-bit-manipulation#overview-of-tic-tac-toe) this section if you are already familiar with bitwise operators.
 </Callout>
 
-First, here are the basic bitwise operators used in the following tic-tac-toe example: `>>`, `<<`, `&`, `|`, and `^`.
+First, here are the basic bitwise operators used in the following Tic-tac-toe example: `>>`, `<<`, `&`, `|`, and `^`.
 
 <Grid.Root
   className={clsx(
@@ -49,6 +49,7 @@ First, here are the basic bitwise operators used in the following tic-tac-toe ex
     'prose-blockquote:my-0',
     'prose-p:text-sm prose-p:leading-normal prose-p:my-3',
     '[&_[mdx-blockquote-content]]:p-2 [&_[mdx-blockquote-content]]:pl-3.5',
+    '[&_[mdx-blockquote-source-content]]:pl-3.5 [&_[mdx-blockquote-source-content]]:pr-2',
   )}
 >
   <Grid.Cell>
@@ -131,7 +132,7 @@ Try working through the examples and notes to gain some foundational intuition.
 
 ## Overview of Tic-tac-toe
 
-Before writing the contract, let's lay out the basic things required for a game of tic-tac-toe.
+Before writing the contract, let's lay out the basic things required for a game of Tic-tac-toe.
 It's a 2-player game, and each player only has 1 type of move they can play (i.e. placing their respective symbol into an unoccupied square).
 When a move is inputted by a player, we have to validate a few things:
 
@@ -186,7 +187,7 @@ struct Game {
 }
 ```
 
-If I was satisfied with this, I would make sure `struct Game` was [tightly packed](https://dev.to/javier123454321/solidity-gas-optimizations-pt-3-packing-structs-23f4), then proceed.
+If we were satisfied with this, we would make sure `struct Game` was [tightly packed](https://dev.to/javier123454321/solidity-gas-optimizations-pt-3-packing-structs-23f4), then proceed.
 
 However, `uint8[9] board` uses a lot of unnecessary reads/writes, and we don't need 8 bits to store data for a single position on the board.
 Since there are only 3 valid states, 2 bits are enough ($2^2=4$).
@@ -219,7 +220,7 @@ mapping(uint256 => address) public playerOnes;
 mapping(uint256 => uint256) public games;
 ```
 
-This allows us to [bitpack consecutive games' data](https://x.com/fiveoutofnine/status/1488627467245932545) together and store it slightly cheaper.
+This allows us to [bitpack consecutive games' data](https://x.com/i/status/1488627467245932545) together and store it slightly cheaper.
 
 <Callout intent="none">
   The idea is to reduce as many zero slot writes as possible because writing to zero slots costs 20k gas, whereas writing to nonzero slots only costs 5k gas.
@@ -312,12 +313,13 @@ function writeGame(uint256 _gameId, uint256 _gameState) external {
 ```
 
 <Callout intent="none">
-  In this particular case, since we need a minimum of 2 storage slots per new game anyway (2 player addresses already exceed 2 32-byte words), cutting down on the number of bits used to represent the game is not necessary&mdash;all else equal, using 96 bits ($256 - 160 = 96$) is just as efficient. However, I thought I'd describe the process here anyway, for when it might be applicable.
+  In this particular case, since we need a minimum of 2 storage slots per new game anyway (2 player addresses already exceed 2 32-byte words), cutting down on the number of bits used to represent the game is not necessary&mdash;all else equal, using 96 bits ($256 - 160 = 96$) is just as efficient.
+  However, I thought I'd describe the process here anyway, for when it might be applicable.
 </Callout>
 
 ## Fine-tuning the representation
 
-For tic-tac-toe, the representation above is good enough.
+For Tic-tac-toe, the representation above is good enough.
 But if it were a different application, there might be extra considerations to take.
 These are highly dependent on the situation, so here are some common patterns:
 
@@ -347,7 +349,7 @@ else if (portion == 6) return  3;
 else                   return 15;
 ```
 
-Instead, you could use `portion` as a value itself as part of the computation!
+Instead, we can use `portion` as a value itself as part of the computation!
 The following code block is equivalent to the series of if/else statements above:
 
 ```sol
@@ -370,7 +372,7 @@ return (0xF39D6C73 >> (portion << 2)) & 15;
 ```
 
 <Callout>
-  For a real-world example, see [this post](https://x.com/fiveoutofnine/status/1491894008049811458).
+  For a real-world example, see [this post](https://x.com/i/status/1491894008049811458).
 </Callout>
 
 On a related note, you can often structure your representation and assign values in a way that allows for efficient group conditional checks (i.e. form it in a way that makes it easy to categorize).
@@ -390,7 +392,7 @@ For example, if the value is even and greater than `m`, perform `x`, otherwise p
 
 ### Pedantic bit packing: is 21 bits good enough?
 
-You may have realized that we use 2 bits ($2^2 = 4$ total possibilities) per position for the tic-tac-toe example when there are only 3 possible states (empty, occupied by player 0, or occupied by player 1).
+You may have realized that we use 2 bits ($2^2 = 4$ total possibilities) per position for the Tic-tac-toe example when there are only 3 possible states (empty, occupied by player 0, or occupied by player 1).
 Why not save 3 more bits ($222222222_3$ is 15 bits long) by using a base 3 representation for the board instead?
 We can then use just 18 bits ($15 + 3 = 18$)&mdash;isn't this better?
 
