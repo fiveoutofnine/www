@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
     // Don't log views outside of production.
     if (process.env.NODE_ENV !== 'production') return;
 
-    const slug = url.pathname.split('/').pop();
+    const slug = url.pathname.split('/').pop()?.toLowerCase();
     if (slug) {
       const id = encodeURIComponent(slug);
 
@@ -18,3 +18,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 }
+
+export const config = {
+  matcher: ['/blog/:path*'],
+};
