@@ -40,13 +40,13 @@ export async function GET(request: NextRequest) {
 
     // Check if the view is a duplicate (same IP address on the post within the
     // last 24 hours).
-    const seen = await redis.set(`blog:view_deduplicates:${id}:${hash}`, true, {
+    const isNew = await redis.set(`blog:view_deduplicates:${id}:${hash}`, true, {
       nx: true,
       ex: 86_400,
     });
 
-    // Increment post visitor count if `seen` is false.
-    visitors = await redis.hincrby('blog:visitors', id, !seen ? 1 : 0);
+    // Increment post visitor count if `isNew` is true.
+    visitors = await redis.hincrby('blog:visitors', id, isNew ? 1 : 0);
   }
 
   // Update post view count.
