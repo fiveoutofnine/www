@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 
   // Update visitor count if `ip` is defined.
   let visitors = 0;
-  if (!ip) {
+  if (ip) {
     const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip));
     const hash = Array.from(new Uint8Array(buffer))
       .map((b) => b.toString(16).padStart(2, '0'))
