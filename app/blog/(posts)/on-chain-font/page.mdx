@@ -1,0 +1,42 @@
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+export const metadata = getBlogPageMetadata({
+  slug: "on-chain-font",
+  description: "A guide to generating optimized font files to put on-chain.",
+});
+
+<BlogHeader slug="on-chain-font" />
+
+<Callout size="sm">
+  This post is about condensing font files to store them on-chain. Click [here](#guide) to skip to the guide.
+</Callout>
+
+I [enjoy](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) fully on-chain projects for many reasons:
+
+* Strongest guarantees of transparency, permanence, and immutability
+* Native composition with anything else on-chain and [dynamicism](https://j.mirror.xyz/w8wSN3JLHK1_oNoi2lLF-67w60Wt1WypS_kIbmsYSfE)
+* Constraint-driven creativity and innovation
+
+I've deployed a few on-chain projects
+([1](https://etherscan.io/address/0xB543F9043b387cE5B3d1F0d916E42D8eA2eBA2E0),
+ [2](https://etherscan.io/address/0x00000000A84FcdF3E9C165e6955945E87dA2cB0D),
+ [3](https://etherscan.io/address/0x0000000Ff428Cfe880A7b816FE1216184c728B21),
+ [4](https://etherscan.io/address/0x0000000006bC8D9e5e9d436217B88De704a9F307),
+ [5](https://etherscan.io/address/0xC0ffeEb30F5aAA18Cd0a799F6dA1bdcb46f63C44),
+ [6](https://etherscan.io/address/0x2010009c4842e6B6d2630A07Dd6469172affb4dc),
+ [7](https://etherscan.io/address/0x6f2df6c95d80e359a25b6a549037f3b70879b343),
+ [8](https://basescan.org/address/0x8cCd70b1B74eA505dbA39d2D11C3aB6a2CB14A8c),
+ [9](https://basescan.org/address/0xaDBa25b5f5035B4BBfd7b1f2eA3152FDc286474B),
+ [10](https://basescan.org/address/0x555555554F0ef522f41B2C46D941DEB4d731eB65)),
+and because of the reasons outlined above, nearly every implementation and design choice was made very deliberately.
+
+A commonly required task was to include font files fully on-chain to ensure accurate and consistent rendering of text across all browsers (no fallback fonts or external dependencies to load them in).
+However, font files can be quite large (>100 KB), and storing them on-chain can be expensive.
+
+Luckily, you can usually reduce this by >95% to just 2-4 KB with a few optimizations (depending on your usecase)!
+
+## Guide
+
+This post outlines a method to generate optimized font files that can be stored on-chain for a fraction of the cost.
