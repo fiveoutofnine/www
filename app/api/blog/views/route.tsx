@@ -24,10 +24,24 @@ export async function GET(request: NextRequest) {
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
 
-  // Update post view count.
+  // Encode ID.
   const id = encodeURIComponent(slug);
+
+  // Check if the view is a duplicate.
+  /* const isNew = await redis.set(`blog:view_deduplicates:${id}:${hash}`, true, {
+    nx: true,
+    ex: 60,
+  }); */
+
+  // Update post view count.
   const views = 0;
   //const views = await redis.hincrby('blog:views', id, 1);
 
   return NextResponse.json({ id, views, hash }, { status: 200 });
 }
+
+// -----------------------------------------------------------------------------
+// Next.js config
+// -----------------------------------------------------------------------------
+
+export const runtime = 'edge';
