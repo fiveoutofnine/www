@@ -1,43 +1,53 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
-// import redis from '@/lib/services/redis';
+import redis from '@/lib/services/redis';
+
 import { POSTS } from '@/app/blog/posts';
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.nextUrl);
-  const slug = url.searchParams.get('slug')?.toLowerCase();
+  const id = url.searchParams.get('id')?.toLowerCase();
 
   // Return error if missing field.
-  if (!slug) {
-    return NextResponse.json({ error: 'Missing slug' }, { status: 400 });
+  if (!id) {
+    return NextResponse.json(
+      { error: 'Missing `id` (`encodeURIComponent(slug)`)' },
+      { status: 400 },
+    );
   }
 
   // Return error if the post does not exist.
+  const slug = decodeURIComponent(id);
   if (!POSTS.find((post) => post.slug === slug)) {
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
 
   // Hash IP.
   const ip = request.ip;
-  const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip));
-  const hash = Array.from(new Uint8Array(buffer))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
 
-  // Encode ID.
-  const id = encodeURIComponent(slug);
+  // Update visitor count if `ip` is defined.
+  let visitors = 0;
+  if (!ip) {
+    const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip));
+    const hash = Array.from(new Uint8Array(buffer))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
 
-  // Check if the view is a duplicate.
-  /* const isNew = await redis.set(`blog:view_deduplicates:${id}:${hash}`, true, {
-    nx: true,
-    ex: 60,
-  }); */
+    // Check if the view is a duplicate (same IP address on the post within the
+    // last 24 hours).
+    const isNew = await redis.set(`blog:view_deduplicates:${id}:${hash}`, true, {
+      nx: true,
+      ex: 86_400,
+    });
+
+    // Increment post visitor count if `isNew` is true.
+    visitors = await redis.hincrby('blog:visitors', id, isNew ? 1 : 0);
+  }
 
   // Update post view count.
-  const views = 0;
-  //const views = await redis.hincrby('blog:views', id, 1);
+  const views = await redis.hincrby('blog:views', id, 1);
 
-  return NextResponse.json({ id, views, hash }, { status: 200 });
+  return NextResponse.json({ id, views, visitors }, { status: 200 });
 }
 
 // -----------------------------------------------------------------------------
