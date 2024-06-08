@@ -6,9 +6,9 @@ import { POSTS } from '@/app/blog/posts';
 
 export async function GET(request: NextRequest) {
   // Return early if outside production.
-  /* if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     return NextResponse.json({ error: 'Not available outside production' }, { status: 400 });
-  } */
+  }
 
   const url = new URL(request.nextUrl);
   const id = url.searchParams.get('id')?.toLowerCase();
