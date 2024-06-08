@@ -1,4 +1,5 @@
 import BlogHeaderCopyLinkButton from './copy-link-button';
+import BlogViewCountTracker from './view-count-tracker';
 
 import { H1 } from '@/components/templates/mdx';
 import RelativeDate from '@/components/templates/relative-date';
@@ -33,6 +34,7 @@ const BlogHeader: React.FC<BlogHeaderProps> = ({ slug }) => {
         </div>
         <BlogHeaderCopyLinkButton slug={slug} />
       </div>
+      <BlogViewCountTracker slug={slug} />
     </header>
   );
 };
