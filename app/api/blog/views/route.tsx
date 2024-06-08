@@ -5,6 +5,11 @@ import redis from '@/lib/services/redis';
 import { POSTS } from '@/app/blog/posts';
 
 export async function GET(request: NextRequest) {
+  // Return early if outside production.
+  /* if (process.env.NODE_ENV !== 'production') {
+    return NextResponse.json({ error: 'Not available outside production' }, { status: 400 });
+  } */
+
   const url = new URL(request.nextUrl);
   const id = url.searchParams.get('id')?.toLowerCase();
 
@@ -47,7 +52,7 @@ export async function GET(request: NextRequest) {
   // Update post view count.
   const views = await redis.hincrby('blog:views', id, 1);
 
-  return NextResponse.json({ id, views, visitors }, { status: 200 });
+  return NextResponse.json({ id, views, visitors, ip }, { status: 200 });
 }
 
 // -----------------------------------------------------------------------------
