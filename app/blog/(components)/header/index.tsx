@@ -1,5 +1,7 @@
 import BlogHeaderCopyLinkButton from './copy-link-button';
 
+import redis from '@/lib/services';
+
 import { H1 } from '@/components/templates/mdx';
 import RelativeDate from '@/components/templates/relative-date';
 
