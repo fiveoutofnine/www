@@ -1,8 +1,6 @@
 import { type NextRequest } from 'next/server';
 
-import { Redis } from '@upstash/redis';
-
-const redis = new Redis({ url: process.env.UPSTASH_URL, token: process.env.UPSTASH_TOKEN });
+import redis from '@/lib/services/redis';
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
