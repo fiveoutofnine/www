@@ -10,7 +10,7 @@ export const metadata = getBlogPageMetadata({
 <BlogHeader slug="on-chain-font" />
 
 <Callout size="sm">
-  This post is about condensing font files to store them on-chain. Click [here](#guide) to skip to the guide.
+  This post is about condensing font files to store them on-chain. Click [here](#condensing-the-font) to skip to the guide.
 </Callout>
 
 I [enjoy](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) fully on-chain projects for many reasons:
@@ -37,16 +37,104 @@ and one of the most common tasks was to include font files fully on-chain for ac
 If font files aren't included on-chain, clients have to select fallback fonts, and the guarantee of accurate rendering is destroyed.
 Similarly, if font files are loaded in via external dependencies (e.g. Google Fonts), the transparency/permanence/immutability guarantees are greatly weakened.
 
-The challenge is font files can be quite large (>100 KB), and storing them on-chain can be expensive.
-Luckily, depending on your usecase, you can usually reduce this by >95% to just 2-4 KB with a few optimizations.
+The challenge is that font files can be quite large (>100 KB), and storing them on-chain can be expensive.
+Luckily, depending on your usecase, you can usually reduce this by >95% to just 2-4 KB with a few optimizations. {/* TODO: I don't like the end of this sentence. */}
 
 ## Guide
 
-This post outlines a method to generate optimized font files that can be stored on-chain for a fraction of the cost.
+<Callout intent="warning">
+  If you're looking to store _entire_ font files on-chain (i.e. all glyphs), this guide is probably useless.
+</Callout>
 
-https://github.com/0xsequence/sstore2
-https://ethfs.xyz
+{/* TODO: add price/example to add font on-chain */}
+Storing ~100 KB on-chain isn't _prohibitively_ expensive&mdash;it's been done before, even on Ethereum mainnet.
+You could probably even get by with the most naive route: divide up the font file into many smaller parts, store them all to storage, then read them from storage.
+More modern approaches of storing large files use the [SSTORE2](https://github.com/0xsequence/sstore2) pattern, which "stores" and reads data as nonsensical contract bytecode because after some point, deploying and reading data as bytecode becomes much cheaper than the corresponding number of `SSTORE`/`SLOAD`s.
+At 24 KB per contract, you only need a few shards, and even if you need more, tools like [EthFS](https://ethfs.xyz) make it manageable.
+
+**If you don't need the entire font file**, which is true most of the time, this is not worth doing.
+It'll always cost more money and time, the DX of deploying and reading will always suck more with multiple contracts, and your final output will always be bloated.
+
+The key realization of this guide is that font files implement paths for many glyphs, and most of the time, a project only requires a very small fraction of them.
+Thus, by condensing the font down to just the glyphs you need, you can greatly reduce the necessary font file's size.
 
 ### Condensing the font
 
+The first step is to determine the domain of characters your project needs.
+For example, if you only need to display a lowercase Ethereum address, you only need 17 characters: `set("0x0123456789abcdef")`.
+
+Suppose we want an NFT that will only display "fiveoutofnine" and the first 8 digits of the minter's address in Fira Code.
+Then, we only need the characters present in "fiveoutofnine", "0x", and any hexadecimal digit.
+
+```py fileName="write_glyphs.py"
+CHARACTERS = "fiveoutofnine0x0123456789ABCDEF"
+
+with open("glyphs.txt", "w") as file:
+    file.write("\n".join([f"U+{str(hex(ord(char))[2:]).zfill(4).upper()}" for char in sorted(set(CHARACTERS))]))
+```
+
+which yields
+
+```none fileName="glyphs.txt"
+U+0030
+U+0031
+U+0032
+U+0033
+U+0034
+U+0035
+U+0036
+U+0037
+U+0038
+U+0039
+U+0041
+U+0042
+U+0043
+U+0044
+U+0045
+U+0046
+U+0065
+U+0066
+U+0069
+U+006E
+U+006F
+U+0074
+U+0075
+U+0076
+U+0078
+```
+
+https://caniuse.com/?search=woff2
+
 ### Using the font
+
+The easiest way to use the font on-chain is base 64 encode it, so it can be used inline (e.g. inside some SVG source):
+
+```py fileName="base64_encode_font.py"
+import base64
+
+FONT_NAME = "Fira_Code"
+
+with open(f"{FONT_NAME}.txt", "w") as output_file:
+    with open(f"{FONT_NAME}.woff2", "rb") as input_file:
+        output_file.write(
+            f"data:font/ttf;utf-8;base64,{base64.b64encode(input_file.read()).decode('utf-8')}"
+        )
+```
+
+<Callout intent="info">
+  This encoding usually increases the size by ~30%.
+</Callout>
+
+Then, you can use the font inside some SVG as follows:
+
+```svg fileName="svg_with_font.svg"
+<svg {...} >
+    <style type="text/css">
+        @font-face {
+            font-family: Fira-Code;
+            src: url(...);
+        }
+    </style>
+    <text font-family="Fira-Code" />
+</svg>
+```
