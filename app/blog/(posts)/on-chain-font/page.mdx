@@ -15,11 +15,13 @@ export const metadata = getBlogPageMetadata({
 
 I [enjoy](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) fully on-chain projects for many reasons:
 
-* Strongest guarantees of transparency, permanence, and immutability
-* Native composition with anything else on-chain and [dynamicism](https://j.mirror.xyz/w8wSN3JLHK1_oNoi2lLF-67w60Wt1WypS_kIbmsYSfE)
-* Constraint-driven creativity and innovation
+* strongest guarantees of transparency, permanence, and immutability;
+* native composition with anything else on-chain and [dynamicism](https://j.mirror.xyz/w8wSN3JLHK1_oNoi2lLF-67w60Wt1WypS_kIbmsYSfE);
+* constraint-driven creativity and innovation.
 
-I've deployed a few on-chain projects
+Every implementation detail requires more thought because everything is costlier and harder to do on-chain, and every design choice is made more deliberately because it's supposed to live forever.
+
+I've experienced this while building all of my fully on-chain projects
 ([1](https://etherscan.io/address/0xB543F9043b387cE5B3d1F0d916E42D8eA2eBA2E0),
  [2](https://etherscan.io/address/0x00000000A84FcdF3E9C165e6955945E87dA2cB0D),
  [3](https://etherscan.io/address/0x0000000Ff428Cfe880A7b816FE1216184c728B21),
@@ -30,13 +32,21 @@ I've deployed a few on-chain projects
  [8](https://basescan.org/address/0x8cCd70b1B74eA505dbA39d2D11C3aB6a2CB14A8c),
  [9](https://basescan.org/address/0xaDBa25b5f5035B4BBfd7b1f2eA3152FDc286474B),
  [10](https://basescan.org/address/0x555555554F0ef522f41B2C46D941DEB4d731eB65)),
-and because of the reasons outlined above, nearly every implementation and design choice was made very deliberately.
+and one of the most common tasks was to include font files fully on-chain for accurate and consistent rendering of text across all clients.
 
-A commonly required task was to include font files fully on-chain to ensure accurate and consistent rendering of text across all browsers (no fallback fonts or external dependencies to load them in).
-However, font files can be quite large (>100 KB), and storing them on-chain can be expensive.
+If font files aren't included on-chain, clients have to select fallback fonts, and the guarantee of accurate rendering is destroyed.
+Similarly, if font files are loaded in via external dependencies (e.g. Google Fonts), the transparency/permanence/immutability guarantees are greatly weakened.
 
-Luckily, you can usually reduce this by >95% to just 2-4 KB with a few optimizations (depending on your usecase)!
+The challenge is font files can be quite large (>100 KB), and storing them on-chain can be expensive.
+Luckily, depending on your usecase, you can usually reduce this by >95% to just 2-4 KB with a few optimizations.
 
 ## Guide
 
 This post outlines a method to generate optimized font files that can be stored on-chain for a fraction of the cost.
+
+https://github.com/0xsequence/sstore2
+https://ethfs.xyz
+
+### Condensing the font
+
+### Using the font
