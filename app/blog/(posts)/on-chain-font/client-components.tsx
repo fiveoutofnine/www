@@ -66,7 +66,10 @@ export const MintNFT: React.FC = () => {
             </Button>
           )}
         </ConnectKitButton.Custom>
-      ) : owner ? (
+      ) : // The NFT is not minted if the owner is the zero address (even if
+      // `owner` is `undefined` because we default to `zeroAddress` when there
+      // is no address connected).
+      owner && owner !== zeroAddress ? (
         // NFT minted already
         <Button
           variant="secondary"
@@ -86,6 +89,7 @@ export const MintNFT: React.FC = () => {
             e.preventDefault();
             switchChain({ chainId: 8453 });
           }}
+          type="button"
         >
           Switch to Base
         </Button>
@@ -169,6 +173,7 @@ export const MintNFT: React.FC = () => {
               },
             );
           }}
+          type="button"
         >
           Mint as NFT
         </Button>
