@@ -40,7 +40,7 @@ If font files aren't included on-chain, clients have to select fallback fonts, a
 Similarly, if font files are loaded in via external dependencies (e.g. Google Fonts), the transparency/permanence/immutability guarantees are greatly weakened.
 
 The challenge is that font files can be quite large (>100 KB), and storing them on-chain can be expensive.
-Luckily, depending on your usecase, you can usually reduce this by >95% to just 2-4 KB with a few optimizations. {/* TODO: I don't like the end of this sentence. */}
+Luckily, depending on your usecase, you can usually reduce this by 95+% to just 2-4 KB with a few optimizations.
 
 ## Guide
 
@@ -71,7 +71,7 @@ For example, suppose we want to make an NFT that displays "fiveoutofnine" and th
 Even though there's a dynamic text component, we only need the 29 characters present in "fiveoutofnine", "0x", and lowercase/uppercase hexadecimal digits (with duplicates removed):
 
 ```py showLineNumbers={false}
-set("fiveoutofnine0x0123456789abcdefABCDEF")
+set("fiveoutofnine" + "0x0123456789abcdef" + "ABCDEF")
 ```
 
 Let's write their unicode codes to a file named `glyphs.txt` with the following script:
@@ -156,7 +156,7 @@ with open(f"{FONT_NAME}.txt", "w") as output_file:
 ```
 
 <Callout intent="info">
-  This encoding increases the size by ~33-37% $\left([\frac{4}{3},\frac{4}{3}\cdot\frac{78}{76}]\right)$.
+  This encoding increases the size by ~34% (between $[\frac{4}{3},\frac{4}{3}\cdot\frac{78}{76}]$).
 </Callout>
 
 Then, you can use the font inside some SVG as follows:
