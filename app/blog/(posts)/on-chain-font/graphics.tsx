@@ -1,4 +1,6 @@
-export const NFTGraphic: React.FC = () => {
+import { type Address, checksumAddress } from 'viem';
+
+export const NFTGraphic: React.FC<{ address?: Address }> = ({ address }) => {
   return (
     <svg
       width="256"
@@ -28,7 +30,7 @@ export const NFTGraphic: React.FC = () => {
         textAnchor="middle"
         dominantBaseline="hanging"
       >
-        0xA85572Cd
+        {address ? checksumAddress(address).slice(0, 10) : '0xA85572Cd'}
       </text>
     </svg>
   );

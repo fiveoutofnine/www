@@ -1,4 +1,4 @@
-import { WriteGlyphsAccordion } from './client-components';
+import { MintNFT, WriteGlyphsAccordion } from './client-components';
 import { NFTGraphic } from './graphics';
 
 import BlogHeader from '@/app/blog/(components)/header';
@@ -155,16 +155,26 @@ with open(f"{FONT_NAME}.txt", "w") as output_file:
 
 Then, you can use the font inside some SVG as follows:
 
-<DesignComponentsDisplay source={SVG_USAGE_SOURCE} sourceInitiallyDisplayed>
-  bruh
+<DesignComponentsDisplay
+  source={SVG_USAGE_SOURCE}
+  highlightLines={[3, 4, 5, 6, 9, 12]}
+  sourceInitiallyDisplayed
+>
+  <MintNFT />
 </DesignComponentsDisplay>
 
-export const SVG_USAGE_SOURCE = `<svg {...} >
-    <style type="text/css">
-        @font-face {
-            font-family: FontFamily;
-            src: url(...);
-        }
-    </style>
-    <text font-family="FontFamily" />
+export const SVG_USAGE_SOURCE = `<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @font-face {
+      font-family: FiraCode;
+      src: url(data:font/woff2;utf-8;base64,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)
+    }
+  </style>
+  <path d="M1 9v238q0 8 8 8h238q8 0 8-8V9q0-8-8-8H9Q1 1 1 9" fill="#111" stroke="#3a3a3a" stroke-width="2"/>
+  <text style="font-family: FiraCode" x="50%" y="125" fill="#eee" font-size="16" text-anchor="middle" dominant-baseline="bottom">
+    fiveoutofnine
+  </text>
+  <text style="font-family: FiraCode" x="50%" y="131" fill="#b4b4b4" font-size="14" text-anchor="middle" dominant-baseline="hanging">
+    {ADDRESS}
+  </text>
 </svg>`;

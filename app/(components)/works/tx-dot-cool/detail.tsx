@@ -229,7 +229,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
                       onSuccess(hash) {
                         toast({
                           title: 'Transaction sent',
-                          description: 'Your message has been sent to fiveoutofnine.eth.',
+                          description: 'Waiting for confirmation...',
                           intent: 'info',
                           action: (
                             <Button
@@ -256,7 +256,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
                         } else if (data) {
                           toast({
                             title: 'Message sent',
-                            description: 'Message sent to fiveoutonine.eth!',
+                            description: 'Your message has been sent to fiveoutonine.eth!',
                             intent: 'success',
                             action: (
                               <Button
