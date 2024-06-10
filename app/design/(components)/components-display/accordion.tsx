@@ -1,6 +1,7 @@
 'use client';
 
 import * as Accordion from '@radix-ui/react-accordion';
+import clsx from 'clsx';
 import { ChevronRight } from 'lucide-react';
 
 import { CodeBlock } from '@/components/ui';
@@ -37,7 +38,19 @@ const DesignComponentsDisplayAccordion: React.FC<DesignComponentsDisplayAccordio
           </span>
           <span>View source</span>
         </Accordion.Trigger>
-        <Accordion.Content className="max-w-full border-gray-6">
+        <Accordion.Content
+          className={clsx(
+            'max-w-full border-gray-6',
+            // We need the following classes to override the default styles from
+            // our `<Article />` MDX component.
+            // Container
+            '[&_[code-block-container]]:mx-0 [&_[code-block-container]]:rounded-b-xl [&_[code-block-container]]:border-x',
+            'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-t-none md:[&_[code-block-container]]:border-x',
+            // Pre
+            '[&_[code-block-pre]]:rounded-none',
+            'md:[&_[code-block-pre]]:rounded-b-xl',
+          )}
+        >
           <CodeBlock
             className="border-t-0"
             language="tsx"

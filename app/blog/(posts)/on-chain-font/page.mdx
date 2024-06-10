@@ -1,3 +1,4 @@
+import { WriteGlyphsAccordion } from './client-components';
 import { NFTGraphic } from './graphics';
 
 import BlogHeader from '@/app/blog/(components)/header';
@@ -76,16 +77,8 @@ set("fiveoutofnine" + "0x0123456789abcdef" + "ABCDEF")
 
 Let's write their unicode codes to a file named `glyphs.txt` with the following script:
 
-```py fileName="write_glyphs.py"
-CHARACTERS = sorted(set("fiveoutofnine0x0123456789abcdefABCDEF"))
-
-with open("glyphs.txt", "w") as file:
-    file.write("\n".join([f"U+{str(hex(ord(char))[2:]).zfill(4).upper()}" for char in CHARACTERS]))
-```
-
-yielding
-
-```none fileName="glyphs.txt"
+<WriteGlyphsAccordion>
+```none
 U+0030
 U+0031
 U+0032
@@ -116,6 +109,7 @@ U+0075
 U+0076
 U+0078
 ```
+</WriteGlyphsAccordion>
 
 <Callout intent="info">
   Even on the web, it's common for font registries like [Google Fonts](https://fonts.google.com) to require subsets (e.g. [`latin`](https://fonts.googleapis.com/css?family=Fira+Code)) to be specified to only import necessary ranges of characters.
@@ -161,8 +155,11 @@ with open(f"{FONT_NAME}.txt", "w") as output_file:
 
 Then, you can use the font inside some SVG as follows:
 
-```svg fileName="svg_with_font.svg"
-<svg {...} >
+<DesignComponentsDisplay source={SVG_USAGE_SOURCE} sourceInitiallyDisplayed>
+  bruh
+</DesignComponentsDisplay>
+
+export const SVG_USAGE_SOURCE = `<svg {...} >
     <style type="text/css">
         @font-face {
             font-family: FontFamily;
@@ -170,5 +167,4 @@ Then, you can use the font inside some SVG as follows:
         }
     </style>
     <text font-family="FontFamily" />
-</svg>
-```
+</svg>`;
