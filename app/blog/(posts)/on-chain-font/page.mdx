@@ -55,7 +55,7 @@ More modern approaches of storing large files use the [SSTORE2](https://github.c
 At 24 KB per contract, you only need a few shards, and even if you need more, tools like [EthFS](https://ethfs.xyz) make it manageable.
 
 **If you don't need the entire font file**, which is true most of the time, this is not worth doing.
-It'll always cost more money and time, the DX of deploying and reading will always suck more with multiple contracts, and your final output will always be bloated.
+It'll cost more money and time, have worse DX of deploying/reading from multiple contracts, and bloat your final output.
 
 The key realization of this guide is that font files implement paths for many glyphs, and most of the time, a project only requires a very small fraction of them.
 Thus, by condensing the font down to just the glyphs you need, you can greatly reduce the necessary font file's size.
