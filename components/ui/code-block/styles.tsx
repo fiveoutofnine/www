@@ -69,6 +69,9 @@ export const codeBlockPreVariants = cva(
   {
     variants: {
       hasHeader: {
+        // `0.6875rem` is `11px`, which is 1px less than `rounded-xl`, the
+        // container's border radius, to ensure the `<pre>` component lines up
+        // with the container's border.
         true: ['rounded-b-[0.6875rem]', 'rounded-t-none'],
         false: ['rounded-[0.6875rem]'],
       },
