@@ -48,8 +48,7 @@ Luckily, depending on your usecase, you can usually reduce this by >95% to just 
   If you're looking to store _entire_ font files on-chain (i.e. all glyphs), this guide is probably useless.
 </Callout>
 
-{/* TODO: add price/example to add font on-chain */}
-Storing ~100 KB on-chain isn't _prohibitively_ expensive&mdash;it's been done before, even on Ethereum mainnet.
+Storing ~100 KB on-chain isn't _prohibitively_ expensive&mdash;it's [been](https://etherscan.io/address/0xA77b7D93E79f1E6B4f77FaB29d9ef85733A3D44A) [done](https://etherscan.io/address/0xdf8A48979F33f12952Ab4cF6f960EA4071fc656b#code) [before](https://www.codeslaw.app/search?chain=ethereum&q=%40font-face), even on Ethereum mainnet.
 You could probably even get by with the most naive route: divide up the font file into many smaller parts, store them all to storage, then read them from storage.
 More modern approaches of storing large files use the [SSTORE2](https://github.com/0xsequence/sstore2) pattern, which "stores" and reads data as nonsensical contract bytecode because after some point, deploying and reading data as bytecode becomes [much cheaper](https://github.com/0xsequence/sstore2#gas-savings) than the corresponding number of `SSTORE`/`SLOAD`s.
 At 24 KB per contract, you only need a few shards, and even if you need more, tools like [EthFS](https://ethfs.xyz) make it manageable.
@@ -69,14 +68,13 @@ For example, suppose we want to make an NFT that displays "fiveoutofnine" and th
   <NFTGraphic />
 </div>
 
-{/* TODO: is there a word that combines "both lowercase and uppercase" into one? */}
-Even though there's a dynamic component, we only need the 29 characters present in "fiveoutofnine", "0x", and both lowercase and uppercase hexadecimal digits (with duplicates removed):
+Even though there's a dynamic text component, we only need the 29 characters present in "fiveoutofnine", "0x", and lowercase/uppercase hexadecimal digits (with duplicates removed):
 
 ```py showLineNumbers={false}
 set("fiveoutofnine0x0123456789abcdefABCDEF")
 ```
 
-You can write this to a file named `glyphs.txt` with the following script:
+Let's write their unicode codes to a file named `glyphs.txt` with the following script:
 
 ```py fileName="write_glyphs.py"
 CHARACTERS = sorted(set("fiveoutofnine0x0123456789abcdefABCDEF"))
@@ -85,7 +83,7 @@ with open("glyphs.txt", "w") as file:
     file.write("\n".join([f"U+{str(hex(ord(char))[2:]).zfill(4).upper()}" for char in CHARACTERS]))
 ```
 
-which yields
+yielding
 
 ```none fileName="glyphs.txt"
 U+0030
@@ -120,13 +118,12 @@ U+0078
 ```
 
 <Callout intent="info">
-  Even on the web, it's common for font registries like [Google Fonts](https://fonts.google.com) to require subsets (e.g. `latin`) to be specified to only import necessary ranges of characters.
+  Even on the web, it's common for font registries like [Google Fonts](https://fonts.google.com) to require subsets (e.g. [`latin`](https://fonts.googleapis.com/css?family=Fira+Code)) to be specified to only import necessary ranges of characters.
 </Callout>
 
 ### Condensing the font
 
-{/* TODO: add link to the package */}
-Next, install `fonttools` and run the following command to generate the condensed font file:
+Next, install [`fonttools`](https://pypi.org/project/fonttools) and run the following command to generate the condensed font file:
 
 ```sh fileName="condense_font.sh" showLineNumbers={false}
 pyftsubset ${FONT}.ttf --output-file=${FONT}-Subset.ttf --unicodes-file=glyphs.txt
@@ -136,31 +133,30 @@ pyftsubset ${FONT}.ttf --output-file=${FONT}-Subset.ttf --unicodes-file=glyphs.t
   Make sure to run the command on a font file with a specified weight, rather than the variable weight version.
 </Callout>
 
-You can also optionally convert the font file into `.woff2` format.
-It has [good browser support](https://caniuse.com/?search=woff2) and usually yields a further ~30% in reduction.
-I recommend using an online converter such as [this one].
+You can also optionally convert the font file into the [WOFF2](https://www.w3.org/TR/WOFF2) format.
+It has [good browser support](https://caniuse.com/?search=woff2) and usually yields a further ~65% size reduction.
+I recommend using an online converter such as [this one](https://cloudconvert.com/ttf-to-woff2).
 
-{/* TODO: fill out the actual number */}
-With this, we go from 189 KB to Y KB&mdash;a Z% reduction!
+With this, we go from <span title="188,504 bytes">`184.1 KB`</span> to <span title="3,468 bytes">`3.4 KB`</span>&mdash;a **98.2%** reduction!
 
 ### Using the font
 
-The easiest way to use the font on-chain is base 64 encode it, so it can be used inline (e.g. inside some SVG source):
+The easiest way to use the font on-chain is to base-64 encode it, so it can be used inline (e.g. inside some SVG source):
 
 ```py fileName="base64_encode_font.py"
 import base64
 
-FONT_NAME = "Fira_Code"
+FONT_NAME = "FiraCode-Regular-Subset"
 
 with open(f"{FONT_NAME}.txt", "w") as output_file:
     with open(f"{FONT_NAME}.woff2", "rb") as input_file:
         output_file.write(
-            f"data:font/ttf;utf-8;base64,{base64.b64encode(input_file.read()).decode('utf-8')}"
+            f"data:font/woff2;utf-8;base64,{base64.b64encode(input_file.read()).decode('utf-8')}"
         )
 ```
 
 <Callout intent="info">
-  This encoding usually increases the size by ~30%.
+  This encoding increases the size by ~33-37% $\left([\frac{4}{3},\frac{4}{3}\cdot\frac{78}{76}]\right)$.
 </Callout>
 
 Then, you can use the font inside some SVG as follows:
@@ -169,10 +165,10 @@ Then, you can use the font inside some SVG as follows:
 <svg {...} >
     <style type="text/css">
         @font-face {
-            font-family: Fira-Code;
+            font-family: FontFamily;
             src: url(...);
         }
     </style>
-    <text font-family="Fira-Code" />
+    <text font-family="FontFamily" />
 </svg>
 ```
