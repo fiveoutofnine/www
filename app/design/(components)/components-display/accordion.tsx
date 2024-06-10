@@ -45,10 +45,9 @@ const DesignComponentsDisplayAccordion: React.FC<DesignComponentsDisplayAccordio
             // our `<Article />` MDX component.
             // Container
             '[&_[code-block-container]]:mx-0 [&_[code-block-container]]:rounded-b-xl [&_[code-block-container]]:border-x',
-            'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-t-none md:[&_[code-block-container]]:border-x',
+            'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-t-none',
             // Pre
-            '[&_[code-block-pre]]:rounded-none',
-            'md:[&_[code-block-pre]]:rounded-b-xl',
+            '[&_[code-block-pre]]:rounded-none [&_[code-block-pre]]:rounded-b-xl',
           )}
         >
           <CodeBlock
