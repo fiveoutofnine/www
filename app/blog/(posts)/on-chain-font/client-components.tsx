@@ -26,7 +26,9 @@ export const MintNFT: React.FC = () => {
   const { chains, switchChain } = useSwitchChain();
   const { data, writeContract } = useWriteContract();
   const { isLoading } = useWaitForTransactionReceipt({ hash: data });
-  const { data: owner } = useReadContract({
+  const { data: owner, refetch } = useReadContract({
+    address: '0x082Aa22824aEAB2fC0b448687C24589c3d9ba5A8',
+    chainId: 8453,
     abi: [
       {
         name: 'ownerOf',
@@ -168,6 +170,7 @@ export const MintNFT: React.FC = () => {
                       ),
                       hasCloseButton: true,
                     });
+                    refetch();
                   }
                 },
               },
