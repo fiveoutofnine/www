@@ -1,3 +1,5 @@
+import { NFTGraphic } from './graphics';
+
 import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
@@ -10,7 +12,7 @@ export const metadata = getBlogPageMetadata({
 <BlogHeader slug="on-chain-font" />
 
 <Callout size="sm">
-  This post is about condensing font files to store them on-chain. Click [here](#condensing-the-font) to skip to the guide.
+  This post is about condensing font files to store them on-chain. Click [here](#selecting-the-glyphs) to skip to the guide.
 </Callout>
 
 I [enjoy](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) fully on-chain projects for many reasons:
@@ -49,7 +51,7 @@ Luckily, depending on your usecase, you can usually reduce this by >95% to just 
 {/* TODO: add price/example to add font on-chain */}
 Storing ~100 KB on-chain isn't _prohibitively_ expensive&mdash;it's been done before, even on Ethereum mainnet.
 You could probably even get by with the most naive route: divide up the font file into many smaller parts, store them all to storage, then read them from storage.
-More modern approaches of storing large files use the [SSTORE2](https://github.com/0xsequence/sstore2) pattern, which "stores" and reads data as nonsensical contract bytecode because after some point, deploying and reading data as bytecode becomes much cheaper than the corresponding number of `SSTORE`/`SLOAD`s.
+More modern approaches of storing large files use the [SSTORE2](https://github.com/0xsequence/sstore2) pattern, which "stores" and reads data as nonsensical contract bytecode because after some point, deploying and reading data as bytecode becomes [much cheaper](https://github.com/0xsequence/sstore2#gas-savings) than the corresponding number of `SSTORE`/`SLOAD`s.
 At 24 KB per contract, you only need a few shards, and even if you need more, tools like [EthFS](https://ethfs.xyz) make it manageable.
 
 **If you don't need the entire font file**, which is true most of the time, this is not worth doing.
@@ -58,19 +60,29 @@ It'll always cost more money and time, the DX of deploying and reading will alwa
 The key realization of this guide is that font files implement paths for many glyphs, and most of the time, a project only requires a very small fraction of them.
 Thus, by condensing the font down to just the glyphs you need, you can greatly reduce the necessary font file's size.
 
-### Condensing the font
+### Selecting the glyphs
 
-The first step is to determine the domain of characters your project needs.
-For example, if you only need to display a lowercase Ethereum address, you only need 17 characters: `set("0x0123456789abcdef")`.
+Once you have a font you want to use, the first step is to determine the domain of characters that will be displayed with that font.
+For example, suppose we want to make an NFT that displays "fiveoutofnine" and the first 8 digits of the minter's checksummed address in Fira Code, something like:
 
-Suppose we want an NFT that will only display "fiveoutofnine" and the first 8 digits of the minter's address in Fira Code.
-Then, we only need the characters present in "fiveoutofnine", "0x", and any hexadecimal digit.
+<div className="flex w-full items-center justify-center rounded-xl border border-gray-6 bg-gray-2 p-8">
+  <NFTGraphic />
+</div>
+
+{/* TODO: is there a word that combines "both lowercase and uppercase" into one? */}
+Even though there's a dynamic component, we only need the 29 characters present in "fiveoutofnine", "0x", and both lowercase and uppercase hexadecimal digits (with duplicates removed):
+
+```py showLineNumbers={false}
+set("fiveoutofnine0x0123456789abcdefABCDEF")
+```
+
+You can write this to a file named `glyphs.txt` with the following script:
 
 ```py fileName="write_glyphs.py"
-CHARACTERS = "fiveoutofnine0x0123456789ABCDEF"
+CHARACTERS = sorted(set("fiveoutofnine0x0123456789abcdefABCDEF"))
 
 with open("glyphs.txt", "w") as file:
-    file.write("\n".join([f"U+{str(hex(ord(char))[2:]).zfill(4).upper()}" for char in sorted(set(CHARACTERS))]))
+    file.write("\n".join([f"U+{str(hex(ord(char))[2:]).zfill(4).upper()}" for char in CHARACTERS]))
 ```
 
 which yields
@@ -92,6 +104,10 @@ U+0043
 U+0044
 U+0045
 U+0046
+U+0061
+U+0062
+U+0063
+U+0064
 U+0065
 U+0066
 U+0069
@@ -103,7 +119,29 @@ U+0076
 U+0078
 ```
 
-https://caniuse.com/?search=woff2
+<Callout intent="info">
+  Even on the web, it's common for font registries like [Google Fonts](https://fonts.google.com) to require subsets (e.g. `latin`) to be specified to only import necessary ranges of characters.
+</Callout>
+
+### Condensing the font
+
+{/* TODO: add link to the package */}
+Next, install `fonttools` and run the following command to generate the condensed font file:
+
+```sh fileName="condense_font.sh" showLineNumbers={false}
+pyftsubset ${FONT}.ttf --output-file=${FONT}-Subset.ttf --unicodes-file=glyphs.txt
+```
+
+<Callout intent="info">
+  Make sure to run the command on a font file with a specified weight, rather than the variable weight version.
+</Callout>
+
+You can also optionally convert the font file into `.woff2` format.
+It has [good browser support](https://caniuse.com/?search=woff2) and usually yields a further ~30% in reduction.
+I recommend using an online converter such as [this one].
+
+{/* TODO: fill out the actual number */}
+With this, we go from 189 KB to Y KB&mdash;a Z% reduction!
 
 ### Using the font
 
