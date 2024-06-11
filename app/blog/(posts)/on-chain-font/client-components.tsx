@@ -214,15 +214,15 @@ export const WriteGlyphsAccordion: React.FC<{ children?: React.ReactNode }> = ({
           </Accordion.Trigger>
           <Accordion.Content
             className={clsx(
-              'not-prose overflow-hidden rounded-b-none border-x-0 border-b border-t-0 border-gray-6 p-0 md:rounded-b-xl md:border-x',
+              'not-prose overflow-hidden rounded-b-none border-x-0 border-b border-t-0 border-gray-6 bg-gray-3 p-0 md:rounded-b-xl md:border-x',
               // We need the following classes to override the default styles
               // from our `<Article />` MDX component.
               // Container
               '[&_[code-block-container]]:mx-0 [&_[code-block-container]]:rounded-none [&_[code-block-container]]:border-0',
               'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-none md:[&_[code-block-container]]:border-x-0',
               // Pre
-              '[&_[code-block-pre]]:rounded-b-none',
-              'md:[&_[code-block-pre]]:rounded-b-none',
+              '[&_[code-block-pre]]:rounded-none',
+              'md:[&_[code-block-pre]]:rounded-b-[0.6875rem] md:[&_[code-block-pre]]:rounded-t-none',
             )}
           >
             {children}
