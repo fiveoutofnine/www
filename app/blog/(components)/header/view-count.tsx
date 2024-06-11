@@ -17,6 +17,7 @@ type BlogViewCountProps = {
 type BlogViewCountTrackerProps = {
   id: string;
   data?: number;
+  fallbackData: number;
   mutate: KeyedMutator<number>;
 };
 
@@ -35,10 +36,15 @@ const BlogViewCount: React.FC<BlogViewCountProps> = ({ id, fallbackData }) => {
     { fallbackData, refreshInterval: 300_000 },
   );
 
-  return <BlogViewCountTracker data={data} id={id} mutate={mutate} />;
+  return <BlogViewCountTracker id={id} data={data} fallbackData={fallbackData} mutate={mutate} />;
 };
 
-const BlogViewCountTracker: React.FC<BlogViewCountTrackerProps> = ({ id, data, mutate }) => {
+const BlogViewCountTracker: React.FC<BlogViewCountTrackerProps> = ({
+  id,
+  data,
+  fallbackData,
+  mutate,
+}) => {
   const loggedRef = useRef(false);
 
   useEffect(() => {
@@ -55,8 +61,8 @@ const BlogViewCountTracker: React.FC<BlogViewCountTrackerProps> = ({ id, data, m
 
   return (
     // We set `key={views}` so the animation is triggered each the time view
-    // count changes.
-    <span key={views} className="animate-bg-pulse">
+    // count changes. Also, don't animate on initial render.
+    <span key={views} className={data !== fallbackData ? 'animate-bg-pulse' : ''}>
       {views} views
     </span>
   );
