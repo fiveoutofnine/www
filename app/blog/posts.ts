@@ -1,4 +1,10 @@
 export const POSTS: { slug: string; title: string; date: Date }[] = [
+  // 2023
+  {
+    slug: 'on-chain-font',
+    title: 'On-Chain Font',
+    date: new Date('2023-02-22T10:54:00.000Z'),
+  },
   // 2022
   {
     slug: 'basic-bit-manipulation',

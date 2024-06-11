@@ -68,7 +68,13 @@ export const codeBlockPreVariants = cva(
   ['group', 'py-4', 'px-0', 'overflow-x-scroll', 'my-0', 'bg-gray-3', 'hide-scrollbar'],
   {
     variants: {
-      hasHeader: { true: ['rounded-b-xl', 'rounded-t-none'], false: ['rounded-xl'] },
+      hasHeader: {
+        // `0.6875rem` is `11px`, which is 1px less than `rounded-xl`, the
+        // container's border radius, to ensure the `<pre>` component lines up
+        // with the container's border.
+        true: ['rounded-b-[0.6875rem]', 'rounded-t-none'],
+        false: ['rounded-[0.6875rem]'],
+      },
       breakLines: { true: ['whitespace-pre-line'], false: ['overflow-x-scroll', 'hide-scrollbar'] },
     },
   },

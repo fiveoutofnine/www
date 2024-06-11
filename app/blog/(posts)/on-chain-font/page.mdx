@@ -1,0 +1,180 @@
+import { MintNFT, WriteGlyphsAccordion } from './client-components';
+import { NFTGraphic } from './graphics';
+
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+export const metadata = getBlogPageMetadata({
+  slug: "on-chain-font",
+  description: "A guide to condensing font files to store them on-chain.",
+});
+
+<BlogHeader slug="on-chain-font" />
+
+<Callout size="sm">
+  This post is about condensing font files to store them on-chain. Click [here](#selecting-the-glyphs) to skip to the guide.
+</Callout>
+
+I [enjoy](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) fully on-chain projects for many reasons:
+
+* strongest guarantees of transparency, permanence, and immutability;
+* native composition with anything else on-chain and [dynamicism](https://j.mirror.xyz/w8wSN3JLHK1_oNoi2lLF-67w60Wt1WypS_kIbmsYSfE);
+* constraint-driven creativity and innovation.
+
+Every implementation detail requires more thought because everything is costlier and harder to do on-chain, and every design choice is made more deliberately because it's supposed to live forever.
+
+I've experienced this while building all of my fully on-chain projects
+([1](https://etherscan.io/address/0xB543F9043b387cE5B3d1F0d916E42D8eA2eBA2E0),
+ [2](https://etherscan.io/address/0x00000000A84FcdF3E9C165e6955945E87dA2cB0D),
+ [3](https://etherscan.io/address/0x0000000Ff428Cfe880A7b816FE1216184c728B21),
+ [4](https://etherscan.io/address/0x0000000006bC8D9e5e9d436217B88De704a9F307),
+ [5](https://etherscan.io/address/0xC0ffeEb30F5aAA18Cd0a799F6dA1bdcb46f63C44),
+ [6](https://etherscan.io/address/0x2010009c4842e6B6d2630A07Dd6469172affb4dc),
+ [7](https://etherscan.io/address/0x6f2df6c95d80e359a25b6a549037f3b70879b343),
+ [8](https://basescan.org/address/0x8cCd70b1B74eA505dbA39d2D11C3aB6a2CB14A8c),
+ [9](https://basescan.org/address/0xaDBa25b5f5035B4BBfd7b1f2eA3152FDc286474B),
+ [10](https://basescan.org/address/0x555555554F0ef522f41B2C46D941DEB4d731eB65)),
+and one of the most common tasks was to include font files fully on-chain for accurate and consistent rendering of text across all clients.
+
+If font files aren't included on-chain, clients have to select fallback fonts, and the guarantee of accurate rendering is destroyed.
+Similarly, if font files are loaded in via external dependencies (e.g. Google Fonts), the transparency/permanence/immutability guarantees are greatly weakened.
+
+The challenge is that font files can be quite large (>100 KB), and storing them on-chain can be expensive.
+Luckily, depending on your usecase, you can usually reduce this by 95+% to just 2-4 KB with a few optimizations.
+
+## Guide
+
+<Callout intent="warning">
+  If you're looking to store _entire_ font files on-chain (i.e. all glyphs), this guide is probably useless.
+</Callout>
+
+Storing ~100 KB on-chain isn't _prohibitively_ expensive&mdash;it's [been](https://etherscan.io/address/0xA77b7D93E79f1E6B4f77FaB29d9ef85733A3D44A) [done](https://etherscan.io/address/0xdf8A48979F33f12952Ab4cF6f960EA4071fc656b#code) [before](https://www.codeslaw.app/search?chain=ethereum&q=%40font-face), even on Ethereum mainnet.
+You could probably even get by with the most naive route: divide up the font file into many smaller parts, store them all to storage, then read them from storage.
+More modern approaches of storing large files use the [SSTORE2](https://github.com/0xsequence/sstore2) pattern, which "stores" and reads data as nonsensical contract bytecode because after some point, deploying and reading data as bytecode becomes [much cheaper](https://github.com/0xsequence/sstore2#gas-savings) than the corresponding number of `SSTORE`/`SLOAD`s.
+At 24 KB per contract, you only need a few shards, and even if you need more, tools like [EthFS](https://ethfs.xyz) make it manageable.
+
+**If you don't need the entire font file**, which is true most of the time, this is not worth doing.
+It'll cost more money and time, have worse DX of deploying/reading from multiple contracts, and bloat your final output.
+
+The key realization of this guide is that font files implement paths for many glyphs, and most of the time, a project only requires a very small fraction of them.
+Thus, by condensing the font down to just the glyphs you need, you can greatly reduce the necessary font file's size.
+
+### Selecting the glyphs
+
+Once you have a font you want to use, the first step is to determine the domain of characters that will be displayed with that font.
+For example, suppose we want to make an NFT that displays "fiveoutofnine" and the first 8 digits of the minter's checksummed address in Fira Code, something like:
+
+<div className="flex w-full items-center justify-center rounded-xl border border-gray-6 bg-gray-2 p-8">
+  <NFTGraphic />
+</div>
+
+Even though there's a dynamic text component, we only need the 29 characters present in "fiveoutofnine", "0x", and lowercase/uppercase hexadecimal digits (with duplicates removed):
+
+```py showLineNumbers={false}
+set("fiveoutofnine" + "0x0123456789abcdef" + "ABCDEF")
+```
+
+Let's write their unicode codes to a file named `glyphs.txt` with the following script:
+
+<WriteGlyphsAccordion>
+```none
+U+0030
+U+0031
+U+0032
+U+0033
+U+0034
+U+0035
+U+0036
+U+0037
+U+0038
+U+0039
+U+0041
+U+0042
+U+0043
+U+0044
+U+0045
+U+0046
+U+0061
+U+0062
+U+0063
+U+0064
+U+0065
+U+0066
+U+0069
+U+006E
+U+006F
+U+0074
+U+0075
+U+0076
+U+0078
+```
+</WriteGlyphsAccordion>
+
+<Callout intent="info">
+  Even on the web, it's common for font registries like [Google Fonts](https://fonts.google.com) to require subsets (e.g. [`latin`](https://fonts.googleapis.com/css?family=Fira+Code)) to be specified to only import necessary ranges of characters.
+</Callout>
+
+### Condensing the font
+
+Next, install [`fonttools`](https://pypi.org/project/fonttools) and run the following command to generate the condensed font file:
+
+```sh fileName="condense_font.sh" showLineNumbers={false}
+pyftsubset ${FONT}.ttf --output-file=${FONT}-Subset.ttf --unicodes-file=glyphs.txt
+```
+
+<Callout intent="info">
+  Make sure to run the command on a font file with a specified weight, rather than the variable weight version.
+</Callout>
+
+You can also optionally convert the font file into the [WOFF2](https://www.w3.org/TR/WOFF2) format.
+It has [good browser support](https://caniuse.com/?search=woff2) and usually yields a further ~65% size reduction.
+I recommend using an online converter such as [this one](https://cloudconvert.com/ttf-to-woff2).
+
+With this, we go from <span title="188,504 bytes">`184.1 KB`</span> to <span title="3,468 bytes">`3.4 KB`</span>&mdash;a **98.2%** reduction!
+
+### Using the font
+
+The easiest way to use the font on-chain is to base-64 encode it, so it can be used inline (e.g. inside some SVG source):
+
+```py fileName="base64_encode_font.py"
+import base64
+
+FONT_NAME = "FiraCode-Regular-Subset"
+
+with open(f"{FONT_NAME}.txt", "w") as output_file:
+    with open(f"{FONT_NAME}.woff2", "rb") as input_file:
+        output_file.write(
+            f"data:font/woff2;utf-8;base64,{base64.b64encode(input_file.read()).decode('utf-8')}"
+        )
+```
+
+<Callout intent="info">
+  This encoding increases the size by ~34% (between $[\frac{4}{3},\frac{4}{3}\cdot\frac{78}{76}]$).
+</Callout>
+
+Then, you can use the font inside some SVG as follows:
+
+<DesignComponentsDisplay
+  source={SVG_USAGE_SOURCE}
+  highlightLines={[3, 4, 5, 6, 9, 12]}
+  sourceInitiallyDisplayed
+>
+  <MintNFT />
+</DesignComponentsDisplay>
+
+export const SVG_USAGE_SOURCE = `<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @font-face {
+      font-family: FiraCode;
+      src: url(data:font/woff2;utf-8;base64,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)
+    }
+  </style>
+  <path d="M1 9v238q0 8 8 8h238q8 0 8-8V9q0-8-8-8H9Q1 1 1 9" fill="#111" stroke="#3a3a3a" stroke-width="2"/>
+  <text style="font-family: FiraCode" x="50%" y="125" fill="#eee" font-size="16" text-anchor="middle" dominant-baseline="bottom">
+    fiveoutofnine
+  </text>
+  <text style="font-family: FiraCode" x="50%" y="131" fill="#b4b4b4" font-size="14" text-anchor="middle" dominant-baseline="hanging">
+    {ADDRESS}
+  </text>
+</svg>`;

@@ -27,7 +27,7 @@ const BlogHeader: React.FC<BlogHeaderProps> = ({ slug }) => {
   return (
     <header>
       <H1>{post.title}</H1>
-      <div className="-mt-3 flex h-5 items-center text-base leading-5 text-gray-11">
+      <div className="-mt-3 flex h-5 items-center text-base leading-5 text-gray-11 md:-mt-2.5">
         <RelativeDate date={post.date} />
         <div className="mx-1" role="separator">
           ·
