@@ -27,30 +27,43 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
 
-  // Hash IP.
-  const ip = request.ip;
+  // If the `incr` query parameter is set, increment the view count.
+  const incr = url.searchParams.get('incr');
 
-  // Update visitor count if `ip` is defined.
-  let visitors = 0;
-  if (ip) {
-    const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip));
-    const hash = Array.from(new Uint8Array(buffer))
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('');
+  if (incr) {
+    // Hash IP.
+    const ip = request.ip;
 
-    // Check if the view is a duplicate (same IP address on the post within the
-    // last 24 hours).
-    const isNew = await redis.set(`blog:view_deduplicates:${id}:${hash}`, true, {
-      nx: true,
-      ex: 86_400,
-    });
+    // Update visitor count if `ip` is defined.
+    let visitors = 0;
+    if (ip) {
+      const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip));
+      const hash = Array.from(new Uint8Array(buffer))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
 
-    // Increment post visitor count if `isNew` is true.
-    visitors = await redis.hincrby('blog:visitors', id, isNew ? 1 : 0);
+      // Check if the view is a duplicate (same IP address on the post within the
+      // last 24 hours).
+      const isNew = await redis.set(`blog:view_deduplicates:${id}:${hash}`, true, {
+        nx: true,
+        ex: 86_400,
+      });
+
+      // Increment post visitor count if `isNew` is true.
+      visitors = await redis.hincrby('blog:visitors', id, isNew ? 1 : 0);
+    }
+
+    // Update post view count.
+    const views = await redis.hincrby('blog:views', id, 1);
+
+    return NextResponse.json({ id, views, visitors }, { status: 200 });
   }
 
-  // Update post view count.
-  const views = await redis.hincrby('blog:views', id, 1);
+  // Fetch views and visitors.
+  const [views, visitors] = await Promise.all([
+    redis.hget('blog:views', id),
+    redis.hget('blog:visitors', id),
+  ]);
 
   return NextResponse.json({ id, views, visitors }, { status: 200 });
 }

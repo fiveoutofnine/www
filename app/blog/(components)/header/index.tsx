@@ -1,5 +1,9 @@
+import { Suspense } from 'react';
+
 import BlogHeaderCopyLinkButton from './copy-link-button';
-import BlogViewCountTracker from './view-count-tracker';
+import BlogViewCount from './view-count';
+
+import redis from '@/lib/services/redis';
 
 import { H1 } from '@/components/templates/mdx';
 import RelativeDate from '@/components/templates/relative-date';
@@ -18,11 +22,14 @@ type BlogHeaderProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-const BlogHeader: React.FC<BlogHeaderProps> = ({ slug }) => {
+export default async function BlogHeader({ slug }: BlogHeaderProps) {
   const post = POSTS.find((post) => post.slug === slug);
 
   // Return `null` if the post is not found.
   if (!post) return null;
+
+  // Fetch views.
+  const views = await redis.hget('blog:views', encodeURIComponent(slug));
 
   return (
     <header>
@@ -32,11 +39,12 @@ const BlogHeader: React.FC<BlogHeaderProps> = ({ slug }) => {
         <div className="mx-1" role="separator">
           ·
         </div>
+        <Suspense fallback={<span className="animate-in fade-in">0 views</span>}>
+          <BlogViewCount id={encodeURIComponent(slug)} fallbackData={Number(views) || 0} />
+        </Suspense>
+        <div className="ml-auto" role="separator" />
         <BlogHeaderCopyLinkButton slug={slug} />
       </div>
-      <BlogViewCountTracker slug={slug} />
     </header>
   );
-};
-
-export default BlogHeader;
+}

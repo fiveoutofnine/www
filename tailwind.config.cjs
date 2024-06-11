@@ -38,6 +38,7 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'bg-pulse': 'bg-pulse 2.5s cubic-bezier(.23,.68,.36,.96)',
       },
       fontFamily: {
         sans: ['var(--font-inter)', ...fontFamily.sans],
@@ -64,6 +65,18 @@ module.exports = {
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
+        },
+        'bg-pulse': {
+          '0%': {
+            // `blue-3`
+            backgroundColor: '#0d2847',
+            // `blue-6`
+            outline: '1px solid #104d87',
+          },
+          '100%': {
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            outline: '1px solid rgba(0, 0, 0, 0)',
+          },
         },
       },
       zIndex: {
