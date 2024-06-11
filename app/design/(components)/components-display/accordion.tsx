@@ -51,7 +51,7 @@ const DesignComponentsDisplayAccordion: React.FC<DesignComponentsDisplayAccordio
           )}
         >
           <CodeBlock
-            className="border-x border-t-0"
+            className="border-t-0"
             language="tsx"
             highlightLines={highlightLines}
             roundedTop={false}
