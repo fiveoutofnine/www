@@ -1,8 +1,10 @@
+import { HyphenNFT } from './client-components';
+
 import BlogHeader from '@/app/blog/(components)/header';
 
-import { getBlogPageMetadata } from '@/lib/utils';
-
 import RelativeDate from '@/components/templates/relative-date';
+
+import { getBlogPageMetadata } from '@/lib/utils';
 
 export const metadata = getBlogPageMetadata({
   slug: "on-chain-vs-onchain",
@@ -51,30 +53,7 @@ For example, an idea that sort of gained support in the chat was to have the NFT
 Eventually, we decided came up with the idea of "adopting a hyphen," where the open edition NFT (aptly named "adoption tickets") could be burned in exchange for a generative ASCII character NFT.
 Soon after, [scotato](https://x.com/scotato) [designed the characters](https://hyphenation.vercel.app) with an initial [implementation](https://github.com/scotato/hyphenation/blob/4240554f16dce96d13297c4f03299509dee49884/app/character.tsx), which looked something like:
 
-<div className="flex w-full items-center justify-center rounded-xl border border-gray-6 bg-gray-2 p-8">
-  <div>hi</div>
-  ```tsx showLineNumbers={false} containerized={false}
-  {
-    "name": "candle-pen",
-    "role": "npc",
-    "team": "green",
-    "vibe": "-",
-    "demeanor": "introverted",
-    "temperament": "chaotic",
-    "hobby": "photo-editing",
-    "rizz": 67,
-    "character": {
-      "hat": "none",
-      "face": "0-0",
-      "head": "{   }",
-      "arms": "2   7",
-      "body": "[ ]",
-      "emblem": "*",
-      "legs": "_| |_"
-    }
-  }
-  ```
-</div>
+<HyphenNFT defaultSeed={1365n} />
 
 ### The on-chain implementation
 
