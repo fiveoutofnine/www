@@ -1,0 +1,83 @@
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+import RelativeDate from '@/components/templates/relative-date';
+
+export const metadata = getBlogPageMetadata({
+  slug: "on-chain-vs-onchain",
+  description: "",
+});
+
+<BlogHeader slug="on-chain-vs-onchain" />
+
+<RelativeDate date={new Date("2023-04-05T13:04:19.099Z")} type="relative" />, [Jesse Pollak](https://x.com/jessepollak) popularized the term "onchain" in the lead-up to Base's [public launch](https://base.mirror.xyz/KPrKIukePtM2Iz945_3GpQJ-tgMf1hoato5isStLXJI) to help realize its vision: bring the next million builders and billion users onchain to accelerate a global, decentralized financial system.
+
+<Blockquote source={{ label: 'jessepollak', url: 'https://x.com/i/status/1643600452276170754' }}>
+  on-chain → onchain
+  <br />
+  fewer characters, more aesthetically pleasing, clearer analogy to online. 
+  <br />
+  choose to live in the future.
+</Blockquote>
+
+It quickly became a symbol to represent the shift to a better, more open, and permissionless future, as well as a unifying force of sorts; if you're "onchain," you're part of the movement.
+
+<Callout>
+  For a sense of the energy at the time, see [Onchain Summer](https://base.mirror.xyz/h028XVTdP7QtZZfWAHuJ9OYmMNs0Fyi4e4fJZH_5ik4), "a month-long onchain festival put on by 50 of the best builders, brands, products, artist, and creators," as well as its [highlights](https://base.mirror.xyz/QOHev4zxGJOtsHpobhRxb7-MgVRSX9UCBBHBEpVVCzc).
+</Callout>
+
+Prior to this, the term "on-chain" was generally seen as the grammatically correct variant, as well as a more nuanced term to describe [fully on-chain projects](https://0xchain.art): those whose logic/metadata are fully constructible from the blockchain.
+
+## On[-]chain art battle
+
+As the two terms began coexisting, some friendly banter emerged between the pro-"onchain" and pro-"on-chain" camps.
+[PartyDAO](https://x.com/prtyDAO) captured and directed some of this energy into a playful competition called [Party vs. Party: On[-]chain Art Battle](https://partyvs.party) ([post](https://x.com/i/status/1674447750182719489)).
+
+The premise was simple: participants would form 2 teams ([team "on-chain"](https://www.party.app/party/0x1c409297dd82167B6be3e79D4bF0B6f7a6ff0dB4) and [team "onchain"](https://www.party.app/party/0x5d7Cdeea959c61A467f319B8e7Ed3DbB390fF01a=)) by minting membership NFTs then spend a week creating art to acquire as many 0.01 ETH open edition mints as possible.
+The winning team would be the one with the most mints, and they would receive all proceeds from the event.
+
+<Callout>
+  PartyDAO builds software that lets you create [Parties](https://party.app), on-chain groups consisting of members and a shared inventory, and effectively coordinate actions.
+</Callout>
+
+### The competition
+
+I joined team "on-chain," mainly because of my [enjoyment](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) of fully on-chain projects.
+
+Within team "on-chain," there were some initial discussions about what art to create: should it be something playful, a performance art, a custom smart contract, etc.?
+For example, an idea that sort of gained support in the chat was to have the NFT be the word "on-chain," except the number of hyphens increases with each mint (e.g. after 5 mints, it would be "on-----chain").
+
+Eventually, we decided came up with the idea of "adopting a hyphen," where the open edition NFT (aptly named "adoption tickets") could be burned in exchange for a generative ASCII character NFT.
+Soon after, [scotato](https://x.com/scotato) [designed the characters](https://hyphenation.vercel.app) with an initial [implementation](https://github.com/scotato/hyphenation/blob/4240554f16dce96d13297c4f03299509dee49884/app/character.tsx), which looked something like:
+
+<div className="flex w-full items-center justify-center rounded-xl border border-gray-6 bg-gray-2 p-8">
+  <div>hi</div>
+  ```tsx showLineNumbers={false} containerized={false}
+  {
+    "name": "candle-pen",
+    "role": "npc",
+    "team": "green",
+    "vibe": "-",
+    "demeanor": "introverted",
+    "temperament": "chaotic",
+    "hobby": "photo-editing",
+    "rizz": 67,
+    "character": {
+      "hat": "none",
+      "face": "0-0",
+      "head": "{   }",
+      "arms": "2   7",
+      "body": "[ ]",
+      "emblem": "*",
+      "legs": "_| |_"
+    }
+  }
+  ```
+</div>
+
+### The on-chain implementation
+
+## Conclusion
+
+wat does onchain and on-chain mean now
