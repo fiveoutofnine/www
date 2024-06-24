@@ -207,7 +207,8 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
               />
               <foreignObject x="32" y="20" width="536" height="561">
                 <pre
-                  className="adopt-a-hyphen--pre not-prose"
+                  key={seed.toString()}
+                  className="adopt-a-hyphen--pre not-prose animate-in fade-in"
                   style={{ color: 'rgba(0,0,0,0.05)' }}
                 >
                   {bgStr}N
@@ -215,8 +216,9 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
               </foreignObject>
               <foreignObject x="32" y="173" width="536" height="204">
                 <pre
+                  key={seed.toString()}
                   className={clsx(
-                    'not-prose adopt-a-hyphen--pre',
+                    'not-prose adopt-a-hyphen--pre animate-in fade-in zoom-in',
                     traits.inverted ? '' : `adopt-a-hyphen--${COLOR_CLASSES[traits.color]}`,
                   )}
                   style={{ color: traits.inverted ? '#FFF' : colorHexString }}
