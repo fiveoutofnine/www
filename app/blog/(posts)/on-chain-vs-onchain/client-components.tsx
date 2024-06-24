@@ -30,7 +30,7 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
   const LEGS_RIGHT = '||\\\\';
   const BACKGROUNDS = '#*+-/=\\|.';
   const CHAIN_REVERSED = 'NIAHC';
-  const COLORS = hexToBigInt('0xa9bfd700ad43ed0000ba7300fe63ff0000c9ff00ff8633000080ff00fe0000');
+  const COLORS = ['fe0000', '0080ff', 'ff8633', '00c9ff', 'fe63ff', '00ba73', 'ad43ed', 'a9bfd7'];
   const COLOR_CLASSES = 'stuvwxyz';
 
   // ---------------------------------------------------------------------------
@@ -170,7 +170,7 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
 
     if (col === 0) bgStr += '\n';
   }
-  const colorHexString = `#${((COLORS >> (BigInt(traits.color) << BigInt(5))) & hexToBigInt('0xFFFFFF')).toString(16).padStart(6, '0')}`;
+  const colorHexString = `#${COLORS[traits.color]}`;
 
   return (
     <div className="-mx-4 flex flex-col md:mx-0">
