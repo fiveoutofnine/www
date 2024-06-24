@@ -56,41 +56,29 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
   let seedHash = hexToBigInt(keccak256(encodeAbiParameters([{ type: 'uint256' }], [seed])));
 
   // Select traits.
-  traits.head = Number(seedHash & BigInt(3));
-  seedHash >>= BigInt(2);
-  traits.eye = Number(seedHash % BigInt(17));
-  seedHash >>= BigInt(5);
-  traits.hat = Number(
-    (seedHash & BigInt(3)) === BigInt(0)
-      ? BigInt(0)
-      : BigInt(1) + ((seedHash >> BigInt(2)) % BigInt(14)),
-  );
-  seedHash >>= BigInt(6);
-  traits.arm = Number(seedHash % BigInt(5));
-  seedHash >>= BigInt(3);
-  traits.body = Number(seedHash % BigInt(3));
-  seedHash >>= BigInt(2);
-  traits.chest = Number(
-    (seedHash & BigInt(1)) === BigInt(0)
-      ? BigInt(0)
-      : BigInt(1) + ((seedHash >> BigInt(1)) % BigInt(5)),
-  );
-  seedHash >>= BigInt(4);
-  traits.leg = Number(seedHash & BigInt(3));
-  seedHash >>= BigInt(2);
-  traits.background = Number(seedHash % BigInt(9));
-  seedHash >>= BigInt(4);
-  traits.chaosBg = (seedHash & BigInt(3)) === BigInt(0);
-  seedHash >>= BigInt(2);
-  traits.intensity = Number(
-    (seedHash & BigInt(3)) === BigInt(0)
-      ? BigInt(50) + ((seedHash >> BigInt(2)) % BigInt(151))
-      : BigInt(252),
-  );
-  seedHash >>= BigInt(10);
-  traits.inverted = (seedHash & BigInt(7)) === BigInt(0);
-  seedHash >>= BigInt(3);
-  traits.color = Number(seedHash & BigInt(7));
+  traits.head = Number(seedHash & 3n);
+  seedHash >>= 2n;
+  traits.eye = Number(seedHash % 17n);
+  seedHash >>= 5n;
+  traits.hat = Number((seedHash & 3n) === 0n ? 0n : 1n + ((seedHash >> 2n) % 14n));
+  seedHash >>= 6n;
+  traits.arm = Number(seedHash % 5n);
+  seedHash >>= 3n;
+  traits.body = Number(seedHash % 3n);
+  seedHash >>= 2n;
+  traits.chest = Number((seedHash & 1n) === 0n ? 0n : 1n + ((seedHash >> 1n) % 5n));
+  seedHash >>= 4n;
+  traits.leg = Number(seedHash & 3n);
+  seedHash >>= 2n;
+  traits.background = Number(seedHash % 9n);
+  seedHash >>= 4n;
+  traits.chaosBg = (seedHash & 3n) === 0n;
+  seedHash >>= 2n;
+  traits.intensity = Number((seedHash & 3n) === 0n ? 50n + ((seedHash >> 2n) % 151n) : 252n);
+  seedHash >>= 10n;
+  traits.inverted = (seedHash & 7n) === 0n;
+  seedHash >>= 3n;
+  traits.color = Number(seedHash & 7n);
 
   // Hash the seed again.
   seedHash = hexToBigInt(keccak256(encodeAbiParameters([{ type: 'uint256' }], [seedHash])));
@@ -102,11 +90,11 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
   // Construct glyphs bitmap.
   const bitmap =
     hexToBigInt('0x1FFFFFFFFFFFFFFFFFFFFFFFFF07FFFE4FFFFC9FFFFFFFFFFFFFFFFFFFFFFFFF') ^
-    ((BigInt(traits.hat > 0) << BigInt(172)) | (BigInt(traits.chest > 0) << BigInt(126)));
+    ((BigInt(traits.hat > 0) << 172n) | (BigInt(traits.chest > 0) << 126n));
 
   // Construct background bitmap.
   const bgBitmapBits = new Array(253);
-  let bgBitmap = BigInt(0);
+  let bgBitmap = 0n;
   for (let i = 0; i < traits.intensity; ++i) {
     bgBitmapBits[i] = 1;
   }
@@ -115,7 +103,7 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
     for (let i = 252; i !== 0; --i) {
       const j = Number(seedHash % BigInt(i + 1));
       [bgBitmapBits[i], bgBitmapBits[j]] = [bgBitmapBits[j], bgBitmapBits[i]];
-      seedHash >>= BigInt(8);
+      seedHash >>= 8n;
       // Hash the seed again if we run out of entropy.
       if ((i & 31) === 0) {
         seedHash = hexToBigInt(keccak256(encodeAbiParameters([{ type: 'uint256' }], [seedHash])));
@@ -123,7 +111,7 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
     }
   }
   for (let i = 0; i < 253; ++i) {
-    bgBitmap <<= BigInt(1);
+    bgBitmap <<= 1n;
     bgBitmap |= BigInt(bgBitmapBits[i] ?? 0);
   }
 
@@ -139,7 +127,7 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
     if (i === 252) bgStr += 'O';
     else if (i === 251) bgStr += 'N';
     else if (i < 5) bgStr += CHAIN_REVERSED[i];
-    else if (((bitmap >> BigInt(i)) & BigInt(1)) === BigInt(0)) {
+    else if (((bitmap >> BigInt(i)) & 1n) === 0n) {
       bgStr += ' ';
 
       if (i === 151) {
@@ -161,8 +149,8 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
       } else if (i === 105) {
         charStr += `_${LEGS_LEFT[traits.leg]} ${LEGS_RIGHT[traits.leg]}_`;
       }
-    } else if (((bgBitmap >> BigInt(i)) & BigInt(1)) !== BigInt(0)) {
-      bgStr += BACKGROUNDS[traits.chaosBg ? Number(seedHash % BigInt(9)) : traits.background];
+    } else if (((bgBitmap >> BigInt(i)) & 1n) !== 0n) {
+      bgStr += BACKGROUNDS[traits.chaosBg ? Number(seedHash % 9n) : traits.background];
       seedHash = hexToBigInt(keccak256(encodeAbiParameters([{ type: 'uint256' }], [seedHash])));
     } else {
       bgStr += ' ';
