@@ -2,9 +2,18 @@
 
 import { useState } from 'react';
 
+import { TEAM_ON_CHAIN_MINTS } from './mint-data';
 import * as Accordion from '@radix-ui/react-accordion';
 import clsx from 'clsx';
 import { ChevronRight, Shuffle } from 'lucide-react';
+import {
+  CartesianGrid,
+  Line,
+  LineChart, //Tooltip as RechartTooltip,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { encodeAbiParameters, hexToBigInt, keccak256 } from 'viem';
 
 import { Button, CodeBlock } from '@/components/ui';
@@ -270,5 +279,43 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
         </Accordion.Item>
       </Accordion.Root>
     </div>
+  );
+};
+
+export const MintsGraph: React.FC = () => {
+  return (
+    <ResponsiveContainer className="mt-2" width="100%" aspect={2}>
+      <LineChart
+        data={TEAM_ON_CHAIN_MINTS}
+        margin={{ top: 0, left: 0, bottom: -14 }}
+        barCategoryGap={4}
+      >
+        <CartesianGrid />
+        <XAxis
+          dataKey="time"
+          type="number"
+          axisLine={false}
+          padding={{ left: 0, right: 0 }}
+          domain={[0, 259_200]}
+          tick={{ fontSize: 12, strokeWidth: 0 }}
+          tickCount={8}
+          tickFormatter={(date) => `${Math.round(date / 3_600)}`}
+          tickLine={false}
+          tickSize={4}
+        />
+        <YAxis
+          orientation="right"
+          axisLine={false}
+          padding={{ top: 0, bottom: 0 }}
+          width={32}
+          domain={[0, 850]}
+          tick={{ fontSize: 12, strokeWidth: 0 }}
+          tickCount={6}
+          tickLine={false}
+          tickSize={4}
+        />
+        <Line className="stroke-gray-9" dataKey="minted" />
+      </LineChart>
+    </ResponsiveContainer>
   );
 };
