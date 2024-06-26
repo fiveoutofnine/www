@@ -69,8 +69,8 @@ Although this was well below practical limits (both to construct on-chain and re
   The main exceptions are if the metadata is composed on-chain or if it's so large that it extends the gas limit of standards node.
 </Callout>
 
-I realized that because the font was mono-spaced, and the characters appeared in a grid, I could construct 1 string containing all the characters inside a `<pre>` element to preserve the whitespace.
-This way, a lot of the redundancy from the `<text>` elements' opening and closing tags elements would be removed:
+Since the desired font is mono-spaced, and the characters appear in a grid, we can construct 1 string containing all the characters inside a `<pre>` element to preserve the whitespace.
+This way, we can remove a lot of the redundancy from the `<text>` elements' opening and closing tags:
 
 ```tsx showLineNumbers={false}
 <foreignObject>
@@ -97,9 +97,9 @@ This way, a lot of the redundancy from the `<text>` elements' opening and closin
 I ended up using 2 `<pre>` nodes (1 for the background, 1 for the hyphen guy) because there were 2 distinct colors, and adding `<span>` elements each time the color changed would've yielded a larger size.
 This brought the size of the text portion down **95.4%** to <span title="450 bytes">`0.4 KB`</span>!
 
-Now, with this setup, the problem became: look through indices `[0, 23 * 11 - 1]`, and at each index, draw a character for either the background or for the hyphen guy while maintaining whitespace for both strings.
+Now, with this setup, the problem is: look through indices `[0, 23 * 11 - 1]`, and at each index, draw a character for either the background or the hyphen guy while maintaining whitespace for both strings.
 
-Luckily, since $23\cdot11-1\leq256$, an easy and efficient way to accomplish this was to use a `uint256` bitmap[™](https://fiveoutofnine.com/blog/basic-bit-manipulation), where `0` at the corresponding index indicates an instruction to draw a hyphen guy character, and `1` indicates an instruction to draw a background character.
+Luckily, since $23\cdot11-1\leq256$, an easy and efficient way to accomplish is to use a `uint256` bitmap[™](https://fiveoutofnine.com/blog/basic-bit-manipulation), where `0` at the corresponding index indicates an instruction to draw a hyphen guy character, and `1` indicates an instruction to draw a background character.
 
 ```sol highlightLines={[4]} showLineNumbers={false}
 for (uint256 i = 23 * 11 - 1; i != 0; --i) {
@@ -112,14 +112,14 @@ for (uint256 i = 23 * 11 - 1; i != 0; --i) {
 }
 ```
 
-One obstacle with this structure was that depending on whether the hyphen guy had the "hat" and "chest" traits set, the corresponding indices could be empty, so the bitmap would have to be adjusted accordingly.
+One obstacle with this structure is that depending on whether the hyphen guy has the "hat" and "chest" traits set, the corresponding indices could be empty, so we may have to adjust the bitmap.
 
 <div className="w-full flex justify-center">
   <DynamicBitmapGraphic />
 </div>
 
-To get around this, I reserved 0 as a special flag for the hat/chest traits, and `XOR`'d the bits where the hat/chest characters are located.
-This way, if the hat/chest traits were set, the corresponding bit would flip to `0` (i.e. draw a hyphen guy character), and if not, the bit would remain `1`:
+To get around this, we can reserve the 0 value as a special flag for the hat/chest traits, and `XOR` the bits where the hat/chest characters are located.
+This way, if the hat/chest traits are set, the corresponding bits flip to `0` (i.e. draw a hyphen guy character), and if not, they remain `1`:
 
 ```sol highlightLines={[26, 27, 28, 29]} showLineNumbers={false}
 // `bitmap` has `0`s where the index corresponds to a hyphen guy character, and
@@ -154,12 +154,69 @@ assembly {
 }
 ```
 
-After this, I needed to implement the "intensity" trait, which selects a random percentage value `intensity` (roughly between 20% and 80%) to fill the background.
-I reused the bitmap technique here.
+After this, we need to implement the "intensity" trait, which selects a random percentage value `intensity` (roughly between 20% and 80%) to fill the background.
+Again, we can use a similar bitmap structure, where `0` indicates an instruction to draw a background character, and `1` indicates an instruction to skip the character (i.e. draw a space):
 
-1. Fill a `uint256[]` with `intensity` `1`s.
+1. Fill a `uint256[](23 * 11)` with `intensity` `1`s.
 2. Shuffle it.
 3. Generate bitmap.
+
+```sol showLineNumbers={false}
+uint256[] memory bgBitmapBits = new uint256[](253);
+for (uint256 i; i <= hyphenGuy.intensity; ++i) {
+    bgBitmapBits[i] = 1;
+}
+
+// Shuffle the array if intensity mode.
+if (hyphenGuy.intensity < 252) prng.shuffle(bgBitmapBits);
+
+uint256 bgBitmap;
+for (uint256 i; i < 253; ++i) {
+    // `intensity >= 252` implies `intenseBg = true`
+    bgBitmap <<= 1;
+    bgBitmap |= bgBitmapBits[i];
+}
+```
+
+Finally, this yields a nice, efficient framework for determining which characters to draw (and for which element) at each position:
+
+```sol showLineNumbers={false}
+// Iterate through the positions in reverse order.
+for (uint256 i = 252; i != 0; --i) {
+    if ((bitmap >> i) & 1 == 0) {
+        // Draw hyphen guy character.
+    } else if ((bgBitmap >> i) & 1 != 0) {
+        // We make use of the `bgBitmap` generated earlier from he intensity
+        // value here. If the check above passed, it means a background
+        // character must be drawn here.
+        bgStr = string.concat(
+            bgStr,
+            string(
+                abi.encodePacked(
+                    BACKGROUNDS[
+                        // Select a random background if `chaosBg` is true.
+                        hyphenGuy.chaosBg
+                            ? prng.state % 9
+                            : hyphenGuy.background
+                    ]
+                )
+            )
+        );
+        // We need to generate a new random number for the next potentially
+        // random background character.
+        prng.state = prng.next();
+    } else {
+        // Failed all checks. Empty background character.
+        bgStr = string.concat(bgStr, " ");
+    }
+}
+```
+
+Feel free to see the [final deployment](https://etherscan.io/address/0x2010009c4842e6B6d2630A07Dd6469172affb4dc), [repo](https://github.com/fiveoutofnine/adopt-a-hyphen), and [site](https://www.adopt-a-hyphen.com).
+
+<Callout intent="none">
+  I mined a vanity address beginning with `0x2010` for the deployment because [`U+2010`](https://www.compart.com/en/unicode/U+2010) is the Unicode character value for `-`.
+</Callout>
 
 ## Conclusion
 
