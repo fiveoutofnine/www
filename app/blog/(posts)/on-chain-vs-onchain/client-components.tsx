@@ -2,14 +2,15 @@
 
 import { useState } from 'react';
 
-import { TEAM_ON_CHAIN_MINTS } from './mint-data';
+import { MINT_DATA } from './mint-data';
 import * as Accordion from '@radix-ui/react-accordion';
 import clsx from 'clsx';
 import { ChevronRight, Shuffle } from 'lucide-react';
 import {
   CartesianGrid,
   Line,
-  LineChart, //Tooltip as RechartTooltip,
+  LineChart,
+  Tooltip as RechartTooltip,
   ResponsiveContainer,
   XAxis,
   YAxis,
@@ -17,6 +18,9 @@ import {
 import { encodeAbiParameters, hexToBigInt, keccak256 } from 'viem';
 
 import { Button, CodeBlock } from '@/components/ui';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const radixColors = require('@radix-ui/colors');
 
 export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) => {
   const [seed, setSeed] = useState<bigint>(defaultSeed);
@@ -285,14 +289,10 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
 export const MintsGraph: React.FC = () => {
   return (
     <ResponsiveContainer className="mt-2" width="100%" aspect={2}>
-      <LineChart
-        data={TEAM_ON_CHAIN_MINTS}
-        margin={{ top: 0, left: 0, bottom: -14 }}
-        barCategoryGap={4}
-      >
+      <LineChart data={MINT_DATA} margin={{ top: 0, left: 0, bottom: -14 }} barCategoryGap={4}>
         <CartesianGrid />
         <XAxis
-          dataKey="time"
+          dataKey="x"
           type="number"
           axisLine={false}
           padding={{ left: 0, right: 0 }}
@@ -314,7 +314,52 @@ export const MintsGraph: React.FC = () => {
           tickLine={false}
           tickSize={4}
         />
-        <Line className="stroke-gray-9" dataKey="minted" />
+        <RechartTooltip
+          content={({ active, payload, label }) => {
+            const [hour, minute, second] = [
+              Math.round(label / 3600).toString(),
+              Math.round((label % 3600) / 60)
+                .toString()
+                .padStart(2, '0'),
+              (label % 60).toString().padStart(2, '0'),
+            ];
+
+            return payload && active && payload.length > 0 && payload[0].value ? (
+              <div
+                className="flex flex-col items-start gap-1 rounded border border-gray-6 bg-gray-3 p-2"
+                tabIndex={-1}
+              >
+                <div className="w-full font-medium leading-5 text-gray-12">
+                  Mints <span className="text-gray-11">+</span>
+                  {hour}
+                  <span className="text-gray-11">:</span>
+                  {minute}
+                  <span className="text-gray-11">:</span>
+                  {second}
+                </div>
+                <div className="grid w-full grid-cols-2 gap-y-0.5 text-sm leading-[1.125rem]">
+                  <div className="text-blue-11">On-chain</div>
+                  <div className="text-right font-mono text-gray-12">{payload[0].value}</div>
+                  <div className="text-red-11">Onchain</div>
+                  <div className="text-right font-mono text-gray-12">{payload[1].value}</div>
+                </div>
+              </div>
+            ) : null;
+          }}
+          cursor={{ stroke: radixColors.grayDark.gray9, strokeWidth: 1 }}
+        />
+        <Line
+          dataKey="y1"
+          dot={false}
+          activeDot={{ stroke: radixColors.blueDark.blue11, strokeWidth: 1 }}
+          stroke={radixColors.blueDark.blue8}
+        />
+        <Line
+          dataKey="y2"
+          dot={false}
+          activeDot={{ stroke: radixColors.redDark.red11, strokeWidth: 1 }}
+          stroke={radixColors.redDark.red8}
+        />
       </LineChart>
     </ResponsiveContainer>
   );
