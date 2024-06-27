@@ -155,7 +155,7 @@ assembly {
 ```
 
 After this, we need to implement the "intensity" trait, which selects a random percentage value `intensity` (roughly between 20% and 80%) to fill the background.
-Again, we can use a similar bitmap structure, where `0` indicates an instruction to draw a background character, and `1` indicates an instruction to skip the character (i.e. draw a space):
+Again, we can use a similar bitmap structure, where `1` indicates an instruction to draw a background character, and `0` indicates an instruction to skip the character (i.e. draw a space):
 
 1. Fill a `uint256[](23 * 11)` with `intensity` `1`s.
 2. Shuffle it.
@@ -225,3 +225,5 @@ Feel free to see the [final deployment](https://etherscan.io/address/0x2010009c4
 Team "onchain" [put up a good fight](https://www.onchain-is-a-word.com), but we [won](https://etherscan.io/tx/0x7221a10d391ee6d02e080011077b08ac80dc6f12192575fb560dbc0d595fc50d) decisively: **802** to **303**.
 
 I personally enjoyed putting together a quick hack and becoming friends with some other builders involved.
+
+As for the original debate that started it
