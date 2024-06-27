@@ -99,7 +99,7 @@ This brought the size of the text portion down **95.4%** to <span title="450 byt
 
 Now, with this setup, the problem is: look through indices `[0, 23 * 11 - 1]`, and at each index, draw a character for either the background or the hyphen guy while maintaining whitespace for both strings.
 
-Luckily, since $23\cdot11-1\leq256$, an easy and efficient way to accomplish is to use a `uint256` bitmap[™](https://fiveoutofnine.com/blog/basic-bit-manipulation), where `0` at the corresponding index indicates an instruction to draw a hyphen guy character, and `1` indicates an instruction to draw a background character.
+Luckily, since $23\cdot11\leq256$, an easy and efficient way to accomplish is to use a `uint256` bitmap[™](https://fiveoutofnine.com/blog/basic-bit-manipulation), where `0` at the corresponding index indicates an instruction to draw a hyphen guy character, and `1` indicates an instruction to draw a background character.
 
 ```sol highlightLines={[4]} showLineNumbers={false}
 for (uint256 i = 23 * 11 - 1; i != 0; --i) {
@@ -235,5 +235,5 @@ As of <RelativeDate date={new Date("2024-06-27T17:48:58.223Z")} type="absolute" 
 - "Onchain" now generally describes _anything_ crypto-adjacent (even if it largely runs outside of a blockchain), similar to "crypto" or "web3."
 - "On-chain" now more specifically describes fully on-chain projects&mdash;a stricter subset of something that falls under "onchain."
 
-Personally, most of my work falls under the "on-chain" descriptor, so I usually still use that term, but I've started using "onchain" in more casual settings (e.g. DMs).
-In my opinion, the 2 terms have now diverged enough and each found enough meaning that they will continue to coexist in their current forms.
+Most of my work falls under the "on-chain" descriptor, so I usually still use that term, but I've started using "onchain" in more casual settings (e.g. DMs).
+In my opinion, the 2 terms have diverged enough and each found enough meaning that they will continue to coexist in their current forms.
