@@ -298,7 +298,10 @@ export const MintsGraph: React.FC = () => {
           padding={{ left: 0, right: 0 }}
           domain={[0, 259_200]}
           tick={{ fontSize: 12, strokeWidth: 0 }}
-          tickCount={8}
+          ticks={[
+            0, 21_600, 43_200, 64_800, 86_400, 108_000, 129_600, 151_200, 172_800, 194_400, 216_000,
+            237_600, 259_200,
+          ]}
           tickFormatter={(date) => `${Math.round(date / 3_600)}`}
           tickLine={false}
           tickSize={4}

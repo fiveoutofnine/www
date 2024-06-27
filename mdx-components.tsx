@@ -11,6 +11,7 @@ import {
   H1,
   H2,
   H3,
+  Hr,
   MathDisplay,
   P,
   ToastButton,
@@ -29,6 +30,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h1: (props: JSX.IntrinsicElements['h1']) => <H1 {...props} />,
     h2: (props: JSX.IntrinsicElements['h2']) => <H2 {...props} />,
     h3: (props: JSX.IntrinsicElements['h3']) => <H3 {...props} />,
+    hr: (props: JSX.IntrinsicElements['hr']) => <Hr {...props} />,
     p: (props: JSX.IntrinsicElements['p']) => <P {...props} />,
     pre: ({
       children,
