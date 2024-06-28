@@ -101,7 +101,7 @@ Now, with this setup, the problem is: look through indices `[0, 23 * 11 - 1]`, a
 
 Luckily, since $23\cdot11\leq256$, an easy and efficient way to accomplish is to use a `uint256` bitmap[™](https://fiveoutofnine.com/blog/basic-bit-manipulation), where `0` at the corresponding index indicates an instruction to draw a hyphen guy character, and `1` indicates an instruction to draw a background character.
 
-```sol highlightLines={[4]} showLineNumbers={false}
+```sol highlightLines={[3]} showLineNumbers={false}
 for (uint256 i = 23 * 11 - 1; i != 0; --i) {
     // If the bit is set, draw a background character.
     if ((bitmap >> i) & 1 == 0) {

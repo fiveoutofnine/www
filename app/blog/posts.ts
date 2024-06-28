@@ -2,7 +2,7 @@ export const POSTS: { slug: string; title: string; date: Date }[] = [
   // 2023
   {
     slug: 'on-chain-vs-onchain',
-    title: 'On-Chain vs Onchain',
+    title: 'On-Chain vs. Onchain',
     date: new Date('2023-07-10T19:11:55.209Z'),
   },
   {
