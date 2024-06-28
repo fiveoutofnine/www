@@ -16,6 +16,7 @@ export type ExternalLink = {
 export type PageSlug =
   | '/'
   | '/blog'
+  | `/blog/${string}`
   // Design pages
   | '/design'
   | '/design/color'

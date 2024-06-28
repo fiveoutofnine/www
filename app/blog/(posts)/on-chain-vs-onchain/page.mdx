@@ -1,0 +1,239 @@
+import { HyphenNFT, MintsGraph } from './client-components';
+import { DynamicBitmapGraphic } from './graphics';
+
+import BlogHeader from '@/app/blog/(components)/header';
+
+import RelativeDate from '@/components/templates/relative-date';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+export const metadata = getBlogPageMetadata({
+  slug: "on-chain-vs-onchain",
+  description: `The distinction between the terms "on-chain" and "onchain," and an art battle between them.`,
+});
+
+<BlogHeader slug="on-chain-vs-onchain" />
+
+<RelativeDate date={new Date("2023-04-05T13:04:19.099Z")} type="relative" />, [Jesse Pollak](https://x.com/jessepollak) popularized the term "onchain" in the lead-up to Base's [public launch](https://base.mirror.xyz/KPrKIukePtM2Iz945_3GpQJ-tgMf1hoato5isStLXJI) to help realize its vision: bring the next million builders and billion users onchain to accelerate a global, decentralized financial system.
+
+<Blockquote source={{ label: 'jessepollak', url: 'https://x.com/i/status/1643600452276170754' }}>
+  on-chain → onchain
+  <br />
+  fewer characters, more aesthetically pleasing, clearer analogy to online. 
+  <br />
+  choose to live in the future.
+</Blockquote>
+
+It quickly became a symbol for many to represent the shift to a better, more open, and permissionless future, as well as a unifying force of sorts; if you're "onchain," you're part of the movement.
+
+<Callout>
+  For a sense of the energy at the time, see [Onchain Summer](https://base.mirror.xyz/h028XVTdP7QtZZfWAHuJ9OYmMNs0Fyi4e4fJZH_5ik4), "a month-long onchain festival put on by 50 of the best builders, brands, products, artist, and creators," as well as its [highlights](https://base.mirror.xyz/QOHev4zxGJOtsHpobhRxb7-MgVRSX9UCBBHBEpVVCzc).
+</Callout>
+
+Prior to this, the term "on-chain" was generally seen as the grammatically correct variant, as well as a more nuanced term to describe [fully on-chain projects](https://0xchain.art): those whose logic/metadata are fully constructible from the blockchain.
+
+## On[-]chain art battle
+
+As the two terms began coexisting, some friendly banter emerged between the pro-"onchain" and pro-"on-chain" camps.
+[PartyDAO](https://x.com/prtyDAO) captured and directed some of this energy into a playful competition called [Party vs. Party: On[-]chain Art Battle](https://partyvs.party) ([post](https://x.com/i/status/1674447750182719489)).
+
+The premise was simple: participants would form 2 teams ([team "on-chain"](https://www.party.app/party/0x1c409297dd82167B6be3e79D4bF0B6f7a6ff0dB4) and [team "onchain"](https://www.party.app/party/0x5d7Cdeea959c61A467f319B8e7Ed3DbB390fF01a=)) by minting membership NFTs then spend a week creating art to acquire as many 0.01 ETH open edition mints as possible.
+The winning team would be the one with the most mints, and they would receive all proceeds.
+
+<Callout>
+  PartyDAO builds software that lets you create [Parties](https://www.party.app), on-chain groups consisting of members and a shared inventory, and effectively coordinate actions.
+</Callout>
+
+### The art
+
+I joined team "on-chain," mainly because of my [enjoyment](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) of fully on-chain projects.
+
+Within team "on-chain," there was some initial discussions about what art to create: should it be something playful, a performance art, a custom smart contract, etc.?
+For example, an idea that sort of gained support in the chat was to have the NFT be the word "on-chain," except the number of hyphens increases with each mint (e.g. after 5 mints, it would be "on-----chain").
+
+Eventually, we decided on the idea of "adopting a hyphen," where the open edition NFT (aptly named "adoption tickets") could be burned in exchange for a generative ASCII character NFT.
+Soon after, [scotato](https://x.com/scotato) [designed the characters](https://hyphenation.vercel.app) with an initial [implementation](https://github.com/scotato/hyphenation/blob/4240554f16dce96d13297c4f03299509dee49884/app/character.tsx), which looked something like:
+
+<HyphenNFT defaultSeed={1365n} />
+
+After the idea and mechanic was solidified, [gitswitch](https://x.com/gitswitch) and [_tedpalmer](https://x.com/_tedpalmer) built the [site](https://www.adopt-a-hyphen.com), and I got started on the on-chain implementation.
+
+### The on-chain implementation
+
+The initial implementation by scotato [looped through the 23 × 11 grid]((https://github.com/scotato/hyphenation/blob/4240554f16dce96d13297c4f03299509dee49884/app/character.tsx#L268-L321)) of characters and outputted 1 `<text>` element at each position.
+This worked well, but the text portion was quite large at <span title="9,777 bytes">[`9.5 KB`](/static/blog/on-chain-vs-onchain/naive-implementation.svg)</span> and 253 nodes (minified).
+Although this was well below practical limits (both to construct on-chain and render in a browser), if it was going to live fully on-chain forever, I wanted a more efficient implementation and output.
+
+<Callout>
+  Gas usage for fully on-chain metadata generally doesn't matter because it's usually exclusively for off-chain reading.
+  The main exceptions are if the metadata is composed on-chain or if it's so large that it extends the gas limit of standards node.
+</Callout>
+
+Since the desired font is mono-spaced, and the characters appear in a grid, we can construct 1 string containing all the characters inside a `<pre>` element to preserve the whitespace.
+This way, we can remove a lot of the redundancy from the `<text>` elements' opening and closing tags:
+
+```tsx showLineNumbers={false}
+<foreignObject>
+  <pre>
+    ON\\\\\\\\\\\\\\\\\\\\\
+    \\\\\\\\\\\\\\\\\\\\\\\
+    \\\\\\\\\\\\\\\\\\\\\\\
+    \\\\\\\\\\\\\\\\\\\\\\\
+    \\\\\\\\\[=-=]\\\\\\\\\
+    \\\\\\\\\;(:);\\\\\\\\\
+    \\\\\\\\\_|\|_\\\\\\\\\
+    \\\\\\\\\\\\\\\\\\\\\\\
+    \\\\\\\\\\\\\\\\\\\\\\\
+    \\\\\\\\\\\\\\\\\\\\\\\
+    \\\\\\\\\\\\\\\\\\CHAIN
+  <pre>
+</foreignObject>
+```
+
+<Callout>
+  `<pre>` needs to be wrapped in a `<foreignObject>` element to be rendered inside a SVG.
+</Callout>
+
+I ended up using 2 `<pre>` nodes (1 for the background, 1 for the hyphen guy) because there were 2 distinct colors, and adding `<span>` elements each time the color changed would've yielded a larger size.
+This brought the size of the text portion down **95.4%** to <span title="450 bytes">`0.4 KB`</span>!
+
+Now, with this setup, the problem is: look through indices `[0, 23 * 11 - 1]`, and at each index, draw a character for either the background or the hyphen guy while maintaining whitespace for both strings.
+
+Luckily, since $23\cdot11\leq256$, an easy and efficient way to accomplish is to use a `uint256` bitmap[™](https://fiveoutofnine.com/blog/basic-bit-manipulation), where `0` at the corresponding index indicates an instruction to draw a hyphen guy character, and `1` indicates an instruction to draw a background character.
+
+```sol highlightLines={[3]} showLineNumbers={false}
+for (uint256 i = 23 * 11 - 1; i != 0; --i) {
+    // If the bit is set, draw a background character.
+    if ((bitmap >> i) & 1 == 0) {
+      // Draw hyphen guy character.
+    } else {
+      // Draw background character.
+    }
+}
+```
+
+One obstacle with this structure is that depending on whether the hyphen guy has the "hat" and "chest" traits set, the corresponding indices could be empty, so we may have to adjust the bitmap.
+
+<div className="w-full flex justify-center">
+  <DynamicBitmapGraphic />
+</div>
+
+To get around this, we can reserve the 0 value as a special flag for the hat/chest traits, and `XOR` the bits where the hat/chest characters are located.
+This way, if the hat/chest traits are set, the corresponding bits flip to `0` (i.e. draw a hyphen guy character), and if not, they remain `1`:
+
+```sol highlightLines={[26, 27, 28, 29]} showLineNumbers={false}
+// `bitmap` has `0`s where the index corresponds to a hyphen guy character, and
+// `1` where not. We use this to determine whether to render a hyphen guy
+// character or a background character. i.e. it looks like the following:
+//                            11111111111111111111111
+//                            11111111111111111111111
+//                            11111111111111111111111
+//                            11111111111111111111111
+//                            11111111100000111111111
+//                            11111111100100111111111
+//                            11111111100100111111111
+//                            11111111111111111111111
+//                            11111111111111111111111
+//                            11111111111111111111111
+//                            11111111111111111111111
+// By default, `bitmap` has `1`s set in the positions for hat and chest
+// characters. In the following `assembly` block, we determine whether a hat or
+// chest exists and `XOR` the relevant parts to transform the bitmap.
+uint256 bitmap = 0x1FFFFFFFFFFFFFFFFFFFFFFFFF07FFFE4FFFFC9FFFFFFFFFFFFFFFFFFFFFFFFF;
+uint8 hat = hyphenGuy.hat;
+uint8 chest = hyphenGuy.chest;
+assembly {
+    // Equivalent to `bitmap ^= (((hat != 0) << 172) | ((chest != 0) << 126))`.
+    // We flip the bit corresponding to the position of the chest if there
+    // exists a chest trait because we don't want to draw both a background
+    // character and the chest character.
+    bitmap := xor(
+        bitmap,
+        or(shl(172, gt(hat, 0)), shl(126, gt(chest, 0)))
+    )
+}
+```
+
+After this, we need to implement the "intensity" trait, which selects a random percentage value `intensity` (roughly between 20% and 80%) to fill the background.
+Again, we can use a similar bitmap structure, where `1` indicates an instruction to draw a background character, and `0` indicates an instruction to skip the character (i.e. draw a space):
+
+1. Fill a `uint256[](23 * 11)` with `intensity` `1`s.
+2. Shuffle it.
+3. Generate bitmap.
+
+```sol showLineNumbers={false}
+uint256[] memory bgBitmapBits = new uint256[](253);
+for (uint256 i; i <= hyphenGuy.intensity; ++i) {
+    bgBitmapBits[i] = 1;
+}
+
+// Shuffle the array if intensity mode.
+if (hyphenGuy.intensity < 252) prng.shuffle(bgBitmapBits);
+
+uint256 bgBitmap;
+for (uint256 i; i < 253; ++i) {
+    // `intensity >= 252` implies `intenseBg = true`
+    bgBitmap <<= 1;
+    bgBitmap |= bgBitmapBits[i];
+}
+```
+
+Finally, this yields a nice, efficient framework for determining which characters to draw (and for which element) at each position:
+
+```sol showLineNumbers={false}
+// Iterate through the positions in reverse order.
+for (uint256 i = 252; i != 0; --i) {
+    if ((bitmap >> i) & 1 == 0) {
+        // Draw hyphen guy character.
+    } else if ((bgBitmap >> i) & 1 != 0) {
+        // We make use of the `bgBitmap` generated earlier from he intensity
+        // value here. If the check above passed, it means a background
+        // character must be drawn here.
+        bgStr = string.concat(
+            bgStr,
+            string(
+                abi.encodePacked(
+                    BACKGROUNDS[
+                        // Select a random background if `chaosBg` is true.
+                        hyphenGuy.chaosBg
+                            ? prng.state % 9
+                            : hyphenGuy.background
+                    ]
+                )
+            )
+        );
+        // We need to generate a new random number for the next potentially
+        // random background character.
+        prng.state = prng.next();
+    } else {
+        // Failed all checks. Empty background character.
+        bgStr = string.concat(bgStr, " ");
+    }
+}
+```
+
+Feel free to see the [final deployment](https://etherscan.io/address/0x2010009c4842e6B6d2630A07Dd6469172affb4dc), [repo](https://github.com/fiveoutofnine/adopt-a-hyphen), and [collection](https://opensea.io/collection/adopt-a-hyphen).
+
+<Callout intent="none">
+  I mined a vanity address beginning with `0x2010` for the deployment because [`U+2010`](https://www.compart.com/en/unicode/U+2010) is the Unicode character value for `-`.
+</Callout>
+
+## Conclusion
+
+<MintsGraph />
+
+Team "onchain" [put up a good fight](https://www.onchain-is-a-word.com), but we [won](https://etherscan.io/tx/0x7221a10d391ee6d02e080011077b08ac80dc6f12192575fb560dbc0d595fc50d) decisively: **802** to **303**.
+
+The art battle was a really fun and creative way of engaging the community to socially coordinate and create something to sell.
+Beyond being a quick, fun hack, it was a great way to temporarily gather and align some interesting, culturally-aware people on a common goal.
+I became friends with some people from both sides, and it was one of the more enjoyable experiences I've had on the internet.
+
+---
+
+As of <RelativeDate date={new Date("2024-06-27T17:48:58.223Z")} type="absolute" />, the terms "onchain" and "on-chain" have continued evolving in their respective ways:
+
+- "Onchain" now generally describes _anything_ crypto-adjacent (even if it largely runs outside of a blockchain), similar to "crypto" or "web3."
+- "On-chain" now more specifically describes fully on-chain projects&mdash;a stricter subset of something that falls under "onchain."
+
+Most of my work falls under the "on-chain" descriptor, so I usually still use that term, but I've started using "onchain" in more casual settings (e.g. DMs).
+In my opinion, the 2 terms have diverged enough and each found enough meaning that they will continue to coexist in their current forms.
