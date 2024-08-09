@@ -10,8 +10,8 @@ export const SHORT_QUOTES = [
   },
   {
     text: 'They don\'t know that we know they know we know.',
-    wpm: 267.3,
-    time: 2.11,
+    wpm: 291.2,
+    time: 1.94,
   },
   {
     text: 'git push --set-upstream origin',
