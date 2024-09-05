@@ -236,4 +236,4 @@ export const WriteGlyphsAccordion: React.FC<{ children?: React.ReactNode }> = ({
 const WRITE_GLYPHS_PY_SOURCE = `CHARACTERS = sorted(set("fiveoutofnine0x0123456789abcdefABCDEF"))
 
 with open("glyphs.txt", "w") as file:
-    file.write("\n".join([f"U+{str(hex(ord(char))[2:]).zfill(4).upper()}" for char in CHARACTERS]))`;
+    file.write("\\n".join([f"U+{str(hex(ord(char))[2:]).zfill(4).upper()}" for char in CHARACTERS]))`;
