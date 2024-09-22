@@ -74,7 +74,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
                 <Table.Cell>
                   <div className="flex items-center gap-1">
                     <Tooltip
-                      content="Contract address"
+                      content="Contract"
                       side="top"
                       align="start"
                       triggerProps={{ className: 'rounded-sm', asChild: true }}
