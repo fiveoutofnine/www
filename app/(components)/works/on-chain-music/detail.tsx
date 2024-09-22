@@ -6,6 +6,8 @@ import { useState } from 'react';
 import blockie from 'ethereum-blockies-base64';
 import { ChevronFirst, Play } from 'lucide-react';
 
+import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
+
 import { ButtonGroup, IconButton, Table, Tooltip } from '@/components/ui';
 
 const OnChainMusicFeatureDetail: React.FC = () => {
@@ -47,7 +49,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           ) : null}
         </Table.Header>
         <Table.Body className="text-xs [&_td:first-child]:pl-1.5 [&_td:last-child]:pr-1.5 [&_td]:h-6 [&_td]:px-1 [&_td]:py-0">
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+          {ON_CHAIN_SONGS.map(({ address, chainId, name, length }, i) => (
             <Table.Row
               key={i}
               id={`on-chain-music-feature-song-${i}`}
@@ -75,19 +77,21 @@ const OnChainMusicFeatureDetail: React.FC = () => {
                   >
                     <Image
                       className="size-4 min-w-4 rounded-sm border border-gray-7 hover:border-gray-8 group-data-[state=selected]:border-blue-7 group-data-[state=selected]:hover:border-blue-8"
-                      src={blockie('0x123')}
-                      alt="0x123"
+                      src={blockie(address)}
+                      alt={`Ethereum blocky identicon for ${address}`}
                       width={16}
                       height={16}
                     />
                   </Tooltip>
-                  <div className="leading-4">rocky</div>
+                  <div className="leading-4">{name}</div>
                 </div>
               </Table.Cell>
               <Table.Cell className="font-mono">
-                0<span className="text-gray-11 group-data-[state=selected]:text-blue-11">:</span>28
+                {Math.floor(Math.round(length) / 60)}
+                <span className="text-gray-11 group-data-[state=selected]:text-blue-11">:</span>
+                {(Math.round(length) % 60).toString().padStart(2, '0')}
               </Table.Cell>
-              <Table.Cell className="font-mono">8453</Table.Cell>
+              <Table.Cell className="font-mono">{chainId}</Table.Cell>
               <Table.Cell className="text-right">
                 <button className="text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:rounded-sm group-data-[state=selected]:text-blue-11 group-data-[state=selected]:hover:text-blue-12">
                   View
