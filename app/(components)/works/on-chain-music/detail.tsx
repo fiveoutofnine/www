@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
+import OnChainMusicFeatureDetailModal from './modal';
 import blockie from 'ethereum-blockies-base64';
 import { ChevronFirst, Copy, Play } from 'lucide-react';
 
@@ -107,9 +108,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               </Table.Cell>
               <Table.Cell className="font-mono">{chainId}</Table.Cell>
               <Table.Cell className="text-right">
-                <button className="text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:rounded-sm group-data-[state=selected]:text-blue-11 group-data-[state=selected]:hover:text-blue-12">
-                  View
-                </button>
+                <OnChainMusicFeatureDetailModal data={ON_CHAIN_SONGS[i]} />
               </Table.Cell>
             </Table.Row>
           ))}

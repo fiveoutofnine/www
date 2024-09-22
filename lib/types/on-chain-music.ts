@@ -7,6 +7,7 @@ import type { Address } from 'viem';
  * @param name Name of the on-chain song.
  * @param length Length of the on-chain song (in seconds).
  * @param composition Source code of the on-chain song.
+ * @param metadata Metadata of the on-chain song.
  */
 export type OnChainMusicFeature = {
   address: Address;
@@ -14,4 +15,8 @@ export type OnChainMusicFeature = {
   name: string;
   length: number;
   composition: string;
+  metadata: {
+    sampleRate: number;
+    samples: number;
+  };
 };
