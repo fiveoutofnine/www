@@ -48,7 +48,6 @@ export const tableRootStyles = ['w-full', 'caption-bottom', 'border-y', 'border-
 export const tableRowStyles = [
   'border-b',
   'border-gray-6',
-  'transition-colors',
   'last:border-b-0',
   'data-[subcomponent=true]:bg-gray-2',
   'data-[state=selected]:bg-gray-5',

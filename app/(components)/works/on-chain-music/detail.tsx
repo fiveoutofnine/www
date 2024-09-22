@@ -28,7 +28,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           onScroll: handleScroll,
         }}
       >
-        <Table.Header className="[&_th:first-child]:pl-7 [&_th:last-child]:pr-1.5 [&_th]:px-1">
+        <Table.Header className="[&_[table-head-separator]]:bg-gray-6 [&_th:first-child]:pl-7 [&_th:last-child]:pr-1.5 [&_th]:px-1">
           <Table.Row className="[&_th]:sticky [&_th]:top-0 [&_th]:h-6 [&_th]:font-normal">
             <Table.Head>Song</Table.Head>
             <Table.Head>Time</Table.Head>
@@ -38,7 +38,8 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           {!scrollIsAtTop ? (
             <Table.Row role="separator">
               <Table.Head
-                className="sticky top-[23px] h-[2px] bg-gray-6 animate-in fade-in"
+                className="sticky top-[1.4375rem] h-[2px] animate-in fade-in"
+                table-head-separator=""
                 colSpan={4}
               />
             </Table.Row>
