@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import blockie from 'ethereum-blockies-base64';
-import { ChevronFirst, Play } from 'lucide-react';
+import { ChevronFirst, Copy, Play } from 'lucide-react';
 
 import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
 
-import { ButtonGroup, IconButton, Table, Tooltip } from '@/components/ui';
+import { ButtonGroup, IconButton, Table, toast, Tooltip } from '@/components/ui';
 
 const OnChainMusicFeatureDetail: React.FC = () => {
   const [song, setSong] = useState<number>();
@@ -70,18 +70,32 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               <Table.Cell>
                 <div className="flex items-center gap-1">
                   <Tooltip
-                    content="address"
+                    content="Contract address"
                     side="top"
                     align="start"
-                    triggerProps={{ className: 'rounded-sm' }}
+                    triggerProps={{ className: 'rounded-sm', asChild: true }}
                   >
-                    <Image
-                      className="size-4 min-w-4 rounded-sm border border-gray-7 hover:border-gray-8 group-data-[state=selected]:border-blue-7 group-data-[state=selected]:hover:border-blue-8"
-                      src={blockie(address)}
-                      alt={`Ethereum blocky identicon for ${address}`}
-                      width={16}
-                      height={16}
-                    />
+                    <button
+                      className="blocky--button group flex size-4 min-w-4 items-center justify-center overflow-hidden rounded-sm border border-gray-7 transition-colors hover:border-gray-8 group-data-[state=selected]:border-blue-7 group-data-[state=selected]:hover:border-blue-8"
+                      onClick={() => {
+                        navigator.clipboard.writeText(address);
+                        toast({
+                          intent: 'success',
+                          title: 'Copied contract address to clipboard!',
+                          description: address,
+                          hasCloseButton: true,
+                        });
+                      }}
+                    >
+                      <Image
+                        className="peer transition-[filter] group-[.blocky--button]:hover:blur"
+                        src={blockie(address)}
+                        alt={`Ethereum blocky identicon for ${address}`}
+                        width={16}
+                        height={16}
+                      />
+                      <Copy className="pointer-events-none absolute size-2.5 opacity-0 transition-opacity peer-hover:opacity-100" />
+                    </button>
                   </Tooltip>
                   <div className="leading-4">{name}</div>
                 </div>
