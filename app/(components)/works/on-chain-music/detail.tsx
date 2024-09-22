@@ -50,68 +50,72 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           ) : null}
         </Table.Header>
         <Table.Body className="text-xs [&_td:first-child]:pl-1.5 [&_td:last-child]:pr-1.5 [&_td]:h-6 [&_td]:px-1 [&_td]:py-0">
-          {ON_CHAIN_SONGS.map(({ address, chainId, name, length }, i) => (
-            <Table.Row
-              key={i}
-              id={`on-chain-music-feature-song-${i}`}
-              className="group text-gray-12 hover:bg-gray-4 focus:outline-none data-[state=selected]:bg-blue-5 data-[state=selected]:text-blue-12"
-              data-state={song === i ? 'selected' : undefined}
-              onClick={() => setSong(i)}
-              onFocus={() => setSong(i)}
-              onKeyDown={(e) => {
-                if (e.key === 'ArrowUp' && i > 0) {
-                  document.getElementById(`on-chain-music-feature-song-${i - 1}`)?.focus();
-                }
-                if (e.key === 'ArrowDown') {
-                  document.getElementById(`on-chain-music-feature-song-${i + 1}`)?.focus();
-                }
-              }}
-              tabIndex={1}
-            >
-              <Table.Cell>
-                <div className="flex items-center gap-1">
-                  <Tooltip
-                    content="Contract address"
-                    side="top"
-                    align="start"
-                    triggerProps={{ className: 'rounded-sm', asChild: true }}
-                  >
-                    <button
-                      className="blocky--button group flex size-4 min-w-4 items-center justify-center overflow-hidden rounded-sm border border-gray-7 transition-colors hover:border-gray-8 group-data-[state=selected]:border-blue-7 group-data-[state=selected]:hover:border-blue-8"
-                      onClick={() => {
-                        navigator.clipboard.writeText(address);
-                        toast({
-                          intent: 'success',
-                          title: 'Copied contract address to clipboard!',
-                          description: address,
-                          hasCloseButton: true,
-                        });
-                      }}
+          {ON_CHAIN_SONGS.map(({ address, chainId, name, metadata }, i) => {
+            const length = metadata.samples / metadata.sampleRate;
+
+            return (
+              <Table.Row
+                key={i}
+                id={`on-chain-music-feature-song-${i}`}
+                className="group text-gray-12 hover:bg-gray-4 focus:outline-none data-[state=selected]:bg-blue-5 data-[state=selected]:text-blue-12"
+                data-state={song === i ? 'selected' : undefined}
+                onClick={() => setSong(i)}
+                onFocus={() => setSong(i)}
+                onKeyDown={(e) => {
+                  if (e.key === 'ArrowUp' && i > 0) {
+                    document.getElementById(`on-chain-music-feature-song-${i - 1}`)?.focus();
+                  }
+                  if (e.key === 'ArrowDown') {
+                    document.getElementById(`on-chain-music-feature-song-${i + 1}`)?.focus();
+                  }
+                }}
+                tabIndex={1}
+              >
+                <Table.Cell>
+                  <div className="flex items-center gap-1">
+                    <Tooltip
+                      content="Contract address"
+                      side="top"
+                      align="start"
+                      triggerProps={{ className: 'rounded-sm', asChild: true }}
                     >
-                      <Image
-                        className="peer transition-[filter] group-[.blocky--button]:hover:blur"
-                        src={blockie(address)}
-                        alt={`Ethereum blocky identicon for ${address}`}
-                        width={16}
-                        height={16}
-                      />
-                      <Copy className="pointer-events-none absolute size-2.5 opacity-0 transition-opacity peer-hover:opacity-100" />
-                    </button>
-                  </Tooltip>
-                  <div className="leading-4">{name}</div>
-                </div>
-              </Table.Cell>
-              <Table.Cell className="font-mono">
-                {Math.floor(Math.round(length) / 60)}
-                <span className="text-gray-11 group-data-[state=selected]:text-blue-11">:</span>
-                {(Math.round(length) % 60).toString().padStart(2, '0')}
-              </Table.Cell>
-              <Table.Cell className="font-mono">{chainId}</Table.Cell>
-              <Table.Cell className="text-right">
-                <OnChainMusicFeatureDetailModal data={ON_CHAIN_SONGS[i]} />
-              </Table.Cell>
-            </Table.Row>
-          ))}
+                      <button
+                        className="blocky--button group flex size-4 min-w-4 items-center justify-center overflow-hidden rounded-sm border border-gray-7 transition-colors hover:border-gray-8 group-data-[state=selected]:border-blue-7 group-data-[state=selected]:hover:border-blue-8"
+                        onClick={() => {
+                          navigator.clipboard.writeText(address);
+                          toast({
+                            intent: 'success',
+                            title: 'Copied contract address to clipboard!',
+                            description: address,
+                            hasCloseButton: true,
+                          });
+                        }}
+                      >
+                        <Image
+                          className="peer transition-[filter] group-[.blocky--button]:hover:blur"
+                          src={blockie(address)}
+                          alt={`Ethereum blocky identicon for ${address}`}
+                          width={16}
+                          height={16}
+                        />
+                        <Copy className="pointer-events-none absolute size-2.5 opacity-0 transition-opacity peer-hover:opacity-100" />
+                      </button>
+                    </Tooltip>
+                    <div className="leading-4">{name}</div>
+                  </div>
+                </Table.Cell>
+                <Table.Cell className="font-mono">
+                  {Math.floor(Math.round(length) / 60)}
+                  <span className="text-gray-11 group-data-[state=selected]:text-blue-11">:</span>
+                  {(Math.round(length) % 60).toString().padStart(2, '0')}
+                </Table.Cell>
+                <Table.Cell className="font-mono">{chainId}</Table.Cell>
+                <Table.Cell className="text-right">
+                  <OnChainMusicFeatureDetailModal data={ON_CHAIN_SONGS[i]} />
+                </Table.Cell>
+              </Table.Row>
+            );
+          })}
         </Table.Body>
       </Table.Root>
 
