@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   TableBody,
   TableCaption,
@@ -26,7 +28,7 @@ export type TableHeadProps = React.ThHTMLAttributes<HTMLTableCellElement>;
 export type TableHeaderProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
 export type TableRootProps = React.HTMLAttributes<HTMLTableElement> & {
-  containerClassName?: string;
+  containerProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
 export type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {

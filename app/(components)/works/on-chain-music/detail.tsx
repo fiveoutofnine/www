@@ -1,25 +1,50 @@
 'use client';
 
+import Image from 'next/image';
+import { useState } from 'react';
+
 import blockie from 'ethereum-blockies-base64';
 import { ChevronFirst, Play } from 'lucide-react';
 
 import { ButtonGroup, IconButton, Table, Tooltip } from '@/components/ui';
 
 const OnChainMusicFeatureDetail: React.FC = () => {
+  const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
+
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
+    const scrollTop = target.scrollTop;
+
+    setScrollIsAtTop(scrollTop === 0);
+  };
+
   return (
-    <div className="hide-scrollbar relative flex h-[8.875rem] flex-col bg-gray-3">
+    <div className="relative flex h-[8.875rem] flex-col bg-gray-3">
       {/* Songs */}
-      <Table.Root className="hide-scrollbar relative grow overflow-y-scroll border-y-0 [&_[table-cell]]:px-1 [&_[table-cell]]:first:pl-1.5 [&_[table-cell]]:last:pr-1.5">
+      <Table.Root
+        className="border-y-0 [&_[table-cell]]:px-1 [&_[table-cell]]:first:pl-1.5 [&_[table-cell]]:last:pr-1.5"
+        containerProps={{
+          className: 'hide-scrollbar grow relative overflow-y-scroll',
+          onScroll: handleScroll,
+        }}
+      >
         <Table.Header>
-          <Table.Row className="border-gray-6 last:border-b [&_[table-head]]:sticky [&_[table-head]]:top-0 [&_[table-head]]:h-6 [&_[table-head]]:bg-gray-3 [&_[table-head]]:px-1 [&_[table-head]]:font-normal [&_[table-head]]:first:pl-1.5 [&_[table-head]]:last:pr-1.5">
-            <Table.Head>Song</Table.Head>
+          <Table.Row className="border-gray-6 last:border-b [&_[table-head]]:sticky [&_[table-head]]:top-0 [&_[table-head]]:h-6 [&_[table-head]]:bg-gray-3 [&_[table-head]]:px-1 [&_[table-head]]:font-normal">
+            <Table.Head className="first:pl-7">
+              <span className="pl-[1.375rem]">Song</span>
+            </Table.Head>
             <Table.Head>Time</Table.Head>
             <Table.Head>Chain</Table.Head>
             <Table.Head className="text-right">Composition</Table.Head>
           </Table.Row>
-          {/* <Table.Row>
-            <Table.Head className="sticky top-[23px] h-[2px] bg-gray-6" colSpan={4} />
-          </Table.Row> */}
+          {!scrollIsAtTop ? (
+            <Table.Row role="separator">
+              <Table.Head
+                className="sticky top-[23px] h-[2px] bg-gray-6 animate-in fade-in"
+                colSpan={4}
+              />
+            </Table.Row>
+          ) : null}
         </Table.Header>
         <Table.Body>
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
@@ -39,9 +64,13 @@ const OnChainMusicFeatureDetail: React.FC = () => {
             >
               <Table.Cell className="h-6">
                 <div className="flex items-center gap-1.5">
-                  <div className="size-4 min-w-4 overflow-hidden rounded-sm border border-gray-6">
-                    <img src={blockie('0x123')} alt="0x123" className="h-full w-full" />
-                  </div>
+                  <Image
+                    className="size-4 min-w-4 rounded-sm border border-gray-6"
+                    src={blockie('0x123')}
+                    alt="0x123"
+                    width={16}
+                    height={16}
+                  />
                   <div className="text-xs leading-4 text-gray-12">rocky</div>
                 </div>
               </Table.Cell>
