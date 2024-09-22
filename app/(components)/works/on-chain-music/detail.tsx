@@ -9,6 +9,7 @@ import { ChevronFirst, Play } from 'lucide-react';
 import { ButtonGroup, IconButton, Table, Tooltip } from '@/components/ui';
 
 const OnChainMusicFeatureDetail: React.FC = () => {
+  const [song, setSong] = useState<number>();
   const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
@@ -28,7 +29,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           onScroll: handleScroll,
         }}
       >
-        <Table.Header className="[&_[table-head-separator]]:bg-gray-6 [&_th:first-child]:pl-7 [&_th:last-child]:pr-1.5 [&_th]:px-1">
+        <Table.Header className="[&_[table-head-separator]]:bg-gray-6 [&_th:first-child]:pl-[1.625rem] [&_th:last-child]:pr-1.5 [&_th]:px-1">
           <Table.Row className="[&_th]:sticky [&_th]:top-0 [&_th]:h-6 [&_th]:font-normal">
             <Table.Head>Song</Table.Head>
             <Table.Head>Time</Table.Head>
@@ -50,7 +51,10 @@ const OnChainMusicFeatureDetail: React.FC = () => {
             <Table.Row
               key={i}
               id={`on-chain-music-feature-song-${i}`}
-              className="hover:bg-gray-9 focus:outline-none focus-visible:-outline-offset-2 focus-visible:outline-blue-9"
+              className="group text-gray-12 hover:bg-gray-4 focus:outline-none data-[state=selected]:bg-blue-5 data-[state=selected]:text-blue-12"
+              data-state={song === i ? 'selected' : undefined}
+              onClick={() => setSong(i)}
+              onFocus={() => setSong(i)}
               onKeyDown={(e) => {
                 if (e.key === 'ArrowUp' && i > 0) {
                   document.getElementById(`on-chain-music-feature-song-${i - 1}`)?.focus();
@@ -62,23 +66,30 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               tabIndex={1}
             >
               <Table.Cell>
-                <div className="flex items-center gap-1.5">
-                  <Image
-                    className="size-4 min-w-4 rounded-sm border border-gray-6"
-                    src={blockie('0x123')}
-                    alt="0x123"
-                    width={16}
-                    height={16}
-                  />
-                  <div className="leading-4 text-gray-12">rocky</div>
+                <div className="flex items-center gap-1">
+                  <Tooltip
+                    content="address"
+                    side="top"
+                    align="start"
+                    triggerProps={{ className: 'rounded-sm' }}
+                  >
+                    <Image
+                      className="size-4 min-w-4 rounded-sm border border-gray-7 hover:border-gray-8 group-data-[state=selected]:border-blue-7 group-data-[state=selected]:hover:border-blue-8"
+                      src={blockie('0x123')}
+                      alt="0x123"
+                      width={16}
+                      height={16}
+                    />
+                  </Tooltip>
+                  <div className="leading-4">rocky</div>
                 </div>
               </Table.Cell>
               <Table.Cell className="font-mono">
-                0<span className="text-gray-11">:</span>28
+                0<span className="text-gray-11 group-data-[state=selected]:text-blue-11">:</span>28
               </Table.Cell>
               <Table.Cell className="font-mono">8453</Table.Cell>
               <Table.Cell className="text-right">
-                <button className="text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:rounded-sm">
+                <button className="text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:rounded-sm group-data-[state=selected]:text-blue-11 group-data-[state=selected]:hover:text-blue-12">
                   View
                 </button>
               </Table.Cell>
