@@ -1,65 +1,55 @@
-export const tableBodyStyles = ['group', 'table--body', 'text-sm', 'text-gray-12'];
+export const tableBodyStyles = [
+  'text-sm',
+  'text-gray-12',
+  '[&_td]:py-3',
+  '[&_td]:px-3',
+  '[&_td:first-child]:pl-4',
+  '[&_td:last-child]:pr-4',
+  '[&_tr:where(:nth-child(odd))]:bg-gray-1',
+  '[&_tr:where(:nth-child(even))]:bg-gray-3',
+];
 
 export const tableCaptionStyles = ['text-gray-11', 'mt-2', 'text-xs'];
 
-export const tableCellStyles = [
-  'px-3',
-  'align-middle',
-  'first:pl-4',
-  'last:pr-4',
-  'group-[.table--header]:py-0',
-  'group-[.table--body]:py-3',
-  'group-[.table--footer]:py-0',
-];
+export const tableCellStyles = ['align-middle'];
 
 export const tableFooterStyles = [
-  'group',
-  'table--footer',
   'border-t',
   'border-gray-6',
   'font-medium',
   'text-gray-12',
   'text-sm',
+  '[&_tr]:h-8',
+  '[&_tr]:bg-gray-3',
+  '[&_td]:py-0',
 ];
 
 export const tableHeadStyles = [
-  'group',
-  'table--head',
   'h-7',
-  'py-0',
-  'px-3',
   'border-b',
-  'first:pl-4',
-  'last:pr-4',
   'border-gray-6',
   'text-left',
   'align-middle',
-  'text-xs',
   'font-medium',
   'text-gray-11',
 ];
 
-export const tableHeaderStyles = ['group', 'table--header'];
-
-export const tableRootStyles = [
-  'group',
-  'table--root',
-  'w-full',
-  'caption-bottom',
-  'border-y',
-  'border-gray-6',
+export const tableHeaderStyles = [
+  'text-xs',
+  '[&_th]:bg-gray-3',
+  '[&_th]:py-0',
+  '[&_th]:px-3',
+  '[&_th:first-child]:pl-4',
+  '[&_th:last-child]:pr-4',
 ];
+
+export const tableRootStyles = ['w-full', 'caption-bottom', 'border-y', 'border-gray-6'];
 
 export const tableRowStyles = [
   'border-b',
   'border-gray-6',
-  'last:border-b-0',
-  'group-[.table--header]:bg-gray-3',
-  'group-[.table--body]:data-[subcomponent=false]:odd:bg-gray-1',
-  'group-[.table--body]:data-[subcomponent=false]:even:bg-gray-3',
-  'group-[.table--body]:data-[subcomponent=true]:bg-gray-2',
-  'group-[.table--body]:data-[state=selected]:bg-gray-5',
-  'group-[.table--footer]:bg-gray-3',
-  'group-[.table--footer]:h-8',
   'transition-colors',
+  'last:border-b-0',
+  'data-[subcomponent=true]:bg-gray-2',
+  'data-[state=selected]:bg-gray-5',
 ];

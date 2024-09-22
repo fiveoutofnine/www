@@ -22,17 +22,15 @@ const OnChainMusicFeatureDetail: React.FC = () => {
     <div className="relative flex h-[8.875rem] flex-col bg-gray-3">
       {/* Songs */}
       <Table.Root
-        className="border-y-0 [&_[table-cell]]:px-1 [&_[table-cell]]:first:pl-1.5 [&_[table-cell]]:last:pr-1.5"
+        className="border-y-0"
         containerProps={{
           className: 'hide-scrollbar grow relative overflow-y-scroll',
           onScroll: handleScroll,
         }}
       >
-        <Table.Header>
-          <Table.Row className="border-gray-6 last:border-b [&_[table-head]]:sticky [&_[table-head]]:top-0 [&_[table-head]]:h-6 [&_[table-head]]:bg-gray-3 [&_[table-head]]:px-1 [&_[table-head]]:font-normal">
-            <Table.Head className="first:pl-7">
-              <span className="pl-[1.375rem]">Song</span>
-            </Table.Head>
+        <Table.Header className="[&_th:first-child]:pl-7 [&_th:last-child]:pr-1.5 [&_th]:px-1">
+          <Table.Row className="[&_th]:sticky [&_th]:top-0 [&_th]:h-6 [&_th]:font-normal">
+            <Table.Head>Song</Table.Head>
             <Table.Head>Time</Table.Head>
             <Table.Head>Chain</Table.Head>
             <Table.Head className="text-right">Composition</Table.Head>
@@ -46,12 +44,12 @@ const OnChainMusicFeatureDetail: React.FC = () => {
             </Table.Row>
           ) : null}
         </Table.Header>
-        <Table.Body>
+        <Table.Body className="text-xs [&_td:first-child]:pl-1.5 [&_td:last-child]:pr-1.5 [&_td]:h-6 [&_td]:px-1 [&_td]:py-0">
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
             <Table.Row
               key={i}
               id={`on-chain-music-feature-song-${i}`}
-              className="focus:outline-none focus-visible:-outline-offset-2 focus-visible:outline-blue-9 [&_[table-cell]]:group-[.table--body]:py-0"
+              className="hover:bg-gray-9 focus:outline-none focus-visible:-outline-offset-2 focus-visible:outline-blue-9"
               onKeyDown={(e) => {
                 if (e.key === 'ArrowUp' && i > 0) {
                   document.getElementById(`on-chain-music-feature-song-${i - 1}`)?.focus();
@@ -62,7 +60,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               }}
               tabIndex={1}
             >
-              <Table.Cell className="h-6">
+              <Table.Cell>
                 <div className="flex items-center gap-1.5">
                   <Image
                     className="size-4 min-w-4 rounded-sm border border-gray-6"
@@ -71,15 +69,15 @@ const OnChainMusicFeatureDetail: React.FC = () => {
                     width={16}
                     height={16}
                   />
-                  <div className="text-xs leading-4 text-gray-12">rocky</div>
+                  <div className="leading-4 text-gray-12">rocky</div>
                 </div>
               </Table.Cell>
-              <Table.Cell className="h-6 font-mono text-xs">
+              <Table.Cell className="font-mono">
                 0<span className="text-gray-11">:</span>28
               </Table.Cell>
-              <Table.Cell className="h-6 font-mono text-xs">8453</Table.Cell>
-              <Table.Cell className="h-6 text-right text-xs">
-                <button className="text-xs text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:rounded-sm">
+              <Table.Cell className="font-mono">8453</Table.Cell>
+              <Table.Cell className="text-right">
+                <button className="text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:rounded-sm">
                   View
                 </button>
               </Table.Cell>
