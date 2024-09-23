@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import OnChainMusicFeatureDetailModal from './modal';
 import blockie from 'ethereum-blockies-base64';
-import { motion, type PanInfo, useAnimation, useMotionValue, useTransform } from 'framer-motion';
+import { motion, type PanInfo, useAnimation } from 'framer-motion';
 import { ChevronFirst, Copy, Music, Pause, Play, Volume, Volume2 } from 'lucide-react';
 
 import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
@@ -156,7 +156,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
       </Table.Root>
 
       {/* Player */}
-      <div className="flex min-h-8 w-full items-center gap-1.5 border-t border-gray-6 px-1.5">
+      <div className="flex min-h-8 w-full items-center gap-1 border-t border-gray-6 px-1.5">
         <ButtonGroup>
           <Tooltip content="Replay" side="top" align="start" triggerProps={{ asChild: true }}>
             <IconButton
@@ -217,7 +217,14 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               <Music className="size-3 animate-in fade-in zoom-in" />
             )}
           </div>
-          {loaded !== undefined ? <OnChainMusicFeatureDetailProgressMeter /> : null}
+          {loaded !== undefined ? (
+            <OnChainMusicFeatureDetailProgressMeter
+              data={ON_CHAIN_SONGS[loaded]}
+              audioRef={audioRef}
+              setReplayable={setReplayable}
+              onAudioEnd={() => setPlaying(false)}
+            />
+          ) : null}
         </div>
       </div>
     </div>
@@ -228,29 +235,48 @@ const OnChainMusicFeatureDetail: React.FC = () => {
 // Progress meter
 // -----------------------------------------------------------------------------
 
-const OnChainMusicFeatureDetailProgressMeter: React.FC = () => {
-  const [progress, setProgress] = useState<number>(50);
+const OnChainMusicFeatureDetailProgressMeter: React.FC<{
+  data: (typeof ON_CHAIN_SONGS)[number];
+  audioRef: React.RefObject<HTMLAudioElement>;
+  setReplayable?: React.Dispatch<React.SetStateAction<boolean>>;
+  onAudioEnd?: () => void;
+}> = ({ data, audioRef, setReplayable, onAudioEnd }) => {
+  const [progress, setProgress] = useState<number>(0);
   const [expanded, setExpanded] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressControls = useAnimation();
+  const progressBackgroundControls = useAnimation();
   const nameControls = useAnimation();
 
-  const handleX = useMotionValue(0);
-  const sliderWidth = expanded ? 300 : 150;
-  const value = useTransform(handleX, [0, sliderWidth], [0, 100]);
-
+  // Animate progress bar as audio plays when the user isn't adjusting it.
   useEffect(() => {
-    const unsubscribe = value.onChange((v) => setProgress(Math.round(v)));
-    return () => unsubscribe();
-  }, [value]);
+    if (expanded) return;
 
+    const interval = setInterval(() => {
+      if (audioRef.current) {
+        const { currentTime: time, duration } = audioRef.current;
+        setProgress(Math.min(100 * (time / duration), 100));
+        if (time >= duration) onAudioEnd?.();
+      }
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [audioRef, expanded, onAudioEnd]);
+
+  // Handle resetting the progress bar's visual and set value on pointer up.
   useEffect(() => {
     const handlePointerUp = () => {
       if (window && expanded) {
+        // Reset the progress bar visual.
         setExpanded(false);
         progressControls.start({
           height: 4,
           background: radixColors.grayDark.gray9,
+          transition: { type: 'spring', stiffness: 400, damping: 30 },
+        });
+        progressBackgroundControls.start({
+          height: 4,
+          background: radixColors.grayDark.gray5,
           transition: { type: 'spring', stiffness: 400, damping: 30 },
         });
         nameControls.start({
@@ -258,12 +284,26 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC = () => {
           mixBlendMode: 'normal',
           transition: { type: 'spring', stiffness: 400, damping: 30 },
         });
+
+        // Set the audio value.
+        if (audioRef.current) {
+          audioRef.current.currentTime = (progress / 100) * audioRef.current.duration;
+          if (progress > 0) setReplayable?.(true);
+        }
       }
     };
 
     window.addEventListener('pointerup', handlePointerUp);
     return () => window.removeEventListener('pointerup', handlePointerUp);
-  }, [expanded, nameControls, progressControls]);
+  }, [
+    audioRef,
+    expanded,
+    nameControls,
+    progress,
+    progressBackgroundControls,
+    progressControls,
+    setReplayable,
+  ]);
 
   const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (containerRef.current) {
@@ -279,6 +319,11 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC = () => {
     progressControls.start({
       height: 24,
       background: radixColors.grayDark.gray12,
+      transition: { type: 'spring', stiffness: 400, damping: 30 },
+    });
+    progressBackgroundControls.start({
+      height: 24,
+      background: radixColors.grayDark.gray3,
       transition: { type: 'spring', stiffness: 400, damping: 30 },
     });
     nameControls.start({
@@ -304,13 +349,18 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC = () => {
         animate={nameControls}
         initial={{ top: 2, mixBlendMode: 'normal' }}
       >
-        rocky
+        {data.name}
       </motion.div>
       <motion.div
         className="absolute bottom-0 left-0 z-10 w-full"
         animate={progressControls}
         initial={{ height: 4, background: radixColors.grayDark.gray9 }}
         style={{ clipPath: `inset(0 ${100 - progress}% 0 0)` }}
+      />
+      <motion.div
+        className="absolute bottom-0 left-0 z-[9] w-full"
+        animate={progressBackgroundControls}
+        initial={{ height: 4, background: radixColors.grayDark.gray5 }}
       />
     </motion.div>
   );
