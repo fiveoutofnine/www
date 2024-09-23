@@ -299,6 +299,7 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
   const progressControls = useAnimation();
   const progressBackgroundControls = useAnimation();
   const nameControls = useAnimation();
+  const durationControls = useAnimation();
 
   // Animate progress bar as audio plays when the user isn't adjusting it.
   useEffect(() => {
@@ -332,7 +333,14 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
           transition: { type: 'spring', stiffness: 400, damping: 30 },
         });
         nameControls.start({
+          /* (24 - 2 - 3 - 16) / 2 = 1.5px */
           top: 1.5,
+          mixBlendMode: 'normal',
+          transition: { type: 'spring', stiffness: 400, damping: 30 },
+        });
+        durationControls.start({
+          /* (24 - 2 - 3 - 12) / 2 = 3.5px */
+          top: 3.5,
           mixBlendMode: 'normal',
           transition: { type: 'spring', stiffness: 400, damping: 30 },
         });
@@ -349,6 +357,7 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
     return () => window.removeEventListener('pointerup', handlePointerUp);
   }, [
     audioRef,
+    durationControls,
     expanded,
     nameControls,
     progress,
@@ -384,7 +393,15 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
       mixBlendMode: 'difference',
       transition: { type: 'spring', stiffness: 400, damping: 30 },
     });
+    durationControls.start({
+      /* (24 - 2 - 12) / 2 = 5px */
+      top: 5,
+      mixBlendMode: 'difference',
+      transition: { type: 'spring', stiffness: 400, damping: 30 },
+    });
   };
+
+  const timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
 
   return (
     <div className="flex h-6 grow overflow-hidden rounded-r border border-gray-7 transition-colors hover:border-gray-8">
@@ -405,6 +422,20 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
           initial={{ top: 1.5, mixBlendMode: 'normal' }}
         >
           {data.name}
+        </motion.div>
+        <motion.div
+          className="absolute right-1.5 z-20 font-mono text-[10px] leading-3 text-gray-12"
+          animate={durationControls}
+          /* (24 - 2 - 3 - 12) / 2 = 3.5px */
+          initial={{ top: 3.5, mixBlendMode: 'normal' }}
+        >
+          {Math.floor(timeElapsed / 60)}
+          <span className="text-gray-11">:</span>
+          {Math.floor(timeElapsed % 60)
+            .toString()
+            .padStart(2, '0')}
+          <span className="text-gray-11">.</span>
+          {Math.floor((10 * timeElapsed) % 10).toString()}
         </motion.div>
         <motion.div
           className="absolute bottom-0.5 left-0 z-10 w-full"
