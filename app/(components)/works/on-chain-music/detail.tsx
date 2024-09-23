@@ -401,7 +401,8 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
     });
   };
 
-  const timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
+  let timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
+  if (Number.isNaN(timeElapsed)) timeElapsed = 0;
 
   return (
     <div className="flex h-6 grow overflow-hidden rounded-r border border-gray-7 transition-colors hover:border-gray-8">
