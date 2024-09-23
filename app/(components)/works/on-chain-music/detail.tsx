@@ -6,7 +6,17 @@ import { useEffect, useRef, useState } from 'react';
 import OnChainMusicFeatureDetailModal from './modal';
 import blockie from 'ethereum-blockies-base64';
 import { motion, type PanInfo, useAnimation } from 'framer-motion';
-import { ChevronFirst, Copy, Music, Pause, Play, Volume, Volume2 } from 'lucide-react';
+import {
+  ChevronFirst,
+  Copy,
+  ExternalLink,
+  Music,
+  Pause,
+  Play,
+  Volume,
+  Volume2,
+} from 'lucide-react';
+import { useSwitchChain } from 'wagmi';
 
 import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
 
@@ -26,6 +36,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [replayable, setReplayable] = useState<boolean>(false);
   const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
+  const { chains } = useSwitchChain();
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -64,6 +75,11 @@ const OnChainMusicFeatureDetail: React.FC = () => {
 
     setScrollIsAtTop(scrollTop === 0);
   };
+
+  // Default to `etherscan.io` for block explorer.
+  const getBlockExplorer = (chainId: number) =>
+    chains.find((chain) => chain.id === chainId)?.blockExplorers?.default.url ??
+    'https://etherscan.io';
 
   return (
     <div className="relative flex h-[8.875rem] flex-col bg-gray-3">
@@ -199,7 +215,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
       {/* Player */}
       <div className="flex min-h-8 w-full items-center gap-1 border-t border-gray-6 px-1.5">
         <ButtonGroup>
-          <Tooltip content="Replay" side="top" align="start" triggerProps={{ asChild: true }}>
+          <Tooltip content="Reset" side="top" align="start" triggerProps={{ asChild: true }}>
             <IconButton size="sm" disabled={!replayable} onClick={resetAudio}>
               <ChevronFirst />
             </IconButton>
@@ -223,20 +239,28 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           </Tooltip>
         </ButtonGroup>
         <audio ref={audioRef} src={audioSrc} />
-        <div className="flex h-6 grow items-center overflow-hidden rounded border border-gray-6">
-          <div className="flex size-6 min-w-6 items-center justify-center overflow-hidden border-r border-gray-6 bg-gray-3 text-gray-11">
-            {loaded !== undefined ? (
+        <div className="flex h-6 grow items-center -space-x-px">
+          {loaded !== undefined ? (
+            <a
+              className="blocky--button group flex size-6 min-w-6 items-center justify-center overflow-hidden rounded-l border border-gray-7 bg-gray-3 text-gray-12 transition-colors hover:z-30 hover:border-gray-8 focus:z-30 focus-visible:rounded-r-sm"
+              href={`${getBlockExplorer(ON_CHAIN_SONGS[loaded].chainId)}/address/${ON_CHAIN_SONGS[loaded].address}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
-                className="animate-in fade-in zoom-in"
+                className="peer transition-[filter] animate-in fade-in zoom-in group-focus-visible:blur group-[.blocky--button]:hover:blur"
                 src={blockie(ON_CHAIN_SONGS[loaded].address)}
                 alt={`Ethereum blocky identicon for ${ON_CHAIN_SONGS[loaded].address}`}
                 width={24}
                 height={24}
               />
-            ) : (
+              <ExternalLink className="pointer-events-none absolute size-3 opacity-0 transition-opacity group-focus-visible:opacity-100 peer-hover:opacity-100" />
+            </a>
+          ) : (
+            <div className="flex size-6 min-w-6 items-center justify-center overflow-hidden rounded-l border border-gray-6 bg-gray-3 text-gray-11">
               <Music className="size-3 animate-in fade-in zoom-in" />
-            )}
-          </div>
+            </div>
+          )}
           {loaded !== undefined ? (
             <OnChainMusicFeatureDetailProgressMeter
               data={ON_CHAIN_SONGS[loaded]}
@@ -245,11 +269,12 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               onAudioEnd={() => setPlaying(false)}
             />
           ) : (
-            <div className="relative flex h-6 grow flex-col items-start bg-gray-3">
-              <div className="absolute left-1.5 top-1 text-[10px] font-medium leading-4 text-gray-11">
+            <div className="relative flex h-6 grow flex-col items-start overflow-hidden rounded-r border border-gray-6 bg-gray-3">
+              {/* (24 - 2 - 3 - 12) / 2 = 3.5px */}
+              <div className="absolute left-1.5 top-[3.5px] text-[10px] font-medium leading-3 text-gray-11">
                 Double-click a song to play.
               </div>
-              <div className="absolute bottom-0 left-0 h-1 w-full bg-gray-5" />
+              <div className="absolute bottom-0 left-0 h-[3px] w-full bg-gray-5" />
             </div>
           )}
         </div>
@@ -297,17 +322,17 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
         // Reset the progress bar visual.
         setExpanded(false);
         progressControls.start({
-          height: 4,
+          height: 3,
           background: radixColors.grayDark.gray9,
           transition: { type: 'spring', stiffness: 400, damping: 30 },
         });
         progressBackgroundControls.start({
-          height: 4,
+          height: 3,
           background: radixColors.grayDark.gray5,
           transition: { type: 'spring', stiffness: 400, damping: 30 },
         });
         nameControls.start({
-          top: 2,
+          top: 1.5,
           mixBlendMode: 'normal',
           transition: { type: 'spring', stiffness: 400, damping: 30 },
         });
@@ -354,42 +379,46 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
       transition: { type: 'spring', stiffness: 400, damping: 30 },
     });
     nameControls.start({
-      top: 4,
+      /* (24 - 2 - 16) / 2 = 3px */
+      top: 3,
       mixBlendMode: 'difference',
       transition: { type: 'spring', stiffness: 400, damping: 30 },
     });
   };
 
   return (
-    <motion.div
-      className="relative flex h-6 grow cursor-ew-resize flex-col items-start bg-gray-3"
-      drag="x"
-      dragMomentum={false}
-      dragElastic={0}
-      dragConstraints={containerRef}
-      onDrag={handleDrag}
-      onPointerDown={handlePointerDown}
-      ref={containerRef}
-    >
+    <div className="flex h-6 grow overflow-hidden rounded-r border border-gray-7 transition-colors hover:border-gray-8">
       <motion.div
-        className="absolute left-1.5 top-1 z-20 text-xs font-medium leading-4 text-gray-12"
-        animate={nameControls}
-        initial={{ top: 2, mixBlendMode: 'normal' }}
+        className="relative flex h-6 grow cursor-ew-resize flex-col items-start bg-gray-3"
+        drag="x"
+        dragMomentum={false}
+        dragElastic={0}
+        dragConstraints={containerRef}
+        onDrag={handleDrag}
+        onPointerDown={handlePointerDown}
+        ref={containerRef}
       >
-        {data.name}
+        <motion.div
+          className="absolute left-1.5 z-20 text-xs font-medium leading-4 text-gray-12"
+          animate={nameControls}
+          /* (24 - 2 - 3 - 16) / 2 = 1.5px */
+          initial={{ top: 1.5, mixBlendMode: 'normal' }}
+        >
+          {data.name}
+        </motion.div>
+        <motion.div
+          className="absolute bottom-0.5 left-0 z-10 w-full"
+          animate={progressControls}
+          initial={{ height: 3, background: radixColors.grayDark.gray9 }}
+          style={{ clipPath: `inset(0 ${100 - progress}% 0 0)` }}
+        />
+        <motion.div
+          className="absolute bottom-0.5 left-0 z-[9] w-full"
+          animate={progressBackgroundControls}
+          initial={{ height: 3, background: radixColors.grayDark.gray5 }}
+        />
       </motion.div>
-      <motion.div
-        className="absolute bottom-0 left-0 z-10 w-full"
-        animate={progressControls}
-        initial={{ height: 4, background: radixColors.grayDark.gray9 }}
-        style={{ clipPath: `inset(0 ${100 - progress}% 0 0)` }}
-      />
-      <motion.div
-        className="absolute bottom-0 left-0 z-[9] w-full"
-        animate={progressBackgroundControls}
-        initial={{ height: 4, background: radixColors.grayDark.gray5 }}
-      />
-    </motion.div>
+    </div>
   );
 };
 
