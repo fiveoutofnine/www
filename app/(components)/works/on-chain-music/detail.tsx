@@ -244,6 +244,27 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC = () => {
     return () => unsubscribe();
   }, [value]);
 
+  useEffect(() => {
+    const handlePointerUp = () => {
+      if (window && expanded) {
+        setExpanded(false);
+        progressControls.start({
+          height: 4,
+          background: radixColors.grayDark.gray9,
+          transition: { type: 'spring', stiffness: 400, damping: 30 },
+        });
+        nameControls.start({
+          top: 2,
+          mixBlendMode: 'normal',
+          transition: { type: 'spring', stiffness: 400, damping: 30 },
+        });
+      }
+    };
+
+    window.addEventListener('pointerup', handlePointerUp);
+    return () => window.removeEventListener('pointerup', handlePointerUp);
+  }, [expanded, nameControls, progressControls]);
+
   const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
@@ -267,35 +288,19 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC = () => {
     });
   };
 
-  const handlePointerUp = () => {
-    setExpanded(false);
-    progressControls.start({
-      height: 4,
-      background: radixColors.grayDark.gray9,
-      transition: { type: 'spring', stiffness: 400, damping: 30 },
-    });
-    nameControls.start({
-      top: 2,
-      mixBlendMode: 'normal',
-      transition: { type: 'spring', stiffness: 400, damping: 30 },
-    });
-  };
-
   return (
     <motion.div
-      className="relative flex h-6 grow cursor-ew-resize flex-col items-center bg-gray-3"
+      className="relative flex h-6 grow cursor-ew-resize flex-col items-start bg-gray-3"
       drag="x"
       dragMomentum={false}
       dragElastic={0}
       dragConstraints={containerRef}
       onDrag={handleDrag}
       onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
       ref={containerRef}
     >
       <motion.div
-        className="absolute top-1 z-20 text-xs font-medium leading-4 text-gray-12"
+        className="absolute left-1.5 top-1 z-20 text-xs font-medium leading-4 text-gray-12"
         animate={nameControls}
         initial={{ top: 2, mixBlendMode: 'normal' }}
       >
