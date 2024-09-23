@@ -5,11 +5,15 @@ import { useEffect, useRef, useState } from 'react';
 
 import OnChainMusicFeatureDetailModal from './modal';
 import blockie from 'ethereum-blockies-base64';
+import { motion, type PanInfo, useAnimation, useMotionValue, useTransform } from 'framer-motion';
 import { ChevronFirst, Copy, Music, Pause, Play, Volume, Volume2 } from 'lucide-react';
 
 import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
 
 import { ButtonGroup, IconButton, Table, toast, Tooltip } from '@/components/ui';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const radixColors = require('@radix-ui/colors');
 
 // -----------------------------------------------------------------------------
 // Component
@@ -213,14 +217,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               <Music className="size-3 animate-in fade-in zoom-in" />
             )}
           </div>
-          {loaded !== undefined ? (
-            <div className="flex h-6 grow flex-col items-center gap-0.5">
-              <div className="text-[10px] font-medium leading-4 text-gray-12">
-                {ON_CHAIN_SONGS[loaded].name}
-              </div>
-              <div className="h-1 min-h-1 w-full bg-gray-9" />
-            </div>
-          ) : null}
+          {loaded !== undefined ? <OnChainMusicFeatureDetailProgressMeter /> : null}
         </div>
       </div>
     </div>
@@ -231,8 +228,87 @@ const OnChainMusicFeatureDetail: React.FC = () => {
 // Progress meter
 // -----------------------------------------------------------------------------
 
-/* const OnChainMusicFeatureDetailProgressMeter: React.FC = () => {
-  return <div></div>;
-}; */
+const OnChainMusicFeatureDetailProgressMeter: React.FC = () => {
+  const [progress, setProgress] = useState<number>(50);
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const progressControls = useAnimation();
+  const nameControls = useAnimation();
+
+  const handleX = useMotionValue(0);
+  const sliderWidth = expanded ? 300 : 150;
+  const value = useTransform(handleX, [0, sliderWidth], [0, 100]);
+
+  useEffect(() => {
+    const unsubscribe = value.onChange((v) => setProgress(Math.round(v)));
+    return () => unsubscribe();
+  }, [value]);
+
+  const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = info.point.x - rect.left;
+      const percentage = (x / rect.width) * 100;
+      setProgress(Math.max(0, Math.min(100, Math.round(percentage))));
+    }
+  };
+
+  const handlePointerDown = () => {
+    setExpanded(true);
+    progressControls.start({
+      height: 24,
+      background: radixColors.grayDark.gray12,
+      transition: { type: 'spring', stiffness: 400, damping: 30 },
+    });
+    nameControls.start({
+      top: 4,
+      mixBlendMode: 'difference',
+      transition: { type: 'spring', stiffness: 400, damping: 30 },
+    });
+  };
+
+  const handlePointerUp = () => {
+    setExpanded(false);
+    progressControls.start({
+      height: 4,
+      background: radixColors.grayDark.gray9,
+      transition: { type: 'spring', stiffness: 400, damping: 30 },
+    });
+    nameControls.start({
+      top: 2,
+      mixBlendMode: 'normal',
+      transition: { type: 'spring', stiffness: 400, damping: 30 },
+    });
+  };
+
+  return (
+    <motion.div
+      className="relative flex h-6 grow cursor-ew-resize flex-col items-center bg-gray-3"
+      drag="x"
+      dragMomentum={false}
+      dragElastic={0}
+      dragConstraints={containerRef}
+      onDrag={handleDrag}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+      ref={containerRef}
+    >
+      <motion.div
+        className="absolute top-1 z-20 text-xs font-medium leading-4 text-gray-12"
+        animate={nameControls}
+        initial={{ top: 2, mixBlendMode: 'normal' }}
+      >
+        rocky
+      </motion.div>
+      <motion.div
+        className="absolute bottom-0 left-0 z-10 w-full"
+        animate={progressControls}
+        initial={{ height: 4, background: radixColors.grayDark.gray9 }}
+        style={{ clipPath: `inset(0 ${100 - progress}% 0 0)` }}
+      />
+    </motion.div>
+  );
+};
 
 export default OnChainMusicFeatureDetail;
