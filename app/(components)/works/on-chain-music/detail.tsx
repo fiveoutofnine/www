@@ -360,7 +360,7 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
   const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      const x = info.point.x - rect.left;
+      const x = (rect.width * progress) / 100 + info.delta.x * 0.75;
       const percentage = (x / rect.width) * 100;
       setProgress(Math.max(0, Math.min(100, Math.round(percentage))));
     }
