@@ -38,6 +38,26 @@ const OnChainMusicFeatureDetail: React.FC = () => {
     }
   }, [audioSrc]);
 
+  const togglePlay = () => {
+    if (audioRef.current?.paused) {
+      audioRef.current.play();
+      setPlaying(true);
+      setReplayable(true);
+    } else {
+      audioRef.current?.pause();
+      setPlaying(false);
+    }
+  };
+
+  const resetAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      if (audioRef.current.paused) {
+        setReplayable(false);
+      }
+    }
+  };
+
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
     const target = event.target as HTMLDivElement;
     const scrollTop = target.scrollTop;
@@ -87,16 +107,37 @@ const OnChainMusicFeatureDetail: React.FC = () => {
                 onDoubleClick={() => {
                   setSelected(i);
                   setLoaded(i);
-
-                  // We set the audio source and trigger it via a `useEffect`.
                   setAudioSrc(ON_CHAIN_SONGS[i].filePath);
                 }}
                 onKeyDown={(e) => {
+                  // Adjust focus if left/right arrow keys are pressed.
                   if (e.key === 'ArrowUp' && i > 0) {
                     document.getElementById(`on-chain-music-feature-song-${i - 1}`)?.focus();
-                  }
-                  if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                  } else if (e.key === 'ArrowDown') {
                     document.getElementById(`on-chain-music-feature-song-${i + 1}`)?.focus();
+                    e.preventDefault();
+                  } else if (e.key === ' ') {
+                    // If the key pressed is a space, play the song if none is
+                    // playing or toggle play/pause if the song is playing.
+                    if (loaded === undefined) {
+                      setLoaded(i);
+                      setAudioSrc(ON_CHAIN_SONGS[i].filePath);
+                    } else {
+                      togglePlay();
+                    }
+                  } else if (e.key === 'Enter') {
+                    // If the key pressed is enter, always set the song or
+                    // replay it if it's already playing.
+                    if (loaded !== i) {
+                      setLoaded(i);
+                      setAudioSrc(ON_CHAIN_SONGS[i].filePath);
+                    } else {
+                      resetAudio();
+                      setPlaying(true);
+                      setReplayable(true);
+                      audioRef.current?.play();
+                    }
                   }
                 }}
                 tabIndex={1}
@@ -105,7 +146,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
                   <div className="flex items-center gap-1">
                     {loaded !== i ? (
                       <Tooltip
-                        content="Contract"
+                        content="Copy contract address"
                         side="top"
                         align="start"
                         triggerProps={{ className: 'rounded-sm', asChild: true }}
@@ -159,19 +200,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
       <div className="flex min-h-8 w-full items-center gap-1 border-t border-gray-6 px-1.5">
         <ButtonGroup>
           <Tooltip content="Replay" side="top" align="start" triggerProps={{ asChild: true }}>
-            <IconButton
-              size="sm"
-              disabled={!replayable}
-              onClick={() => {
-                // Reset audio player.
-                if (audioRef.current) {
-                  audioRef.current.currentTime = 0;
-                  if (audioRef.current.paused) {
-                    setReplayable(false);
-                  }
-                }
-              }}
-            >
+            <IconButton size="sm" disabled={!replayable} onClick={resetAudio}>
               <ChevronFirst />
             </IconButton>
           </Tooltip>
@@ -182,23 +211,14 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           >
             <IconButton
               size="sm"
-              onClick={
-                audioRef.current
-                  ? () => {
-                      if (audioRef.current?.paused) {
-                        audioRef.current.play();
-                        setPlaying(true);
-                        setReplayable(true);
-                      } else {
-                        audioRef.current?.pause();
-                        setPlaying(false);
-                      }
-                    }
-                  : undefined
-              }
+              onClick={audioRef.current ? togglePlay : undefined}
               disabled={!audioSrc}
             >
-              {audioSrc && playing ? <Pause /> : <Play />}
+              {audioSrc && playing ? (
+                <Pause className="animate-in fade-in zoom-in" />
+              ) : (
+                <Play className="animate-in fade-in zoom-in" />
+              )}
             </IconButton>
           </Tooltip>
         </ButtonGroup>
@@ -224,7 +244,14 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               setReplayable={setReplayable}
               onAudioEnd={() => setPlaying(false)}
             />
-          ) : null}
+          ) : (
+            <div className="relative flex h-6 grow flex-col items-start bg-gray-3">
+              <div className="absolute left-1.5 top-1 text-[10px] font-medium leading-4 text-gray-11">
+                Double-click a song to play.
+              </div>
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-gray-5" />
+            </div>
+          )}
         </div>
       </div>
     </div>
