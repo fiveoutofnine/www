@@ -51,5 +51,6 @@ export type CodeBlockProps = Omit<JSX.IntrinsicElements['pre'], 'children'> &
       value: CodeBlockLanguage;
       onChange: (value: CodeBlockLanguage) => void;
     };
+    containerProps?: JSX.IntrinsicElements['div'];
     children: string;
   };
