@@ -22,7 +22,7 @@ import { Highlight } from 'prism-react-renderer';
 import Prism from 'prismjs';
 import { twMerge } from 'tailwind-merge';
 
-// Add support for additional languagaes.
+// Add support for additional languages.
 (typeof global === 'undefined' ? window : global).Prism = Prism;
 require('prismjs/components/prism-javascript');
 require('prismjs/components/prism-typescript');
@@ -44,6 +44,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   showLineNumbers = true,
   roundedTop = true,
   containerized = true,
+  containerProps,
   children,
   ...rest
 }) => {
@@ -69,6 +70,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                     ? FileDiff
                     : File;
 
+  const { ref: containerRef, ...containerRest } = containerProps ?? {};
+
   return (
     <div
       className={twMerge(
@@ -76,6 +79,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       )}
       code-block-container=""
       tabIndex={-1}
+      ref={containerRef}
+      {...containerRest}
     >
       {hasHeader ? (
         <div className={codeBlockHeaderStyles} code-block-header="">
@@ -114,9 +119,11 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
                           {i + 1}
                         </div>
                       ) : null}
-                      {line.map((token, key) => (
-                        <span key={key} {...getTokenProps({ token })} code-block-token="" />
-                      ))}
+                      <span className="grow">
+                        {line.map((token, key) => (
+                          <span key={key} {...getTokenProps({ token })} code-block-token="" />
+                        ))}
+                      </span>
                     </div>
                   );
                 })}

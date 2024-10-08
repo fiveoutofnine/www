@@ -85,11 +85,19 @@ export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>
 );
 
 export const TableRoot = forwardRef<HTMLTableElement, TableRootProps>(
-  ({ className, containerClassName, ...rest }, ref) => (
-    <div className={twMerge(clsx('relative w-full overflow-auto', containerClassName))}>
-      <table ref={ref} className={twMerge(clsx(tableRootStyles, className))} {...rest} />
-    </div>
-  ),
+  ({ className, containerProps, ...rest }, ref) => {
+    const { className: containerClassName, ...containerRest } = containerProps || {};
+
+    return (
+      <div
+        className={twMerge(clsx('relative w-full overflow-auto', containerClassName))}
+        tabIndex={-1}
+        {...containerRest}
+      >
+        <table ref={ref} className={twMerge(clsx(tableRootStyles, className))} {...rest} />
+      </div>
+    );
+  },
 );
 
 export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(

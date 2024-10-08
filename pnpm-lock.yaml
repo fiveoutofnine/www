@@ -89,6 +89,9 @@ dependencies:
   connectkit:
     specifier: ^1.8.0
     version: 1.8.0(@babel/core@7.24.7)(@tanstack/react-query@5.40.1)(react-dom@18.3.1)(react-is@18.3.1)(react@18.3.1)(viem@2.13.8)(wagmi@2.9.11)
+  ethereum-blockies-base64:
+    specifier: ^1.0.2
+    version: 1.0.2
   framer-motion:
     specifier: ^10.18.0
     version: 10.18.0(react-dom@18.3.1)(react@18.3.1)
@@ -7542,6 +7545,12 @@ packages:
       fast-safe-stringify: 2.1.1
     dev: false
 
+  /ethereum-blockies-base64@1.0.2:
+    resolution: {integrity: sha512-Vg2HTm7slcWNKaRhCUl/L3b4KrB8ohQXdd5Pu3OI897EcR6tVRvUqdTwAyx+dnmoDzj8e2bwBLDQ50ByFmcz6w==}
+    dependencies:
+      pnglib: 0.0.1
+    dev: false
+
   /ethereum-cryptography@2.2.0:
     resolution: {integrity: sha512-hsm9JhfytIf8QME/3B7j4bc8V+VdTU+Vas1aJlvIS96ffoNAosudXvGoEvWmc7QZYdkC8mrMJz9r0fcbw7GyCA==}
     dependencies:
@@ -10843,6 +10852,10 @@ packages:
   /pngjs@5.0.0:
     resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
     engines: {node: '>=10.13.0'}
+    dev: false
+
+  /pnglib@0.0.1:
+    resolution: {integrity: sha512-95ChzOoYLOPIyVmL+Y6X+abKGXUJlvOVLkB1QQkyXl7Uczc6FElUy/x01NS7r2GX6GRezloO/ecCX9h4U9KadA==}
     dev: false
 
   /pony-cause@2.1.11:

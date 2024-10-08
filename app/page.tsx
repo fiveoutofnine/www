@@ -1,8 +1,10 @@
 import FiveoutofnineHeader from './(components)/header';
 import BitTwiddlingFeature from './(components)/works/bit-twiddling';
+import BytebeatFeature from './(components)/works/bytebeat';
 import ChessFeature from './(components)/works/chess';
 import ColormapRegistryFeature from './(components)/works/colormap-registry';
 import CoolContractsFeature from './(components)/works/cool-contracts';
+import OnChainMusicFeature from './(components)/works/on-chain-music';
 import RunningFeature from './(components)/works/running';
 import TxDotCoolFeature from './(components)/works/tx-dot-cool';
 import TypingFeature from './(components)/works/typing';
@@ -19,6 +21,8 @@ export default function Page() {
         <TypingFeature />
         <RunningFeature />
         <ColormapRegistryFeature />
+        <OnChainMusicFeature />
+        <BytebeatFeature />
         <BitTwiddlingFeature />
         <CoolContractsFeature />
       </div>
