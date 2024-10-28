@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Check, ChevronFirst, Copy, Pause, Play } from 'lucide-react';
 
 import { Code } from '@/components/templates/mdx';
-import { ButtonGroup, CodeBlock, IconButton, Input, toast } from '@/components/ui';
+import { ButtonGroup, CodeBlock, IconButton, Input, toast, Tooltip } from '@/components/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const radixColors = require('@radix-ui/colors');
@@ -614,20 +614,32 @@ const BytebeatFeatureDetail: React.FC = () => {
       <div className="flex w-1/2 flex-col">
         <div className="flex h-10 w-full items-center gap-1 border-b border-gray-6 px-2">
           <ButtonGroup>
-            <IconButton
-              size="sm"
-              onClick={resetPlay}
-              disabled={!initialized || !nodeRef.current || time === 0}
+            <Tooltip content="Reset" side="bottom" align="start" triggerProps={{ asChild: true }}>
+              <IconButton
+                size="sm"
+                onClick={resetPlay}
+                disabled={!initialized || !nodeRef.current || time === 0}
+              >
+                <ChevronFirst />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              content={playing ? 'Pause' : 'Play'}
+              side="bottom"
+              triggerProps={{ asChild: true }}
             >
-              <ChevronFirst />
-            </IconButton>
-            <IconButton size="sm" onClick={handlePlay} disabled={!initialized || !nodeRef.current}>
-              {playing ? (
-                <Pause className="animate-in fade-in zoom-in" />
-              ) : (
-                <Play className="animate-in fade-in zoom-in" />
-              )}
-            </IconButton>
+              <IconButton
+                size="sm"
+                onClick={handlePlay}
+                disabled={!initialized || !nodeRef.current}
+              >
+                {playing ? (
+                  <Pause className="animate-in fade-in zoom-in" />
+                ) : (
+                  <Play className="animate-in fade-in zoom-in" />
+                )}
+              </IconButton>
+            </Tooltip>
           </ButtonGroup>
           <Input
             className="px-1.5"
