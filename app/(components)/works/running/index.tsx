@@ -80,7 +80,7 @@ const RunningFeature: React.FC = async () => {
     <FeatureDisplay
       className="col-span-2 w-full min-[560px]:col-span-4"
       name="Running"
-      description="I run a lot"
+      description="I run"
       symbol={<Footprints />}
     >
       <RunningFeatureDetail

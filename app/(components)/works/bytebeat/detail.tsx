@@ -288,6 +288,11 @@ const BytebeatFeatureDetail: React.FC = () => {
   const [initialized, setInitialized] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [errorCopied, setErrorCopied] = useState<boolean>(false);
+  const [canvasSize, setCanvasSize] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 110,
+  });
+  const [, setDrawBuffer] = useState([]);
   const [scrollTop, setScrollTop] = useState<number>(0);
   const [scrollIsAtLeft, setScrollIsAtLeft] = useState<boolean>(true);
   const [scrollIsAtRight, setScrollIsAtRight] = useState<boolean>(false);
@@ -295,6 +300,10 @@ const BytebeatFeatureDetail: React.FC = () => {
   const audioContextRef = useRef<AudioContext | null>(null);
   const nodeRef = useRef<AudioWorkletNode | null>(null);
   const analyzerRef = useRef<AnalyserNode | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const animationFrameRef = useRef(null);
+  const waveformDataRef = useRef([]);
 
   useEffect(() => setMounted(true), []);
 
@@ -352,6 +361,14 @@ const BytebeatFeatureDetail: React.FC = () => {
           if (event.data.error && event.data.error.isCompiled) {
             setError(event.data.error.message ?? '');
           }
+          if (event.data.drawBuffer) {
+            setDrawBuffer((prevBuffer) => {
+              const newBuffer = prevBuffer.concat(event.data.drawBuffer).slice(-4096);
+              waveformDataRef.current = newBuffer;
+
+              return newBuffer;
+            });
+          }
         };
 
         nodeRef.current.connect(analyzerRef.current);
@@ -359,6 +376,7 @@ const BytebeatFeatureDetail: React.FC = () => {
 
         URL.revokeObjectURL(url);
         setInitialized(true);
+        startVisualization();
       } catch (error) {
         if (process.env.NODE_ENV !== 'production') {
           console.error('Error initializing `AudioWorklet`:', error);
@@ -373,6 +391,7 @@ const BytebeatFeatureDetail: React.FC = () => {
       if (nodeRef.current) nodeRef.current.disconnect();
       if (audioContextRef.current) audioContextRef.current.close();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Call `initializeProcessor` after the node is created and connected.
@@ -462,6 +481,74 @@ const BytebeatFeatureDetail: React.FC = () => {
   };
 
   // ---------------------------------------------------------------------------
+  // Canvas/visualization
+  // ---------------------------------------------------------------------------
+
+  // Keep canvas size updated.
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      if (containerRef.current) {
+        setCanvasSize({ width: containerRef.current.offsetWidth, height: 110 });
+      }
+    };
+
+    updateCanvasSize();
+
+    window.addEventListener('resize', updateCanvasSize);
+    return () => window.removeEventListener('resize', updateCanvasSize);
+  }, []);
+
+  const startVisualization = () => {
+    if (!canvasRef.current || !analyzerRef.current) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const draw = () => {
+      // @ts-expect-error We're just requesting an animation frame for the
+      // sound visualization here.
+      animationFrameRef.current = requestAnimationFrame(draw);
+
+      // Clear canvas
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const currentBuffer = waveformDataRef.current;
+
+      if (currentBuffer && currentBuffer.length > 0) {
+        ctx.beginPath();
+        ctx.strokeStyle = '#0f0';
+        ctx.lineWidth = 1;
+
+        let firstValidPoint = true;
+
+        for (let i = 0; i < currentBuffer.length; i++) {
+          const x = (i / currentBuffer.length) * canvas.width;
+          const sample = currentBuffer[i] as { t: number; value: [number, number] };
+
+          if (sample && sample.value && !isNaN(sample.value[0]) && !isNaN(sample.value[1])) {
+            // Average the 2 channels' values.
+            const value = (sample.value[0] + sample.value[1]) / 2;
+            const y = canvas.height * (1 - value / 255);
+
+            if (firstValidPoint) {
+              ctx.moveTo(x, y);
+              firstValidPoint = false;
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+        }
+
+        ctx.stroke();
+      }
+    };
+
+    draw();
+  };
+
+  // ---------------------------------------------------------------------------
   // Miscellaneous
   // ---------------------------------------------------------------------------
 
@@ -541,7 +628,14 @@ const BytebeatFeatureDetail: React.FC = () => {
           />
         </div>
         <div className="flex w-full grow flex-col">
-          <div className="w-full grow bg-black"></div>
+          <div className="w-full grow bg-black" ref={containerRef}>
+            <canvas
+              className="bg-black"
+              height={canvasSize.height}
+              width={canvasSize.width}
+              ref={canvasRef}
+            />
+          </div>
           <div className="flex h-8 w-full items-center border-t border-gray-6 pr-2 text-sm">
             <div
               className={clsx(
