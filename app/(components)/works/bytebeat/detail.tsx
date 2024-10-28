@@ -280,6 +280,7 @@ registerProcessor('bytebeat-feature-processor', BytebeatFeatureAudioProcessor);`
 
 const BytebeatFeatureDetail: React.FC = () => {
   const [source, setSource] = useState<string>('');
+  const [sampleRate, setSampleRate] = useState<string>('8000');
   const [playing, setPlaying] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const [initialized, setInitialized] = useState(false);
@@ -314,7 +315,7 @@ const BytebeatFeatureDetail: React.FC = () => {
   useEffect(() => {
     const initialize = async () => {
       try {
-        // Create a `AudioContext`
+        // Create a `AudioContext`.
         audioContextRef.current = new AudioContext({ sampleRate: 8000 });
         analyzerRef.current = audioContextRef.current.createAnalyser();
         analyzerRef.current.fftSize = 2048;
@@ -431,6 +432,22 @@ const BytebeatFeatureDetail: React.FC = () => {
     });
   };
 
+  const handleSampleRateChange = (newSampleRate: string) => {
+    // Always apply the changes locally first.
+    setSampleRate(newSampleRate);
+    if (!initialized || !nodeRef.current) return;
+
+    // Parse the sample rate.
+    let sampleRate = Number(newSampleRate);
+    if (Number.isNaN(sampleRate) || sampleRate < 0) sampleRate = 8000;
+
+    // Post the new sample rate to the audio processor.
+    nodeRef.current.port.postMessage({
+      sampleRate,
+      sampleRatio: sampleRate / (audioContextRef.current?.sampleRate ?? 1),
+    });
+  };
+
   return (
     <div className="flex h-full max-h-[11.375rem]">
       <div className="relative h-full w-1/2 border-r border-gray-6 bg-gray-3">
@@ -447,7 +464,7 @@ const BytebeatFeatureDetail: React.FC = () => {
         <textarea
           className="absolute inset-0 h-full grow resize-none overflow-y-scroll whitespace-break-spaces break-all bg-transparent p-2 pl-8 pt-12 font-mono text-xs leading-5 text-transparent caret-gray-12 focus:outline-none"
           value={source}
-          onChange={(value) => handleSourceChange(value.target.value)}
+          onChange={(e) => handleSourceChange(e.target.value)}
           onScroll={handleScroll}
           autoCapitalize=""
           autoComplete=""
@@ -480,6 +497,9 @@ const BytebeatFeatureDetail: React.FC = () => {
             }}
             size="sm"
             suffix="hz"
+            pattern="[0-9]+"
+            value={sampleRate}
+            onChange={(e) => handleSampleRateChange(e.target.value)}
             placeholder="8000"
             disabled={!initialized || !nodeRef.current}
           />
@@ -496,7 +516,9 @@ const BytebeatFeatureDetail: React.FC = () => {
                 <span>{time}</span>
               </span>
             )}
-            <Code>{source?.length ?? 0}c</Code>
+            <Code title={`${new TextEncoder().encode(source).length} bytes`}>
+              {source?.length ?? 0}c
+            </Code>
           </div>
         </div>
       </div>
