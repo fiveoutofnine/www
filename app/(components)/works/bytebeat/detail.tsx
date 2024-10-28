@@ -31,10 +31,7 @@ class BytebeatFeatureAudioProcessor extends AudioWorkletProcessor {
     Object.seal(this);
     BytebeatFeatureAudioProcessor.deleteGlobals();
     BytebeatFeatureAudioProcessor.freezeGlobals();
-    this.port.addEventListener('message', (e) => {
-      console.log("Received:", e.data);
-      this.receiveData(e.data);
-    });
+    this.port.addEventListener('message', (e) => this.receiveData(e.data));
     this.port.start();
   }
 
@@ -490,11 +487,15 @@ const BytebeatFeatureDetail: React.FC = () => {
         <div className="flex w-full grow flex-col">
           <div className="w-full grow bg-black"></div>
           <div className="flex h-8 w-full items-center justify-between border-t border-gray-6 px-2 text-sm">
-            <span className="font-mono text-xs text-gray-12">
-              <span>t</span>
-              <span className="text-gray-11">=</span>
-              <span>{time}</span>
-            </span>
+            {!initialized || !nodeRef.current ? (
+              <span className="animate-pulse font-mono text-xs text-green-11">Initializing...</span>
+            ) : (
+              <span className="font-mono text-xs text-gray-12 animate-in fade-in">
+                <span>t</span>
+                <span className="text-gray-11">=</span>
+                <span>{time}</span>
+              </span>
+            )}
             <Code>{source?.length ?? 0}c</Code>
           </div>
         </div>
