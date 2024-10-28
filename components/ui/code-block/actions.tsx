@@ -17,7 +17,7 @@ const CodeBlockActions: React.FC<CodeBlockActionsProps> = ({ code, switcher, inH
 
   useEffect(() => setMounted(true), []);
 
-  const isTouchscreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
+  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
 
   const copyToClipboard = () => {
     if (!copied) {
@@ -32,7 +32,7 @@ const CodeBlockActions: React.FC<CodeBlockActionsProps> = ({ code, switcher, inH
     <div
       className={codeBlockActionsVariants({
         inHeader: Boolean(inHeader),
-        showOnHover: !isTouchscreen,
+        showOnHover: !isTouchScreen,
       })}
     >
       {switcher && switcher.options.length > 1 ? (

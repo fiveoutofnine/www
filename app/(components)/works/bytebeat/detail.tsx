@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { ChevronFirst, Pause, Play } from 'lucide-react';
+import clsx from 'clsx';
+import { Check, ChevronFirst, Copy, Pause, Play } from 'lucide-react';
 
 import { Code } from '@/components/templates/mdx';
-import { ButtonGroup, CodeBlock, IconButton, Input } from '@/components/ui';
+import { ButtonGroup, CodeBlock, IconButton, Input, toast } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Audio processor code
@@ -279,22 +280,31 @@ registerProcessor('bytebeat-feature-processor', BytebeatFeatureAudioProcessor);`
 // -----------------------------------------------------------------------------
 
 const BytebeatFeatureDetail: React.FC = () => {
+  const [mounted, setMounted] = useState<boolean>(false);
   const [source, setSource] = useState<string>('');
   const [sampleRate, setSampleRate] = useState<string>('8000');
   const [playing, setPlaying] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
-  const [initialized, setInitialized] = useState(false);
+  const [initialized, setInitialized] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [errorCopied, setErrorCopied] = useState<boolean>(false);
   const [scrollTop, setScrollTop] = useState<number>(0);
+  const [scrollIsAtLeft, setScrollIsAtLeft] = useState<boolean>(true);
+  const [scrollIsAtRight, setScrollIsAtRight] = useState<boolean>(false);
   const codeBlockRef = useRef<HTMLDivElement | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const nodeRef = useRef<AudioWorkletNode | null>(null);
   const analyzerRef = useRef<AnalyserNode | null>(null);
 
+  useEffect(() => setMounted(true), []);
+
+  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
+
   // ---------------------------------------------------------------------------
   // Code editor
   // ---------------------------------------------------------------------------
 
-  const handleScroll = (event: React.UIEvent<HTMLTextAreaElement>) => {
+  const handleTextAreaScroll = (event: React.UIEvent<HTMLTextAreaElement>) => {
     const target = event.target as HTMLTextAreaElement;
 
     setScrollTop(target.scrollTop);
@@ -338,6 +348,9 @@ const BytebeatFeatureDetail: React.FC = () => {
         nodeRef.current.port.onmessage = (event) => {
           if (event.data.byteSample !== undefined) {
             setTime(event.data.byteSample);
+          }
+          if (event.data.error && event.data.error.isCompiled) {
+            setError(event.data.error.message ?? '');
           }
         };
 
@@ -448,6 +461,29 @@ const BytebeatFeatureDetail: React.FC = () => {
     });
   };
 
+  // ---------------------------------------------------------------------------
+  // Miscellaneous
+  // ---------------------------------------------------------------------------
+
+  const handleStatusScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
+    const scrollLeft = target.scrollLeft;
+    const scrollWidth = target.scrollWidth;
+    const clientWidth = target.clientWidth;
+
+    setScrollIsAtLeft(scrollLeft === 0);
+    setScrollIsAtRight(scrollWidth - scrollLeft === clientWidth);
+  };
+
+  const copyErrorToClipboard = () => {
+    if (!errorCopied) {
+      setErrorCopied(true);
+      setTimeout(() => setErrorCopied(false), 2000);
+    }
+    navigator.clipboard.writeText(error);
+    toast({ title: 'Copied error to clipboard!', intent: 'success', hasCloseButton: true });
+  };
+
   return (
     <div className="flex h-full max-h-[11.375rem]">
       <div className="relative h-full w-1/2 border-r border-gray-6 bg-gray-3">
@@ -465,7 +501,7 @@ const BytebeatFeatureDetail: React.FC = () => {
           className="absolute inset-0 h-full grow resize-none overflow-y-scroll whitespace-break-spaces break-all bg-transparent p-2 pl-8 pt-12 font-mono text-xs leading-5 text-transparent caret-gray-12 focus:outline-none"
           value={source}
           onChange={(e) => handleSourceChange(e.target.value)}
-          onScroll={handleScroll}
+          onScroll={handleTextAreaScroll}
           autoCapitalize=""
           autoComplete=""
           spellCheck={false}
@@ -506,16 +542,72 @@ const BytebeatFeatureDetail: React.FC = () => {
         </div>
         <div className="flex w-full grow flex-col">
           <div className="w-full grow bg-black"></div>
-          <div className="flex h-8 w-full items-center justify-between border-t border-gray-6 px-2 text-sm">
-            {!initialized || !nodeRef.current ? (
-              <span className="animate-pulse font-mono text-xs text-green-11">Initializing...</span>
-            ) : (
-              <span className="font-mono text-xs text-gray-12 animate-in fade-in">
-                <span>t</span>
-                <span className="text-gray-11">=</span>
-                <span>{time}</span>
-              </span>
-            )}
+          <div className="flex h-8 w-full items-center border-t border-gray-6 pr-2 text-sm">
+            <div
+              className={clsx(
+                'hide-scrollbar group relative flex h-full grow items-center overflow-x-scroll',
+                isTouchScreen && error.length > 0 ? 'pl-7' : undefined,
+              )}
+            >
+              <div
+                className={clsx(
+                  'hide-scrollbar flex h-full w-full grow items-center overflow-y-hidden overflow-x-scroll text-nowrap pr-2',
+                  isTouchScreen && error.length > 0 ? 'pl-1' : 'pl-2',
+                )}
+                onScroll={handleStatusScroll}
+              >
+                {!initialized || !nodeRef.current ? (
+                  <span className="animate-pulse font-mono text-xs text-green-11">
+                    Initializing...
+                  </span>
+                ) : error.length > 0 ? (
+                  <span className="font-mono text-xs text-red-11">{error}</span>
+                ) : (
+                  <span className="font-mono text-xs text-gray-12 animate-in fade-in">
+                    <span>t</span>
+                    <span className="text-gray-11">=</span>
+                    <span>{time}</span>
+                  </span>
+                )}
+              </div>
+              {/* Left gradient to hide overflow */}
+              <div
+                className={clsx(
+                  'pointer-events-none absolute bottom-0 z-[10] h-8 w-4 bg-gradient-to-r from-gray-2 transition-opacity',
+                  scrollIsAtLeft ? 'opacity-0' : 'opacity-100',
+                  isTouchScreen ? 'left-7' : 'left-0',
+                )}
+                aria-hidden={true}
+              />
+              {/* Right gradient to hide overflow */}
+              <div
+                className={clsx(
+                  'pointer-events-none absolute bottom-0 right-0 z-[10] h-8 w-4 bg-gradient-to-l from-gray-2 transition-opacity',
+                  scrollIsAtRight ? 'opacity-0' : 'opacity-100',
+                )}
+                aria-hidden={true}
+              />
+              {error.length > 0 ? (
+                <IconButton
+                  className={clsx(
+                    'absolute left-1 z-[20] backdrop-blur',
+                    isTouchScreen ? 'flex' : 'hidden animate-in fade-in group-hover:flex',
+                  )}
+                  variant="outline"
+                  title="Copy error to clipboard"
+                  size="sm"
+                  type="button"
+                  aria-label="Copy error to clipboard"
+                  onClick={copyErrorToClipboard}
+                >
+                  {errorCopied ? (
+                    <Check className="duration-300 animate-in fade-in zoom-in" />
+                  ) : (
+                    <Copy className="duration-300 animate-in fade-in" />
+                  )}
+                </IconButton>
+              ) : null}
+            </div>
             <Code title={`${new TextEncoder().encode(source).length} bytes`}>
               {source?.length ?? 0}c
             </Code>
