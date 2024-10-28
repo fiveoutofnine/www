@@ -33,5 +33,6 @@ export type InputProps = Omit<JSX.IntrinsicElements['input'], 'size'> &
         rightIcon?: undefined;
       }
   ) & {
+    containerProps?: JSX.IntrinsicElements['div'];
     containerized?: boolean;
   };
