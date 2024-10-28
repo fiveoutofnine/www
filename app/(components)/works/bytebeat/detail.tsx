@@ -528,24 +528,31 @@ const BytebeatFeatureDetail: React.FC = () => {
         // Draw the waveform.
         for (let i = 0; i < currentBuffer.length; ++i) {
           // Get the time value to draw left to right.
-          const t = currentBuffer[i].t;
-          const tMod = t % 4096;
-          const x = (tMod / 4096) * canvas.width;
+          const t = currentBuffer[i].t % 4096;
+          const x = (t / 4096) * canvas.width;
           const sample = currentBuffer[i] as { t: number; value: [number, number] };
 
           if (sample && sample.value && !isNaN(sample.value[0]) && !isNaN(sample.value[1])) {
             // Average the 2 channels' values.
             const value = (sample.value[0] + sample.value[1]) / 2;
             const y = canvas.height * (1 - value / 255);
-            ctx.lineTo(x, y);
+            // End the stroke if we've reached the end.
+            if (t === 0) {
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.strokeStyle = radixColors.blueDark.blue9;
+              ctx.lineWidth = 1;
+            } else {
+              ctx.lineTo(x, y);
+            }
           }
         }
 
         ctx.stroke();
 
         // Draw scanning cursor.
-        const cursorT = currentBuffer[currentBuffer.length - 1].t;
-        const cursorX = ((cursorT % 4096) / 4096) * canvas.width;
+        const cursorT = currentBuffer[currentBuffer.length - 1].t % 4096;
+        const cursorX = (cursorT / 4096) * canvas.width;
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 3;
         ctx.beginPath();
