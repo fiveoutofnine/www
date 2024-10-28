@@ -8,6 +8,9 @@ import { Check, ChevronFirst, Copy, Pause, Play } from 'lucide-react';
 import { Code } from '@/components/templates/mdx';
 import { ButtonGroup, CodeBlock, IconButton, Input, toast } from '@/components/ui';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const radixColors = require('@radix-ui/colors');
+
 // -----------------------------------------------------------------------------
 // Audio processor code
 // -----------------------------------------------------------------------------
@@ -362,6 +365,7 @@ const BytebeatFeatureDetail: React.FC = () => {
             setError(event.data.error.message ?? '');
           }
           if (event.data.drawBuffer) {
+            // Store up to 4096 samples for the visualization's draw buffer.
             setDrawBuffer((prevBuffer) => {
               const newBuffer = prevBuffer.concat(event.data.drawBuffer).slice(-4096);
               waveformDataRef.current = newBuffer;
@@ -510,37 +514,43 @@ const BytebeatFeatureDetail: React.FC = () => {
       // sound visualization here.
       animationFrameRef.current = requestAnimationFrame(draw);
 
-      // Clear canvas
+      // Clear canvas.
       ctx.fillStyle = 'black';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const currentBuffer = waveformDataRef.current;
+      const currentBuffer = waveformDataRef.current as { t: number; value: [number, number] }[];
 
       if (currentBuffer && currentBuffer.length > 0) {
         ctx.beginPath();
-        ctx.strokeStyle = '#0f0';
+        ctx.strokeStyle = radixColors.blueDark.blue9;
         ctx.lineWidth = 1;
 
-        let firstValidPoint = true;
-
-        for (let i = 0; i < currentBuffer.length; i++) {
-          const x = (i / currentBuffer.length) * canvas.width;
+        // Draw the waveform.
+        for (let i = 0; i < currentBuffer.length; ++i) {
+          // Get the time value to draw left to right.
+          const t = currentBuffer[i].t;
+          const tMod = t % 4096;
+          const x = (tMod / 4096) * canvas.width;
           const sample = currentBuffer[i] as { t: number; value: [number, number] };
 
           if (sample && sample.value && !isNaN(sample.value[0]) && !isNaN(sample.value[1])) {
             // Average the 2 channels' values.
             const value = (sample.value[0] + sample.value[1]) / 2;
             const y = canvas.height * (1 - value / 255);
-
-            if (firstValidPoint) {
-              ctx.moveTo(x, y);
-              firstValidPoint = false;
-            } else {
-              ctx.lineTo(x, y);
-            }
+            ctx.lineTo(x, y);
           }
         }
 
+        ctx.stroke();
+
+        // Draw scanning cursor.
+        const cursorT = currentBuffer[currentBuffer.length - 1].t;
+        const cursorX = ((cursorT % 4096) / 4096) * canvas.width;
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(cursorX, 0);
+        ctx.lineTo(cursorX, canvas.height);
         ctx.stroke();
       }
     };
@@ -652,7 +662,7 @@ const BytebeatFeatureDetail: React.FC = () => {
               >
                 {!initialized || !nodeRef.current ? (
                   <span className="animate-pulse font-mono text-xs text-green-11">
-                    Initializing...
+                    Initializing processor...
                   </span>
                 ) : error.length > 0 ? (
                   <span className="font-mono text-xs text-red-11">{error}</span>
