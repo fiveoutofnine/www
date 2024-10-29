@@ -8,7 +8,7 @@ import { twMerge } from 'tailwind-merge';
 type FeatureDisplayProps = {
   className?: string;
   name: string;
-  description: string;
+  description: React.ReactNode;
   symbol: React.ReactNode;
   tags?: React.ReactNode[];
   button?: React.ReactNode;
