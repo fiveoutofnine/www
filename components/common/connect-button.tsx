@@ -32,7 +32,7 @@ const ConnectButton: React.FC<ConnectButtonProps> = (props) => {
             onClick={show}
             {...{ variant: isConnected ? 'secondary' : 'primary', intent: 'none', ...props }}
           >
-            {isConnected ? ensName ?? truncatedAddress : 'Connect'}
+            {isConnected ? (ensName ?? truncatedAddress) : 'Connect'}
           </Button>
         );
       }}
