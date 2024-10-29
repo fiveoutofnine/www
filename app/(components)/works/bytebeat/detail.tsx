@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Check, ChevronFirst, Copy, Pause, Play } from 'lucide-react';
 
+import { BYTEBEAT_SONGS } from '@/lib/constants/bytebeat';
+
 import { Code } from '@/components/templates/mdx';
 import { ButtonGroup, CodeBlock, IconButton, Input, toast, Tooltip } from '@/components/ui';
 
@@ -284,8 +286,8 @@ registerProcessor('bytebeat-feature-processor', BytebeatFeatureAudioProcessor);`
 
 const BytebeatFeatureDetail: React.FC = () => {
   const [mounted, setMounted] = useState<boolean>(false);
-  const [source, setSource] = useState<string>('');
-  const [sampleRate, setSampleRate] = useState<string>('8000');
+  const [source, setSource] = useState<string>(BYTEBEAT_SONGS[0].source);
+  const [sampleRate, setSampleRate] = useState<string>(String(BYTEBEAT_SONGS[0].sampleRate));
   const [playing, setPlaying] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const [initialized, setInitialized] = useState<boolean>(false);
