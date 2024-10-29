@@ -27,11 +27,11 @@ export const commandGroupStyles = [
   'p-1',
   '[&_[cmdk-group-heading]]:text-gray-11',
   '[&_[cmdk-group-heading]]:px-2',
-  '[&_[cmdk-group-heading]]:py-1.5',
+  '[&_[cmdk-group-heading]]:py-1',
   '[&_[cmdk-group-heading]]:text-xs',
 ];
 
-export const commandInputIconStyles = ['shrink-0', 'w-4', 'h-4', 'mr-2'];
+export const commandInputIconStyles = ['shrink-0', 'w-4', 'h-4', 'mr-1.5'];
 
 export const commandInputParentStyles = [
   'flex',
@@ -61,7 +61,7 @@ export const commandItemIconContainerStyles = [
   'text-gray-11',
   'w-4',
   'h-4',
-  'mr-2',
+  'mr-1.5',
 ];
 
 export const commandItemStyles = [

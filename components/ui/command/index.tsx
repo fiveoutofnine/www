@@ -47,8 +47,12 @@ const CommandDialog: React.FC<CommandDialogProps> = ({ children, ...rest }) => {
 };
 
 const CommandEmpty = forwardRef<React.ElementRef<typeof CommandPrimitive.Empty>, CommandEmptyProps>(
-  (props, ref) => (
-    <CommandPrimitive.Empty ref={ref} className={clsx(commandEmptyStyles)} {...props} />
+  ({ className, ...rest }, ref) => (
+    <CommandPrimitive.Empty
+      ref={ref}
+      className={twMerge(clsx(commandEmptyStyles, className))}
+      {...rest}
+    />
   ),
 );
 

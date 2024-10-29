@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import BytebeatFeatureCombobox from './combobox';
 import clsx from 'clsx';
 import { Check, ChevronFirst, Copy, Pause, Play } from 'lucide-react';
 
@@ -287,6 +288,7 @@ registerProcessor('bytebeat-feature-processor', BytebeatFeatureAudioProcessor);`
 const BytebeatFeatureDetail: React.FC = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [source, setSource] = useState<string>(BYTEBEAT_SONGS[0].source);
+  const [song, setSong] = useState<(typeof BYTEBEAT_SONGS)[0] | null>(BYTEBEAT_SONGS[0]);
   const [sampleRate, setSampleRate] = useState<string>(String(BYTEBEAT_SONGS[0].sampleRate));
   const [playing, setPlaying] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
@@ -458,7 +460,7 @@ const BytebeatFeatureDetail: React.FC = () => {
     }
   };
 
-  const handleSourceChange = (newSource: string) => {
+  const handleSourceChange = (newSource: string, nullifySong?: boolean) => {
     // Always apply the changes locally first.
     setSource(newSource);
     if (!initialized || !nodeRef.current) return;
@@ -468,9 +470,12 @@ const BytebeatFeatureDetail: React.FC = () => {
       function: 'setFunction',
       codeText: newSource,
     });
+
+    // Nullify song if `nullifySong`.
+    if (nullifySong) setSong(null);
   };
 
-  const handleSampleRateChange = (newSampleRate: string) => {
+  const handleSampleRateChange = (newSampleRate: string, nullifySong?: boolean) => {
     // Always apply the changes locally first.
     setSampleRate(newSampleRate);
     if (!initialized || !nodeRef.current) return;
@@ -484,6 +489,20 @@ const BytebeatFeatureDetail: React.FC = () => {
       sampleRate,
       sampleRatio: sampleRate / (audioContextRef.current?.sampleRate ?? 1),
     });
+
+    // Nullify song if `nullifySong`.
+    if (nullifySong) setSong(null);
+  };
+
+  const handleSongChange = (song: (typeof BYTEBEAT_SONGS)[0]) => {
+    // Update sample rate.
+    handleSampleRateChange(String(song.sampleRate));
+    // Update source.
+    handleSourceChange(song.source);
+    // Reset play.
+    resetPlay();
+    // Update song.
+    setSong(song);
   };
 
   // ---------------------------------------------------------------------------
@@ -606,7 +625,7 @@ const BytebeatFeatureDetail: React.FC = () => {
         <textarea
           className="absolute inset-0 h-full grow resize-none overflow-y-scroll whitespace-break-spaces break-all bg-transparent p-2 pl-8 pt-12 font-mono text-xs leading-5 text-transparent caret-gray-12 focus:outline-none"
           value={source}
-          onChange={(e) => handleSourceChange(e.target.value)}
+          onChange={(e) => handleSourceChange(e.target.value, true)}
           onScroll={handleTextAreaScroll}
           autoCapitalize=""
           autoComplete=""
@@ -650,13 +669,14 @@ const BytebeatFeatureDetail: React.FC = () => {
                 'max-w-[4.5rem] h-6 [&_[input-input]]:h-6 [&_[input-right-container]]:h-6 [&_[input-right-container]]:px-0 [&_[input-right-container]]:min-w-6 [&_[input-right-container]]:w-6',
             }}
             size="sm"
-            suffix="hz"
+            suffix="Hz"
             pattern="[0-9]+"
             value={sampleRate}
-            onChange={(e) => handleSampleRateChange(e.target.value)}
+            onChange={(e) => handleSampleRateChange(e.target.value, true)}
             placeholder="8000"
             disabled={!initialized || !nodeRef.current}
           />
+          <BytebeatFeatureCombobox value={song} onSelect={handleSongChange} />
         </div>
         <div className="flex w-full grow flex-col">
           <div className="w-full grow bg-black" ref={containerRef}>

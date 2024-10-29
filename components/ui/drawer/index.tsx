@@ -123,7 +123,6 @@ DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 DrawerFooter.displayName = 'DrawerFooter';
 DrawerHeader.displayName = 'DrawerHeader';
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
-DrawerPortal.displayName = DrawerPrimitive.Portal.displayName;
 DrawerRoot.displayName = 'DrawerRoot';
 DrawerTitle.displayName = DrawerPrimitive.Title.displayName;
 DrawerTrigger.displayName = DrawerPrimitive.Trigger.displayName;

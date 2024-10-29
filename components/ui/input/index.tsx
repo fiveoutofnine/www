@@ -36,8 +36,9 @@ const Input = forwardRef(
     const hasRight = !!suffix || !!rightIcon;
     // We always containerize if the add-on is not an icon. If it is an icon, we
     //default to `true`.
-    const leftContainerized = hasLeft && (leftIcon !== undefined ? containerized ?? true : true);
-    const rightContainerized = hasRight && (rightIcon !== undefined ? containerized ?? true : true);
+    const leftContainerized = hasLeft && (leftIcon !== undefined ? (containerized ?? true) : true);
+    const rightContainerized =
+      hasRight && (rightIcon !== undefined ? (containerized ?? true) : true);
 
     return (
       <div
