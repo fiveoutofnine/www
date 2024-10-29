@@ -2,6 +2,7 @@ import type { BytebeatSong } from '@/lib/types/bytebeat';
 
 export const BYTEBEAT_SONGS: BytebeatSong[] = [
   {
+    id: '300b-information-theory',
     name: '300b Information Theory',
     author: {
       name: 'mu6k',
@@ -13,6 +14,7 @@ export const BYTEBEAT_SONGS: BytebeatSong[] = [
     original: 'https://www.pouet.net/topic.php?which=8357&page=17#c389541',
   },
   {
+    id: 'small-mouse',
     name: 'Small Mouse',
     author: {
       name: 'SthephanShi',
@@ -24,6 +26,7 @@ export const BYTEBEAT_SONGS: BytebeatSong[] = [
     original: 'https://dollchan.net/btb/res/204.html#424',
   },
   {
+    id: '347-bytebeat-inc',
     name: '347 BYTEBEAT INC.',
     author: {
       name: 'mega9man',
@@ -33,5 +36,33 @@ export const BYTEBEAT_SONGS: BytebeatSong[] = [
       '128+24*sin(t/24*(t>>10&42)+1*sin(t/64*(t/1>>15)&21))+sin(1*t/3/4+4*sin(1*t/6/4))*(t>>11&1)*16+sin(1*t/6/4+4*sin(1*t/12/4))*(t>>10&1)*16+56*(3E3/(y=4*t&16383)&1)+56*(300/(y=32*t&28600)&1)+12*sin(t/16*(t>>10&42)+1*sin(t/64*(t/1>>7)&8))',
     sampleRate: 11025,
     original: 'https://battleofthebits.com/arena/Entry/347+BEATSTEP+INC./20403',
+  },
+];
+
+export const FIVEOUTOFNINE_BYTEBEAT_SONGS: BytebeatSong[] = [
+  {
+    id: 'rocky',
+    name: 'Rocky',
+    author: {
+      name: 'fiveoutofnine',
+      link: 'https://x.com/fiveoutofnine',
+    },
+    source:
+      'f=(t>>10)%776,i=f>>2,v=\'repeat\',e=\'charCodeAt\',o=u=>1-u**2/2+u**4/24-u**6/720,T=O=>o((O%4)-2)*(((O&3)>>2)-1),F=n=>n.split``.map(x=>\'1\'[v]((y=x[e](0))&63)+\'0\'[v](y>>6)).join``,I=n=>n.split``.map(x=>String.fromCharCode((y=x[e](0))&4095)[v](y>>12)).join``,E=(x,y=0)=>.392*(t+12*T(t/1600))*2**(x/12-y)&32,((x=F(I("⁇⁃၇⁃၇⁃ぇ⁃၇⁃၇⁃ቇ၇⁃၇၃၇၃၏⁇ぃ၇ၓ၃။ၯ၃။ၯ၃။ၯ၃။ቿ⁃။⁃ቛ⁃၇၃၇၃၏灇ဠူ")))[f])*E(I("ꀵ‹䀵ꀹ‼쀹쀹ꀹ၅え큊が큅え큊が쁅恅့ဵ〷ဵ့瀹쁁⁁⁆쁅쁅聅")[e](i)-48)+(i>15&&x[f])*E(I("쀠䀠ꀵ‹䀵쀴쀴怴္〼쀹ှ぀쀵္〼쀹ှ぀쀹怹့ဵ〷ဵ့瀹䀵〴〲䀰怵")[e](i)-48)+(i>165)*E(\'579:<>@ACEFGIKLN\'[e]((f>>1)-332)-48)+(i>173)*E(21)+(F(I("ኀ⿀ၯ၏ဿ၀⁇၏⁃假၏⁃假။ぃ假။ぃ၇䁃ၛ၃၇။၇၃၇ၛ၃၇䁃၇⁃䁇ဠူ"))[f])*E(I("퀠퀠耠쁀䀺耹耹‷‵䀷⁁⁂⁃‷‹‷䀹⁃⁄⁅‹‷‵〷ှ၁ှ⁂⁃‷‹‷〹၀၃၀⁄၅၀္ဵ耷耹逺䁆〺‹恅쀹쀹")[e](i)-48,2)+F(I("ᾀ⽀၏ဠၟ큏恏቏⁃၇၃၇၃၏ぇ၃။၇၃ဠဴ"))[f]*E(I("퀠퀠퀠瀠䁆쁅䁅쁆䁆쁈䁈쁆䁆쁈䁈聊聈ꁊ큈큈쁈")[e](i)-48,2)+(i>58&&i<178&&F(`CŃŃŃ${\'ʃÀʃӀʃÀ\'[v](6)}ŃŃŃŃŃŃʃÀ`)[f-236])*((2e11*(t/(1<<14))**2)&255)/5',
+    sampleRate: 32000,
+    original: 'https://github.com/fiveoutofnine/555',
+  },
+  {
+    id: 'in-the-hall-of-the-mountain-king',
+    name: 'In the Hall of the Mountain King',
+    author: {
+      name: 'fiveoutofnine',
+      link: 'https://x.com/fiveoutofnine',
+    },
+    source:
+      // eslint-disable-next-line quotes
+      `c='charCodeAt',u=(t>>18)%3,r=(t)=>t&256?t&255:256-(t&255),a=30*t*2**(("%'(*,(,,+'++*&**%'(*,(,1/,(,////"[c](t>>11&31)+[0,12,7,19][t>>16&3])/12-6),x=30*t*2**(("%,%,%,%,%,%,(/(/,3,3(0,3"[c](8*(t>>17&1?2:t>>15&1)+(t>>12&7)))/12-7),y=a*2,z=y*2,r(a)/(5-(u>1))+(u>0)/5*r(y)+(u>1)*(r(z)/5+r(x)/4)`,
+    sampleRate: 8000,
+    original: 'https://github.com/fiveoutofnine/curta-paradigm-2023',
   },
 ];

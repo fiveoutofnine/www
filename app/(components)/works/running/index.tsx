@@ -64,7 +64,7 @@ const RunningFeature: React.FC = async () => {
   );
 
   const runningLogs: MileageLog[] = (
-    (response.ok ? (await response.json()).values ?? [] : []) as string[][]
+    (response.ok ? ((await response.json()).values ?? []) : []) as string[][]
   )
     .filter((item) => item.length == 2)
     .map((log) => ({
