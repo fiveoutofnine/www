@@ -25,6 +25,7 @@ const Input = forwardRef(
       leftIcon,
       rightIcon,
       containerized,
+      containerProps,
       disabled = false,
       fullWidth = true,
       ...rest
@@ -39,7 +40,11 @@ const Input = forwardRef(
     const rightContainerized = hasRight && (rightIcon !== undefined ? containerized ?? true : true);
 
     return (
-      <div className={inputParentVariants({ size, fullWidth })}>
+      <div
+        className={twMerge(
+          clsx(inputParentVariants({ size, fullWidth }), containerProps?.className),
+        )}
+      >
         <input
           className={twMerge(
             clsx(
@@ -54,6 +59,7 @@ const Input = forwardRef(
           disabled={disabled}
           data-disabled={disabled}
           aria-disabled={disabled}
+          input-input=""
           {...rest}
         />
         {hasLeft ? (
@@ -65,6 +71,7 @@ const Input = forwardRef(
               containerized: leftContainerized,
               disabled,
             })}
+            input-left-container=""
           >
             {prefix ?? <span className={inputContainerIconVariants({ size })}>{leftIcon}</span>}
           </span>
@@ -78,6 +85,7 @@ const Input = forwardRef(
               containerized: rightContainerized,
               disabled,
             })}
+            input-right-container=""
           >
             {suffix ?? <span className={inputContainerIconVariants({ size })}>{rightIcon}</span>}
           </span>

@@ -8,7 +8,7 @@ import { twMerge } from 'tailwind-merge';
 type FeatureDisplayProps = {
   className?: string;
   name: string;
-  description: string;
+  description: React.ReactNode;
   symbol: React.ReactNode;
   tags?: React.ReactNode[];
   button?: React.ReactNode;
@@ -38,7 +38,7 @@ const FeatureDisplay: React.FC<FeatureDisplayProps> = ({
       )}
     >
       {/* Header */}
-      <div className="flex h-[4.5rem] items-center space-x-2.5 border-b border-gray-7 px-4">
+      <div className="flex h-[4.5rem] items-center space-x-2.5 border-b border-gray-6 px-4">
         {/* Symbol */}
         <div className="flex h-10 w-10 items-center justify-center rounded border border-gray-6 bg-gray-3 text-gray-11">
           <div className="flex h-6 w-6 items-center justify-center">{symbol}</div>
