@@ -97,7 +97,10 @@ const BytebeatFeatureComboboxInternal: React.FC<BytebeatFeatureComboboxProps> = 
               <Command.Item
                 key={index}
                 className="h-11 [&_[cmdk-item-content]]:flex [&_[cmdk-item-content]]:w-full [&_[cmdk-item-content]]:items-center [&_[cmdk-item-content]]:justify-between"
-                value={song.name}
+                /* We form a composite `value` identifier w/ the author's name
+                 * and the song's name, so that we can search for songs via the
+                 * authors' names too. */
+                value={`${song.author.name}:${song.name}`}
                 onSelect={() => onSelect?.(song)}
               >
                 <BytebeatFeatureComboboxInternalItem song={song} selected={selected} />
@@ -114,7 +117,10 @@ const BytebeatFeatureComboboxInternal: React.FC<BytebeatFeatureComboboxProps> = 
               <Command.Item
                 key={index}
                 className="h-11 [&_[cmdk-item-content]]:flex [&_[cmdk-item-content]]:w-full [&_[cmdk-item-content]]:items-center [&_[cmdk-item-content]]:justify-between"
-                value={song.name}
+                /* We form a composite `value` identifier w/ the author's name
+                 * and the song's name, so that we can search for songs via the
+                 * authors' names too. */
+                value={`${song.author.name}:${song.name}`}
                 onSelect={() => onSelect?.(song)}
               >
                 <BytebeatFeatureComboboxInternalItem song={song} selected={selected} />
