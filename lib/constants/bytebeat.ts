@@ -2,8 +2,8 @@ import type { BytebeatSong } from '@/lib/types/bytebeat';
 
 export const BYTEBEAT_SONGS: BytebeatSong[] = [
   {
-    id: '300b-information-theory',
-    name: '300b Information Theory',
+    id: '304b-information-theory',
+    name: '304b Information Theory',
     author: {
       name: 'mu6k',
       link: 'https://www.pouet.net/topic.php?which=8357&page=13#c389287',
