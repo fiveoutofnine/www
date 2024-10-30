@@ -33,7 +33,7 @@ export const BYTEBEAT_SONGS: BytebeatSong[] = [
       link: 'https://github.com/SthephanShinkufag',
     },
     source:
-      'T=t/1.2,a=[0,3,5,7,0,3,-4,-2],a1=[3,7,9,11,3,7,0,2],a2=[7,10,12,14,7,10,3,5],B=a=>(.88*t*2**(a[i=7&T>>15]/12)&-T>>6)%256/5,S=(s,p)=>.7*(.88*p*t*2**([a,a1,a2,a1][3&T>>s][i]/12)&64),B(a)+B(a1)+B(a2)+[S(14,1)+S(15,2),2*(S(9,1)+S(14,2))*(1-T%8192/9E3)][1&T>>13]',
+      'T=t/1.2,a=[0,3,5,7,0,3,-4,-2],b=[3,7,9,11,3,7,0,2],c=[7,10,12,14,7,10,3,5],B=a=>(.88*t*2**(a[i=7&T>>15]/12)&-T>>6)%256/5,S=(s,p)=>.7*(.88*p*t*2**([a,b,c,b][3&T>>s][i]/12)&64),B(a)+B(b)+B(c)+[S(14,1)+S(15,2),2*(S(9,1)+S(14,2))*(1-T%8192/9E3)][1&T>>13]',
     sampleRate: 32000,
     original: 'https://dollchan.net/btb/res/204.html#424',
   },
@@ -45,7 +45,7 @@ export const BYTEBEAT_SONGS: BytebeatSong[] = [
       link: 'https://battleofthebits.com/barracks/Profile/mega9man',
     },
     source:
-      '128+24*sin(t/24*(t>>10&42)+1*sin(t/64*(t/1>>15)&21))+sin(1*t/3/4+4*sin(1*t/6/4))*(t>>11&1)*16+sin(1*t/6/4+4*sin(1*t/12/4))*(t>>10&1)*16+56*(3E3/(y=4*t&16383)&1)+56*(300/(y=32*t&28600)&1)+12*sin(t/16*(t>>10&42)+1*sin(t/64*(t/1>>7)&8))',
+      '128+24*sin(t/24*(t>>10&42)+sin(t/64*(t/1>>15)&21))+sin(t/12+4*sin(t/24))*(t>>11&1)*16+sin(t/24+4*sin(t/48))*(t>>10&1)*16+56*(3E3/(y=4*t&16383)&1)+56*(300/(y=32*t&28600)&1)+12*sin(t/16*(t>>10&42)+sin(t/64*(t/1>>7)&8))',
     sampleRate: 11025,
     original: 'https://battleofthebits.com/arena/Entry/347+BEATSTEP+INC./20403',
   },
