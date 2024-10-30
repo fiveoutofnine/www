@@ -68,7 +68,7 @@ const BytebeatFeatureComboboxInternal: React.FC<BytebeatFeatureComboboxProps> = 
   return (
     <Command.Root noBorder>
       <Command.Input placeholder="Search songs…" />
-      <Command.List className="overflow-y-scroll md:h-64" tabIndex={-1}>
+      <Command.List className="max-h-[70vh] overflow-y-scroll md:h-64" tabIndex={-1}>
         <Command.Empty className="flex flex-col items-center">
           <div className="flex size-8 items-center justify-center rounded-full border border-gray-6 bg-gray-3 text-gray-11">
             <FileQuestion className="size-4" />

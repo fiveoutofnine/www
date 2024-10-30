@@ -35,8 +35,8 @@ const FeatureDisplayMinimal: React.FC<FeatureDisplayMinimalProps> = ({
     >
       <div className="flex items-center">
         {/* Symbol */}
-        <div className="flex h-10 w-10 items-center justify-center rounded border border-gray-6 bg-gray-3 p-2 text-gray-11">
-          <div className="flex h-6 w-6 items-center justify-center">{symbol}</div>
+        <div className="flex size-10 min-w-10 items-center justify-center rounded border border-gray-6 bg-gray-3 p-2 text-gray-11">
+          <div className="flex size-6 items-center justify-center">{symbol}</div>
         </div>
         {/* Name + description */}
         <div className="ml-2.5 mr-2">

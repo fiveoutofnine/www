@@ -40,8 +40,8 @@ const FeatureDisplay: React.FC<FeatureDisplayProps> = ({
       {/* Header */}
       <div className="flex h-[4.5rem] items-center space-x-2.5 border-b border-gray-6 px-4">
         {/* Symbol */}
-        <div className="flex h-10 w-10 items-center justify-center rounded border border-gray-6 bg-gray-3 text-gray-11">
-          <div className="flex h-6 w-6 items-center justify-center">{symbol}</div>
+        <div className="flex size-10 min-w-10 items-center justify-center rounded border border-gray-6 bg-gray-3 text-gray-11">
+          <div className="flex size-6 items-center justify-center">{symbol}</div>
         </div>
         {/* Name + description */}
         <div>
