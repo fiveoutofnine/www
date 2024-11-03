@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { Github } from 'lucide-react';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
@@ -16,15 +18,23 @@ const FiveoutofnineHeader: React.FC = () => {
         <div>
           <div className="text-base font-semibold md:text-2xl">5/9</div>
           <span className="mt-0.5 text-sm text-gray-11 md:mt-1 md:text-base">
-            Working on{' '}
+            EIR at{' '}
             <LinkPreview
-              className="font-medium text-gray-12 hover:underline"
-              href="https://curta.wtf"
-              src="/static/curta-wtf-preview.webp"
+              className="rounded-sm font-medium text-gray-12 hover:underline"
+              href="https://electriccapital.com"
+              src="/static/electriccapital-com-preview.webp"
               target="_blank"
               rel="noreferrer noopener"
             >
-              Curta
+              <Image
+                /* (19.5 - 16) / 2 = 1.75 */
+                className="relative top-[1.75px] mr-1 inline rounded-sm align-text-top"
+                width="16"
+                height="16"
+                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSIjMDBCQkYyIi8+PHBhdGggZD0iTTE1LjIxNSAxMC45OTRoLTMuMDg2VjNMOC43ODYgMTMuMDA2aDMuMzQzVjIxWiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg=="
+                alt="Electric Capital logo"
+              />
+              <span className="align-baseline">Electric Capital</span>
             </LinkPreview>
             .
           </span>
