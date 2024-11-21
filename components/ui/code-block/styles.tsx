@@ -85,4 +85,4 @@ export const codeBlockPreVariants = cva(['group', 'py-4', 'px-0', 'my-0', 'bg-gr
 });
 
 export const codeBlockStyles =
-  'text-xs normal leading-5 flex flex-col [&_[code-block-token]]:min-h-5 [&_[code-block-token]]:min-w-fit';
+  'text-xs w-fit min-w-full normal leading-5 flex flex-col [&_[code-block-token]]:min-h-5 [&_[code-block-token]]:min-w-fit';
