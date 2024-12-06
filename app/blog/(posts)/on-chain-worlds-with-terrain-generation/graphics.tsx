@@ -51,6 +51,8 @@ export const GolfBase2NFT: React.FC<GolfBase2NFTProps> = async ({
       args: [id],
     })
     .then((value) => {
+      // `.slice(29)` removes the `data:application/json;base64,` data URI
+      // prefix.
       const json = JSON.parse(Buffer.from(value.slice(29), 'base64').toString());
 
       return { name: json['name'], image: json['image_data'] };
@@ -59,6 +61,9 @@ export const GolfBase2NFT: React.FC<GolfBase2NFTProps> = async ({
     .catch(() => ({ name: `Curta Golf King #${id.toString()}`, image: fallback }));
 
   return (
+    // We use 552px as the responsive breakpoint to transition over when there's
+    // 32px (same as the top container's `y`-padding) `x`-padding in addition to
+    // article container's 16px `x`-padding: 452 + 2 * (16 + 32) = 552.
     <div className="w-full rounded-none border-gray-6 bg-none py-0 min-[552px]:rounded-xl min-[552px]:border min-[552px]:bg-gray-2 min-[552px]:py-8">
       <div className="-mx-4 flex flex-col overflow-hidden border-y border-gray-6 bg-gray-2 min-[552px]:mx-auto min-[552px]:max-w-fit min-[552px]:rounded-lg min-[552px]:border-x">
         <Image
