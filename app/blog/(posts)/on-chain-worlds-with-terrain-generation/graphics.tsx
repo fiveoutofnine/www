@@ -37,7 +37,7 @@ export const GolfBase2NFT: React.FC<GolfBase2NFTProps> = async ({
   const tokenURI: { name: string; image: string } = await client
     .readContract({
       // Curta Golf v0.0.2 contract on Base.
-      address: '0x8ccd70b1b74ea505dba39d2d11c3ab6a2cb14a8c',
+      address: '0x8cCd70b1B74eA505dbA39d2D11C3aB6a2CB14A8c',
       abi: [
         {
           inputs: [{ internalType: 'uint256', name: '_id', type: 'uint256' }],
