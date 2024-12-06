@@ -26,9 +26,8 @@ export const PerlinNoiseGenerator: React.FC = () => {
     // Constants
     // -------------------------------------------------------------------------
 
-    const GRID_SIZE = 4;
-    const RESOLUTION = 128;
-    const COLOR_SCALE = 250;
+    const GRID_SIZE = 8;
+    const RESOLUTION = 64;
     canvas.width = 256;
     canvas.height = 256;
     const pixelSize = canvas.width / RESOLUTION;
@@ -40,8 +39,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
     // Generate and render the noise.
     for (let y = 0; y < GRID_SIZE; y += numPixels) {
       for (let x = 0; x < GRID_SIZE; x += numPixels) {
-        const v = Math.floor(perlinRef.current.get(x, y) * COLOR_SCALE);
-        ctx.fillStyle = `hsl(${v},50%,50%)`;
+        ctx.fillStyle = `rgba(255,255,255,${perlinRef.current.get(x, y) + 0.5})`;
         ctx.fillRect(
           (x / GRID_SIZE) * canvas.width,
           (y / GRID_SIZE) * canvas.width,
@@ -123,13 +121,13 @@ class Perlin {
     const xF = Math.floor(x);
     const yF = Math.floor(y);
 
-    const tl = this.dotProductGrid(x, y, xF, yF);
-    const tr = this.dotProductGrid(x, y, xF + 1, yF);
-    const bl = this.dotProductGrid(x, y, xF, yF + 1);
-    const br = this.dotProductGrid(x, y, xF + 1, yF + 1);
-    const xt = this.interpolate(x - xF, tl, tr);
-    const xb = this.interpolate(x - xF, bl, br);
-    const v = this.interpolate(y - yF, xt, xb);
+    const tL = this.dotProductGrid(x, y, xF, yF);
+    const tR = this.dotProductGrid(x, y, xF + 1, yF);
+    const bL = this.dotProductGrid(x, y, xF, yF + 1);
+    const bR = this.dotProductGrid(x, y, xF + 1, yF + 1);
+    const xT = this.interpolate(x - xF, tL, tR);
+    const xB = this.interpolate(x - xF, bL, bR);
+    const v = this.interpolate(y - yF, xT, xB);
     this.memory[key] = v;
 
     return v;
