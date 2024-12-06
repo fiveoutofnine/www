@@ -2,11 +2,12 @@ import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
 
+import { PerlinNoiseGenerator } from './client-components';
 import { GolfBase2NFT } from './graphics';
 
 export const metadata = getBlogPageMetadata({
   slug: "on-chain-worlds-with-terrain-generation",
-  description: "Implementing 100% on-chain worlds with terrain generation and hyper-optimized pixel art."
+  description: "Implementing on-chain worlds with terrain generation and hyper-optimized pixel art."
 });
 
 <BlogHeader slug="on-chain-worlds-with-terrain-generation" />
@@ -48,9 +49,29 @@ I played around with a few designs, but this what I ended up shipping:
 
 <GolfBase2NFT id={2n} />
 
-It has the generative world, and it clearly displays the important metrics of the leading solve.
+It has the generative world, and it clearly displays the important metrics of the leading solution.
 
 ## Terrain generation
+
+I began researching terrain generation first because it was the bulk of the logic, and I figured mapping the algorithm's output to the corresponding pixel data would be easy.
+Pretty quickly, I came across a great video on YouTube called [Minecraft terrain generation in a nutshell](https://youtu.be/CSa5O6knuwI) by [Henrik Kniberg](https://x.com/henrikkniberg).
+
+I recommend Henrik's video for a deeper explanation, but the most important ideas are to:
+1. Use an algorithm like a 2D [Perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) map for smooth random values.
+2. Map terrain using a combination of multiple 2D maps' values.
+
+### Smooth randomness
+
+The main challenge with terrain generation is to smoothly transition between different biomes.
+If you naively generate worlds by randomly selecting tiles, the outputs won't be realistic.
+For example, if an "ocean" tile gets placed right next to a "desert" tile, that wouldn't make much sense.
+With a Perlin noise map, you can essentially generate a grid of random values that transition smoothly to adjacent values.
+
+<PerlinNoiseGenerator />
+
+### Terrain selection
+
+Once we have the random values, we need to map the value at each tile index to the terrain value (i.e. which biome to render).
 
 ## Implementing and prototyping terrain generation
 
