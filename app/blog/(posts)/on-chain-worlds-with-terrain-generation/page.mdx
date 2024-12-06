@@ -1,8 +1,8 @@
-import Image from 'next/image';
-
 import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
+
+import { GolfBase2NFT } from './graphics';
 
 export const metadata = getBlogPageMetadata({
   slug: "on-chain-worlds-with-terrain-generation",
@@ -44,16 +44,11 @@ At the very least, terrain generation with constrained compute resources must be
 
 ### Design
 
-I played around with a few designs, but this is the one I ended up going with:
+I played around with a few designs, but this what I ended up shipping:
 
-<div className="flex w-full items-center justify-center rounded-xl border border-gray-6 bg-gray-2 p-8">
-  <Image
-    src="/static/blog/on-chain-worlds-with-terrain-generation/golf-base-2.svg"
-    alt="Curta Golf #2 King of the Hill NFT on Base."
-    width={512}
-    height={512}
-  />
-</div>
+<GolfBase2NFT id={2n} />
+
+It has the generative world, and it clearly displays the important metrics of the leading solve.
 
 ## Terrain generation
 
