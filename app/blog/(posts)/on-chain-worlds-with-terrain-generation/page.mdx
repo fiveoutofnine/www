@@ -1,0 +1,103 @@
+import Image from 'next/image';
+
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+import { PerlinNoiseGenerator } from './client-components';
+import { GolfBase2NFT, TerrainTileMappingGraphic } from './graphics';
+
+export const metadata = getBlogPageMetadata({
+  slug: "on-chain-worlds-with-terrain-generation",
+  description: "Implementing on-chain worlds with terrain generation and hyper-optimized pixel art."
+});
+
+<BlogHeader slug="on-chain-worlds-with-terrain-generation" />
+
+I gave myself an interesting challenge while designing the NFTs for [Curta Golf](https://github.com/waterfall-mkt/curta-golf).
+[Curta](https://curta.wtf) is a fully on-chain competitive programming platform with some of the best smart contract engineers and security researchers, and Golf was the 2nd competitive format we added.
+The goal for players is to submit [gas-optimized](https://www.evm.codes) (i.e. "gas-golfed") solutions to challenges, and the "King of the Hill" NFT gets transferred to them if they submit the best solution (i.e. lowest gas usage).
+
+There's a couple of reasons I decided to make Curta fully on-chain from novelty to [my appreciation](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) for [fully on-chain projects](https://www.fiveoutofnine.com/blog/on-chain-font), but the main one was because it'd maximize meritocratic competition.
+Anyone can see the challenges at the same time on-chain, and anyone can submit solutions with the same conditions.
+_You_ can even go improve the current best solution [right now](https://curta.wtf/golf/2).
+So, with this philosophy and other motivators such as provenance and openness, there was no question whether the corresponding NFT's metadata would be on-chain or off-chain.
+
+## Concept
+
+My ideas on art concepts were immediately scoped by 2 things:
+1. I wanted to create something following the "golfing" theme.
+2. I wanted to learn a couple new techniques for making fully on-chain art.
+
+When I think of golf, the first things I think of are golf courses and how every course is different with its own set of difficulties&mdash;just like how every Curta Golf challenge is different.
+
+I've also been wanting to learn about terrain generation algorithms and on-chain (i.e. optimized) pixel art, so what if I made generative, pixel art "worlds"?
+That'd feel like each NFT was visually representing a "golf course" (i.e. the challenge) and require me to understand and implement two new techniques.
+
+### Sanity checking
+
+I liked the generative worlds idea and concept, so I decided to sanity check it to see how hard it'd be or how long it'd take.
+Doing things fully on-chain obviously places some restrictions, but I try to never bound my thinking while ideating cause you can work around them 99% of the time.
+In fact, it [often leads to many interesting and fun solutions along the way](https://x.com/i/status/1772697738552971440).
+Despite that, once I have a concept, I still have to perform some quick sanity checks to decide if I should dive deeper.
+This can often just be like 3 seconds of thinking or even just "vibe"-based (i.e. does it _feel_ possible/easy), but it's an important chain of thoughts.
+
+The process was mostly vibe-based for this project, probably because I had some feeling that there's no way terrain generation can be that complex for small outputs if games do it at a complexity and speed magnitudes higher.
+At the very least, terrain generation with constrained compute resources must be a very well-studied and well-documented area, so I should be able to figure something out&mdash;especially since we have "unlimited" gas budget because the art renderer is a read function.
+
+### Design
+
+I played around with a few designs, but this what I ended up shipping:
+
+<GolfBase2NFT id={2n} />
+
+It has the generative world, and it clearly displays the important metrics of the leading solution.
+
+## Terrain generation
+
+I began researching terrain generation first because it was the bulk of the logic, and I figured mapping the algorithm's output to the corresponding pixel data would be easy.
+Pretty quickly, I came across a great video on YouTube called "[Minecraft terrain generation in a nutshell](https://youtu.be/CSa5O6knuwI)" by [Henrik Kniberg](https://x.com/henrikkniberg).
+
+I recommend Henrik's video for a deeper explanation, but the most important ideas are to:
+1. Use an algorithm like a 2D [Perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) map for smooth random values.
+2. Map terrain using a combination of multiple 2D maps' values.
+
+### Smooth randomness
+
+The main challenge with terrain generation is to smoothly transition between different biomes.
+If we naively generate worlds by randomly selecting tiles, the outputs won't be realistic.
+For example, if an "ocean" tile gets placed right next to a "desert" tile, that wouldn't make much sense.
+With a Perlin noise map, we can generate a grid of random values that transition smoothly to adjacent values.
+
+<PerlinNoiseGenerator />
+
+### Terrain selection
+
+Once we have the random values, we need to map the value at each tile index to the terrain value (i.e. which biome to render).
+We can already kinda see how a single 2D Perlin map resembles some natural, geographic formation, like a topographic map displaying some geographic property like altitude.
+By mapping the values from a single map to a single _property_, we can build a simple framework to introduce more complex generation where we use multiple maps and combine values from all of them to get smooth transitions between biomes.
+
+<Image
+  className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden my-0"
+  src="/static/blog/on-chain-worlds-with-terrain-generation/henrik-multiple-perlin-maps.webp"
+  alt="Screenshot from Henrik's video showing how multiple Perlin maps are used to generate Minecraft's biome distribution."
+  width={1200}
+  height={615}
+  blurDataURL="data:image/webp;base64,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"
+/>
+
+For example, in a game with complex terrain generation like Minecraft, we might want to take into account many properties such as continentalness, erosion, peaks and valleys, temperature, and humidity at each position.
+We can also see from the image above that each property has a unique random map generator.
+
+In my case, I just needed to select 1 biome value out of 11 total at each tile, so I went with just 2 2D Perlin maps: 1 for rainfall and 1 for temperature.
+Then, I came up with the following mapping:
+
+<TerrainTileMappingGraphic />
+
+## Implementing and prototyping terrain generation
+
+## Pixel art
+
+## Mapping terrain generation to pixel art
+
+## Conclusio

@@ -1,4 +1,10 @@
 export const POSTS: { slug: string; title: string; date: Date }[] = [
+  // 2024
+  {
+    slug: 'on-chain-worlds-with-terrain-generation',
+    title: 'On-Chain Worlds With Terrain Generation',
+    date: new Date('2024-01-26T17:11:14.054Z'),
+  },
   // 2023
   {
     slug: 'on-chain-vs-onchain',
