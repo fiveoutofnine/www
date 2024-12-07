@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { ImagePlus, RotateCw } from 'lucide-react';
+import { Grid2x2Plus, Grid2x2X, ImageDown, ImageUp, RotateCw } from 'lucide-react';
 
 import { Button, ButtonGroup, IconButton, Tooltip } from '@/components/ui';
 
@@ -80,7 +80,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
               onClick={() => setResolution((prev) => prev - 1)}
               disabled={resolution < 1}
             >
-              <ImagePlus />
+              <ImageDown />
             </IconButton>
           </Tooltip>
           <Tooltip
@@ -94,7 +94,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
               onClick={() => setResolution((prev) => prev + 1)}
               disabled={resolution > 2}
             >
-              <ImagePlus />
+              <ImageUp />
             </IconButton>
           </Tooltip>
         </ButtonGroup>
@@ -110,7 +110,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
               onClick={() => setNodes((prev) => prev - 2)}
               disabled={nodes < 3}
             >
-              <ImagePlus />
+              <Grid2x2X />
             </IconButton>
           </Tooltip>
           <Tooltip
@@ -124,7 +124,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
               onClick={() => setNodes((prev) => prev + 2)}
               disabled={nodes > 10}
             >
-              <ImagePlus />
+              <Grid2x2Plus />
             </IconButton>
           </Tooltip>
         </ButtonGroup>
