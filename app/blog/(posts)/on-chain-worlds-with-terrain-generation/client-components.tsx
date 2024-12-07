@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Shuffle } from 'lucide-react';
+import { ImagePlus, RotateCw } from 'lucide-react';
 
-import { Button } from '@/components/ui';
+import { Button, ButtonGroup, IconButton, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Components
@@ -12,6 +12,10 @@ import { Button } from '@/components/ui';
 
 export const PerlinNoiseGenerator: React.FC = () => {
   const [nonce, setNonce] = useState<number>(0);
+  // `resolution` should be enforced to be in the range `[0, 3]`.
+  const [resolution, setResolution] = useState<number>(1);
+  // `resolution` should be enforced to be in the range `[2, 12]`.
+  const [nodes, setNodes] = useState<number>(6);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const perlinRef = useRef<Perlin>(new Perlin());
 
@@ -26,43 +30,112 @@ export const PerlinNoiseGenerator: React.FC = () => {
     // Constants
     // -------------------------------------------------------------------------
 
-    const GRID_SIZE = 8;
-    const RESOLUTION = 64;
     canvas.width = 256;
     canvas.height = 256;
-    const pixelSize = canvas.width / RESOLUTION;
-    const numPixels = GRID_SIZE / RESOLUTION;
+    // Convert `resolution` to `[32, 64, 128, 256]`.
+    const pixelSize = canvas.width / (1 << (resolution + 5));
+    const numPixels = nodes / (1 << (resolution + 5));
 
     // Refresh the Perlin generator.
     perlinRef.current.refresh();
 
     // Generate and render the noise.
-    for (let y = 0; y < GRID_SIZE; y += numPixels) {
-      for (let x = 0; x < GRID_SIZE; x += numPixels) {
+    for (let y = 0; y < nodes; y += numPixels) {
+      for (let x = 0; x < nodes; x += numPixels) {
         ctx.fillStyle = `rgba(255,255,255,${perlinRef.current.get(x, y) + 0.5})`;
-        ctx.fillRect(
-          (x / GRID_SIZE) * canvas.width,
-          (y / GRID_SIZE) * canvas.width,
-          pixelSize,
-          pixelSize,
-        );
+        ctx.fillRect((x / nodes) * canvas.width, (y / nodes) * canvas.width, pixelSize, pixelSize);
       }
     }
     // Include `nonce` as a dependency to re-render the Perlin noise when the
     // "Randomize" button is clicked.
-  }, [nonce]);
+  }, [nodes, nonce, resolution]);
 
   return (
     <div className="-mx-4 flex flex-col items-center justify-center gap-2 border-y border-gray-6 bg-gray-2 py-8 md:mx-0 md:rounded-xl md:border-x">
       <div className="flex flex-col items-center gap-1">
+        <span className="animate-bg-pulse font-mono text-xs font-normal text-gray-11">
+          <span key={resolution.toString()} className="animate-bg-pulse">
+            {/* Convert `resolution` to `[32, 64, 128, 256]`. */}
+            resolution={1 << (resolution + 5)}
+          </span>{' '}
+          <span key={nodes.toString()} className="animate-bg-pulse">
+            nodes={nodes}
+          </span>
+        </span>
         <div className="overflow-hidden rounded-lg border border-gray-6">
           {/* `rounded-lg` - (border width) = 8 - 2 = 6 */}
           <canvas className="rounded-[6px]" height={256} width={256} ref={canvasRef} />
         </div>
       </div>
-      <Button rightIcon={<Shuffle />} onClick={() => setNonce((prev) => prev + 1)}>
-        Randomize
-      </Button>
+      <div className="flex w-64 gap-1">
+        <ButtonGroup>
+          <Tooltip
+            content="Decrease resolution"
+            side="bottom"
+            align="start"
+            triggerProps={{ asChild: true }}
+          >
+            <IconButton
+              variant="outline"
+              onClick={() => setResolution((prev) => prev - 1)}
+              disabled={resolution < 1}
+            >
+              <ImagePlus />
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            content="Increase resolution"
+            side="bottom"
+            align="center"
+            triggerProps={{ asChild: true }}
+          >
+            <IconButton
+              variant="outline"
+              onClick={() => setResolution((prev) => prev + 1)}
+              disabled={resolution > 2}
+            >
+              <ImagePlus />
+            </IconButton>
+          </Tooltip>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Tooltip
+            content="Decrease nodes"
+            side="bottom"
+            align="center"
+            triggerProps={{ asChild: true }}
+          >
+            <IconButton
+              variant="outline"
+              onClick={() => setNodes((prev) => prev - 2)}
+              disabled={nodes < 3}
+            >
+              <ImagePlus />
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            content="Increase nodes"
+            side="bottom"
+            align="end"
+            triggerProps={{ asChild: true }}
+          >
+            <IconButton
+              variant="outline"
+              onClick={() => setNodes((prev) => prev + 2)}
+              disabled={nodes > 10}
+            >
+              <ImagePlus />
+            </IconButton>
+          </Tooltip>
+        </ButtonGroup>
+        <Button
+          className="w-full"
+          rightIcon={<RotateCw />}
+          onClick={() => setNonce((prev) => prev + 1)}
+        >
+          Refresh
+        </Button>
+      </div>
     </div>
   );
 };

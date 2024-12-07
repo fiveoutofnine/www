@@ -243,7 +243,7 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
           </div>
           <div
             key={seed.toString()}
-            className=" animate-bg-pulse font-mono text-xs font-normal text-gray-11"
+            className="animate-bg-pulse font-mono text-xs font-normal text-gray-11"
           >
             {seed.toString(16)}
           </div>
