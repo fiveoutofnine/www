@@ -107,100 +107,141 @@ export const TerrainTileMappingGraphic: React.FC = () => {
   // (24 + 14 + 3.5 * 2 + 2= 47).
   return (
     <svg
-      width="280"
-      height="280"
-      viewBox="0 0 241 241"
+      width={(257 * 14) / 12}
+      height={(257 * 14) / 12}
+      viewBox="0 0 257 257"
       xmlns="http://www.w3.org/2000/svg"
       role="figure"
     >
       <title>Curta Golf terrain generation</title>
       <desc>Figure displaying how temperature and rainfall maps to terrain values.</desc>
-      {/* Row 1 background. */}
-      <path className="fill-blue-3 stroke-blue-6" d="M.5.5h240v48H.5z" />
-      {/* Row 2 background. */}
-      <path className="fill-blue-3 stroke-blue-6" d="M.5 48.5h120v48H.5z" />
-      <path className="fill-blue-4 stroke-blue-6" d="M120.5 48.5h120v48h-120z" />
-      {/* Row 3 background. */}
-      <path className="fill-green-3 stroke-green-6" d="M.5 96.5h80v48H.5z" />
-      <path className="fill-green-4 stroke-green-6" d="M80.5 96.5h80v48h-80z" />
-      <path className="fill-green-5 stroke-green-6" d="M160.5 96.5h80v48h-80z" />
-      {/* Row 4 background. */}
-      <path className="fill-orange-3 stroke-orange-6" d="M.5 144.5h120v48H.5z" />
-      <path className="fill-yellow-3 stroke-yellow-6" d="M120.5 144.5h120v48h-120z" />
-      {/* Row 5 background. */}
-      <path className="fill-red-3 stroke-red-6" d="M.5 192.5h60v48H.5z" />
-      <path className="fill-orange-3 stroke-orange-6" d="M60.5 192.5h60v48h-60z" />
-      <path className="fill-gray-3 stroke-gray-6" d="M120.5 192.5h60v48h-60z" />
-      <path className="fill-gray-4 stroke-gray-6" d="M180.5 192.5h60v48h-60z" />
+      <defs>
+        <marker id="arrow-head" orient="auto" markerWidth="5" markerHeight="4" refX="3" refY="2">
+          <path className="fill-gray-6" d="M0,0v4L5,2LZ" />
+        </marker>
+      </defs>
+      {/* Axis labels. */}
+      <path
+        className="stroke fill-none stroke-gray-6"
+        markerEnd="url(#arrow-head)"
+        d="M174.11284,7L18,7"
+        strokeLinecap="round"
+      />
+      <path
+        className="stroke fill-none stroke-gray-6"
+        markerEnd="url(#arrow-head)"
+        d="M7,194.41482L7,18"
+        strokeLinecap="round"
+      />
+      <text
+        className="bg-red fill-gray-11 font-mono text-xs"
+        x="257"
+        y="7"
+        dominantBaseline="middle"
+        textAnchor="end"
+        height="14"
+      >
+        Temperature
+      </text>
+      <text
+        className="fill-gray-11 font-mono text-xs"
+        y="7"
+        transform="rotate(-90 128.5 128.5)"
+        dominantBaseline="middle"
+        textAnchor="start"
+        height="14"
+      >
+        Rainfall
+      </text>
+      {/* Main figure. */}
+      <g transform="translate(16 16)">
+        {/* Row 1 background. */}
+        <path className="fill-blue-3 stroke-blue-6" d="M.5.5h240v48H.5z" />
+        {/* Row 2 background. */}
+        <path className="fill-blue-3 stroke-blue-6" d="M.5 48.5h120v48H.5z" />
+        <path className="fill-blue-4 stroke-blue-6" d="M120.5 48.5h120v48h-120z" />
+        {/* Row 3 background. */}
+        <path className="fill-green-3 stroke-green-6" d="M.5 96.5h80v48H.5z" />
+        <path className="fill-green-4 stroke-green-6" d="M80.5 96.5h80v48h-80z" />
+        <path className="fill-green-5 stroke-green-6" d="M160.5 96.5h80v48h-80z" />
+        {/* Row 4 background. */}
+        <path className="fill-orange-3 stroke-orange-6" d="M.5 144.5h120v48H.5z" />
+        <path className="fill-yellow-3 stroke-yellow-6" d="M120.5 144.5h120v48h-120z" />
+        {/* Row 5 background. */}
+        <path className="fill-red-3 stroke-red-6" d="M.5 192.5h60v48H.5z" />
+        <path className="fill-orange-3 stroke-orange-6" d="M60.5 192.5h60v48h-60z" />
+        <path className="fill-gray-3 stroke-gray-6" d="M120.5 192.5h60v48h-60z" />
+        <path className="fill-gray-4 stroke-gray-6" d="M180.5 192.5h60v48h-60z" />
 
-      {/* Tiles. */}
-      {/* 1 + 0 * 48 + 3.5 = 4.5 */}
-      <g transform="translate(0 4.5)">
-        <TerrainTile terrain="Rain Forest" x={(1 * 241) / 2 - 12} />
-      </g>
-      {/* 1 + 1 * 48 + 3.5 = 52.5 */}
-      <g transform="translate(0 52.5)">
-        <TerrainTile terrain="Rain Forest" x={(1 * 241) / 4 - 12} />
-        <TerrainTile terrain="Wetland" x={(3 * 241) / 4 - 12} />
-      </g>
-      {/* 1 + 2 * 48 + 3.5 = 100.5 */}
-      <g transform="translate(0 100.5)">
-        <TerrainTile terrain="Temperate Forest" x={(1 * 241) / 6 - 12} />
-        <TerrainTile terrain="Boreal Forest" x={(3 * 241) / 6 - 12} />
-        <TerrainTile terrain="Marsh" x={(5 * 241) / 6 - 12} />
-      </g>
-      {/* 1 + 3 * 48 + 3.5 = 148.5 */}
-      <g transform="translate(0 148.5)">
-        <TerrainTile terrain="Plains" x={(1 * 241) / 4 - 12} />
-        <TerrainTile terrain="Grassland" x={(3 * 241) / 4 - 12} />
-      </g>
-      {/* 1 + 4 * 48 + 3.5 = 196.5 */}
-      <g transform="translate(0 196.5)">
-        <TerrainTile terrain="Desert" x={(1 * 241) / 8 - 12} />
-        <TerrainTile terrain="Plains" x={(3 * 241) / 8 - 12} />
-        <TerrainTile terrain="Tundra" x={(5 * 241) / 8 - 12} />
-        <TerrainTile terrain="Snow" x={(7 * 241) / 8 - 12} />
-      </g>
+        {/* Tiles. */}
+        {/* 1 + 0 * 48 + 3.5 = 4.5 */}
+        <g transform="translate(0 4.5)">
+          <TerrainTile terrain="Rain Forest" x={(1 * 241) / 2 - 12} />
+        </g>
+        {/* 1 + 1 * 48 + 3.5 = 52.5 */}
+        <g transform="translate(0 52.5)">
+          <TerrainTile terrain="Rain Forest" x={(1 * 241) / 4 - 12} />
+          <TerrainTile terrain="Wetland" x={(3 * 241) / 4 - 12} />
+        </g>
+        {/* 1 + 2 * 48 + 3.5 = 100.5 */}
+        <g transform="translate(0 100.5)">
+          <TerrainTile terrain="Temperate Forest" x={(1 * 241) / 6 - 12} />
+          <TerrainTile terrain="Boreal Forest" x={(3 * 241) / 6 - 12} />
+          <TerrainTile terrain="Marsh" x={(5 * 241) / 6 - 12} />
+        </g>
+        {/* 1 + 3 * 48 + 3.5 = 148.5 */}
+        <g transform="translate(0 148.5)">
+          <TerrainTile terrain="Plains" x={(1 * 241) / 4 - 12} />
+          <TerrainTile terrain="Grassland" x={(3 * 241) / 4 - 12} />
+        </g>
+        {/* 1 + 4 * 48 + 3.5 = 196.5 */}
+        <g transform="translate(0 196.5)">
+          <TerrainTile terrain="Desert" x={(1 * 241) / 8 - 12} />
+          <TerrainTile terrain="Plains" x={(3 * 241) / 8 - 12} />
+          <TerrainTile terrain="Tundra" x={(5 * 241) / 8 - 12} />
+          <TerrainTile terrain="Snow" x={(7 * 241) / 8 - 12} />
+        </g>
 
-      {/* Tile labels. */}
-      {[
-        /* 1 + 0 * 48 + 14 / 2 + 3.5 + 24 + 2 = 37.5 */
-        { className: 'fill-blue-11', x: (1 * 241) / 2, y: 37.5, label: 'Rain Forest' },
-        /* 1 + 1 * 48 + 14 / 2 + 3.5 + 24 + 2 = 85.5 */
-        { className: 'fill-blue-11', x: (1 * 241) / 4, y: 85.5, label: 'Rain Forest' },
-        /* 1 + 1 * 48 + 14 / 2 + 3.5 + 24 + 2 = 85.5 */
-        { className: 'fill-blue-11', x: (3 * 241) / 4, y: 85.5, label: 'Wetland' },
-        /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
-        { className: 'fill-green-11', x: (1 * 241) / 6, y: 133.5, label: 'Temperate' },
-        /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
-        { className: 'fill-green-11', x: (3 * 241) / 6, y: 133.5, label: 'Boreal' },
-        /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
-        { className: 'fill-green-11', x: (5 * 241) / 6, y: 133.5, label: 'Marsh' },
-        /* 1 + 3 * 48 + 14 / 2 + 3.5 + 24 + 2 = 181.5 */
-        { className: 'fill-orange-11', x: (1 * 241) / 4, y: 181.5, label: 'Plains' },
-        /* 1 + 3 * 48 + 14 / 2 + 3.5 + 24 + 2 = 181.5 */
-        { className: 'fill-yellow-11', x: (3 * 241) / 4, y: 181.5, label: 'Grassland' },
-        /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
-        { className: 'fill-red-11', x: (1 * 241) / 8, y: 229.5, label: 'Desert' },
-        /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
-        { className: 'fill-orange-11', x: (3 * 241) / 8, y: 229.5, label: 'Plains' },
-        /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
-        { className: 'fill-gray-11', x: (5 * 241) / 8, y: 229.5, label: 'Tundra' },
-        /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
-        { className: 'fill-gray-11', x: (7 * 241) / 8, y: 229.5, label: 'Snow' },
-      ].map(({ className, x, y, label }) => (
-        <text
-          key={`${x}-${y}`}
-          className={clsx('text-xs font-medium', className)}
-          x={x}
-          y={y}
-          dominantBaseline="middle"
-          textAnchor="middle"
-          height="14"
-        >
-          {label}
-        </text>
-      ))}
+        {/* Tile labels. */}
+        {[
+          /* 1 + 0 * 48 + 14 / 2 + 3.5 + 24 + 2 = 37.5 */
+          { className: 'fill-blue-11', x: (1 * 241) / 2, y: 37.5, label: 'Rain Forest' },
+          /* 1 + 1 * 48 + 14 / 2 + 3.5 + 24 + 2 = 85.5 */
+          { className: 'fill-blue-11', x: (1 * 241) / 4, y: 85.5, label: 'Rain Forest' },
+          /* 1 + 1 * 48 + 14 / 2 + 3.5 + 24 + 2 = 85.5 */
+          { className: 'fill-blue-11', x: (3 * 241) / 4, y: 85.5, label: 'Wetland' },
+          /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
+          { className: 'fill-green-11', x: (1 * 241) / 6, y: 133.5, label: 'Temperate' },
+          /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
+          { className: 'fill-green-11', x: (3 * 241) / 6, y: 133.5, label: 'Boreal' },
+          /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
+          { className: 'fill-green-11', x: (5 * 241) / 6, y: 133.5, label: 'Marsh' },
+          /* 1 + 3 * 48 + 14 / 2 + 3.5 + 24 + 2 = 181.5 */
+          { className: 'fill-orange-11', x: (1 * 241) / 4, y: 181.5, label: 'Plains' },
+          /* 1 + 3 * 48 + 14 / 2 + 3.5 + 24 + 2 = 181.5 */
+          { className: 'fill-yellow-11', x: (3 * 241) / 4, y: 181.5, label: 'Grassland' },
+          /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
+          { className: 'fill-red-11', x: (1 * 241) / 8, y: 229.5, label: 'Desert' },
+          /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
+          { className: 'fill-orange-11', x: (3 * 241) / 8, y: 229.5, label: 'Plains' },
+          /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
+          { className: 'fill-gray-11', x: (5 * 241) / 8, y: 229.5, label: 'Tundra' },
+          /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
+          { className: 'fill-gray-11', x: (7 * 241) / 8, y: 229.5, label: 'Snow' },
+        ].map(({ className, x, y, label }) => (
+          <text
+            key={`${x}-${y}`}
+            className={clsx('text-xs font-medium', className)}
+            x={x}
+            y={y}
+            dominantBaseline="middle"
+            textAnchor="middle"
+            height="14"
+          >
+            {label}
+          </text>
+        ))}
+      </g>
     </svg>
   );
 };

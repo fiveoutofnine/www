@@ -96,6 +96,13 @@ Then, I came up with the following mapping to combine the 2 values:
   <TerrainTileMappingGraphic />
 </div>
 
+<Callout intent="none">
+  The key point is that we now have a way to smoothly transition between terrains, taking into account both rainfall and temperature gradients.
+</Callout>
+
+Now, we can see how our algorithm will avoid placing contrasting biomes adjacently and generate more realistic outputs.
+For example, it's super unlikely that a "Desert" tile gets placed next to a "Wetland" tile because they're far apart in both dimensions of the mapping, which makes sense intuitively: a desert is super dry and hot, while a wetland is super wet and cool.
+
 ## Implementing and prototyping terrain generation
 
 ## Pixel art
