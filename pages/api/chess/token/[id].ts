@@ -55,6 +55,8 @@ export default async function handler(
         args: [BigInt(id)],
       })) as string;
       const tokenURIParsed = JSON.parse(
+        // `.slice(29)` removes the `data:application/json;base64,` data URI
+        // prefix.
         Buffer.from(tokenURI.substring(29), 'base64').toString(),
       ) as ChessNFTMetadata;
 

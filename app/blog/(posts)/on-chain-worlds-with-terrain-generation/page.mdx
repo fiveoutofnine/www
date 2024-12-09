@@ -1,0 +1,215 @@
+import Image from 'next/image';
+
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+import { PerlinNoiseGenerator, PerlinNoiseTestScriptAccordion } from './client-components';
+import {
+  GolfBase2NFT,
+  PixelArtEncodingLayeredGraphic,
+  PixelArtEncodingSimpleGraphic,
+  TerrainTileMappingGraphic,
+} from './graphics';
+
+export const metadata = getBlogPageMetadata({
+  slug: "on-chain-worlds-with-terrain-generation",
+  description: "Implementing on-chain worlds with terrain generation and hyper-optimized pixel art."
+});
+
+<BlogHeader slug="on-chain-worlds-with-terrain-generation" />
+
+I gave myself an interesting challenge while designing the NFTs for [Curta Golf](https://github.com/waterfall-mkt/curta-golf).
+[Curta](https://curta.wtf) is a fully on-chain competitive programming platform with some of the best smart contract engineers and security researchers, and Golf was the 2nd competitive format we added.
+The goal for players is to submit [gas-optimized](https://www.evm.codes) (i.e. "gas-golfed") solutions to challenges, and the "King of the Hill" NFT gets transferred to them if they submit the best solution (i.e. lowest gas usage).
+
+There's a couple of reasons I decided to make Curta fully on-chain from novelty to [my appreciation](https://gallery.so/fiveoutofnine/galleries/2dXu2CmM2LHQOceZKfh3MYxF36m) for [fully on-chain projects](https://www.fiveoutofnine.com/blog/on-chain-font), but the main one was because it'd maximize meritocratic competition.
+Anyone can see the challenges at the same time on-chain, and anyone can submit solutions with the same conditions.
+_You_ can even go improve the current best solution [right now](https://curta.wtf/golf/2).
+So, with this philosophy and other motivators such as provenance and openness, there was no question whether the corresponding NFT's metadata would be on-chain or off-chain.
+
+## Concept
+
+My ideas on art concepts were immediately scoped by 2 things:
+1. I wanted to create something following the "golfing" theme.
+2. I wanted to learn a couple new techniques for making fully on-chain art.
+
+When I think of golf, the first things I think of are golf courses and how every course is different with its own set of difficulties&mdash;just like how every Curta Golf challenge is different.
+
+I've also been wanting to learn about terrain generation algorithms and on-chain (i.e. optimized) pixel art, so what if I made generative, pixel art "worlds"?
+That'd feel like each NFT was visually representing a "golf course" (i.e. the challenge) and require me to understand and implement two new techniques.
+
+### Sanity checking
+
+I liked the generative worlds idea and concept, so I decided to sanity check it to see how hard it'd be or how long it'd take.
+Doing things fully on-chain obviously places some restrictions, but I try to never bound my thinking while ideating cause you can work around them 99% of the time.
+In fact, it [often leads to many interesting and fun solutions along the way](https://x.com/i/status/1772697738552971440).
+Despite that, once I have a concept, I still have to perform some quick sanity checks to decide if I should dive deeper.
+This can often just be like 3 seconds of thinking or even just "vibe"-based (i.e. does it _feel_ possible/easy), but it's an important chain of thoughts.
+
+The process was mostly vibe-based for this project, probably because I had some feeling that there's no way terrain generation can be that complex for small outputs if games do it at a complexity and speed magnitudes higher.
+At the very least, terrain generation with constrained compute resources must be a very well-studied and well-documented area, so I should be able to figure something out&mdash;especially since we have "unlimited" gas budget because the art renderer is a read function.
+
+### Design
+
+I played around with a few designs, but this what I ended up shipping:
+
+<GolfBase2NFT id={2n} />
+
+It has the generative world, and it clearly displays the important metrics of the leading solution.
+
+## Terrain generation
+
+I began researching terrain generation first because it's the bulk of the logic, and I figured mapping the algorithm's output to the corresponding pixel data would be easy.
+Pretty quickly, I came across a great video on YouTube called "[Minecraft terrain generation in a nutshell](https://youtu.be/CSa5O6knuwI)" by [Henrik Kniberg](https://x.com/henrikkniberg).
+
+I recommend Henrik's video for a deeper explanation, but the most important ideas are to:
+1. Use an algorithm like a 2D [Perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) map for smooth random values.
+2. Map terrain using a combination of multiple 2D maps' values.
+
+### Smooth randomness
+
+The main challenge with terrain generation is to smoothly transition between different biomes.
+If we naively generate worlds by randomly selecting tiles, the outputs won't be realistic.
+For example, if an "ocean" tile gets placed right next to a "desert" tile, that wouldn't make much sense.
+With a Perlin noise map, we can generate a grid of random values that transition smoothly to adjacent values.
+
+<PerlinNoiseGenerator />
+
+### Terrain selection
+
+Once we have the random values, we need to map the value at each tile index to the terrain value (i.e. which biome to render).
+We can already kinda see how a single 2D Perlin map resembles some natural, geographic formation, like a topographic map showing elevation.
+By mapping values from a single map to a single _property_, we can build a simple framework to introduce more complex generation where we combine values from multiple maps to get smooth transitions between biomes.
+
+<Image
+  className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden my-0"
+  src="/static/blog/on-chain-worlds-with-terrain-generation/henrik-multiple-perlin-maps.webp"
+  alt="Screenshot from Henrik's video showing how multiple Perlin maps are used to generate Minecraft's biome distribution."
+  width={1200}
+  height={615}
+  blurDataURL="data:image/webp;base64,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"
+/>
+
+For example, in a game with [complex terrain generation](https://minecraft.wiki/w/World_generation) like Minecraft, we might want to take into account many properties such as continentalness, erosion, peaks and valleys, temperature, and humidity at each position.
+We can see from the image above that Minecraft's world generation algorithm achieves even more granularity by using different types of random maps for each property.
+
+In my case, I just needed to select 1 biome value out of 11 at each tile position, so I went with just 2 2D Perlin maps: 1 for rainfall and 1 for temperature.
+Then, I came up with the following mapping to combine the 2 values:
+
+<div className="w-full flex justify-center">
+  <TerrainTileMappingGraphic />
+</div>
+
+<Callout intent="none">
+  The key point is that we now have a way to smoothly transition between terrains, taking into account both rainfall and temperature gradients.
+</Callout>
+
+Now, we can see how our algorithm will avoid placing contrasting biomes adjacently and generate more realistic outputs.
+For example, it's super unlikely that a "Desert" tile gets placed next to a "Wetland" tile because they're far apart in both dimensions of the mapping, which makes sense intuitively: a desert is super dry and hot, while a wetland is super wet and cool.
+
+## Implementing and prototyping terrain generation
+
+At this point, I had a good idea of the solution, so I hacked together a [Foundry script](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/script/PerlinNoiseTest.s.sol) to output ASCII values (instead of the actual SVG pixel data URIs) to test and prototype it.
+I wanted to get a quick sense of the implementation, do a quick sanity check, and fiddle around with the mapping to get better generations.
+
+The script is pretty straightforward, except for the last part, where I used a bitmap to determine which tiles to exclude in the final output for the hexagonal shape:
+
+<PerlinNoiseTestScriptAccordion>
+```none showLineNumbers={false}
+[⠊] Compiling...
+[⠆] Compiling 44 files with 0.8.21
+[⠔] Solc 0.8.21 finished in 57.21s
+Compiler run successful!
+Script ran successfully.
+Gas used: 34554901
+
+== Logs ==
+              @   #   :   @   +   @               
+          +   @   +   :   :   *   %               
+        *   %   #   @   *   :   @   @           
+      *   +   %   #   :   %   @   *   #           
+    +   *   :   #   *   @   *   @   :   @       
+  #   @   #   +   %   @   =   =   @   :           
+@   @   +   @   @   #   #   #   #   #   #   #   
+  :   :   +   @   #   :   @   @   :   #           
+#   #   :   #   *   %   #   :   %   *   @   @   
+  +   *   @   @   .   *   +   #   :   #           
+*   =   =   *   :   %   :   %   @   #   #   %   
+  #   #   #   #   *   +   @   :   #   +           
+    @   #   +   *   @   #   :   *   #   @       
+      #   %   =   #   #   %   *   +   :           
+        #   *   :   @   *   %   #   @           
+          #   #   *   #   #   *   =               
+            @   *   %   #   #   @               
+```
+</PerlinNoiseTestScriptAccordion>
+
+I ran it a couple of times, and it seemed to look good.
+Now, all that's left was to encode the pixel art data for each tile in an easy way for us to map the value at each position to the tile.
+
+## Pixel art
+
+Before marking up each tile's image data in SVG, I thought about the best way to markup the overall SVG.
+Immediately, I knew I wanted use the [`<use>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use) element to render tiles in the world because many of them would be repeated.
+Since there's many (160) tiles to render, it'd definitely be worth it in both gas savings (greatly reduces string operations) and final output size.
+The "sanity check" here is `<use>` requires 44 to 48 characters to render a tile (depending on the coordinate), while even a super simple, optimized tile definition requires 100s.
+
+By wrapping the tile definitions with a `<g>` container with `visibility="hidden"`, we can easily and efficiently render tiles with `<use>` at any coordinate without worrying about the initial definitions being rendered:
+
+```svg highlightLines={[11]}
+<svg width="125" height="109" viewBox="0 0 125 109" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tile pixel definitions -->
+  <g visibility="hidden">
+    <g id="tile1Id">
+      <!-- Tile data -->
+    </g>
+  </g>
+  <!-- The art -->
+  <g>
+    <!-- ((125 - 11) / 2, (109 - 9) / 2) = (57 50) -->
+    <use href="#tile1Id" transform="translate(57 50)" />
+  </g>
+</svg>
+```
+
+This setup lets us [change the rendered tile](https://x.com/i/status/1750929435300405380) by changing the `href` value and change the position of the tile by changing the `transform` value.
+
+### Encoding the tile definitions
+
+There's a lot of room for optimization with encoding each tile's pixel data by layering rectangles of varying dimensions and colors.
+For example, if there's a 3×4 block of the same color, it'd be better to render a single 3×4 rectangle, as opposed to 12 1×1 squares.
+
+<div className="w-full flex justify-center">
+  <PixelArtEncodingSimpleGraphic />
+</div>
+
+It starts to get really tricky to find the optimal markup once you have multiple colors because you can start to layer them in a particular order to render lower levels with fewer rectangles.
+A simple example: consider a 3×4 red block with a 1×1 blue square somewhere in the middle.
+Instead of rendering the blue square first and 4 red rectangles around it, it'd be more efficient to render the red block as a single 3×4 rectangle _and then_ render a 1×1 blue square over it.
+
+<div className="w-full flex justify-center">
+  <PixelArtEncodingLayeredGraphic />
+</div>
+
+<Callout>
+  See this [helper spreadsheet](https://docs.google.com/spreadsheets/d/126K0koRm4DtAnisueX5BRT_Rc80nltNlBrbF0k-d7kI) I used while marking up the tile definitions.
+  Note: I eyeballed the whole process until it felt optimized enough instead of finding some optimal algorithm.
+  If you figure out a solution, [I'd love to hear](https://x.com/fiveoutofnine)!
+</Callout>
+
+### Mapping terrain generation to pixel art
+
+After I encoded all the tile definitions, I took the [prototyping script](#implementing-and-prototyping-terrain-generation) and adapted it to generate the actual SVG.
+There's a [couple](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/src/utils/metadata/KingArt.sol#L165-L206) of [fun](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/src/utils/metadata/KingArt.sol#L451-L481) [tricks](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/src/utils/metadata/KingArt.sol#L485-L507) I used in the final implementation, but otherwise, it's as straightforward as it sounds.
+I thoroughly commented everything as usual, so I recommend giving the [source code](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/src/utils/metadata/KingArt.sol#L165-L206) a read.
+
+## Conclusion
+
+Learning about something like terrain generation feels super cool because it's always felt like black magic to me, and I now feel like I have some base-level understanding.
+It also feels nice because one of my earliest encounters with terrain generation was with Minecraft, and it feels like I've come full circle by its source code teaching me how it works.
+
+---
+
+The whole "research" and building process described in this post was done in like a super fast, 1-day sprint, but I wanted to try something different and explain more of my thought processes;
+I've been wanting to write about more personal things, and while this post isn't that, I hope it displays some personality by showing the way I think.
