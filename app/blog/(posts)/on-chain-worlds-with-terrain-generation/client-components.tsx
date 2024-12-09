@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Grid2x2Plus, Grid2x2X, ImageDown, ImageUp, RotateCw } from 'lucide-react';
+import * as Accordion from '@radix-ui/react-accordion';
+import clsx from 'clsx';
+import { ChevronRight, Grid2x2Plus, Grid2x2X, ImageDown, ImageUp, RotateCw } from 'lucide-react';
 
-import { Button, ButtonGroup, IconButton, Tooltip } from '@/components/ui';
+import { Button, ButtonGroup, CodeBlock, IconButton, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Components
@@ -140,6 +142,60 @@ export const PerlinNoiseGenerator: React.FC = () => {
   );
 };
 
+export const PerlinNoiseTestScriptAccordion: React.FC<{ children?: React.ReactNode }> = ({
+  children,
+}) => {
+  return (
+    <div className="-mx-4 flex flex-col md:mx-0">
+      <div
+        className={clsx(
+          // We need the following classes to override the default styles from
+          // our `<Article />` MDX component.
+          // Container
+          '[&_[code-block-container]]:mx-0 [&_[code-block-container]]:rounded-b-none [&_[code-block-container]]:border-x-0',
+          'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-b-none md:[&_[code-block-container]]:border-x',
+          // Pre
+          '[&_[code-block-pre]]:rounded-b-none',
+          'md:[&_[code-block-pre]]:rounded-b-none',
+        )}
+      >
+        <CodeBlock
+          language="sol"
+          fileName="PerlinNoiseTest.s.sol snippet"
+          highlightLines={[37, 38, 39]}
+        >
+          {PERLIN_NOISE_TEST_SOURCE}
+        </CodeBlock>
+      </div>
+      <Accordion.Root className="-mt-px" type="single" collapsible>
+        <Accordion.Item className="not-prose border-b-0" value="0">
+          <Accordion.Trigger className="not-prose group z-10 flex h-10 w-full items-center space-x-2 border-x-0 border-y border-gray-6 bg-gray-3 px-4 text-sm font-medium text-gray-11 transition-colors hover:border-gray-7 hover:bg-gray-4 hover:text-gray-12 focus:outline-none focus-visible:rounded-none focus-visible:outline focus-visible:-outline-offset-[2px] focus-visible:outline-blue-9 focus-visible:ring-0 active:bg-gray-5 data-[state='open']:text-gray-12 md:border-x md:data-[state='closed']:rounded-b-xl">
+            <span className="flex size-4 items-center justify-center">
+              <ChevronRight className="transition-transform group-data-[state='open']:rotate-90" />
+            </span>
+            <span>Sample output</span>
+          </Accordion.Trigger>
+          <Accordion.Content
+            className={clsx(
+              'not-prose overflow-hidden rounded-b-none border-x-0 border-b border-t-0 border-gray-6 bg-gray-3 p-0 md:rounded-b-xl md:border-x',
+              // We need the following classes to override the default styles
+              // from our `<Article />` MDX component.
+              // Container
+              '[&_[code-block-container]]:mx-0 [&_[code-block-container]]:rounded-none [&_[code-block-container]]:border-0',
+              'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-none md:[&_[code-block-container]]:border-x-0',
+              // Pre
+              '[&_[code-block-pre]]:rounded-none',
+              'md:[&_[code-block-pre]]:rounded-b-[0.6875rem] md:[&_[code-block-pre]]:rounded-t-none',
+            )}
+          >
+            {children}
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion.Root>
+    </div>
+  );
+};
+
 // -----------------------------------------------------------------------------
 // Perlin logic
 // -----------------------------------------------------------------------------
@@ -206,3 +262,52 @@ class Perlin {
     return v;
   }
 }
+
+const PERLIN_NOISE_TEST_SOURCE = `// Select the tiles depending on \`perlin1\` and \`perlin2\` and generate
+// the ASCII string.
+string memory ascii_map = "";
+for (uint256 row; row < HEIGHT; ++row) {
+    string memory ascii_row = "";
+    for (uint256 col; col < WIDTH; ++col) {
+        // Normalize the Perlin noise values to the range [0, 59].
+        uint256 temperature = 60 * (perlin1[col][row] - min1) / range1;
+        uint256 rainfall = 60 * (perlin2[col][row] - min2) / range2;
+
+        // Select the tile based on the temperature and rainfall.
+        string memory tile = "";
+        if (rainfall < 12) {
+            tile = "@"; // Rainforest
+        } else if (rainfall < 24) {
+            if (temperature < 30) tile = "@"; // Rainforest
+            else tile = "*"; // Wetland
+        } else if (rainfall < 36) {
+            if (temperature < 20) tile = "%"; // Temperate forest
+            else if (temperature < 40) tile = "#"; // Boreal forest
+            else tile = "+"; // Marsh
+        } else if (rainfall < 48) {
+            if (temperature < 30) tile = ":"; // Plains
+            else tile = "="; // Grassland
+        } else {
+            if (temperature < 15) tile = "-"; // Desert
+            else if (temperature < 30) tile = ":"; // Plains
+            else if (temperature < 45) tile = "."; // Tundra
+            else tile = "_"; // Snow
+        }
+
+        // Exclude the tile (i.e. print as \` \`) if it is not part of the
+        // island's shape. We determine whether a tile at a given
+        // \`(row, col)\` is part of the island via a bitmap, where a \`1\`
+        // at the LSb position equal to \`12 * row + col\` indicates the
+        // tile is part of the island.
+        if ((0x1f81fc3fc3fe7fe3fffff3fffff3fffff3ff7fe3fe3fc1fc1f8 >> (12 * row + col)) & 1 == 0) {
+            tile = " ";
+        }
+        ascii_row = string.concat(ascii_row, tile, "   ");
+    }
+    // Append the row to the map, prepended with a \`\` if the row is
+    // odd-numbered.
+    ascii_map = string.concat(ascii_map, row & 1 == 1 ? "  " : "", ascii_row, "\n");
+}
+
+// Log the map.
+console.log(ascii_map);`;

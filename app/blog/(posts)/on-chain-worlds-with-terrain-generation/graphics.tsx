@@ -101,6 +101,128 @@ export const GolfBase2NFT: React.FC<GolfBase2NFTProps> = async ({
   );
 };
 
+export const PixelArtEncodingSimpleGraphic: React.FC = () => {
+  return (
+    <svg
+      /* 9 columns: 24 * 9 - 8 */
+      width="208"
+      /* 3 rows and 4px padding for 16px caption: 24 * 3 - 2 + (4 + 16) */
+      height="90"
+      viewBox="0 0 208 90"
+      xmlns="http://www.w3.org/2000/svg"
+      role="figure"
+    >
+      <title>Simple pixel art encoding</title>
+      <desc>Naive vs optimized simple pixel art encoding example.</desc>
+      {/* Naive */}
+      <Pixel x={0} y={0} type="gray" />
+      <Pixel x={1} y={0} type="gray" />
+      <Pixel x={2} y={0} type="gray" />
+      <Pixel x={3} y={0} type="gray" />
+      <Pixel x={0} y={1} type="gray" />
+      <Pixel x={1} y={1} type="gray" />
+      <Pixel x={2} y={1} type="gray" />
+      <Pixel x={3} y={1} type="gray" />
+      <Pixel x={0} y={2} type="gray" />
+      <Pixel x={1} y={2} type="gray" />
+      <Pixel x={2} y={2} type="gray" />
+      <Pixel x={3} y={2} type="gray" />
+      {/* Optimized */}
+      <Pixel x={5} y={0} width={4} height={3} type="gray" />
+      <text
+        className="fill-gray-11 font-mono text-xs"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="46.5"
+        y="84"
+        height="16"
+      >
+        12 rectangles
+      </text>
+      <text
+        className="fill-gray-12 font-mono text-xs"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="161.5"
+        y="84"
+        height="16"
+      >
+        1 rectangle
+      </text>
+    </svg>
+  );
+};
+
+export const PixelArtEncodingLayeredGraphic: React.FC = () => {
+  return (
+    <svg
+      /* 14 columns: 24 * 14 - 13 */
+      width="323"
+      /* 3 rows and 4px padding for 16px caption: 24 * 3 - 2 + (4 + 16) */
+      height="90"
+      viewBox="0 0 323 90"
+      xmlns="http://www.w3.org/2000/svg"
+      role="figure"
+    >
+      <title>Layered pixel art encoding</title>
+      <desc>Naive vs unoptimized vs optimized layered pixel art encoding example.</desc>
+      {/* Naive */}
+      <Pixel x={0} y={0} type="red" />
+      <Pixel x={1} y={0} type="red" />
+      <Pixel x={2} y={0} type="red" />
+      <Pixel x={3} y={0} type="red" />
+      <Pixel x={0} y={1} type="red" />
+      <Pixel x={1} y={1} type="blue" />
+      <Pixel x={2} y={1} type="red" />
+      <Pixel x={3} y={1} type="red" />
+      <Pixel x={0} y={2} type="red" />
+      <Pixel x={1} y={2} type="red" />
+      <Pixel x={2} y={2} type="red" />
+      <Pixel x={3} y={2} type="red" />
+      {/* Unoptimized */}
+      <Pixel x={6} y={1} type="blue" />
+      <Pixel x={5} y={0} width={4} type="red" />
+      <Pixel x={5} y={1} type="red" />
+      <Pixel x={7} y={1} width={2} type="red" />
+      <Pixel x={5} y={2} width={4} type="red" />
+      {/* Optimized */}
+      <Pixel x={10} y={0} width={4} height={3} type="red" />
+      <Pixel x={11} y={1} type="blue" />
+      {/* Labels */}
+      <text
+        className="fill-gray-11 font-mono text-xs"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="46.5"
+        y="84"
+        height="16"
+      >
+        12 rectangles
+      </text>
+      <text
+        className="fill-gray-11 font-mono text-xs"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="161.5"
+        y="84"
+        height="16"
+      >
+        5 rectangles
+      </text>
+      <text
+        className="fill-gray-12 font-mono text-xs"
+        dominantBaseline="middle"
+        textAnchor="middle"
+        x="276.5"
+        y="84"
+        height="16"
+      >
+        2 rectangles
+      </text>
+    </svg>
+  );
+};
+
 export const TerrainTileMappingGraphic: React.FC = () => {
   // Note: at a width of 241px and height of 241px, there's a 3.5px `y`-padding
   // within each cell and a 2px gap between the tile and text label
@@ -460,5 +582,29 @@ export const TerrainTile: React.FC<TerrainTileProps> = ({ className, terrain, ..
       </g>
       <g transform="rotate(180 12 12) translate(1 1) scale(2)">{tilePixelSvg}</g>
     </svg>
+  );
+};
+
+const Pixel: React.FC<{
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  type: 'red' | 'blue' | 'gray';
+}> = ({ x, y, width = 1, height = 1, type }) => {
+  return (
+    <rect
+      className={
+        type === 'red'
+          ? 'fill-red-3 stroke-red-6'
+          : type === 'blue'
+            ? 'fill-blue-3 stroke-blue-6'
+            : 'fill-gray-3 stroke-gray-6'
+      }
+      x={0.5 + x * 23}
+      y={0.5 + y * 23}
+      width={width * 24 - width}
+      height={height * 24 - height}
+    />
   );
 };

@@ -4,8 +4,13 @@ import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
 
-import { PerlinNoiseGenerator } from './client-components';
-import { GolfBase2NFT, TerrainTileMappingGraphic } from './graphics';
+import { PerlinNoiseGenerator, PerlinNoiseTestScriptAccordion } from './client-components';
+import {
+  GolfBase2NFT,
+  PixelArtEncodingLayeredGraphic,
+  PixelArtEncodingSimpleGraphic,
+  TerrainTileMappingGraphic,
+} from './graphics';
 
 export const metadata = getBlogPageMetadata({
   slug: "on-chain-worlds-with-terrain-generation",
@@ -105,66 +110,93 @@ For example, it's super unlikely that a "Desert" tile gets placed next to a "Wet
 
 ## Implementing and prototyping terrain generation
 
-At this point, I had a good idea of the solution, so I hacked together a [Foundry script](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/script/PerlinNoiseTest.s.sol) outputting ASCII values (instead of the actual SVG pixel data URIs) to test and prototype it.
+At this point, I had a good idea of the solution, so I hacked together a [Foundry script](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/script/PerlinNoiseTest.s.sol) to output ASCII values (instead of the actual SVG pixel data URIs) to test and prototype it.
 I wanted to get a quick sense of the implementation, do a quick sanity check, and fiddle around with the mapping to get better generations.
 
-The script is pretty straightforward, except for the last part, where I used a bitmap to determine which tiles to exclude in the final output to achieve the hexagonal shape:
+The script is pretty straightforward, except for the last part, where I used a bitmap to determine which tiles to exclude in the final output for the hexagonal shape:
 
-```sol fileName="PerlinNoiseTest.s.sol snippet" highlightLines={[37, 38, 39]}
-// Select the tiles depending on `perlin1` and `perlin2` and generate
-// the ASCII string.
-string memory ascii_map = "";
-for (uint256 row; row < HEIGHT; ++row) {
-    string memory ascii_row = "";
-    for (uint256 col; col < WIDTH; ++col) {
-        // Normalize the Perlin noise values to the range [0, 59].
-        uint256 temperature = 60 * (perlin1[col][row] - min1) / range1;
-        uint256 rainfall = 60 * (perlin2[col][row] - min2) / range2;
+<PerlinNoiseTestScriptAccordion>
+```none showLineNumbers={false}
+[⠊] Compiling...
+[⠆] Compiling 44 files with 0.8.21
+[⠔] Solc 0.8.21 finished in 57.21s
+Compiler run successful!
+Script ran successfully.
+Gas used: 34554901
 
-        // Select the tile based on the temperature and rainfall.
-        string memory tile = "";
-        if (rainfall < 12) {
-            tile = "@"; // Rainforest
-        } else if (rainfall < 24) {
-            if (temperature < 30) tile = "@"; // Rainforest
-            else tile = "*"; // Wetland
-        } else if (rainfall < 36) {
-            if (temperature < 20) tile = "%"; // Temperate forest
-            else if (temperature < 40) tile = "#"; // Boreal forest
-            else tile = "+"; // Marsh
-        } else if (rainfall < 48) {
-            if (temperature < 30) tile = ":"; // Plains
-            else tile = "="; // Grassland
-        } else {
-            if (temperature < 15) tile = "-"; // Desert
-            else if (temperature < 30) tile = ":"; // Plains
-            else if (temperature < 45) tile = "."; // Tundra
-            else tile = "_"; // Snow
-        }
-
-        // Exclude the tile (i.e. print as ` `) if it is not part of the
-        // island's shape. We determine whether a tile at a given
-        // `(row, col)` is part of the island via a bitmap, where a `1`
-        // at the LSb position equal to `12 * row + col` indicates the
-        // tile is part of the island.
-        if ((0x1f81fc3fc3fe7fe3fffff3fffff3fffff3ff7fe3fe3fc1fc1f8 >> (12 * row + col)) & 1 == 0) {
-            tile = " ";
-        }
-        ascii_row = string.concat(ascii_row, tile, "   ");
-    }
-    // Append the row to the map, prepended with a ` ` if the row is
-    // odd-numbered.
-    ascii_map = string.concat(ascii_map, row & 1 == 1 ? "  " : "", ascii_row, "\n");
-}
-
-// Log the map.
-console.log(ascii_map);
+== Logs ==
+              @   #   :   @   +   @               
+          +   @   +   :   :   *   %               
+        *   %   #   @   *   :   @   @           
+      *   +   %   #   :   %   @   *   #           
+    +   *   :   #   *   @   *   @   :   @       
+  #   @   #   +   %   @   =   =   @   :           
+@   @   +   @   @   #   #   #   #   #   #   #   
+  :   :   +   @   #   :   @   @   :   #           
+#   #   :   #   *   %   #   :   %   *   @   @   
+  +   *   @   @   .   *   +   #   :   #           
+*   =   =   *   :   %   :   %   @   #   #   %   
+  #   #   #   #   *   +   @   :   #   +           
+    @   #   +   *   @   #   :   *   #   @       
+      #   %   =   #   #   %   *   +   :           
+        #   *   :   @   *   %   #   @           
+          #   #   *   #   #   *   =               
+            @   *   %   #   #   @               
 ```
+</PerlinNoiseTestScriptAccordion>
 
 I ran it a couple of times, and it seemed to look good.
 Now, all that's left was to encode the pixel art data for each tile in an easy way for us to map the value at each position to the tile.
 
 ## Pixel art
+
+Before marking up each tile's image data in SVG, I thought about the best way to markup the overall SVG.
+Immediately, I knew I wanted use the [`<use>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use) element to render tiles in the world because many of them would be repeated.
+Since there's many (160) tiles to render, it'd definitely be worth it in both gas savings (greatly reduces string operations) and final output size.
+The "sanity check" here is `<use>` requires 44 to 48 characters to render a tile (depending on the coordinate), while even a super simple, optimized tile definition requires 100s.
+
+By wrapping the tile definitions with a `<g>` container with `visibility="hidden"`, we can easily and efficiently render tiles with `<use>` at any coordinate without worrying about the initial definitions being rendered:
+
+```svg highlightLines={[11]}
+<svg width="125" height="109" viewBox="0 0 125 109" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tile pixel definitions -->
+  <g visibility="hidden">
+    <g id="tile1Id">
+      <!-- Tile data -->
+    </g>
+  </g>
+  <!-- The art -->
+  <g>
+    <!-- ((125 - 11) / 2, (109 - 9) / 2) = (57 50) -->
+    <use href="#tile1Id" transform="translate(57 50)" />
+  </g>
+</svg>
+```
+
+This setup lets us [change the rendered tile](https://x.com/i/status/1750929435300405380) by changing the `href` value and change the position of the tile by changing the `transform` value.
+
+### Encoding the tile definitions
+
+There's a lot of room for optimization with encoding each tile's pixel data by layering rectangles of varying dimensions and colors.
+For example, if there's a 3×4 block of the same color, it'd be better to render a single 3×4 rectangle, as opposed to 12 1×1 squares (as you might with generalized pixel art markup).
+
+<div className="w-full flex justify-center">
+  <PixelArtEncodingSimpleGraphic />
+</div>
+
+It starts to get really tricky to find the optimal markup once you have multiple colors because you can start to layer them in a particular order to render lower levels with fewer rectangles.
+A simple example: consider a 3×4 red block with a 1×1 blue square somewhere in the middle.
+Instead of rendering the blue square first and 4 red rectangles around it, it'd be more efficient to render the red block as a single 3×4 rectangle _and then_ render a 1×1 blue square over it.
+
+<div className="w-full flex justify-center">
+  <PixelArtEncodingLayeredGraphic />
+</div>
+
+<Callout>
+  See this [helper spreadsheet](https://docs.google.com/spreadsheets/d/126K0koRm4DtAnisueX5BRT_Rc80nltNlBrbF0k-d7kI) I used while marking up the tile definitions.
+  Note: I eyeballed the whole process until it felt optimized enough, as opposed to finding some optimal algorithm.
+  If you figure out a solution, [I'd love to hear](https://x.com/fiveoutofnine)!
+</Callout>
 
 ## Mapping terrain generation to pixel art
 
