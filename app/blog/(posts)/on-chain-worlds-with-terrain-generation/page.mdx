@@ -105,6 +105,65 @@ For example, it's super unlikely that a "Desert" tile gets placed next to a "Wet
 
 ## Implementing and prototyping terrain generation
 
+At this point, I had a good idea of the solution, so I hacked together a [Foundry script](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/script/PerlinNoiseTest.s.sol) outputting ASCII values (instead of the actual SVG pixel data URIs) to test and prototype it.
+I wanted to get a quick sense of the implementation, do a quick sanity check, and fiddle around with the mapping to get better generations.
+
+The script is pretty straightforward, except for the last part, where I used a bitmap to determine which tiles to exclude in the final output to achieve the hexagonal shape:
+
+```sol fileName="PerlinNoiseTest.s.sol snippet" highlightLines={[37, 38, 39]}
+// Select the tiles depending on `perlin1` and `perlin2` and generate
+// the ASCII string.
+string memory ascii_map = "";
+for (uint256 row; row < HEIGHT; ++row) {
+    string memory ascii_row = "";
+    for (uint256 col; col < WIDTH; ++col) {
+        // Normalize the Perlin noise values to the range [0, 59].
+        uint256 temperature = 60 * (perlin1[col][row] - min1) / range1;
+        uint256 rainfall = 60 * (perlin2[col][row] - min2) / range2;
+
+        // Select the tile based on the temperature and rainfall.
+        string memory tile = "";
+        if (rainfall < 12) {
+            tile = "@"; // Rainforest
+        } else if (rainfall < 24) {
+            if (temperature < 30) tile = "@"; // Rainforest
+            else tile = "*"; // Wetland
+        } else if (rainfall < 36) {
+            if (temperature < 20) tile = "%"; // Temperate forest
+            else if (temperature < 40) tile = "#"; // Boreal forest
+            else tile = "+"; // Marsh
+        } else if (rainfall < 48) {
+            if (temperature < 30) tile = ":"; // Plains
+            else tile = "="; // Grassland
+        } else {
+            if (temperature < 15) tile = "-"; // Desert
+            else if (temperature < 30) tile = ":"; // Plains
+            else if (temperature < 45) tile = "."; // Tundra
+            else tile = "_"; // Snow
+        }
+
+        // Exclude the tile (i.e. print as ` `) if it is not part of the
+        // island's shape. We determine whether a tile at a given
+        // `(row, col)` is part of the island via a bitmap, where a `1`
+        // at the LSb position equal to `12 * row + col` indicates the
+        // tile is part of the island.
+        if ((0x1f81fc3fc3fe7fe3fffff3fffff3fffff3ff7fe3fe3fc1fc1f8 >> (12 * row + col)) & 1 == 0) {
+            tile = " ";
+        }
+        ascii_row = string.concat(ascii_row, tile, "   ");
+    }
+    // Append the row to the map, prepended with a ` ` if the row is
+    // odd-numbered.
+    ascii_map = string.concat(ascii_map, row & 1 == 1 ? "  " : "", ascii_row, "\n");
+}
+
+// Log the map.
+console.log(ascii_map);
+```
+
+I ran it a couple of times, and it seemed to look good.
+Now, all that's left was to encode the pixel art data for each tile in an easy way for us to map the value at each position to the tile.
+
 ## Pixel art
 
 ## Mapping terrain generation to pixel art
