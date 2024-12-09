@@ -60,7 +60,7 @@ It has the generative world, and it clearly displays the important metrics of th
 
 ## Terrain generation
 
-I began researching terrain generation first because it was the bulk of the logic, and I figured mapping the algorithm's output to the corresponding pixel data would be easy.
+I began researching terrain generation first because it's the bulk of the logic, and I figured mapping the algorithm's output to the corresponding pixel data would be easy.
 Pretty quickly, I came across a great video on YouTube called "[Minecraft terrain generation in a nutshell](https://youtu.be/CSa5O6knuwI)" by [Henrik Kniberg](https://x.com/henrikkniberg).
 
 I recommend Henrik's video for a deeper explanation, but the most important ideas are to:
@@ -178,7 +178,7 @@ This setup lets us [change the rendered tile](https://x.com/i/status/17509294353
 ### Encoding the tile definitions
 
 There's a lot of room for optimization with encoding each tile's pixel data by layering rectangles of varying dimensions and colors.
-For example, if there's a 3×4 block of the same color, it'd be better to render a single 3×4 rectangle, as opposed to 12 1×1 squares (as you might with generalized pixel art markup).
+For example, if there's a 3×4 block of the same color, it'd be better to render a single 3×4 rectangle, as opposed to 12 1×1 squares.
 
 <div className="w-full flex justify-center">
   <PixelArtEncodingSimpleGraphic />
@@ -194,7 +194,7 @@ Instead of rendering the blue square first and 4 red rectangles around it, it'd 
 
 <Callout>
   See this [helper spreadsheet](https://docs.google.com/spreadsheets/d/126K0koRm4DtAnisueX5BRT_Rc80nltNlBrbF0k-d7kI) I used while marking up the tile definitions.
-  Note: I eyeballed the whole process until it felt optimized enough, as opposed to finding some optimal algorithm.
+  Note: I eyeballed the whole process until it felt optimized enough instead of finding some optimal algorithm.
   If you figure out a solution, [I'd love to hear](https://x.com/fiveoutofnine)!
 </Callout>
 
