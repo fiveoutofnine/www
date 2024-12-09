@@ -198,6 +198,18 @@ Instead of rendering the blue square first and 4 red rectangles around it, it'd 
   If you figure out a solution, [I'd love to hear](https://x.com/fiveoutofnine)!
 </Callout>
 
-## Mapping terrain generation to pixel art
+### Mapping terrain generation to pixel art
+
+After I encoded all the tile definitions, I took the [prototyping script](#implementing-and-prototyping-terrain-generation) and adapted it to generate the actual SVG.
+There's a [couple](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/src/utils/metadata/KingArt.sol#L165-L206) of [fun](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/src/utils/metadata/KingArt.sol#L451-L481) [tricks](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/src/utils/metadata/KingArt.sol#L485-L507) I used in the final implementation, but otherwise, it's as straightforward as it sounds.
+I thoroughly commented everything as usual, so I recommend giving the [source code](https://github.com/waterfall-mkt/curta-golf/blob/fab9799e7e8240d432ea6d6fad4307ca5b8c6a9f/src/utils/metadata/KingArt.sol#L165-L206) a read.
 
 ## Conclusion
+
+Learning about something like terrain generation feels super cool because it's always felt like black magic to me, and I now feel like I have some base-level understanding.
+It also feels nice because one of my earliest encounters with terrain generation was with Minecraft, and it feels like I've come full circle by its source code teaching me how it works.
+
+---
+
+The whole "research" and building process described in this post was done in like a super fast, 1-day sprint, but I wanted to try something different and explain more of my thought processes;
+I've been wanting to write about more personal things, and while this post isn't that, I hope it displays some personality by showing the way I think.
