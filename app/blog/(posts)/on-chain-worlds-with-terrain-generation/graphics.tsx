@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import React, { Fragment } from 'react';
 
+import clsx from 'clsx';
 import { createPublicClient, http } from 'viem';
 import { base } from 'viem/chains';
 
@@ -101,20 +102,118 @@ export const GolfBase2NFT: React.FC<GolfBase2NFTProps> = async ({
 };
 
 export const TerrainTileMappingGraphic: React.FC = () => {
+  // Note: at a width of 241px and height of 241px, there's a 3.5px `y`-padding
+  // within each cell and a 2px gap between the tile and text label
+  // (24 + 14 + 3.5 * 2 + 2= 47).
   return (
-    <div className="flex gap-1">
-      <TerrainTile terrain="Boreal Forest" />
-      <TerrainTile terrain="Desert" />
-      <TerrainTile terrain="Grassland" />
-      <TerrainTile terrain="Hills" />
-      <TerrainTile terrain="Marsh" />
-      <TerrainTile terrain="Plains" />
-      <TerrainTile terrain="Rain Forest" />
-      <TerrainTile terrain="Snow" />
-      <TerrainTile terrain="Temperate Forest" />
-      <TerrainTile terrain="Tundra" />
-      <TerrainTile terrain="Wetland" />
-    </div>
+    <svg
+      width="241"
+      height="241"
+      viewBox="0 0 241 241"
+      xmlns="http://www.w3.org/2000/svg"
+      role="figure"
+    >
+      <title>Curta Golf terrain generation</title>
+      <desc>Figure displaying how temperature and rainfall maps to terrain values.</desc>
+      {/* Row 1 background. */}
+      <path className="fill-blue-3 stroke-blue-6" d="M.5.5h240v48H.5z" />
+      {/* Row 2 background. */}
+      <path className="fill-blue-3 stroke-blue-6" d="M.5 48.5h120v48H.5z" />
+      <path className="fill-blue-4 stroke-blue-6" d="M120.5 48.5h120v48h-120z" />
+      {/* Row 3 background. */}
+      <path className="fill-green-3 stroke-green-6" d="M.5 96.5h80v48H.5z" />
+      <path className="fill-green-4 stroke-green-6" d="M80.5 96.5h80v48h-80z" />
+      <path className="fill-green-5 stroke-green-6" d="M160.5 96.5h80v48h-80z" />
+      {/* Row 4 background. */}
+      <path className="fill-orange-3 stroke-orange-6" d="M.5 144.5h120v48H.5z" />
+      <path className="fill-yellow-3 stroke-yellow-6" d="M120.5 144.5h120v48h-120z" />
+      {/* Row 5 background. */}
+      <path className="fill-red-3 stroke-red-6" d="M.5 192.5h60v48H.5z" />
+      <path className="fill-orange-3 stroke-orange-6" d="M60.5 192.5h60v48h-60z" />
+      <path className="fill-gray-3 stroke-gray-6" d="M120.5 192.5h60v48h-60z" />
+      <path className="fill-gray-4 stroke-gray-6" d="M180.5 192.5h60v48h-60z" />
+
+      {/* Tiles. */}
+      {/* 1 + 0 * 48 + 3.5 = 4.5 */}
+      <g transform="translate(0 4.5)">
+        {/* 1 * 241 / 2 - 12 = 108.5 */}
+        <TerrainTile terrain="Rain Forest" x="108.5" />
+      </g>
+      {/* 1 + 1 * 48 + 3.5 = 52.5 */}
+      <g transform="translate(0 52.5)">
+        {/* 1 * 241 / 4 - 12 = 48.25 */}
+        <TerrainTile terrain="Rain Forest" x="48.25" />
+        {/* 3 * 241 / 4 - 12 = 168.75 */}
+        <TerrainTile terrain="Wetland" x="168.75" />
+      </g>
+      {/* 1 + 2 * 48 + 3.5 = 100.5 */}
+      <g transform="translate(0 100.5)">
+        {/* 1 * 241 / 6 - 12 = 28.16667 */}
+        <TerrainTile terrain="Temperate Forest" x="28.16667" />
+        {/* 3 * 241 / 6 - 12 = 108.5 */}
+        <TerrainTile terrain="Boreal Forest" x="108.5" />
+        {/* 5 * 241 / 6 - 12 = 108.83333 */}
+        <TerrainTile terrain="Marsh" x="188.83333" />
+      </g>
+      {/* 1 + 3 * 48 + 3.5 = 148.5 */}
+      <g transform="translate(0 148.5)">
+        {/* 1 * 241 / 4 - 12 = 48.25 */}
+        <TerrainTile terrain="Plains" x="48.25" />
+        {/* 3 * 241 / 4 - 12 = 168.75 */}
+        <TerrainTile terrain="Grassland" x="168.75" />
+      </g>
+      {/* 1 + 4 * 48 + 3.5 = 196.5 */}
+      <g transform="translate(0 196.5)">
+        {/* 1 * 241 / 8 - 12 = 18.125 */}
+        <TerrainTile terrain="Desert" x="18.125" />
+        {/* 3 * 241 / 8 - 12 = 78.375 */}
+        <TerrainTile terrain="Plains" x="78.375" />
+        {/* 5 * 241 / 8 - 12 = 138.625 */}
+        <TerrainTile terrain="Tundra" x="138.625" />
+        {/* 7 * 241 / 8 - 12 = 198.875 */}
+        <TerrainTile terrain="Snow" x="198.875" />
+      </g>
+
+      {/* Tile labels. */}
+      {[
+        /* 1 + 0 * 48 + 14 / 2 + 3.5 + 24 + 2 = 37.5 */
+        { className: 'fill-blue-11', x: (1 * 241) / 2, y: 37.5, label: 'Rain Forest' },
+        /* 1 + 1 * 48 + 14 / 2 + 3.5 + 24 + 2 = 85.5 */
+        { className: 'fill-blue-11', x: (1 * 241) / 4, y: 85.5, label: 'Rain Forest' },
+        /* 1 + 1 * 48 + 14 / 2 + 3.5 + 24 + 2 = 85.5 */
+        { className: 'fill-blue-11', x: (3 * 241) / 4, y: 85.5, label: 'Wetland' },
+        /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
+        { className: 'fill-green-11', x: (1 * 241) / 6, y: 133.5, label: 'Temperate Forest' },
+        /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
+        { className: 'fill-green-11', x: (3 * 241) / 6, y: 133.5, label: 'Boreal Forest' },
+        /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
+        { className: 'fill-green-11', x: (5 * 241) / 6, y: 133.5, label: 'Marsh' },
+        /* 1 + 3 * 48 + 14 / 2 + 3.5 + 24 + 2 = 181.5 */
+        { className: 'fill-orange-11', x: (1 * 241) / 4, y: 181.5, label: 'Plains' },
+        /* 1 + 3 * 48 + 14 / 2 + 3.5 + 24 + 2 = 181.5 */
+        { className: 'fill-yellow-11', x: (3 * 241) / 4, y: 181.5, label: 'Grassland' },
+        /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
+        { className: 'fill-red-11', x: (1 * 241) / 8, y: 229.5, label: 'Desert' },
+        /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
+        { className: 'fill-orange-11', x: (3 * 241) / 8, y: 229.5, label: 'Plains' },
+        /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
+        { className: 'fill-gray-11', x: (5 * 241) / 8, y: 229.5, label: 'Tundra' },
+        /* 1 + 4 * 48 + 14 / 2 + 3.5 + 24 + 2 = 229.5 */
+        { className: 'fill-gray-11', x: (7 * 241) / 8, y: 229.5, label: 'Snow' },
+      ].map(({ className, x, y, label }) => (
+        <text
+          key={`${x}-${y}`}
+          className={clsx('text-xs font-medium', className)}
+          x={x}
+          y={y}
+          dominantBaseline="middle"
+          textAnchor="middle"
+          height="14"
+        >
+          {label}
+        </text>
+      ))}
+    </svg>
   );
 };
 

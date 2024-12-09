@@ -74,8 +74,8 @@ With a Perlin noise map, we can generate a grid of random values that transition
 ### Terrain selection
 
 Once we have the random values, we need to map the value at each tile index to the terrain value (i.e. which biome to render).
-We can already kinda see how a single 2D Perlin map resembles some natural, geographic formation, like a topographic map displaying some geographic property like altitude.
-By mapping the values from a single map to a single _property_, we can build a simple framework to introduce more complex generation where we use multiple maps and combine values from all of them to get smooth transitions between biomes.
+We can already kinda see how a single 2D Perlin map resembles some natural, geographic formation, like a topographic map showing elevation.
+By mapping values from a single map to a single _property_, we can build a simple framework to introduce more complex generation where we combine values from multiple maps to get smooth transitions between biomes.
 
 <Image
   className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden my-0"
@@ -86,13 +86,15 @@ By mapping the values from a single map to a single _property_, we can build a s
   blurDataURL="data:image/webp;base64,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"
 />
 
-For example, in a game with complex terrain generation like Minecraft, we might want to take into account many properties such as continentalness, erosion, peaks and valleys, temperature, and humidity at each position.
-We can also see from the image above that each property has a unique random map generator.
+For example, in a game with [complex terrain generation](https://minecraft.wiki/w/World_generation) like Minecraft, we might want to take into account many properties such as continentalness, erosion, peaks and valleys, temperature, and humidity at each position.
+We can see from the image above that Minecraft's world generation algorithm achieves even more granularity by using different types of random maps for each property.
 
-In my case, I just needed to select 1 biome value out of 11 total at each tile, so I went with just 2 2D Perlin maps: 1 for rainfall and 1 for temperature.
-Then, I came up with the following mapping:
+In my case, I just needed to select 1 biome value out of 11 at each tile position, so I went with just 2 2D Perlin maps: 1 for rainfall and 1 for temperature.
+Then, I came up with the following mapping to combine the 2 values:
 
-<TerrainTileMappingGraphic />
+<div className="w-full flex justify-center">
+  <TerrainTileMappingGraphic />
+</div>
 
 ## Implementing and prototyping terrain generation
 
@@ -100,4 +102,4 @@ Then, I came up with the following mapping:
 
 ## Mapping terrain generation to pixel art
 
-## Conclusio
+## Conclusion

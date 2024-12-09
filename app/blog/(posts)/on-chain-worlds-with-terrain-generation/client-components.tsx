@@ -33,8 +33,8 @@ export const PerlinNoiseGenerator: React.FC = () => {
     canvas.width = 256;
     canvas.height = 256;
     // Convert `resolution` to `[32, 64, 128, 256]`.
-    const pixelSize = canvas.width / (1 << (resolution + 5));
-    const numPixels = nodes / (1 << (resolution + 5));
+    const pixelSize = canvas.width / (32 << resolution);
+    const numPixels = nodes / (32 << resolution);
 
     // Refresh the Perlin generator.
     perlinRef.current.refresh();
@@ -56,7 +56,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
         <span className="animate-bg-pulse font-mono text-xs font-normal text-gray-11">
           <span key={resolution.toString()} className="animate-bg-pulse">
             {/* Convert `resolution` to `[32, 64, 128, 256]`. */}
-            resolution={1 << (resolution + 5)}
+            resolution={32 << resolution}
           </span>{' '}
           <span key={nodes.toString()} className="animate-bg-pulse">
             nodes={nodes}
