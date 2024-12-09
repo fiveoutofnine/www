@@ -107,8 +107,8 @@ export const TerrainTileMappingGraphic: React.FC = () => {
   // (24 + 14 + 3.5 * 2 + 2= 47).
   return (
     <svg
-      width="241"
-      height="241"
+      width="280"
+      height="280"
       viewBox="0 0 241 241"
       xmlns="http://www.w3.org/2000/svg"
       role="figure"
@@ -136,42 +136,30 @@ export const TerrainTileMappingGraphic: React.FC = () => {
       {/* Tiles. */}
       {/* 1 + 0 * 48 + 3.5 = 4.5 */}
       <g transform="translate(0 4.5)">
-        {/* 1 * 241 / 2 - 12 = 108.5 */}
-        <TerrainTile terrain="Rain Forest" x="108.5" />
+        <TerrainTile terrain="Rain Forest" x={(1 * 241) / 2 - 12} />
       </g>
       {/* 1 + 1 * 48 + 3.5 = 52.5 */}
       <g transform="translate(0 52.5)">
-        {/* 1 * 241 / 4 - 12 = 48.25 */}
-        <TerrainTile terrain="Rain Forest" x="48.25" />
-        {/* 3 * 241 / 4 - 12 = 168.75 */}
-        <TerrainTile terrain="Wetland" x="168.75" />
+        <TerrainTile terrain="Rain Forest" x={(1 * 241) / 4 - 12} />
+        <TerrainTile terrain="Wetland" x={(3 * 241) / 4 - 12} />
       </g>
       {/* 1 + 2 * 48 + 3.5 = 100.5 */}
       <g transform="translate(0 100.5)">
-        {/* 1 * 241 / 6 - 12 = 28.16667 */}
-        <TerrainTile terrain="Temperate Forest" x="28.16667" />
-        {/* 3 * 241 / 6 - 12 = 108.5 */}
-        <TerrainTile terrain="Boreal Forest" x="108.5" />
-        {/* 5 * 241 / 6 - 12 = 108.83333 */}
-        <TerrainTile terrain="Marsh" x="188.83333" />
+        <TerrainTile terrain="Temperate Forest" x={(1 * 241) / 6 - 12} />
+        <TerrainTile terrain="Boreal Forest" x={(3 * 241) / 6 - 12} />
+        <TerrainTile terrain="Marsh" x={(5 * 241) / 6 - 12} />
       </g>
       {/* 1 + 3 * 48 + 3.5 = 148.5 */}
       <g transform="translate(0 148.5)">
-        {/* 1 * 241 / 4 - 12 = 48.25 */}
-        <TerrainTile terrain="Plains" x="48.25" />
-        {/* 3 * 241 / 4 - 12 = 168.75 */}
-        <TerrainTile terrain="Grassland" x="168.75" />
+        <TerrainTile terrain="Plains" x={(1 * 241) / 4 - 12} />
+        <TerrainTile terrain="Grassland" x={(3 * 241) / 4 - 12} />
       </g>
       {/* 1 + 4 * 48 + 3.5 = 196.5 */}
       <g transform="translate(0 196.5)">
-        {/* 1 * 241 / 8 - 12 = 18.125 */}
-        <TerrainTile terrain="Desert" x="18.125" />
-        {/* 3 * 241 / 8 - 12 = 78.375 */}
-        <TerrainTile terrain="Plains" x="78.375" />
-        {/* 5 * 241 / 8 - 12 = 138.625 */}
-        <TerrainTile terrain="Tundra" x="138.625" />
-        {/* 7 * 241 / 8 - 12 = 198.875 */}
-        <TerrainTile terrain="Snow" x="198.875" />
+        <TerrainTile terrain="Desert" x={(1 * 241) / 8 - 12} />
+        <TerrainTile terrain="Plains" x={(3 * 241) / 8 - 12} />
+        <TerrainTile terrain="Tundra" x={(5 * 241) / 8 - 12} />
+        <TerrainTile terrain="Snow" x={(7 * 241) / 8 - 12} />
       </g>
 
       {/* Tile labels. */}
@@ -183,9 +171,9 @@ export const TerrainTileMappingGraphic: React.FC = () => {
         /* 1 + 1 * 48 + 14 / 2 + 3.5 + 24 + 2 = 85.5 */
         { className: 'fill-blue-11', x: (3 * 241) / 4, y: 85.5, label: 'Wetland' },
         /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
-        { className: 'fill-green-11', x: (1 * 241) / 6, y: 133.5, label: 'Temperate Forest' },
+        { className: 'fill-green-11', x: (1 * 241) / 6, y: 133.5, label: 'Temperate' },
         /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
-        { className: 'fill-green-11', x: (3 * 241) / 6, y: 133.5, label: 'Boreal Forest' },
+        { className: 'fill-green-11', x: (3 * 241) / 6, y: 133.5, label: 'Boreal' },
         /* 1 + 2 * 48 + 14 / 2 + 3.5 + 24 + 2 = 133.5 */
         { className: 'fill-green-11', x: (5 * 241) / 6, y: 133.5, label: 'Marsh' },
         /* 1 + 3 * 48 + 14 / 2 + 3.5 + 24 + 2 = 181.5 */
