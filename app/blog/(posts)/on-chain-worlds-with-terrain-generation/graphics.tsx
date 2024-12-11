@@ -256,7 +256,7 @@ export const TerrainTileMappingGraphic: React.FC = () => {
         strokeLinecap="round"
       />
       <text
-        className="bg-red fill-gray-11 font-mono text-xs"
+        className="fill-gray-11 font-mono text-xs"
         x="257"
         y="7"
         dominantBaseline="middle"
