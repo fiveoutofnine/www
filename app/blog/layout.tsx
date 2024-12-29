@@ -44,6 +44,16 @@ export const metadata: Metadata = {
     creator: '@fiveoutofnine',
     creatorId: '1269561030272643076',
   },
+  alternates: {
+    types: {
+      'application/rss+xml': [
+        {
+          url: '/blog/feed.xml',
+          title: '5/9 Blog RSS Feed',
+        },
+      ],
+    },
+  },
 };
 
 // -----------------------------------------------------------------------------
