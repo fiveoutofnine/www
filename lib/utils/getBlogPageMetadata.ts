@@ -31,7 +31,7 @@ const getBlogPageMetadata = ({
         name: '5/9 Blog',
         url,
         splashImageUrl: 'https://fiveoutofnine.com/images/apple-touch-icon.png',
-        splashBackgroundColor: '#000000',
+        splashBackgroundColor: '#000',
       },
     },
   };
