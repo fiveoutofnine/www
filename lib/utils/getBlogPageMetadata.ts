@@ -25,7 +25,7 @@ const getBlogPageMetadata = ({
     version: 'next',
     imageUrl: images[0].url,
     button: {
-      title: 'Read Post',
+      title: 'Read',
       action: {
         type: 'launch_frame',
         name: '5/9 Blog',
