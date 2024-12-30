@@ -10,6 +10,7 @@ const getBlogPageMetadata = ({
   description?: string;
 }): Metadata => {
   const title = POSTS.find((post) => post.slug === slug)?.title || '5/9 Blog Post';
+  const url = `https://fiveoutofnine.com/blog/${slug}`;
   const images = [
     {
       url: `https://fiveoutofnine.com/api/og/blog?title=${title}&description=${description}`,
@@ -18,6 +19,22 @@ const getBlogPageMetadata = ({
       height: 630,
     },
   ];
+
+  // Construct Frame metadata.
+  const frame = {
+    version: 'next',
+    imageUrl: images[0].url,
+    button: {
+      title: 'Read Post',
+      action: {
+        type: 'launch_frame',
+        name: '5/9 Blog',
+        url,
+        splashImageUrl: 'https://fiveoutofnine.com/images/apple-touch-icon.png',
+        splashBackgroundColor: '#000',
+      },
+    },
+  };
 
   return {
     title: {
@@ -30,7 +47,7 @@ const getBlogPageMetadata = ({
       title,
       description,
       images,
-      url: `https://fiveoutofnine.com/blog/${slug}`,
+      url,
       siteName: 'fiveoutofnine',
       locale: 'en_US',
       type: 'website',
@@ -42,6 +59,9 @@ const getBlogPageMetadata = ({
       card: 'summary_large_image',
       creator: '@fiveoutofnine',
       creatorId: '1269561030272643076',
+    },
+    other: {
+      'fc:frame': JSON.stringify(frame),
     },
   };
 };
