@@ -19,6 +19,22 @@ const getBlogPageMetadata = ({
     },
   ];
 
+  // Construct Frame metadata
+  const frameEmbed = {
+    version: 'next',
+    imageUrl: images[0].url,
+    button: {
+      title: 'Read Post',
+      action: {
+        type: 'launch_frame',
+        name: '5/9 Blog',
+        url: `https://fiveoutofnine.com/blog/${slug}`,
+        splashImageUrl: 'https://fiveoutofnine.com/static/og/blog.png',
+        splashBackgroundColor: '#000000',
+      },
+    },
+  };
+
   return {
     title: {
       // We need to use the `absolute` API here to override the title template
@@ -42,6 +58,9 @@ const getBlogPageMetadata = ({
       card: 'summary_large_image',
       creator: '@fiveoutofnine',
       creatorId: '1269561030272643076',
+    },
+    other: {
+      'fc:frame': JSON.stringify(frameEmbed),
     },
   };
 };
