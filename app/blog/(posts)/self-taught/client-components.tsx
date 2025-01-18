@@ -1,17 +1,21 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
-import { CirclePause, CirclePlay } from 'lucide-react';
+import { CirclePause, CirclePlay, ExternalLink } from 'lucide-react';
+
+import { Button, toast } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type AudioSampleProps = {
-  source?: {
+  audio: {
     name: string;
-    url: string;
+    artist: string;
+    src: string;
+    href?: string;
   };
   children: React.ReactNode;
 };
@@ -24,25 +28,58 @@ type AudioSampleProps = {
 // but we use `<span>` here because we want the children inlined. We also don't
 // implement `disabled` because it's not needed. Correspondingly, there is no
 // option to disable the audio sample in the component API.
-export const AudioSample: React.FC<AudioSampleProps> = ({
-  source = {
-    name: 'Test',
-    url: 'https://assets.fiveoutofnine.com/godowsky-chopin-study-5.mp3',
-  },
-  children,
-  ...rest
-}) => {
+export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...rest }) => {
   const [playing, setPlaying] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  const [toastId, setToastId] = useState<string | number>();
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (audioRef.current) {
+        const { currentTime: time, duration } = audioRef.current;
+        setProgress(Math.min(100 * (time / duration), 100));
+        if (time >= duration) {
+          if (audioRef.current) audioRef.current.currentTime = 0;
+          setPlaying(false);
+          setProgress(0);
+        }
+      }
+    }, 250);
+
+    return () => clearInterval(interval);
+  }, [audioRef]);
+
+  let timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
+  if (Number.isNaN(timeElapsed)) timeElapsed = 0;
 
   const onClick = () => {
     if (audioRef.current) {
       if (audioRef.current.paused) {
         audioRef.current.play();
         setPlaying(true);
+        setToastId(
+          toast({
+            intent: 'info',
+            title: audio.name,
+            description: audio.artist,
+            duration: Number.POSITIVE_INFINITY,
+            action: audio.href ? (
+              <Button size="sm" intent="info" href={audio.href} rightIcon={<ExternalLink />} newTab>
+                View
+              </Button>
+            ) : undefined,
+          }),
+        );
       } else {
         audioRef.current.pause();
         setPlaying(false);
+        if (toastId) toast.dismiss(toastId);
+        // Reset the audio if less than 3 seconds have elapsed.
+        if (timeElapsed <= 3) {
+          audioRef.current.currentTime = 0;
+          setProgress(0);
+        }
       }
     }
   };
@@ -57,7 +94,7 @@ export const AudioSample: React.FC<AudioSampleProps> = ({
   return (
     <span
       className="h-5 cursor-pointer rounded-sm text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-9"
-      aria-label="Play audio sample."
+      aria-label={`${playing ? 'Pause' : 'Play'} ${audio.name} by ${audio.artist}.`}
       tabIndex={0}
       role="button"
       onClick={onClick}
@@ -69,12 +106,46 @@ export const AudioSample: React.FC<AudioSampleProps> = ({
           selectable while ensuring that the gap between the text and the icon
           is visible. */}
       <span className="select-none"> </span>
-      {playing ? (
-        <CirclePause className="relative top-[1.75px] inline size-4 align-text-top animate-in fade-in zoom-in" />
-      ) : (
-        <CirclePlay className="relative top-[1.75px] inline size-4 align-text-top animate-in fade-in zoom-in" />
-      )}
-      <audio ref={audioRef} src={source.url} />
+      <svg
+        className="relative top-[1.75px] inline size-4 align-text-top animate-in fade-in zoom-in"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+      >
+        {playing ? (
+          <CirclePause className="animate-in fade-in" />
+        ) : (
+          <CirclePlay className="animate-in fade-in" />
+        )}
+        <circle
+          className={playing ? 'stroke-gray-1' : 'stroke-none'}
+          cx="12"
+          cy="12"
+          r="10"
+          strokeWidth="4"
+        />
+        {/* Only start displaying the progress circle when the audio has been
+            playing for at least 3 seconds. */}
+        {timeElapsed > 3 || playing ? (
+          <Fragment>
+            <circle className="stroke-gray-5" cx="12" cy="12" r="10" strokeWidth="2" />
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              transform="rotate(-90 12 12)"
+              stroke="currentColor"
+              strokeDasharray={`${progress * Math.PI * 0.2} ${Math.PI * 20}`}
+              strokeLinecap="round"
+              strokeWidth="2"
+            />
+          </Fragment>
+        ) : null}
+      </svg>
+      <audio ref={audioRef} src={audio.src} />
     </span>
   );
 };
