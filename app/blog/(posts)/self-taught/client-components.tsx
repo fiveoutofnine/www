@@ -90,6 +90,14 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
     }
   };
 
+  const onDoubleClick = () => {
+    // Reset the audio double-click.
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      setProgress(0);
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -104,6 +112,7 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
       tabIndex={0}
       role="button"
       onClick={onClick}
+      onDoubleClick={onDoubleClick}
       onKeyDown={handleKeyDown}
       {...rest}
     >
