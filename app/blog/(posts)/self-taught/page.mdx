@@ -2,7 +2,8 @@ import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
 
-import { AudioSample } from './client-components';
+import { Ramanujan1, Ramanujan2 } from './(details)/details';
+import { AudioSample, DetailModal } from './client-components';
 
 export const metadata = getBlogPageMetadata({
   slug: 'self-taught',
@@ -50,6 +51,55 @@ Classical music typically requires decades of formal training and education, but
 
 ---
 
-[Srinivasa Ramanujan](https://en.wikipedia.org/wiki/Srinivasa_Ramanujan) was one of the greatest mathematicians of all time, and he made many groundbreaking, novel contributions to multiple areas of pure math, including problems that were previously considered unsolvable.
-Despite having almost no formal training, researching in isolation until age 25 (which he only got out of by mailing British mathematicians), and passing away at just age 32, he produced nearly 3,900 results.
-Many of these were completely novel, highly unconventional, and amazed his contemporaries. Most have been since proven correct (some decades later).
+[Srinivasa Ramanujan](https://en.wikipedia.org/wiki/Srinivasa_Ramanujan) was one of the greatest mathematicians, and he made significant contributions to multiple areas of pure math.
+Despite growing up in poverty, having almost no education/books, and passing away at just age 32, Ramanujan discovered nearly 3,900 novel, highly unconventional results.
+Working as a clerk to support his family, he spent his free time researching in isolation, often having to independently rediscover known results from famous mathematicians like Euler and Jacobi.
+There are many stories and [accounts](https://doi.org/10.2307%2F2301659) of his
+<DetailModal
+  title="Hardy–Ramanujan Number: 1729"
+  description="A story about Ramanujan's genius."
+  content={<Ramanujan1 />}
+>genius</DetailModal> and
+<DetailModal
+  title="Mahalanobis' House Numbers Problem"
+  description="An anecdote about Ramanujan's remarkable intuition."
+  content={<Ramanujan2 />}
+>remarkable intuition</DetailModal>.
+
+---
+
+[Benjamin Franklin](https://en.wikipedia.org/wiki/Benjamin_Franklin)
+
+---
+
+[Ada Lovelace](https://en.wikipedia.org/wiki/Ada_Lovelace)
+
+---
+
+[Michael Faraday](https://en.wikipedia.org/wiki/Michael_Faraday)
+
+---
+
+[Dick Fosbury](https://en.wikipedia.org/wiki/Dick_Fosbury)
+
+---
+
+[George Green](https://en.wikipedia.org/wiki/George_Green)
+
+---
+
+[Ray Bradbury](https://en.wikipedia.org/wiki/Ray_Bradbury)
+
+---
+
+[Mark Twain](https://en.wikipedia.org/wiki/Mark_Twain)
+
+---
+
+[Leonardo da Vinci](https://en.wikipedia.org/wiki/Leonardo_da_Vinci)
+
+---
+
+[Jimi Hendrix](https://en.wikipedia.org/wiki/Jimi_Hendrix)
+
+---
