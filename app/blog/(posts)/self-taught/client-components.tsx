@@ -4,8 +4,8 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 
 import { CirclePause, CirclePlay, ExternalLink, View } from 'lucide-react';
 
-import { Button, Drawer, toast } from '@/components/ui';
 import { Article } from '@/components/templates/mdx';
+import { Button, Drawer, toast } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Props
@@ -213,9 +213,11 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           <View className="relative top-[1.75px] inline size-4 select-none align-text-top" />
         </span>
       </Drawer.Trigger>
-      <Drawer.Content className="hide-scrollbar md:max-w-[40rem] [&_[drawer-content]]:px-0 [&_[drawer-content]]:md:px-4 md:border-x">
+      <Drawer.Content className="hide-scrollbar md:max-w-[40rem] md:border-x [&_[drawer-content]]:px-0 [&_[drawer-content]]:md:px-4">
         {title ? <Drawer.Title className="pl-4 md:pl-0">{title}</Drawer.Title> : null}
-        {description ? <Drawer.Description className="pl-4 md:pl-0">{description}</Drawer.Description> : null}
+        {description ? (
+          <Drawer.Description className="pl-4 md:pl-0">{description}</Drawer.Description>
+        ) : null}
         <Article className="max-w-3xl" fullBleedCodeBlocks>
           {content}
         </Article>
