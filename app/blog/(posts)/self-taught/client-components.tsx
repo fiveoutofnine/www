@@ -53,13 +53,19 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
   let timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
   if (Number.isNaN(timeElapsed)) timeElapsed = 0;
 
+  // Generate ID deterministically from `audio.src`.
+  const id = audio.src.toLowerCase().replace(/\s+/g, '-');
+
   const onClick = () => {
     if (audioRef.current) {
       if (audioRef.current.paused) {
         audioRef.current.play();
         setPlaying(true);
+        // Dismiss any existing toast with the same ID.
+        toast.dismiss(id);
         setToastId(
           toast({
+            id,
             intent: 'info',
             title: audio.name,
             description: audio.artist,
