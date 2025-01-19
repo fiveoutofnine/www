@@ -122,7 +122,7 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
           is visible. */}
       <span className="select-none"> </span>
       <svg
-        className="relative top-[1.75px] inline size-4 align-text-top animate-in fade-in zoom-in"
+        className="relative top-[1.75px] inline size-4 select-none align-text-top animate-in fade-in zoom-in"
         width="24"
         height="24"
         viewBox="0 0 24 24"
