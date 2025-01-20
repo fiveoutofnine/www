@@ -2,7 +2,7 @@ import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
 
-import { Ramanujan1, Ramanujan2 } from './(details)/details';
+import { Fosbury1, Fosbury2, Ramanujan1, Ramanujan2 } from './(details)/details';
 import { AudioSample, DetailModal } from './client-components';
 
 export const metadata = getBlogPageMetadata({
@@ -68,15 +68,31 @@ There are many stories and [accounts](https://doi.org/10.2307%2F2301659) of his
 
 ---
 
-[The Wright brothers](https://en.wikipedia.org/wiki/Wright_brothers)
+[The Wright brothers](https://en.wikipedia.org/wiki/Wright_brothers) were aviation pioneers who invented, built, and flew the world's first airplane.
+Neither of them had education after high school, and they taught themselves mechanical skills while working their day jobs involving printing presses, bicycles, and motors.
+This included learning through relentless experimentation like building their own wind tunnel, collecting aerodynamic data, and conducting many flight experiments.
+The first sustained and controlled powered flight took place on December 17, 1903 in Kitty Hawk, North Carolina.
+
+---
+
+[Dick Fosbury](https://en.wikipedia.org/wiki/Dick_Fosbury) was an Olympic gold medalist high jumper who revolutionized the sport by inventing the
+<DetailModal
+  title="Fosbury Flop"
+  description="The dominant high jump technique, invented by Dick Fosbury."
+  content={<Fosbury1 />}
+>Fosbury Flop</DetailModal>.
+Prior to Fosbury, coaches primarily taught the
+<DetailModal
+  title="Straddle Technique"
+  description="The dominant high jump technique prior to the Fosbury Flop."
+  content={<Fosbury2 />}
+>straddle technique</DetailModal>.
+Despite pushback from his coaches and the media, he experimented, refined, and practiced the run-up and jump techniques to minimize the height of athlete's center of gravity throughout the jump and maximize take-off thrust time.
+Fosbury went on to win gold at the 1968 Olympics, and no man or woman has won an Olympic medal without using the Fosbury Flop since 1980.
 
 ---
 
 [George Green](https://en.wikipedia.org/wiki/George_Green)
-
----
-
-[Dick Fosbury](https://en.wikipedia.org/wiki/Dick_Fosbury)
 
 ---
 
