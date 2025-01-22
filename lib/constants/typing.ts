@@ -5,8 +5,8 @@
 export const SHORT_QUOTES = [
   {
     text: 'pnpm build',
-    wpm: 382.2,
-    time: 0.314,
+    wpm: 389.6,
+    time: 0.308,
   },
   {
     text: 'They don\'t know that we know they know we know.',
@@ -55,8 +55,8 @@ export const SHORT_QUOTES = [
   },
   {
     text: 'I remember what it was like to love you because I still do.',
-    wpm: 241.8,
-    time: 2.928,
+    wpm: 252.4,
+    time: 2.757,
   },
   {
     text: 'If I have to hear one more time that you did this for the family...',
