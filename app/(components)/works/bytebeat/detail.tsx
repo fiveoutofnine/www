@@ -623,7 +623,7 @@ const BytebeatFeatureDetail: React.FC = () => {
           {source}
         </CodeBlock>
         <textarea
-          className="absolute inset-0 h-full grow resize-none overflow-y-scroll whitespace-break-spaces break-all bg-transparent p-2 pl-8 pt-12 font-mono text-xs leading-5 text-transparent caret-gray-12 focus:outline-none"
+          className="hide-scrollbar absolute inset-0 h-full grow resize-none overflow-y-scroll whitespace-break-spaces break-all bg-transparent p-2 pl-8 pt-12 font-mono text-xs leading-5 text-transparent caret-gray-12 focus:outline-none"
           value={source}
           onChange={(e) => handleSourceChange(e.target.value, true)}
           onScroll={handleTextAreaScroll}
