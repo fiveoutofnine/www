@@ -78,6 +78,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
           <IconButton
             size="sm"
             href={`https://etherscan.io/address/${process.env.NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS}`}
+            aria-label="View on Etherscan"
             newTab
           >
             <ExternalLink />
@@ -191,6 +192,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
                       onClick={show}
                       disabled={!mounted}
                       type="submit"
+                      aria-label="Connect wallet"
                     >
                       <Wallet />
                     </IconButton>

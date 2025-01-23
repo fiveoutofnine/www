@@ -156,7 +156,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
                     }
                   }
                 }}
-                tabIndex={1}
+                tabIndex={0}
               >
                 <Table.Cell>
                   <div className="flex items-center gap-1">
@@ -216,7 +216,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
       <div className="flex min-h-8 w-full items-center gap-1 border-t border-gray-6 px-1.5">
         <ButtonGroup>
           <Tooltip content="Reset" side="top" align="start" triggerProps={{ asChild: true }}>
-            <IconButton size="sm" disabled={!replayable} onClick={resetAudio}>
+            <IconButton size="sm" disabled={!replayable} onClick={resetAudio} aria-label="Reset">
               <ChevronFirst />
             </IconButton>
           </Tooltip>
@@ -229,6 +229,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
               size="sm"
               onClick={audioRef.current ? togglePlay : undefined}
               disabled={!audioSrc}
+              aria-label={audioSrc && playing ? 'Pause' : 'Play'}
             >
               {audioSrc && playing ? (
                 <Pause className="animate-in fade-in zoom-in" />

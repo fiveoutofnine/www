@@ -623,13 +623,14 @@ const BytebeatFeatureDetail: React.FC = () => {
           {source}
         </CodeBlock>
         <textarea
-          className="absolute inset-0 h-full grow resize-none overflow-y-scroll whitespace-break-spaces break-all bg-transparent p-2 pl-8 pt-12 font-mono text-xs leading-5 text-transparent caret-gray-12 focus:outline-none"
+          className="hide-scrollbar absolute inset-0 h-full grow resize-none overflow-y-scroll whitespace-break-spaces break-all bg-transparent p-2 pl-8 pt-12 font-mono text-xs leading-5 text-transparent caret-gray-12 focus:outline-none"
           value={source}
           onChange={(e) => handleSourceChange(e.target.value, true)}
           onScroll={handleTextAreaScroll}
           autoCapitalize=""
           autoComplete=""
           spellCheck={false}
+          aria-label="Source code"
         />
       </div>
       <div className="flex w-1/2 flex-col">
@@ -640,6 +641,7 @@ const BytebeatFeatureDetail: React.FC = () => {
                 size="sm"
                 onClick={resetPlay}
                 disabled={!initialized || !nodeRef.current || time === 0}
+                aria-label="Reset"
               >
                 <ChevronFirst />
               </IconButton>
@@ -653,6 +655,7 @@ const BytebeatFeatureDetail: React.FC = () => {
                 size="sm"
                 onClick={handlePlay}
                 disabled={!initialized || !nodeRef.current}
+                aria-label={playing ? 'Pause' : 'Play'}
               >
                 {playing ? (
                   <Pause className="animate-in fade-in zoom-in" />
@@ -675,6 +678,7 @@ const BytebeatFeatureDetail: React.FC = () => {
             onChange={(e) => handleSampleRateChange(e.target.value, true)}
             placeholder="8000"
             disabled={!initialized || !nodeRef.current}
+            aria-label="Sample rate"
           />
           <BytebeatFeatureCombobox value={song} onSelect={handleSongChange} />
         </div>

@@ -42,6 +42,9 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
   const [toastId, setToastId] = useState<string | number>();
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // Generate ID deterministically from `audio.src`.
+  const id = audio.src.toLowerCase().replace(/\s+/g, '-');
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (audioRef.current) {
@@ -49,6 +52,8 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
         setProgress(Math.min(100 * (time / duration), 100));
         if (time >= duration) {
           if (audioRef.current) audioRef.current.currentTime = 0;
+          // Dismiss any existing toast with the same ID.
+          toast.dismiss(id);
           setPlaying(false);
           setProgress(0);
         }
@@ -56,13 +61,10 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
     }, 250);
 
     return () => clearInterval(interval);
-  }, [audioRef]);
+  }, [audioRef, id]);
 
   let timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
   if (Number.isNaN(timeElapsed)) timeElapsed = 0;
-
-  // Generate ID deterministically from `audio.src`.
-  const id = audio.src.toLowerCase().replace(/\s+/g, '-');
 
   const onClick = () => {
     if (audioRef.current) {
@@ -116,7 +118,6 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
   return (
     <span
       className="h-5 cursor-pointer rounded-sm text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-9"
-      aria-label={`${playing ? 'Pause' : 'Play'} ${audio.name} by ${audio.artist}.`}
       tabIndex={0}
       role="button"
       onClick={onClick}
@@ -198,7 +199,6 @@ export const DetailModal: React.FC<DetailModalProps> = ({
       <Drawer.Trigger asChild>
         <span
           className="h-5 cursor-pointer rounded-sm text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-9"
-          aria-label="View detail"
           tabIndex={0}
           role="button"
           onClick={onClick}

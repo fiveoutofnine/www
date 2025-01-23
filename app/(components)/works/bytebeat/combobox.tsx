@@ -49,7 +49,7 @@ const BytebeatFeatureCombobox: React.FC<BytebeatFeatureComboboxProps> = ({ value
     <Drawer.Root open={open && isSmallScreen} onOpenChange={setOpen}>
       <Tooltip content="Browse music" side="bottom" align="end" triggerProps={{ asChild: true }}>
         <Drawer.Trigger asChild>
-          <IconButton size="sm">
+          <IconButton size="sm" aria-label="Browse music">
             <ListMusic />
           </IconButton>
         </Drawer.Trigger>
