@@ -49,6 +49,8 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
         setProgress(Math.min(100 * (time / duration), 100));
         if (time >= duration) {
           if (audioRef.current) audioRef.current.currentTime = 0;
+          // Dismiss any existing toast with the same ID.
+          toast.dismiss(id);
           setPlaying(false);
           setProgress(0);
         }
