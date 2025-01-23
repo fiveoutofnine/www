@@ -42,6 +42,10 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
   const [toastId, setToastId] = useState<string | number>();
   const audioRef = useRef<HTMLAudioElement>(null);
 
+
+  // Generate ID deterministically from `audio.src`.
+  const id = audio.src.toLowerCase().replace(/\s+/g, '-');
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (audioRef.current) {
@@ -58,13 +62,10 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
     }, 250);
 
     return () => clearInterval(interval);
-  }, [audioRef]);
+  }, [audioRef, id]);
 
   let timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
   if (Number.isNaN(timeElapsed)) timeElapsed = 0;
-
-  // Generate ID deterministically from `audio.src`.
-  const id = audio.src.toLowerCase().replace(/\s+/g, '-');
 
   const onClick = () => {
     if (audioRef.current) {
