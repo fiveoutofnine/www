@@ -118,7 +118,6 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
   return (
     <span
       className="h-5 cursor-pointer rounded-sm text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-9"
-      aria-label={`${playing ? 'Pause' : 'Play'} ${audio.name} by ${audio.artist}.`}
       tabIndex={0}
       role="button"
       onClick={onClick}
