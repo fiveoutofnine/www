@@ -156,7 +156,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
                     }
                   }
                 }}
-                tabIndex={1}
+                tabIndex={0}
               >
                 <Table.Cell>
                   <div className="flex items-center gap-1">
