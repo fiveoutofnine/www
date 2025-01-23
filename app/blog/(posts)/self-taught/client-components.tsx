@@ -42,7 +42,6 @@ export const AudioSample: React.FC<AudioSampleProps> = ({ audio, children, ...re
   const [toastId, setToastId] = useState<string | number>();
   const audioRef = useRef<HTMLAudioElement>(null);
 
-
   // Generate ID deterministically from `audio.src`.
   const id = audio.src.toLowerCase().replace(/\s+/g, '-');
 
