@@ -81,6 +81,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
               variant="outline"
               onClick={() => setResolution((prev) => prev - 1)}
               disabled={resolution < 1}
+              aria-label="Decrease resolution"
             >
               <ImageDown />
             </IconButton>
@@ -95,6 +96,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
               variant="outline"
               onClick={() => setResolution((prev) => prev + 1)}
               disabled={resolution > 2}
+              aria-label="Increase resolution"
             >
               <ImageUp />
             </IconButton>
@@ -111,6 +113,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
               variant="outline"
               onClick={() => setNodes((prev) => prev - 2)}
               disabled={nodes < 3}
+              aria-label="Decrease nodes"
             >
               <Grid2x2X />
             </IconButton>
@@ -125,6 +128,7 @@ export const PerlinNoiseGenerator: React.FC = () => {
               variant="outline"
               onClick={() => setNodes((prev) => prev + 2)}
               disabled={nodes > 10}
+              aria-label="Increase nodes"
             >
               <Grid2x2Plus />
             </IconButton>
