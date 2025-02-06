@@ -22,10 +22,10 @@ const RunningFeature: React.FC = async () => {
 
   const mileageLogs: MileageLog[] = (mileageLogData ?? [])
     .map((item) => ({
-      date: new Date(item.time).toISOString(),
+      time: new Date(item.time),
       value: item.value ?? 0,
     }))
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 
   const mostRecentLog = await db.query.mileageLogsHourly.findFirst({
     columns: {
@@ -57,7 +57,7 @@ const RunningFeature: React.FC = async () => {
   )
     .filter((item) => item.length == 2)
     .map((log) => ({
-      date: log[0],
+      time: new Date(log[0]),
       value: parseFloat(log[1]),
     }));
 

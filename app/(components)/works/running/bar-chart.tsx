@@ -50,7 +50,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
   const [data, totalDays] = useMemo(() => {
     let totalDays = 0;
     const data = mileageLogs.map((d) => {
-      const date = new Date(d.date);
+      const date = d.time;
       const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
 
       const month = utcDate.getUTCMonth();
