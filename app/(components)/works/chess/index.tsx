@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { fetchMoveAction } from './action';
 import clsx from 'clsx';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -54,19 +55,17 @@ const ChessFeatureDetail: React.FC = () => {
   const fetchNextMove = async () => {
     // Skip from game 0 to game 3 if end.
     const nextTokenId = nft.tokenId === 8 ? 83 : nft.tokenId + 1;
-    const res = await fetch(`/api/chess/feature/${nextTokenId}`);
-    const data = await res.json();
+    const nextNft = await fetchMoveAction(nextTokenId);
 
-    setNft(data);
+    setNft(nextNft);
   };
 
   const fetchPrevMove = async () => {
     // Skip from game 3 to game 0 if end.
     const prevTokenId = nft.tokenId === 83 ? 8 : nft.tokenId - 1;
-    const res = await fetch(`/api/chess/feature/${prevTokenId}`);
-    const data = await res.json();
+    const prevNft = await fetchMoveAction(prevTokenId);
 
-    setNft(data);
+    setNft(prevNft);
   };
 
   const getPieceNotation = (index: number) => {
@@ -92,7 +91,7 @@ const ChessFeatureDetail: React.FC = () => {
               transformOrigin: '0 0',
             }}
             dangerouslySetInnerHTML={{
-              __html: Buffer.from(nft.image, 'base64')
+              __html: Buffer.from(nft.animationUrl, 'base64')
                 .toString()
                 // We replace `<section>` with an ID to tighten the selector.
                 // There have been issues with `section` selectors being

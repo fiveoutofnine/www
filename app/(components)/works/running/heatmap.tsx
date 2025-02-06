@@ -32,10 +32,10 @@ const RunningFeatureDetailHeatmap: React.FC<RunningFeatureDetailHeatmapProps> = 
   runningLogs,
   unit,
 }) => {
-  // `log.date` doesn't have to be initialized to a UTC date because we only
+  // `log.time` doesn't have to be initialized to a UTC date because we only
   // care about the year (which should stay consistent).
   const yearsLogged = useMemo(
-    () => Array.from(new Set(runningLogs.map((log) => new Date(log.date).getFullYear()))).reverse(),
+    () => Array.from(new Set(runningLogs.map((log) => log.time.getFullYear()))).reverse(),
     [runningLogs],
   );
 
@@ -93,7 +93,7 @@ const RunningFeatureDetailHeatmap: React.FC<RunningFeatureDetailHeatmapProps> = 
   // etc.).
   const dayOffset = useMemo(() => firstDay.getUTCDay(), [firstDay]);
   const filteredLogs = useMemo(
-    () => runningLogs.filter((log) => new Date(log.date).getUTCFullYear() === year),
+    () => runningLogs.filter((log) => log.time.getUTCFullYear() === year),
     [runningLogs, year],
   );
   const logs = useMemo(() => {
@@ -114,7 +114,7 @@ const RunningFeatureDetailHeatmap: React.FC<RunningFeatureDetailHeatmapProps> = 
       // `Math.floor(i / 7) + (date.getUTCDay() < dayOffset ? 1 : 0)` gets us
       // the correct ``x'' position. We refer to `dayOffset` that we computed
       // earlier to correctly leave the first few cells null.
-      const currentDate = new Date(filteredLogs[i].date);
+      const currentDate = filteredLogs[i].time;
       const currentUTCDate = new Date(
         Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate()),
       );
@@ -232,7 +232,7 @@ const RunningFeatureDetailHeatmap: React.FC<RunningFeatureDetailHeatmapProps> = 
                         ? {}
                         : {
                             fillOpacity: max > 0 ? day.value / max : 0,
-                            'data-date': day.date,
+                            'data-date': day.time,
                             'data-value': day.value,
                           }),
                     };
