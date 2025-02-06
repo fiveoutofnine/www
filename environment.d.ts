@@ -13,6 +13,8 @@ declare global {
       NEXT_PUBLIC_SUPABASE_URL: string;
       NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
       SUPABASE_SERVICE_KEY: string;
+      // Database
+      DATABASE_URL: string;
       // Upstash
       UPSTASH_URL: string;
       UPSTASH_TOKEN: string;

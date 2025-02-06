@@ -1,42 +1,42 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { Database } from '@/generated/database.types';
-import { createClient } from '@supabase/supabase-js';
 import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
 
+import { db } from '@/lib/db';
+import { chessNftMetadata } from '@/lib/db/schema';
 import { idSchema } from '@/lib/schemas';
 import type { ChessNFTMetadata } from '@/lib/types/chess';
 import { validateQuery } from '@/lib/utils';
 
-const supabaseAdmin = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-);
+// -----------------------------------------------------------------------------
+// Clients
+// -----------------------------------------------------------------------------
 
 const publicClient = createPublicClient({
   chain: mainnet,
   transport: http(),
 });
 
+// -----------------------------------------------------------------------------
+// API
+// -----------------------------------------------------------------------------
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<(ChessNFTMetadata & { image?: string }) | Error>,
+  res: NextApiResponse<ChessNFTMetadata | Error>,
 ) {
   const { id } = validateQuery(idSchema, req.query);
 
-  // First, attempt to fetch the metadata from Supabase.
-  const { data, status, error } = await supabaseAdmin
-    .from('chess_nft_metadata')
-    .select('*')
-    .eq('id', id)
-    .returns<ChessNFTMetadata[]>();
+  // First, attempt to fetch the metadata from the database.
+  const nft = await db.query.chessNftMetadata.findFirst({
+    where: (nft, { eq }) => eq(nft.id, id),
+  });
 
-  let metadata: ChessNFTMetadata & { image?: string };
-  // If there is an error, or if the data is empty, or if there is no data,
-  // then attempt to fetch the metadata from Ethereum via the `_tokenURI`
-  // function.
-  if ((error && status !== 406) || (data && data.length === 0) || !data) {
+  let metadata: ChessNFTMetadata;
+  // If the NFT is not found in the database, then attempt to fetch the metadata
+  // from Ethereum via the `_tokenURI` function.
+  if (!nft) {
     try {
       // Fetch metadata.
       const tokenURI = (await publicClient.readContract({
@@ -58,7 +58,7 @@ export default async function handler(
         // `.slice(29)` removes the `data:application/json;base64,` data URI
         // prefix.
         Buffer.from(tokenURI.substring(29), 'base64').toString(),
-      ) as ChessNFTMetadata;
+      ) as Omit<ChessNFTMetadata, 'image'>;
 
       metadata = {
         id,
@@ -72,33 +72,39 @@ export default async function handler(
       return;
     }
 
-    // Insert into Supabase.
-    const { error: upsertError } = await supabaseAdmin.from('chess_nft_metadata').upsert(metadata);
-    if (upsertError) {
-      res.status(500).json({ name: 'Internal server error', message: 'Something went wrong.' });
-      return;
-    }
+    // Insert into database.
+    await db
+      .insert(chessNftMetadata)
+      .values({
+        id: metadata.id,
+        name: metadata.name,
+        description: metadata.description,
+        animationUrl: metadata.animation_url,
+        attributes: metadata.attributes,
+      })
+      .onConflictDoUpdate({
+        target: chessNftMetadata.id,
+        set: {
+          name: metadata.name,
+          description: metadata.description,
+          animationUrl: metadata.animation_url,
+          attributes: metadata.attributes,
+        },
+      });
   } else {
-    metadata = data[0];
+    metadata = {
+      id,
+      name: nft.name,
+      description: nft.description,
+      image: nft.image ?? undefined,
+      animation_url: nft.animationUrl,
+      attributes: nft.attributes as { trait_type: string; value: string }[],
+    };
   }
 
   // Overwrite `animation_url` to proxied version on our server to accomodate
   // marketplaces' CSPs.
   metadata.animation_url = `https://fiveoutofnine.com/api/chess/asset/${id}`;
-
-  // Check if image preview has been uploaded to Supabase storage.
-  const { data: imageData, error: imageError } = await supabaseAdmin.storage
-    .from('public')
-    .download(`chess_nft_images/${id}.png`);
-
-  // If the image preview has been uploaded, then add it to the metadata.
-  if (!imageError && imageData) {
-    const { data: image } = await supabaseAdmin.storage
-      .from('chess_nft_images')
-      .getPublicUrl(`${id}.png`);
-
-    metadata.image = image.publicUrl;
-  }
 
   // Cache response for 30 days.
   res.setHeader('cache-control', 'public, s-maxage=2592000');

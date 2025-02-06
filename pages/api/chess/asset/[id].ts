@@ -1,20 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import { db } from '@/lib/db';
 import { idSchema } from '@/lib/schemas';
-import supabase from '@/lib/services/supabase';
 import { validateQuery } from '@/lib/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<string>) {
   const { id } = validateQuery(idSchema, req.query);
 
   // Fetch image.
-  const { data, status, error } = await supabase
-    .from('chess_nft_metadata')
-    .select('animation_url')
-    .eq('id', id)
-    .single();
+  const nft = await db.query.chessNftMetadata.findFirst({
+    columns: {
+      animationUrl: true,
+    },
+    where: (nft, { eq }) => eq(nft.id, id),
+  });
 
-  if ((error && status !== 406) || !data) {
+  if (!nft) {
     res.status(404).send('Not found.');
     return;
   }
@@ -37,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     .status(200)
     .send(
       `<script type="text/javascript">w=window;w.addEventListener('DOMContentLoaded',()=>{n=document.querySelector('section').style;n.transformOrigin='top left';a=()=>n.transform='scale('+w.innerWidth/1000+')';a();w.onresize=a});</script>${Buffer.from(
-        data.animation_url?.substring(22) ?? '',
+        nft.animationUrl.substring(22) ?? '',
         'base64',
       ).toString()}`,
     );
