@@ -1,49 +1,38 @@
 import RunningFeatureDetail from './detail';
-import type { Database } from '@/generated/database.types';
-import { createClient } from '@supabase/supabase-js';
 import { Footprints } from 'lucide-react';
 
+import { db } from '@/lib/db';
 import type { MileageLog } from '@/lib/types/running';
 
 import FeatureDisplay from '@/components/templates/feature-display';
-
-// -----------------------------------------------------------------------------
-// Services
-// -----------------------------------------------------------------------------
-
-const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-);
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
 
 const RunningFeature: React.FC = async () => {
   // ---------------------------------------------------------------------------
   // Fetch mileage logs
   // ---------------------------------------------------------------------------
 
-  const { data: mileageLogData } = await supabase
-    .from('monthly_mileage')
-    .select('time, value')
-    .order('time', { ascending: false })
-    .limit(12);
+  const mileageLogData = await db.query.mileageLogsMonthly.findMany({
+    columns: {
+      time: true,
+      value: true,
+    },
+    limit: 12,
+    orderBy: (log, { desc }) => [desc(log.time)],
+  });
 
   const mileageLogs: MileageLog[] = (mileageLogData ?? [])
     .map((item) => ({
-      date: item.time,
+      date: new Date(item.time).toISOString(),
       value: item.value ?? 0,
     }))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  const { data: lastUpdated } = await supabase
-    .from('hourly_mileage')
-    .select('time')
-    .order('time', { ascending: false })
-    .limit(1)
-    .single();
+  const mostRecentLog = await db.query.mileageLogsHourly.findFirst({
+    columns: {
+      time: true,
+    },
+    orderBy: (log, { desc }) => [desc(log.time)],
+  });
 
   // ---------------------------------------------------------------------------
   // Fetch daily running logs
@@ -86,7 +75,7 @@ const RunningFeature: React.FC = async () => {
       <RunningFeatureDetail
         mileageLogs={mileageLogs}
         runningLogs={runningLogs}
-        lastUpdated={lastUpdated?.time ? new Date(lastUpdated.time) : undefined}
+        lastUpdated={mostRecentLog?.time ? new Date(mostRecentLog.time) : undefined}
       />
     </FeatureDisplay>
   );
