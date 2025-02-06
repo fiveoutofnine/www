@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 
 import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
@@ -22,11 +22,9 @@ const publicClient = createPublicClient({
 // API
 // -----------------------------------------------------------------------------
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ChessNFTMetadata | Error>,
-) {
-  const { id } = validateQuery(idSchema, req.query);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = validateQuery(idSchema, await params);
 
   // First, attempt to fetch the metadata from the database.
   const nft = await db.query.chessNftMetadata.findFirst({
@@ -68,8 +66,10 @@ export default async function handler(
         attributes: tokenURIParsed.attributes,
       };
     } catch (err) {
-      res.status(404).json({ name: 'Not found', message: 'Token is nonexistent.' });
-      return;
+      return NextResponse.json(
+        { name: 'Not found', message: 'Token is nonexistent.' },
+        { status: 404 },
+      );
     }
 
     // Insert into database.
@@ -106,7 +106,10 @@ export default async function handler(
   // marketplaces' CSPs.
   metadata.animation_url = `https://fiveoutofnine.com/api/chess/asset/${id}`;
 
-  // Cache response for 30 days.
-  res.setHeader('cache-control', 'public, s-maxage=2592000');
-  res.status(200).json(metadata);
+  return NextResponse.json(metadata, {
+    headers: {
+      // Cache response for 30 days.
+      'Cache-Control': 'public, s-maxage=2592000',
+    },
+  });
 }
