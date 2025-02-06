@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       const endDate = new Date(day + 86400000);
 
       const data = await db.query.mileageLogsHourly.findMany({
-        where: (log, { gte, lt }) => gte(log.time, startDate) && lt(log.time, endDate),
+        where: (log, { and, gte, lt }) => and(gte(log.time, startDate), lt(log.time, endDate)),
       });
       const total = data.reduce((acc, { value }) => acc + (value ?? 0), 0) ?? 0;
       return { time: new Date(day), value: total };
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
       endDate.setUTCMonth(endDate.getUTCMonth() + 1);
 
       const data = await db.query.mileageLogsDaily.findMany({
-        where: (log, { gte, lt }) => gte(log.time, startDate) && lt(log.time, endDate),
+        where: (log, { and, gte, lt }) => and(gte(log.time, startDate), lt(log.time, endDate)),
       });
       const total = data.reduce((acc, { value }) => acc + (value ?? 0), 0) ?? 0;
       return { time: new Date(month), value: total };
