@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     .onConflictDoUpdate({
       target: mileageLogsHourly.time,
       set: {
-        value: hourlyMileage.value,
+        value: sql`excluded.value`,
       },
     });
 
