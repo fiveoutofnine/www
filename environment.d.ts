@@ -9,10 +9,6 @@ declare global {
       GOOGLE_SHEETS_API_KEY_RUNNING: string;
       // Config
       NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS: Address;
-      // Supabase
-      NEXT_PUBLIC_SUPABASE_URL: string;
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
-      SUPABASE_SERVICE_KEY: string;
       // Database
       DATABASE_URL: string;
       // Upstash

@@ -22,6 +22,5 @@ pnpm run dev
 ### Building
 
 ```sh
-supabase gen types typescript --project-id $PROJECT_ID > generated/database.types.ts
 pnpm dlx next build
 ```
