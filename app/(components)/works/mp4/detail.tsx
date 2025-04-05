@@ -74,15 +74,20 @@ const Mp4FeatureDetail: React.FC = () => {
             {showOverlay ? (
               <div
                 className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50 animate-in fade-in"
-                aria-hidden={true}
+                onMouseEnter={!isTouchScreen ? () => setShowOverlay(true) : undefined}
               >
-                <div className="flex size-16 items-center justify-center rounded-full bg-black/70">
+                <button
+                  key={playing ? 'overlay-pause' : 'overlay-play'}
+                  className="animate-border-pulse pointer-events-auto flex size-16 items-center justify-center rounded-full bg-black/50 transition-colors hover:bg-black/80"
+                  onClick={togglePlay}
+                  aria-label={playing ? 'Pause' : 'Play'}
+                >
                   {playing ? (
                     <Pause className="size-8 animate-in fade-in zoom-in" />
                   ) : (
                     <Play className="size-8 animate-in fade-in zoom-in" />
                   )}
-                </div>
+                </button>
               </div>
             ) : null}
           </Fragment>
@@ -97,12 +102,14 @@ const Mp4FeatureDetail: React.FC = () => {
           borderTopWidth: 0,
           opacity: 0,
           pointerEvents: 'none',
+          display: 'none',
         }}
         animate={{
           height: showControls ? 40 : 0,
           borderTopWidth: showControls ? 1 : 0,
           opacity: showControls ? 1 : 0,
           pointerEvents: showControls ? 'auto' : 'none',
+          display: showControls ? 'flex' : 'none',
         }}
         transition={{ type: 'spring', duration: 0.25 }}
       >
