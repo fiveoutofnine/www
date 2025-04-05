@@ -10,6 +10,7 @@ import {
   PanelLeftOpen,
   Pause,
   Play,
+  Power,
   RotateCcw,
   RotateCw,
   SkipForward,
@@ -19,7 +20,7 @@ import {
 
 import { getRandomMp4Url } from '@/lib/utils';
 
-import { ButtonGroup, IconButton, Tooltip } from '@/components/ui';
+import { Button, ButtonGroup, IconButton, Tooltip } from '@/components/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const radixColors = require('@radix-ui/colors');
@@ -193,7 +194,7 @@ const Mp4FeatureDetail: React.FC = () => {
             ) : null}
           </Fragment>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gray-3">Loading...</div>
+          <div className="flex h-full w-full items-center justify-center bg-black">Loading...</div>
         )}
       </motion.div>
       <motion.div
@@ -238,6 +239,7 @@ const Mp4FeatureDetail: React.FC = () => {
             <IconButton
               size="sm"
               onClick={() => setMp4(getRandomMp4Url(mp4?.index))}
+              disabled={!mp4}
               aria-label="Next video"
             >
               <SkipForward />
@@ -275,12 +277,23 @@ const Mp4FeatureDetail: React.FC = () => {
               <ExternalLink />
             </IconButton>
           ) : null}
+          {!mp4 ? (
+            <Button
+              className="grow"
+              size="sm"
+              rightIcon={<Power />}
+              onClick={() => setMp4(getRandomMp4Url())}
+            >
+              Hi-Fi Stereo
+            </Button>
+          ) : null}
         </div>
         <Tooltip content="Hide controls" side="top" align="end" triggerProps={{ asChild: true }}>
           <IconButton
             size="sm"
             aria-label="Hide controls"
             onClick={() => setShowControls(!showControls)}
+            disabled={!mp4}
           >
             <PanelLeftClose className="-rotate-90" />
           </IconButton>
@@ -291,7 +304,7 @@ const Mp4FeatureDetail: React.FC = () => {
 };
 
 // -----------------------------------------------------------------------------
-// Component
+// Progress meter
 // -----------------------------------------------------------------------------
 
 const Mp4FeatureDetailProgressMeter: React.FC<{
