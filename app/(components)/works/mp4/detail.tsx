@@ -66,6 +66,7 @@ const Mp4FeatureDetail: React.FC = () => {
               onMouseLeave={!isTouchScreen ? () => setShowOverlay(false) : undefined}
               onTouchStart={isTouchScreen ? () => setShowOverlay(!showOverlay) : undefined}
               ref={videoRef}
+              controls={false}
               autoPlay
               loop
             />
