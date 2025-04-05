@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import {
   PanelLeftClose,
@@ -48,7 +49,7 @@ const Mp4FeatureDetail: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col">
+    <div className="group relative flex h-full w-full flex-col">
       <motion.div
         className="relative flex w-full grow items-center justify-center overflow-hidden bg-black"
         animate={{ maxHeight: showControls ? 142 : 182 }}
@@ -158,7 +159,10 @@ const Mp4FeatureDetail: React.FC = () => {
       </motion.div>
       {!showControls ? (
         <motion.div
-          className="absolute bottom-2 right-2 animate-in fade-in"
+          className={clsx(
+            'absolute bottom-2 right-2',
+            isTouchScreen ? 'flex' : 'hidden animate-in fade-in group-hover:flex',
+          )}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -170,7 +174,10 @@ const Mp4FeatureDetail: React.FC = () => {
               size="sm"
               variant="outline"
               aria-label="Show controls"
-              onClick={() => setShowControls(!showControls)}
+              onClick={(e) => {
+                setShowControls(!showControls);
+                e.stopPropagation();
+              }}
             >
               <PanelLeftOpen className="-rotate-90" />
             </IconButton>
