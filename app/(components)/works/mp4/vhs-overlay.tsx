@@ -35,7 +35,7 @@ const VHSOverlay: React.FC = () => {
         }}
       />
 
-      <div className="absolute inset-0 z-30 flex select-none items-center justify-center font-mono text-xs uppercase text-white">
+      <div className="absolute inset-0 z-30 flex select-none items-center justify-center font-mono text-xs uppercase leading-3 text-white">
         {/* Top-left label. */}
         <span className="absolute left-2 top-2 flex items-center gap-1">
           <span>Play</span>
@@ -62,7 +62,7 @@ const VHSOverlay: React.FC = () => {
         {/* Bottom-right label. */}
         <div className="absolute bottom-2 right-2">VHS</div>
         {/* Center error label. */}
-        <div className="flex flex-col items-start text-xl mix-blend-screen">
+        <div className="flex flex-col items-start text-xl leading-7 mix-blend-screen">
           <span>No cassette</span>
           <span>Please insert</span>
         </div>

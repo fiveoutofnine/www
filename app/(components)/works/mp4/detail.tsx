@@ -283,7 +283,7 @@ const Mp4FeatureDetail: React.FC = () => {
           ) : null}
           {!mp4 ? (
             <Button
-              className="font-vhs-display grow"
+              className="grow font-vhs-display"
               size="sm"
               onClick={() => setMp4(getRandomMp4Url())}
             >
