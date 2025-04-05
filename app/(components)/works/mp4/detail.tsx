@@ -78,7 +78,7 @@ const Mp4FeatureDetail: React.FC = () => {
               >
                 <button
                   key={playing ? 'overlay-pause' : 'overlay-play'}
-                  className="animate-border-pulse pointer-events-auto flex size-16 items-center justify-center rounded-full bg-black/50 transition-colors hover:bg-black/80"
+                  className="pointer-events-auto flex size-16 animate-border-pulse items-center justify-center rounded-full bg-black/50 transition-colors hover:bg-black/80"
                   onClick={togglePlay}
                   aria-label={playing ? 'Pause' : 'Play'}
                 >
