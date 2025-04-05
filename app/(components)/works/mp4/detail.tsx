@@ -336,7 +336,7 @@ const Mp4FeatureDetail: React.FC = () => {
             </IconButton>
           ) : null}
           {!mp4 ? (
-            <Button className="font-vhs-display grow" size="sm" onClick={initialize}>
+            <Button className="grow font-vhs-display" size="sm" onClick={initialize}>
               Hi-Fi Stereo
             </Button>
           ) : null}
