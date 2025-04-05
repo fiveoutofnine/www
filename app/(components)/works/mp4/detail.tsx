@@ -25,6 +25,7 @@ const Mp4FeatureDetail: React.FC = () => {
   const [muted, setMuted] = useState<boolean>(false);
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
   const [showControls, setShowControls] = useState<boolean>(false);
+  const [overlayUiClicked, setOverlayUiClicked] = useState<{ play: number }>({ play: 0 });
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => setMounted(true), []);
@@ -63,8 +64,26 @@ const Mp4FeatureDetail: React.FC = () => {
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
               onMouseEnter={!isTouchScreen ? () => setShowOverlay(true) : undefined}
-              onMouseLeave={!isTouchScreen ? () => setShowOverlay(false) : undefined}
-              onTouchStart={isTouchScreen ? () => setShowOverlay(!showOverlay) : undefined}
+              onMouseLeave={
+                !isTouchScreen
+                  ? () => {
+                      setShowOverlay(false);
+                      setOverlayUiClicked({ play: 0 });
+                    }
+                  : undefined
+              }
+              onTouchStart={
+                isTouchScreen
+                  ? () => {
+                      if (showOverlay) {
+                        setShowOverlay(false);
+                        setOverlayUiClicked((prev) => ({ ...prev, play: prev.play + 1 }));
+                      } else {
+                        setShowOverlay(true);
+                      }
+                    }
+                  : undefined
+              }
               ref={videoRef}
               controls={false}
               playsInline
@@ -78,8 +97,14 @@ const Mp4FeatureDetail: React.FC = () => {
               >
                 <button
                   key={playing ? 'overlay-pause' : 'overlay-play'}
-                  className="pointer-events-auto flex size-16 animate-border-pulse items-center justify-center rounded-full bg-black/50 transition-colors hover:bg-black/80"
-                  onClick={togglePlay}
+                  className={clsx(
+                    'pointer-events-auto flex size-16 items-center justify-center rounded-full bg-black/50 transition-colors hover:bg-black/80',
+                    overlayUiClicked.play > 0 ? 'animate-border-pulse' : '',
+                  )}
+                  onClick={() => {
+                    togglePlay();
+                    setOverlayUiClicked((prev) => ({ ...prev, play: prev.play + 1 }));
+                  }}
                   aria-label={playing ? 'Pause' : 'Play'}
                 >
                   {playing ? (

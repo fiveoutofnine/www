@@ -39,7 +39,7 @@ module.exports = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'bg-pulse': 'bg-pulse 2.5s cubic-bezier(.23,.68,.36,.96)',
-        'border-pulse': 'border-pulse 0.25s ease-in-out',
+        'border-pulse': 'border-pulse 0.5s ease-in-out',
       },
       fontFamily: {
         sans: ['var(--font-inter)', ...fontFamily.sans],
@@ -81,7 +81,7 @@ module.exports = {
         },
         'border-pulse': {
           '0%': {
-            outline: '1px solid rgba(255, 255, 255, 0.25)',
+            outline: '1px solid rgba(255, 255, 255, 0.3)',
           },
           '100%': {
             outline: '1px solid rgba(255, 255, 255, 0)',
