@@ -2,6 +2,8 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 
+import VHSNoise from './vhs-noise';
+import VHSOverlay from './vhs-overlay';
 import clsx from 'clsx';
 import { motion, PanInfo, useAnimation } from 'framer-motion';
 import {
@@ -193,10 +195,12 @@ const Mp4FeatureDetail: React.FC = () => {
             ) : null}
           </Fragment>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-black">
-            <div className="flex flex-col items-center">
+          <div className="flex h-full w-full items-center justify-center bg-[#00f]">
+            <VHSOverlay isPlaying={playing} trackingQuality={0.5} />
+            <VHSNoise opacity={0.1} />
+            <div className="z-20 flex flex-col items-center text-white mix-blend-screen">
               <span className="font-vhs-display text-xl">Hi-Fi Stereo</span>
-              <span className="text-xs text-gray-11">Press to get started</span>
+              <span className="text-xs">Press to get started</span>
             </div>
           </div>
         )}
