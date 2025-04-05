@@ -25,6 +25,8 @@ import { Button, ButtonGroup, IconButton, Tooltip } from '@/components/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const radixColors = require('@radix-ui/colors');
+// The audio clip to be played when the VHS loading sequence is initialized.
+const VHS_LOADING_SOUND_URL = 'https://assets.fiveoutofnine.com/vhs-loading.mp3';
 
 // -----------------------------------------------------------------------------
 // Component
@@ -38,6 +40,7 @@ const Mp4FeatureDetail: React.FC = () => {
   const [muted, setMuted] = useState<boolean>(false);
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
   const [showControls, setShowControls] = useState<boolean>(true);
+  const [vhsLoadingSound, setVhsLoadingSound] = useState<HTMLAudioElement | null>(null);
   const [overlayUiClicked, setOverlayUiClicked] = useState<{
     play: number;
     rewind: number;
@@ -45,18 +48,38 @@ const Mp4FeatureDetail: React.FC = () => {
   }>({ play: 0, rewind: 0, forward: 0 });
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+
+    // Create and preload the VHS loading sound.
+    const audio = new Audio(VHS_LOADING_SOUND_URL);
+    audio.preload = 'auto';
+    audio.addEventListener('canplaythrough', () => setVhsLoadingSound(audio));
+    audio.load();
+
+    return () => {
+      audio.pause();
+      audio.src = '';
+    };
+  }, []);
 
   const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
 
   const initialize = () => {
     setInitialized(1); // Static.
-    setTimeout(() => setInitialized(2), 1000); // Blue.
-    setTimeout(() => setInitialized(3), 2500); // Black.
+
+    // Play the VHS loading sound.
+    if (vhsLoadingSound) {
+      vhsLoadingSound.currentTime = 0;
+      vhsLoadingSound.play();
+    }
+
+    setTimeout(() => setInitialized(2), 1900); // Blue.
+    setTimeout(() => setInitialized(3), 4250); // Black.
     setTimeout(() => {
       setInitialized(4);
       setMp4(getRandomMp4Url());
-    }, 3500);
+    }, 5250);
   };
 
   const togglePlay = () => {
@@ -313,7 +336,7 @@ const Mp4FeatureDetail: React.FC = () => {
             </IconButton>
           ) : null}
           {!mp4 ? (
-            <Button className="grow font-vhs-display" size="sm" onClick={initialize}>
+            <Button className="font-vhs-display grow" size="sm" onClick={initialize}>
               Hi-Fi Stereo
             </Button>
           ) : null}
