@@ -165,6 +165,22 @@ const Mp4FeatureDetail: React.FC = () => {
                     )}
                   />
                 </button>
+                {!showControls ? (
+                  <Tooltip content="Show controls" side="left" triggerProps={{ asChild: true }}>
+                    <IconButton
+                      className="pointer-events-auto absolute bottom-2 right-2 backdrop-blur animate-in fade-in"
+                      size="sm"
+                      variant="outline"
+                      aria-label="Show controls"
+                      onClick={(e) => {
+                        setShowControls(!showControls);
+                        e.stopPropagation();
+                      }}
+                    >
+                      <PanelLeftOpen className="-rotate-90" />
+                    </IconButton>
+                  </Tooltip>
+                ) : null}
               </div>
             ) : null}
           </Fragment>
@@ -250,33 +266,6 @@ const Mp4FeatureDetail: React.FC = () => {
           </IconButton>
         </Tooltip>
       </motion.div>
-      {!showControls ? (
-        <motion.div
-          className={clsx(
-            'absolute bottom-2 right-2',
-            isTouchScreen ? 'flex' : 'hidden animate-in fade-in group-hover:flex',
-          )}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ type: 'spring', delay: 0.1, duration: 0.25 }}
-        >
-          <Tooltip content="Show controls" side="left" triggerProps={{ asChild: true }}>
-            <IconButton
-              className="backdrop-blur"
-              size="sm"
-              variant="outline"
-              aria-label="Show controls"
-              onClick={(e) => {
-                setShowControls(!showControls);
-                e.stopPropagation();
-              }}
-            >
-              <PanelLeftOpen className="-rotate-90" />
-            </IconButton>
-          </Tooltip>
-        </motion.div>
-      ) : null}
     </div>
   );
 };
