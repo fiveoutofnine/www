@@ -33,6 +33,7 @@ const radixColors = require('@radix-ui/colors');
 const Mp4FeatureDetail: React.FC = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [mp4, setMp4] = useState<ReturnType<typeof getRandomMp4Url>>();
+  const [initialized, setInitialized] = useState<number>(0); // 0: not initialized, 1: static, 2: blue, 3: black, 4: ready
   const [playing, setPlaying] = useState<boolean>(false);
   const [muted, setMuted] = useState<boolean>(false);
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
@@ -47,6 +48,16 @@ const Mp4FeatureDetail: React.FC = () => {
   useEffect(() => setMounted(true), []);
 
   const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
+
+  const initialize = () => {
+    setInitialized(1); // Static.
+    setTimeout(() => setInitialized(2), 1000); // Blue.
+    setTimeout(() => setInitialized(3), 2500); // Black.
+    setTimeout(() => {
+      setInitialized(4);
+      setMp4(getRandomMp4Url());
+    }, 3500);
+  };
 
   const togglePlay = () => {
     if (videoRef.current?.paused) {
@@ -194,6 +205,26 @@ const Mp4FeatureDetail: React.FC = () => {
               </div>
             ) : null}
           </Fragment>
+        ) : initialized > 0 ? (
+          <div className="flex h-full w-full items-center justify-center">
+            {initialized === 1 ? (
+              <Fragment>
+                <div className="absolute inset-0 bg-black" />
+                <VHSOverlay />
+                <VHSNoise opacity={0.4} />
+              </Fragment>
+            ) : initialized === 2 ? (
+              <Fragment>
+                <div className="absolute inset-0 bg-[#00c]" />
+                <VHSNoise opacity={0.1} />
+              </Fragment>
+            ) : initialized === 3 ? (
+              <Fragment>
+                <div className="absolute inset-0 bg-black" />
+                <VHSNoise opacity={0.05} />
+              </Fragment>
+            ) : null}
+          </div>
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-[#00f]">
             <VHSOverlay />
@@ -282,11 +313,7 @@ const Mp4FeatureDetail: React.FC = () => {
             </IconButton>
           ) : null}
           {!mp4 ? (
-            <Button
-              className="grow font-vhs-display"
-              size="sm"
-              onClick={() => setMp4(getRandomMp4Url())}
-            >
+            <Button className="font-vhs-display grow" size="sm" onClick={initialize}>
               Hi-Fi Stereo
             </Button>
           ) : null}
