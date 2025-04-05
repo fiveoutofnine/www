@@ -67,6 +67,7 @@ const Mp4FeatureDetail: React.FC = () => {
               onTouchStart={isTouchScreen ? () => setShowOverlay(!showOverlay) : undefined}
               ref={videoRef}
               controls={false}
+              playsInline
               autoPlay
               loop
             />
