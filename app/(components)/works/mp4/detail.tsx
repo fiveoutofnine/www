@@ -10,7 +10,6 @@ import {
   PanelLeftOpen,
   Pause,
   Play,
-  Power,
   RotateCcw,
   RotateCw,
   SkipForward,
@@ -194,7 +193,12 @@ const Mp4FeatureDetail: React.FC = () => {
             ) : null}
           </Fragment>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-black">Loading...</div>
+          <div className="flex h-full w-full items-center justify-center bg-black">
+            <div className="flex flex-col items-center">
+              <span className="font-vhs-display text-xl">Hi-Fi Stereo</span>
+              <span className="text-xs text-gray-11">Press to get started</span>
+            </div>
+          </div>
         )}
       </motion.div>
       <motion.div
@@ -279,9 +283,8 @@ const Mp4FeatureDetail: React.FC = () => {
           ) : null}
           {!mp4 ? (
             <Button
-              className="grow"
+              className="font-vhs-display grow"
               size="sm"
-              rightIcon={<Power />}
               onClick={() => setMp4(getRandomMp4Url())}
             >
               Hi-Fi Stereo
