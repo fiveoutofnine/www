@@ -240,36 +240,58 @@ const Mp4FeatureDetail: React.FC = () => {
                   />
                 </button>
                 {!showControls ? (
-                  <Tooltip content="Next video" side="left" triggerProps={{ asChild: true }}>
-                    <IconButton
-                      className="pointer-events-auto absolute right-2 top-2 backdrop-blur animate-in fade-in"
-                      size="sm"
-                      variant="outline"
-                      aria-label="Next video"
-                      onClick={(e) => {
-                        setMp4(getRandomMp4Url(mp4?.index));
-                        e.stopPropagation();
-                      }}
+                  <Fragment>
+                    <Tooltip
+                      content={!mp4 || muted ? 'Unmute' : 'Mute'}
+                      side="top"
+                      triggerProps={{ asChild: true }}
                     >
-                      <SkipForward />
-                    </IconButton>
-                  </Tooltip>
-                ) : null}
-                {!showControls ? (
-                  <Tooltip content="Show controls" side="left" triggerProps={{ asChild: true }}>
-                    <IconButton
-                      className="pointer-events-auto absolute bottom-2 right-2 backdrop-blur animate-in fade-in"
-                      size="sm"
-                      variant="outline"
-                      aria-label="Show controls"
-                      onClick={(e) => {
-                        setShowControls(!showControls);
-                        e.stopPropagation();
-                      }}
-                    >
-                      <PanelLeftOpen className="-rotate-90" />
-                    </IconButton>
-                  </Tooltip>
+                      <IconButton
+                        className="pointer-events-auto absolute left-2 top-2 backdrop-blur animate-in fade-in"
+                        size="sm"
+                        variant="outline"
+                        onClick={(e) => {
+                          if (videoRef.current) toggleMuted();
+                          e.stopPropagation();
+                        }}
+                        aria-label={muted ? 'Unmute' : 'Mute'}
+                      >
+                        {muted ? (
+                          <VolumeOff className="animate-in fade-in zoom-in" />
+                        ) : (
+                          <Volume2 className="animate-in fade-in zoom-in" />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip content="Next video" side="left" triggerProps={{ asChild: true }}>
+                      <IconButton
+                        className="pointer-events-auto absolute right-2 top-2 backdrop-blur animate-in fade-in"
+                        size="sm"
+                        variant="outline"
+                        aria-label="Next video"
+                        onClick={(e) => {
+                          setMp4(getRandomMp4Url(mp4?.index));
+                          e.stopPropagation();
+                        }}
+                      >
+                        <SkipForward />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip content="Show controls" side="left" triggerProps={{ asChild: true }}>
+                      <IconButton
+                        className="pointer-events-auto absolute bottom-2 right-2 backdrop-blur animate-in fade-in"
+                        size="sm"
+                        variant="outline"
+                        aria-label="Show controls"
+                        onClick={(e) => {
+                          setShowControls(!showControls);
+                          e.stopPropagation();
+                        }}
+                      >
+                        <PanelLeftOpen className="-rotate-90" />
+                      </IconButton>
+                    </Tooltip>
+                  </Fragment>
                 ) : null}
               </div>
             ) : null}
