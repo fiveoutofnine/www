@@ -196,7 +196,7 @@ const Mp4FeatureDetail: React.FC = () => {
           </Fragment>
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-[#00f]">
-            <VHSOverlay isPlaying={playing} trackingQuality={0.5} />
+            <VHSOverlay trackingQuality={0.5} />
             <VHSNoise opacity={0.1} />
             <div className="z-20 flex flex-col items-center text-white mix-blend-screen">
               <span className="font-vhs-display text-xl">Hi-Fi Stereo</span>

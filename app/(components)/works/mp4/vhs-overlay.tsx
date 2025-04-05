@@ -9,7 +9,6 @@ import { motion } from 'framer-motion';
 // -----------------------------------------------------------------------------
 
 type VHSOverlayProps = {
-  isPlaying: boolean;
   trackingQuality: number;
 };
 
@@ -17,19 +16,17 @@ type VHSOverlayProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-const VHSOverlay: React.FC<VHSOverlayProps> = ({ isPlaying, trackingQuality }) => {
+const VHSOverlay: React.FC<VHSOverlayProps> = ({ trackingQuality }) => {
   const [showTrackingLines, setShowTrackingLines] = useState<boolean>(true);
 
   // Randomly flicker tracking lines based on tracking quality.
   useEffect(() => {
-    if (!isPlaying) return;
-
     const interval = setInterval(() => {
       setShowTrackingLines(Math.random() > trackingQuality);
     }, 250);
 
     return () => clearInterval(interval);
-  }, [isPlaying, trackingQuality]);
+  }, [trackingQuality]);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10" aria-hidden={true}>
@@ -49,7 +46,7 @@ const VHSOverlay: React.FC<VHSOverlayProps> = ({ isPlaying, trackingQuality }) =
       />
 
       {/* Tracking lines. */}
-      {showTrackingLines && (
+      {/* showTrackingLines && (
         <>
           <motion.div
             initial={{ bottom: '-5%' }}
@@ -75,45 +72,11 @@ const VHSOverlay: React.FC<VHSOverlayProps> = ({ isPlaying, trackingQuality }) =
             className="absolute inset-x-0 h-1.5 bg-white/5 backdrop-blur-sm"
           />
         </>
-      )}
-
-      {/* Random glitches. */}
-      <AnimatedGlitch isActive={isPlaying && trackingQuality < 0.8} />
+      ) */}
 
       {/* VHS label. */}
       <div className="absolute bottom-2 left-2 font-mono text-xs text-white/70">VHS</div>
     </div>
-  );
-};
-
-const AnimatedGlitch: React.FC<{ isActive: boolean }> = ({ isActive }) => {
-  const [isGlitching, setIsGlitching] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!isActive) return;
-
-    // Random glitch activation.
-    const interval = setInterval(() => {
-      if (Math.random() > 0.7) {
-        setIsGlitching(true);
-        setTimeout(() => setIsGlitching(false), 150 + Math.random() * 200);
-      }
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [isActive]);
-
-  if (!isGlitching) return null;
-
-  return (
-    <motion.div
-      className="absolute inset-0 bg-white mix-blend-difference"
-      animate={{
-        opacity: [0, 0.05, 0.1, 0.05, 0],
-        x: [0, -5, 5, -2, 0],
-      }}
-      transition={{ duration: 0.2 }}
-    />
   );
 };
 
