@@ -89,6 +89,12 @@ const Mp4FeatureDetail: React.FC = () => {
       </motion.div>
       <motion.div
         className="absolute bottom-0 left-0 flex w-full items-center justify-between border-gray-6 px-2"
+        initial={{
+          height: 0,
+          borderTopWidth: 0,
+          opacity: 0,
+          pointerEvents: 'none',
+        }}
         animate={{
           height: showControls ? 40 : 0,
           borderTopWidth: showControls ? 1 : 0,
