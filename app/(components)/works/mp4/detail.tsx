@@ -240,6 +240,22 @@ const Mp4FeatureDetail: React.FC = () => {
                   />
                 </button>
                 {!showControls ? (
+                  <Tooltip content="Next video" side="left" triggerProps={{ asChild: true }}>
+                    <IconButton
+                      className="pointer-events-auto absolute right-2 top-2 backdrop-blur animate-in fade-in"
+                      size="sm"
+                      variant="outline"
+                      aria-label="Next video"
+                      onClick={(e) => {
+                        setMp4(getRandomMp4Url(mp4?.index));
+                        e.stopPropagation();
+                      }}
+                    >
+                      <SkipForward />
+                    </IconButton>
+                  </Tooltip>
+                ) : null}
+                {!showControls ? (
                   <Tooltip content="Show controls" side="left" triggerProps={{ asChild: true }}>
                     <IconButton
                       className="pointer-events-auto absolute bottom-2 right-2 backdrop-blur animate-in fade-in"
@@ -372,7 +388,7 @@ const Mp4FeatureDetail: React.FC = () => {
           ) : null}
           {!mp4 ? (
             <Button
-              className="grow font-vhs-display"
+              className="font-vhs-display grow"
               size="sm"
               onClick={initialize}
               disabled={initialized > 0 || ejecting}
