@@ -55,6 +55,30 @@ const Mp4FeatureDetail: React.FC = () => {
     }
   };
 
+  const rewind = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 10);
+    }
+  };
+
+  const forward = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = Math.min(
+        videoRef.current.duration,
+        videoRef.current.currentTime + 10,
+      );
+    }
+  };
+
+  const toggleOverlay = () => {
+    if (showOverlay) {
+      setShowOverlay(false);
+      setOverlayUiClicked({ play: 0, rewind: 0, forward: 0 });
+    } else {
+      setShowOverlay(true);
+    }
+  };
+
   return (
     <div className="group relative flex h-full w-full flex-col">
       <motion.div
@@ -70,26 +94,8 @@ const Mp4FeatureDetail: React.FC = () => {
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
               onMouseEnter={!isTouchScreen ? () => setShowOverlay(true) : undefined}
-              onMouseLeave={
-                !isTouchScreen
-                  ? () => {
-                      setShowOverlay(false);
-                      setOverlayUiClicked({ play: 0, rewind: 0, forward: 0 });
-                    }
-                  : undefined
-              }
-              onTouchStart={
-                isTouchScreen
-                  ? () => {
-                      if (showOverlay) {
-                        setShowOverlay(false);
-                        setOverlayUiClicked({ play: 0, rewind: 0, forward: 0 });
-                      } else {
-                        setShowOverlay(true);
-                      }
-                    }
-                  : undefined
-              }
+              onMouseLeave={!isTouchScreen ? toggleOverlay : undefined}
+              onTouchStart={isTouchScreen ? toggleOverlay : undefined}
               ref={videoRef}
               controls={false}
               playsInline
@@ -108,9 +114,7 @@ const Mp4FeatureDetail: React.FC = () => {
                     overlayUiClicked.rewind > 0 ? 'animate-border-pulse' : '',
                   )}
                   onClick={() => {
-                    if (videoRef.current) {
-                      videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 10);
-                    }
+                    rewind();
                     setOverlayUiClicked((prev) => ({ ...prev, rewind: prev.rewind + 1 }));
                   }}
                   aria-label="Skip back 10 seconds"
@@ -148,12 +152,7 @@ const Mp4FeatureDetail: React.FC = () => {
                     overlayUiClicked.forward > 0 ? 'animate-border-pulse' : '',
                   )}
                   onClick={() => {
-                    if (videoRef.current) {
-                      videoRef.current.currentTime = Math.min(
-                        videoRef.current.duration,
-                        videoRef.current.currentTime + 10,
-                      );
-                    }
+                    forward();
                     setOverlayUiClicked((prev) => ({ ...prev, forward: prev.forward + 1 }));
                   }}
                   aria-label="Skip forward 10 seconds"
