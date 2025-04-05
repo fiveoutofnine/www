@@ -1,3 +1,5 @@
+'use client';
+
 const ImgFeatureDetail: React.FC = () => {
   return <div>ImgFeatureDetail</div>;
 };
