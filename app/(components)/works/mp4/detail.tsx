@@ -108,6 +108,9 @@ const Mp4FeatureDetail: React.FC = () => {
                     overlayUiClicked.rewind > 0 ? 'animate-border-pulse' : '',
                   )}
                   onClick={() => {
+                    if (videoRef.current) {
+                      videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 10);
+                    }
                     setOverlayUiClicked((prev) => ({ ...prev, rewind: prev.rewind + 1 }));
                   }}
                   aria-label="Skip back 10 seconds"
@@ -145,6 +148,12 @@ const Mp4FeatureDetail: React.FC = () => {
                     overlayUiClicked.forward > 0 ? 'animate-border-pulse' : '',
                   )}
                   onClick={() => {
+                    if (videoRef.current) {
+                      videoRef.current.currentTime = Math.min(
+                        videoRef.current.duration,
+                        videoRef.current.currentTime + 10,
+                      );
+                    }
                     setOverlayUiClicked((prev) => ({ ...prev, forward: prev.forward + 1 }));
                   }}
                   aria-label="Skip forward 10 seconds"
