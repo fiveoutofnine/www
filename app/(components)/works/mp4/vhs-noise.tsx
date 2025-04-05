@@ -90,7 +90,7 @@ const VHSNoise: React.FC<VHSNoiseProps> = ({ opacity = 0.2 }) => {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+      className="pointer-events-none absolute inset-0 z-20 h-full w-full"
       style={{ opacity }}
       aria-hidden={true}
     />
