@@ -9,6 +9,8 @@ import {
   PanelLeftOpen,
   Pause,
   Play,
+  RotateCcw,
+  RotateCw,
   SkipForward,
   Volume2,
   VolumeOff,
@@ -25,7 +27,11 @@ const Mp4FeatureDetail: React.FC = () => {
   const [muted, setMuted] = useState<boolean>(false);
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
   const [showControls, setShowControls] = useState<boolean>(false);
-  const [overlayUiClicked, setOverlayUiClicked] = useState<{ play: number }>({ play: 0 });
+  const [overlayUiClicked, setOverlayUiClicked] = useState<{
+    play: number;
+    rewind: number;
+    forward: number;
+  }>({ play: 0, rewind: 0, forward: 0 });
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => setMounted(true), []);
@@ -68,7 +74,7 @@ const Mp4FeatureDetail: React.FC = () => {
                 !isTouchScreen
                   ? () => {
                       setShowOverlay(false);
-                      setOverlayUiClicked({ play: 0 });
+                      setOverlayUiClicked({ play: 0, rewind: 0, forward: 0 });
                     }
                   : undefined
               }
@@ -77,7 +83,7 @@ const Mp4FeatureDetail: React.FC = () => {
                   ? () => {
                       if (showOverlay) {
                         setShowOverlay(false);
-                        setOverlayUiClicked((prev) => ({ ...prev, play: prev.play + 1 }));
+                        setOverlayUiClicked({ play: 0, rewind: 0, forward: 0 });
                       } else {
                         setShowOverlay(true);
                       }
@@ -92,11 +98,30 @@ const Mp4FeatureDetail: React.FC = () => {
             />
             {showOverlay ? (
               <div
-                className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/50 animate-in fade-in"
+                className="pointer-events-none absolute inset-0 flex items-center justify-center gap-4 bg-black/50 animate-in fade-in"
                 onMouseEnter={!isTouchScreen ? () => setShowOverlay(true) : undefined}
               >
                 <button
-                  key={playing ? 'overlay-pause' : 'overlay-play'}
+                  key={`overlay-rewind-${overlayUiClicked.rewind}`}
+                  className={clsx(
+                    'pointer-events-auto flex size-10 items-center justify-center rounded-full bg-black/50 transition-colors hover:bg-black/80',
+                    overlayUiClicked.rewind > 0 ? 'animate-border-pulse' : '',
+                  )}
+                  onClick={() => {
+                    setOverlayUiClicked((prev) => ({ ...prev, rewind: prev.rewind + 1 }));
+                  }}
+                  aria-label="Skip back 10 seconds"
+                >
+                  <span className="absolute select-none text-[6px] font-bold">10</span>
+                  <RotateCcw
+                    className={clsx(
+                      'size-5',
+                      overlayUiClicked.rewind === 0 ? 'animate-in fade-in zoom-in' : '',
+                    )}
+                  />
+                </button>
+                <button
+                  key={`overlay-play-${overlayUiClicked.play}`}
                   className={clsx(
                     'pointer-events-auto flex size-16 items-center justify-center rounded-full bg-black/50 transition-colors hover:bg-black/80',
                     overlayUiClicked.play > 0 ? 'animate-border-pulse' : '',
@@ -112,6 +137,25 @@ const Mp4FeatureDetail: React.FC = () => {
                   ) : (
                     <Play className="size-8 animate-in fade-in zoom-in" />
                   )}
+                </button>
+                <button
+                  key={`overlay-forward-${overlayUiClicked.forward}`}
+                  className={clsx(
+                    'pointer-events-auto flex size-10 items-center justify-center rounded-full bg-black/50 transition-colors hover:bg-black/80',
+                    overlayUiClicked.forward > 0 ? 'animate-border-pulse' : '',
+                  )}
+                  onClick={() => {
+                    setOverlayUiClicked((prev) => ({ ...prev, forward: prev.forward + 1 }));
+                  }}
+                  aria-label="Skip forward 10 seconds"
+                >
+                  <span className="absolute select-none text-[6px] font-bold">10</span>
+                  <RotateCw
+                    className={clsx(
+                      'size-5',
+                      overlayUiClicked.forward === 0 ? 'animate-in fade-in zoom-in' : '',
+                    )}
+                  />
                 </button>
               </div>
             ) : null}
