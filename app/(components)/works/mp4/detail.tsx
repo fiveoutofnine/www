@@ -15,6 +15,7 @@ import {
   RotateCcw,
   RotateCw,
   SkipForward,
+  StepBack,
   Volume2,
   VolumeOff,
 } from 'lucide-react';
@@ -27,6 +28,8 @@ import { Button, ButtonGroup, IconButton, Tooltip } from '@/components/ui';
 const radixColors = require('@radix-ui/colors');
 // The audio clip to be played when the VHS loading sequence is initialized.
 const VHS_LOADING_SOUND_URL = 'https://assets.fiveoutofnine.com/vhs-loading.mp3';
+// The audio clip to be played when the VHS eject button is clicked.
+const VHS_EJECT_SOUND_URL = 'https://assets.fiveoutofnine.com/vhs-eject.mp3';
 
 // -----------------------------------------------------------------------------
 // Component
@@ -35,12 +38,14 @@ const VHS_LOADING_SOUND_URL = 'https://assets.fiveoutofnine.com/vhs-loading.mp3'
 const Mp4FeatureDetail: React.FC = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [mp4, setMp4] = useState<ReturnType<typeof getRandomMp4Url>>();
-  const [initialized, setInitialized] = useState<number>(0); // 0: not initialized, 1: static, 2: blue, 3: black, 4: ready
+  const [initialized, setInitialized] = useState<number>(0);
+  const [ejecting, setEjecting] = useState<boolean>(false);
   const [playing, setPlaying] = useState<boolean>(false);
   const [muted, setMuted] = useState<boolean>(false);
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
   const [showControls, setShowControls] = useState<boolean>(true);
   const [vhsLoadingSound, setVhsLoadingSound] = useState<HTMLAudioElement | null>(null);
+  const [vhsEjectSound, setVhsEjectSound] = useState<HTMLAudioElement | null>(null);
   const [overlayUiClicked, setOverlayUiClicked] = useState<{
     play: number;
     rewind: number;
@@ -52,14 +57,14 @@ const Mp4FeatureDetail: React.FC = () => {
     setMounted(true);
 
     // Create and preload the VHS loading sound.
-    const audio = new Audio(VHS_LOADING_SOUND_URL);
-    audio.preload = 'auto';
-    audio.addEventListener('canplaythrough', () => setVhsLoadingSound(audio));
-    audio.load();
+    const loadingAudio = new Audio(VHS_LOADING_SOUND_URL);
+    loadingAudio.preload = 'auto';
+    loadingAudio.addEventListener('canplaythrough', () => setVhsLoadingSound(loadingAudio));
+    loadingAudio.load();
 
     return () => {
-      audio.pause();
-      audio.src = '';
+      loadingAudio.pause();
+      loadingAudio.src = '';
     };
   }, []);
 
@@ -74,12 +79,37 @@ const Mp4FeatureDetail: React.FC = () => {
       vhsLoadingSound.play();
     }
 
+    // Create and preload the VHS eject sound.
+    const ejectAudio = new Audio(VHS_EJECT_SOUND_URL);
+    ejectAudio.preload = 'auto';
+    ejectAudio.addEventListener('canplaythrough', () => setVhsEjectSound(ejectAudio));
+    ejectAudio.load();
+
     setTimeout(() => setInitialized(2), 1900); // Blue.
     setTimeout(() => setInitialized(3), 4250); // Black.
     setTimeout(() => {
       setInitialized(4);
       setMp4(getRandomMp4Url());
     }, 5250);
+  };
+
+  const eject = () => {
+    setEjecting(true);
+
+    if (vhsEjectSound) {
+      vhsEjectSound.currentTime = 0;
+      vhsEjectSound.play();
+    }
+
+    setMp4(undefined);
+    setInitialized(0);
+    setPlaying(false);
+    setMuted(false);
+    setShowOverlay(false);
+    setShowControls(true);
+
+    // Finish ejecting after 2.5 seconds.
+    setTimeout(() => setEjecting(false), 2500);
   };
 
   const togglePlay = () => {
@@ -228,6 +258,11 @@ const Mp4FeatureDetail: React.FC = () => {
               </div>
             ) : null}
           </Fragment>
+        ) : ejecting ? (
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="absolute inset-0 bg-[#00c]" />
+            <VHSNoise opacity={0.1} />
+          </div>
         ) : initialized > 0 ? (
           <div className="flex h-full w-full items-center justify-center">
             {initialized === 1 ? (
@@ -336,11 +371,21 @@ const Mp4FeatureDetail: React.FC = () => {
             </IconButton>
           ) : null}
           {!mp4 ? (
-            <Button className="grow font-vhs-display" size="sm" onClick={initialize}>
+            <Button
+              className="grow font-vhs-display"
+              size="sm"
+              onClick={initialize}
+              disabled={initialized > 0 || ejecting}
+            >
               Hi-Fi Stereo
             </Button>
           ) : null}
         </div>
+        <Tooltip content="Eject" side="top" triggerProps={{ asChild: true }}>
+          <IconButton size="sm" aria-label="Eject" onClick={eject} disabled={!mp4}>
+            <StepBack className="rotate-90" />
+          </IconButton>
+        </Tooltip>
         <Tooltip content="Hide controls" side="top" align="end" triggerProps={{ asChild: true }}>
           <IconButton
             size="sm"
