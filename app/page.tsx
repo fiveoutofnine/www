@@ -4,6 +4,8 @@ import BytebeatFeature from './(components)/works/bytebeat';
 import ChessFeature from './(components)/works/chess';
 import ColormapRegistryFeature from './(components)/works/colormap-registry';
 import CoolContractsFeature from './(components)/works/cool-contracts';
+import ImgFeature from './(components)/works/img';
+import Mp4Feature from './(components)/works/mp4';
 import OnChainMusicFeature from './(components)/works/on-chain-music';
 import RunningFeature from './(components)/works/running';
 import TxDotCoolFeature from './(components)/works/tx-dot-cool';
@@ -23,6 +25,8 @@ export default function Page() {
         <ColormapRegistryFeature />
         <OnChainMusicFeature />
         <BytebeatFeature />
+        <Mp4Feature />
+        <ImgFeature />
         <BitTwiddlingFeature />
         <CoolContractsFeature />
       </div>
