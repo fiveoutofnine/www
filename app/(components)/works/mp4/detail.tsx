@@ -91,7 +91,7 @@ const Mp4FeatureDetail: React.FC = () => {
     setTimeout(() => {
       setInitialized(4);
       setMp4(getRandomMp4Url());
-    }, 5250);
+    }, 6250);
   };
 
   const eject = () => {
@@ -164,7 +164,7 @@ const Mp4FeatureDetail: React.FC = () => {
         {mp4 ? (
           <Fragment>
             <video
-              className="object-fit max-h-full w-full"
+              className="object-fit max-h-full w-full duration-3000 animate-in fade-in"
               src={mp4.url}
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}

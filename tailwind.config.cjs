@@ -90,6 +90,9 @@ module.exports = {
           },
         },
       },
+      transitionDuration: {
+        3000: '3000ms',
+      },
       zIndex: {
         base: '0',
         dropdown: '80',
