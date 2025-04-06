@@ -327,7 +327,7 @@ const Mp4FeatureDetail: React.FC = () => {
           </div>
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-[#00f]">
-            <VHSOverlay />
+            <VHSOverlay fadeIn={true} />
             <VHSNoise opacity={0.1} />
           </div>
         )}

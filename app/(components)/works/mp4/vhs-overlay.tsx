@@ -2,12 +2,25 @@
 
 import { useEffect, useState } from 'react';
 
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { ChevronDown, Play } from 'lucide-react';
 
 import { NUMBER_OF_VIDEOS } from '@/lib/utils/getRandomMp4Url';
 
-const VHSOverlay: React.FC = () => {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type VHSOverlayProps = {
+  fadeIn?: boolean;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+const VHSOverlay: React.FC<VHSOverlayProps> = ({ fadeIn = false }) => {
   const [time, setTime] = useState<string>('');
 
   // Update the time every second.
@@ -34,7 +47,10 @@ const VHSOverlay: React.FC = () => {
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+      className={clsx(
+        'pointer-events-none absolute inset-0 z-10 flex items-center justify-center',
+        fadeIn ? 'duration-1000 animate-in fade-in' : '',
+      )}
       aria-hidden={true}
     >
       {/* Chromatic aberration effect. */}
