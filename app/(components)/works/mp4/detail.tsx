@@ -12,6 +12,7 @@ import {
   PanelLeftOpen,
   Pause,
   Play,
+  RectangleVertical,
   RotateCcw,
   RotateCw,
   SkipForward,
@@ -403,7 +404,7 @@ const Mp4FeatureDetail: React.FC = () => {
           {mp4 ? <Mp4FeatureDetailProgressMeter data={mp4} videoRef={videoRef} /> : null}
           {mp4 ? (
             <IconButton
-              className="rounded-l-none"
+              className="rounded-l-none animate-in fade-in"
               size="sm"
               variant="outline"
               href={mp4.url}
@@ -414,8 +415,10 @@ const Mp4FeatureDetail: React.FC = () => {
           ) : null}
           {!mp4 ? (
             <Button
-              className="grow font-vhs-display"
+              className="grow font-vhs-display [&_[button-content]]:grow"
               size="sm"
+              leftIcon={<RectangleVertical />}
+              rightIcon={<RectangleVertical />}
               onClick={initialize}
               disabled={initialized > 0 || ejecting}
             >
@@ -610,7 +613,7 @@ const Mp4FeatureDetailProgressMeter: React.FC<{
   if (Number.isNaN(timeElapsed)) timeElapsed = 0;
 
   return (
-    <div className="flex h-6 grow overflow-hidden rounded-l border border-gray-7 transition-colors hover:z-30 hover:border-gray-8">
+    <div className="flex h-6 grow overflow-hidden rounded-l border border-gray-7 transition-colors animate-in fade-in hover:z-30 hover:border-gray-8">
       <motion.div
         className="relative flex h-6 grow cursor-ew-resize flex-col items-start bg-gray-3"
         drag="x"
