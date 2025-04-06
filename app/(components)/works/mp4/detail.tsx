@@ -243,7 +243,7 @@ const Mp4FeatureDetail: React.FC = () => {
                   <Fragment>
                     <Tooltip
                       content={!mp4 || muted ? 'Unmute' : 'Mute'}
-                      side="top"
+                      side="right"
                       triggerProps={{ asChild: true }}
                     >
                       <IconButton
@@ -263,6 +263,10 @@ const Mp4FeatureDetail: React.FC = () => {
                         )}
                       </IconButton>
                     </Tooltip>
+                    <Mp4FeatureDetailProgressText
+                      videoRef={videoRef}
+                      className={showOverlay ? 'opacity-100' : 'opacity-0'}
+                    />
                     <Tooltip content="Next video" side="left" triggerProps={{ asChild: true }}>
                       <IconButton
                         className="pointer-events-auto absolute right-2 top-2 backdrop-blur animate-in fade-in"
@@ -440,8 +444,55 @@ const Mp4FeatureDetail: React.FC = () => {
 };
 
 // -----------------------------------------------------------------------------
-// Progress meter
+// Progress meters
 // -----------------------------------------------------------------------------
+
+const Mp4FeatureDetailProgressText: React.FC<{
+  className?: string;
+  videoRef: React.RefObject<HTMLVideoElement>;
+}> = ({ className = '', videoRef }) => {
+  const [progress, setProgress] = useState<number>(0);
+
+  // Update the time elapsed.
+  useEffect(() => {
+    const updateProgress = () => {
+      if (videoRef.current) {
+        const { currentTime: time, duration } = videoRef.current;
+        if (!isNaN(duration) && isFinite(duration)) {
+          setProgress(time);
+        }
+      }
+    };
+
+    updateProgress();
+    const interval = setInterval(updateProgress, 250);
+
+    return () => clearInterval(interval);
+  }, [videoRef]);
+
+  const duration = videoRef.current?.duration ?? 0;
+
+  return (
+    <div
+      className={clsx(
+        'absolute bottom-2 left-2 flex h-5 items-center rounded border border-gray-6 bg-black/50 px-1.5 font-mono text-xs leading-3 text-gray-12 backdrop-blur transition-opacity',
+        className,
+      )}
+    >
+      {Math.floor(progress / 60)}
+      <span className="text-gray-11">:</span>
+      {Math.floor(progress % 60)
+        .toString()
+        .padStart(2, '0')}
+      <span className="mx-1 text-gray-11">/</span>
+      {Math.floor(duration / 60)}
+      <span className="text-gray-11">:</span>
+      {Math.floor(duration % 60)
+        .toString()
+        .padStart(2, '0')}
+    </div>
+  );
+};
 
 const Mp4FeatureDetailProgressMeter: React.FC<{
   data: ReturnType<typeof getRandomMp4Url>;
@@ -459,12 +510,15 @@ const Mp4FeatureDetailProgressMeter: React.FC<{
   useEffect(() => {
     if (expanded) return;
 
-    const interval = setInterval(() => {
+    const updateProgress = () => {
       if (videoRef.current) {
         const { currentTime: time, duration } = videoRef.current;
         setProgress(Math.min(100 * (time / duration), 100));
       }
-    }, 50);
+    };
+
+    updateProgress();
+    const interval = setInterval(updateProgress, 50);
 
     return () => clearInterval(interval);
   }, [videoRef, expanded]);
