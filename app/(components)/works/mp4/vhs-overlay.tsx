@@ -70,7 +70,7 @@ const VHSOverlay: React.FC = () => {
           </span>
         </span>
         {/* Top-center label. */}
-        <span className="absolute top-2 font-vhs-display">5/9</span>
+        <span className="absolute top-2 font-vhs-display">555555555</span>
         {/* Top-right label. */}
         <span className="absolute right-2 top-2">--:--</span>
         {/* Bottom-left label. */}
