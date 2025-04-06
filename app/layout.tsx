@@ -23,8 +23,12 @@ const firaCode = LocalFont({
   variable: '--font-fira-code',
 });
 const serpentine = LocalFont({
-  src: '../public/static/fonts/Serpentine-Sans-ICG-Oblique.ttf',
+  src: '../public/static/fonts/Serpentine-Sans-ICG-Oblique.woff2',
   variable: '--font-serpentine',
+});
+const vcrOsdMono = LocalFont({
+  src: '../public/static/fonts/VCR_OSD_MONO_1.001.woff2',
+  variable: '--font-vcr-osd-mono',
 });
 
 // -----------------------------------------------------------------------------
@@ -82,7 +86,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={clsx(inter.variable, firaCode.variable, serpentine.variable, 'dark')}
+      className={clsx(
+        inter.variable,
+        firaCode.variable,
+        serpentine.variable,
+        vcrOsdMono.variable,
+        'dark',
+      )}
       style={{ background: '#000' }}
     >
       <body className="relative flex min-h-screen w-full flex-col">

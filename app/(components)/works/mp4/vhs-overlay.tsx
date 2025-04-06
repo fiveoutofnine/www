@@ -61,7 +61,7 @@ const VHSOverlay: React.FC = () => {
         }}
       />
 
-      <div className="absolute inset-0 z-30 flex select-none items-center justify-center font-mono text-xs uppercase leading-3 text-white">
+      <div className="absolute inset-0 z-30 flex select-none items-center justify-center font-vhs-mono text-xs uppercase leading-3 text-white">
         {/* Top-left label. */}
         <span className="absolute left-2 top-2 flex items-center gap-1">
           <span>Play</span>
