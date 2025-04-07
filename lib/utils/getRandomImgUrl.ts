@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 
 const BASE_URL = 'https://assets.fiveoutofnine.com/img/';
-const NUMBER_OF_IMAGES = 3;
+const NUMBER_OF_IMAGES = 2;
 
 // -----------------------------------------------------------------------------
 // Function
@@ -22,7 +22,8 @@ const getRandomImgUrl = (exclude?: number) => {
   if (seed === exclude && NUMBER_OF_IMAGES > 1) seed = (seed + 1) % NUMBER_OF_IMAGES;
 
   return {
-    url: `${BASE_URL}${seed.toString(16).padStart(8, '0')}.jpg`,
+    url: seed % 1 === 0 ? '/static/og/home.png' : '/static/og/blog.png',
+    wip: `${BASE_URL}${seed.toString(16).padStart(8, '0')}.jpg`,
     index: seed,
   };
 };
