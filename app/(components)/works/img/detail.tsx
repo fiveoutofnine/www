@@ -157,7 +157,7 @@ const ImgFeatureDetail: React.FC = () => {
         <div className="relative h-full w-full">
           <div
             className={clsx(
-              'absolute inset-0 h-full w-full overflow-hidden rounded-lg border border-gray-6 bg-black',
+              'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
               phase === 0
                 ? 'scale-90 opacity-50'
                 : phase === 1
@@ -181,7 +181,7 @@ const ImgFeatureDetail: React.FC = () => {
 
           <div
             className={clsx(
-              'absolute inset-0 h-full w-full overflow-hidden rounded-lg border border-gray-6 bg-black',
+              'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
               phase === 0
                 ? 'translate-x-0 rotate-0 opacity-100'
                 : phase === 1
