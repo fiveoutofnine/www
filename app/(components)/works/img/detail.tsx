@@ -7,19 +7,35 @@ import clsx from 'clsx';
 
 import { getRandomImgUrl } from '@/lib/utils';
 
-const SWIPE_THRESHOLD = 250; // Threshold to consider a swipe complete
+import { IconButton } from '@/components/ui';
+
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const SWIPE_THRESHOLD = 100; // Threshold to consider a swipe complete
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 const ImgFeatureDetail: React.FC = () => {
   const [image, setImage] = useState<ReturnType<typeof getRandomImgUrl>>(getRandomImgUrl());
   const [nextImage, setNextImage] = useState<ReturnType<typeof getRandomImgUrl>>(
     getRandomImgUrl(image.index),
   );
+  const [phase, setPhase] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [swiping, setSwiping] = useState<boolean>(false);
   const [swipeOut, setSwipeOut] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
 
   const imageContainerRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dragStartTime = useRef<Date | null>(null);
 
   // Reset the image after swipe out animation completes
@@ -31,6 +47,7 @@ const ImgFeatureDetail: React.FC = () => {
         setSwipeOut(false);
         setSwiping(false);
         setSwipeDirection(null);
+
         if (imageContainerRef.current) {
           imageContainerRef.current.style.setProperty('--swipe-amount', '0px');
           imageContainerRef.current.style.setProperty('--rotation', '0deg');
@@ -42,7 +59,7 @@ const ImgFeatureDetail: React.FC = () => {
     }
   }, [swipeOut, nextImage]);
 
-  // Handle swipe gestures
+  /* // Handle swipe gestures
   const handlePointerDown = (event: React.PointerEvent) => {
     dragStartTime.current = new Date();
     // Ensure we maintain correct pointer capture
@@ -89,11 +106,11 @@ const ImgFeatureDetail: React.FC = () => {
     const velocity = Math.abs(swipeAmount) / (timeTaken || 1);
 
     if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.11) {
-      // Swipe was successful - animate out
+      // Swipe was successful - animate out.
       setSwipeDirection(swipeAmount > 0 ? 'right' : 'left');
       setSwipeOut(true);
 
-      // Complete the swipe animation
+      // Complete the swipe animation.
       if (imageContainerRef.current) {
         const direction = swipeAmount > 0 ? 1 : -1;
         const rotation = direction * 45; // Rotate more dramatically on swipe out
@@ -106,7 +123,7 @@ const ImgFeatureDetail: React.FC = () => {
         imageContainerRef.current.style.setProperty('--scale', '0.8');
       }
     } else {
-      // Reset if swipe wasn't far enough
+      // Reset if swipe wasn't far enough.
       if (imageContainerRef.current) {
         imageContainerRef.current.style.setProperty('--swipe-amount', '0px');
         imageContainerRef.current.style.setProperty('--rotation', '0deg');
@@ -130,86 +147,88 @@ const ImgFeatureDetail: React.FC = () => {
     setSwipeDirection(null);
     pointerStartRef.current = null;
     dragStartTime.current = null;
-  };
+  }; */
 
   return (
     <div className="flex h-[11.375rem] w-full overflow-hidden bg-black">
       <div className="h-full w-8 min-w-8 bg-red-9" />
 
-      <div className="flex h-full grow items-center justify-center bg-gray-3 p-1">
-        {/* Card stack container with relative positioning */}
-        <div className="relative h-full w-full overflow-hidden rounded-md border border-gray-6 bg-black">
-          {/* Current image with swipe functionality */}
+      <div className="relative flex h-full grow items-center justify-center bg-gray-3 p-2">
+        <div className="relative h-full w-full">
           <div
-            ref={imageContainerRef}
             className={clsx(
-              'absolute inset-0 z-10 flex transform touch-none select-none items-center justify-center',
-              swiping ? 'cursor-grabbing' : 'cursor-grab',
-              swipeOut
-                ? 'transition-all duration-300 ease-out'
-                : 'transition-all duration-200 ease-out',
+              'absolute inset-0 h-full w-full overflow-hidden rounded-lg border border-gray-6 bg-black',
+              phase === 0
+                ? 'scale-90 opacity-50'
+                : phase === 1
+                  ? 'scale-95 opacity-80'
+                  : 'scale-100 opacity-100',
             )}
             style={{
-              transform: `
-                translateX(var(--swipe-amount, 0px)) 
-                rotate(var(--rotation, 0deg))
-                scale(var(--scale, 1))
-              `,
-              opacity: swipeOut ? 0 : 1,
+              transitionProperty: 'opacity, transform',
+              transitionDuration: '300ms',
+              transitionTimingFunction: 'ease-in-out',
             }}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={handlePointerCancel}
-            onPointerLeave={handlePointerCancel}
           >
             <Image
-              className="object-fit pointer-events-none m-0 h-full w-full"
-              src={image.url}
-              alt={image.url}
-              width={1024}
-              height={1024}
-            />
-
-            {/* Direction indicators that appear during swipe */}
-            <div
-              className={clsx(
-                'pointer-events-none absolute inset-0 flex items-center justify-center',
-                swipeDirection === 'left' ? 'opacity-100' : 'opacity-0',
-                'transition-opacity duration-200',
-              )}
-            >
-              <div className="-rotate-12 transform rounded-lg bg-red-500 bg-opacity-70 px-4 py-2 font-bold text-white">
-                NOPE
-              </div>
-            </div>
-            <div
-              className={clsx(
-                'pointer-events-none absolute inset-0 flex items-center justify-center',
-                swipeDirection === 'right' ? 'opacity-100' : 'opacity-0',
-                'transition-opacity duration-200',
-              )}
-            >
-              <div className="rotate-12 transform rounded-lg bg-green-500 bg-opacity-70 px-4 py-2 font-bold text-white">
-                LIKE
-              </div>
-            </div>
-          </div>
-
-          {/* Next image (positioned beneath current image) */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Image
-              className="object-fit pointer-events-none m-0"
               src={nextImage.url}
               alt={nextImage.url}
-              width={1024}
-              height={1024}
+              className="object-fit"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              fill
+            />
+          </div>
+
+          <div
+            className={clsx(
+              'absolute inset-0 h-full w-full overflow-hidden rounded-lg border border-gray-6 bg-black',
+              phase === 0
+                ? 'translate-x-0 rotate-0 opacity-100'
+                : phase === 1
+                  ? 'translate-x-1/2 rotate-[9deg] opacity-100'
+                  : 'translate-x-[110%] rotate-[18deg] opacity-0',
+            )}
+            style={
+              phase > 0
+                ? {
+                    transitionProperty: 'opacity, transform',
+                    transitionDuration: '300ms',
+                    transitionTimingFunction: 'ease-in-out',
+                  }
+                : undefined
+            }
+          >
+            <Image
+              src={image.url}
+              alt={image.url}
+              className="object-fit"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              fill
             />
           </div>
         </div>
       </div>
 
-      <div className="h-full w-8 min-w-8 bg-green-9" />
+      <div className="z-20 flex h-full w-8 min-w-8 items-center justify-center bg-green-5">
+        <IconButton
+          size="sm"
+          intent="success"
+          onClick={() =>
+            setPhase((prev) => {
+              if (prev === 2) {
+                setImage(nextImage);
+                setNextImage(getRandomImgUrl(nextImage.index));
+              }
+
+              if (prev === 0) return 2;
+              if (prev === 1) return 2;
+              return (prev + 1) % 3;
+            })
+          }
+        >
+          {phase}
+        </IconButton>
+      </div>
     </div>
   );
 };
