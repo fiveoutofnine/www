@@ -3,18 +3,17 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
-import clsx from 'clsx';
-
 import { getRandomImgUrl } from '@/lib/utils';
-
-import { IconButton } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Constants
 // -----------------------------------------------------------------------------
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const SWIPE_THRESHOLD = 100; // Threshold to consider a swipe complete
+// Threshold to dismiss a card
+const SWIPE_THRESHOLD = 100;
+
+// Animation states
+type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'hidden';
 
 // -----------------------------------------------------------------------------
 // Component
@@ -25,149 +24,153 @@ const ImgFeatureDetail: React.FC = () => {
   const [nextImage, setNextImage] = useState<ReturnType<typeof getRandomImgUrl>>(
     getRandomImgUrl(image.index),
   );
-  const [phase, setPhase] = useState<number>(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [swiping, setSwiping] = useState<boolean>(false);
-  const [swipeOut, setSwipeOut] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const [animationState, setAnimationState] = useState<AnimationState>('idle');
+  const [swipeAmount, setSwipeAmount] = useState<number>(0);
+  const [dragProgress, setDragProgress] = useState<number>(0); // 0-1 for progress toward threshold
+  const [lastExitDirection, setLastExitDirection] = useState<'left' | 'right' | null>(null);
 
-  const imageContainerRef = useRef<HTMLDivElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const cardRef = useRef<HTMLDivElement>(null);
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const dragStartTime = useRef<Date | null>(null);
+  const dragStartTimeRef = useRef<Date | null>(null);
 
-  // Reset the image after swipe out animation completes
+  // Handle animation completion
   useEffect(() => {
-    if (swipeOut) {
-      const timeout = setTimeout(() => {
-        setImage(nextImage);
-        setNextImage(getRandomImgUrl(nextImage.index));
-        setSwipeOut(false);
-        setSwiping(false);
-        setSwipeDirection(null);
+    if (animationState === 'exiting-left' || animationState === 'exiting-right') {
+      // Save the exit direction
+      setLastExitDirection(animationState === 'exiting-left' ? 'left' : 'right');
 
-        if (imageContainerRef.current) {
-          imageContainerRef.current.style.setProperty('--swipe-amount', '0px');
-          imageContainerRef.current.style.setProperty('--rotation', '0deg');
-          imageContainerRef.current.style.setProperty('--scale', '1');
-        }
-      }, 300); // match this with CSS transition duration
+      const timer = setTimeout(() => {
+        // Set to hidden without changing transforms
+        setAnimationState('hidden');
 
-      return () => clearTimeout(timeout);
+        // Then update image state and reset
+        setTimeout(() => {
+          // Update images
+          setImage(nextImage);
+          setNextImage(getRandomImgUrl(nextImage.index));
+
+          // Reset state but do it after a frame to prevent visual "snap back"
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              setSwipeAmount(0);
+              setDragProgress(0);
+              // Only now clear the exit direction and return to idle
+              setLastExitDirection(null);
+              setAnimationState('idle');
+            });
+          });
+        }, 50);
+      }, 300);
+
+      return () => clearTimeout(timer);
     }
-  }, [swipeOut, nextImage]);
+  }, [animationState, nextImage]);
 
-  /* // Handle swipe gestures
-  const handlePointerDown = (event: React.PointerEvent) => {
-    dragStartTime.current = new Date();
-    // Ensure we maintain correct pointer capture
-    (event.target as HTMLElement).setPointerCapture(event.pointerId);
-    setSwiping(true);
-    pointerStartRef.current = { x: event.clientX, y: event.clientY };
+  // Calculate scale and opacity for the next card based on drag progress
+  const getNextCardStyle = () => {
+    // Add a stop point at 70% of the scale progress
+    const SCALE_STOP_POINT = 0.7;
+
+    // Scale from 0.9 to 0.97 initially, then to 1.0 only after animation completes
+    const scaleProgress = dragProgress > SCALE_STOP_POINT ? SCALE_STOP_POINT : dragProgress;
+    const scale = animationState.startsWith('exiting')
+      ? 1.0 // Fully scale when animation is completing
+      : 0.9 + scaleProgress * 0.1;
+
+    // Opacity from 0.5 to 1 as drag progress increases
+    const opacity = 0.5 + dragProgress * 0.5;
+
+    return {
+      scale,
+      opacity,
+    };
   };
 
-  const handlePointerMove = (event: React.PointerEvent) => {
-    if (!pointerStartRef.current || swipeOut) return;
-
-    const xDelta = event.clientX - pointerStartRef.current.x;
-
-    // Calculate rotation based on swipe distance (max ±10 degrees)
-    const rotationDegree = Math.min(Math.max(xDelta / 20, -10), 10);
-
-    // Calculate scale decrease as card moves away (0.9 to 1)
-    const scaleFactor = Math.max(0.9, 1 - Math.abs(xDelta) / 1000);
-
-    // Apply transform
-    if (imageContainerRef.current) {
-      imageContainerRef.current.style.setProperty('--swipe-amount', `${xDelta}px`);
-      imageContainerRef.current.style.setProperty('--rotation', `${rotationDegree}deg`);
-      imageContainerRef.current.style.setProperty('--scale', `${scaleFactor}`);
-
-      // Visual feedback for swipe direction.
-      if (xDelta > 30) setSwipeDirection('right');
-      else if (xDelta < -30) setSwipeDirection('left');
-      else setSwipeDirection(null);
-    }
-  };
-
-  const handlePointerUp = () => {
-    if (!pointerStartRef.current || swipeOut) return;
-
-    const swipeAmount = imageContainerRef.current
-      ? parseFloat(imageContainerRef.current.style.getPropertyValue('--swipe-amount') || '0')
-      : 0;
-
-    const timeTaken = dragStartTime.current
-      ? new Date().getTime() - dragStartTime.current.getTime()
-      : 0;
-
-    const velocity = Math.abs(swipeAmount) / (timeTaken || 1);
-
-    if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.11) {
-      // Swipe was successful - animate out.
-      setSwipeDirection(swipeAmount > 0 ? 'right' : 'left');
-      setSwipeOut(true);
-
-      // Complete the swipe animation.
-      if (imageContainerRef.current) {
-        const direction = swipeAmount > 0 ? 1 : -1;
-        const rotation = direction * 45; // Rotate more dramatically on swipe out
-
-        imageContainerRef.current.style.setProperty(
-          '--swipe-amount',
-          `${direction * window.innerWidth}px`,
-        );
-        imageContainerRef.current.style.setProperty('--rotation', `${rotation}deg`);
-        imageContainerRef.current.style.setProperty('--scale', '0.8');
-      }
+  // Handle swipe animation completion
+  const completeSwipeAnimation = (direction: 'left' | 'right') => {
+    if (direction === 'left') {
+      setAnimationState('exiting-left');
     } else {
-      // Reset if swipe wasn't far enough.
-      if (imageContainerRef.current) {
-        imageContainerRef.current.style.setProperty('--swipe-amount', '0px');
-        imageContainerRef.current.style.setProperty('--rotation', '0deg');
-        imageContainerRef.current.style.setProperty('--scale', '1');
-      }
-      setSwiping(false);
-      setSwipeDirection(null);
+      setAnimationState('exiting-right');
     }
-
-    pointerStartRef.current = null;
-    dragStartTime.current = null;
   };
 
-  const handlePointerCancel = () => {
-    if (imageContainerRef.current) {
-      imageContainerRef.current.style.setProperty('--swipe-amount', '0px');
-      imageContainerRef.current.style.setProperty('--rotation', '0deg');
-      imageContainerRef.current.style.setProperty('--scale', '1');
+  // Get styles for current card based on animation state
+  const getCardStyle = () => {
+    let transform = 'translateX(0) rotate(0deg)';
+    let opacity = 1;
+    let transition = 'transform 300ms ease-out, opacity 300ms ease-out';
+
+    // If we have a last exit direction and we're hidden or idle, maintain that position
+    // until we're completely ready to reset
+    if (lastExitDirection && (animationState === 'hidden' || animationState === 'idle')) {
+      if (lastExitDirection === 'left') {
+        transform = 'translateX(-110%) rotate(-18deg)';
+        opacity = 0;
+      } else {
+        transform = 'translateX(110%) rotate(18deg)';
+        opacity = 0;
+      }
+      transition = 'none'; // No animation during this holding state
+    } else {
+      switch (animationState) {
+        case 'swiping':
+          // When swiping left (negative X), rotate counterclockwise (negative angle)
+          // When swiping right (positive X), rotate clockwise (positive angle)
+          transform = `translateX(${swipeAmount}px) rotate(${swipeAmount * 0.05}deg)`;
+          transition = 'none'; // No transition during active swiping
+          break;
+
+        case 'exiting-left':
+          // When exiting left, rotate counterclockwise (negative angle)
+          transform = 'translateX(-110%) rotate(-18deg)';
+          opacity = 0;
+          break;
+
+        case 'exiting-right':
+          // When exiting right, rotate clockwise (positive angle)
+          transform = 'translateX(110%) rotate(18deg)';
+          opacity = 0;
+          break;
+
+        case 'hidden':
+          opacity = 0;
+          // Position maintained by lastExitDirection check above
+          break;
+
+        case 'idle':
+        default:
+          // Default state handled above with lastExitDirection
+          break;
+      }
     }
-    setSwiping(false);
-    setSwipeDirection(null);
-    pointerStartRef.current = null;
-    dragStartTime.current = null;
-  }; */
+
+    return {
+      transform,
+      opacity,
+      transition,
+    };
+  };
+
+  const { scale, opacity } = getNextCardStyle();
+  const currentCardStyle = getCardStyle();
 
   return (
     <div className="flex h-[11.375rem] w-full overflow-hidden bg-black">
-      <div className="h-full w-8 min-w-8 bg-red-9" />
+      <div className="h-full w-8 min-w-8 border-r border-red-6 bg-red-3" />
 
       <div className="relative flex h-full grow items-center justify-center bg-gray-3 p-2">
         <div className="relative h-full w-full">
+          {/* Next card (below) */}
           <div
-            className={clsx(
-              'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
-              phase === 0
-                ? 'scale-90 opacity-50'
-                : phase === 1
-                  ? 'scale-95 opacity-80'
-                  : 'scale-100 opacity-100',
-            )}
+            className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
             style={{
-              transitionProperty: 'opacity, transform',
-              transitionDuration: '300ms',
-              transitionTimingFunction: 'ease-in-out',
+              transform: `scale(${scale})`,
+              opacity: opacity,
+              transition:
+                animationState === 'swiping'
+                  ? 'none'
+                  : 'transform 300ms ease-in-out, opacity 300ms ease-in-out',
             }}
           >
             <Image
@@ -179,24 +182,75 @@ const ImgFeatureDetail: React.FC = () => {
             />
           </div>
 
+          {/* Current card (top) */}
           <div
-            className={clsx(
-              'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
-              phase === 0
-                ? 'translate-x-0 rotate-0 opacity-100'
-                : phase === 1
-                  ? 'translate-x-1/2 rotate-[9deg] opacity-100'
-                  : 'translate-x-[110%] rotate-[18deg] opacity-0',
-            )}
-            style={
-              phase > 0
-                ? {
-                    transitionProperty: 'opacity, transform',
-                    transitionDuration: '300ms',
-                    transitionTimingFunction: 'ease-in-out',
-                  }
-                : undefined
-            }
+            ref={cardRef}
+            className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
+            style={currentCardStyle}
+            onPointerDown={(event) => {
+              // Don't swipe during animation
+              if (animationState !== 'idle' || lastExitDirection) return;
+
+              event.preventDefault();
+              // Mark the start of a drag
+              dragStartTimeRef.current = new Date();
+              setAnimationState('swiping');
+              pointerStartRef.current = { x: event.clientX, y: event.clientY };
+              // Ensure we maintain correct pointer capture
+              (event.target as HTMLElement).setPointerCapture(event.pointerId);
+            }}
+            onPointerMove={(event) => {
+              if (!pointerStartRef.current || animationState !== 'swiping') return;
+
+              // Calculate the displacement
+              const xDelta = event.clientX - pointerStartRef.current.x;
+
+              // Update the swipe amount
+              setSwipeAmount(xDelta);
+
+              // Calculate drag progress as percentage of threshold
+              // Clamp between 0 and 1
+              const progress = Math.min(1, Math.abs(xDelta) / SWIPE_THRESHOLD);
+              setDragProgress(progress);
+            }}
+            onPointerUp={() => {
+              if (
+                !pointerStartRef.current ||
+                !dragStartTimeRef.current ||
+                animationState !== 'swiping'
+              )
+                return;
+
+              // Calculate time taken and velocity
+              const timeTaken = new Date().getTime() - dragStartTimeRef.current.getTime();
+              const velocity = Math.abs(swipeAmount) / timeTaken;
+
+              // If swipe exceeds threshold or is fast enough
+              if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.5) {
+                // Determine direction
+                const direction = swipeAmount > 0 ? 'right' : 'left';
+
+                // Start the completion animation
+                completeSwipeAnimation(direction);
+              } else {
+                // If not swiped far enough, reset position
+                setSwipeAmount(0);
+                setDragProgress(0);
+                setAnimationState('idle');
+              }
+
+              // Clean up
+              pointerStartRef.current = null;
+              dragStartTimeRef.current = null;
+            }}
+            onPointerCancel={() => {
+              // Reset on cancel
+              setSwipeAmount(0);
+              setDragProgress(0);
+              setAnimationState('idle');
+              pointerStartRef.current = null;
+              dragStartTimeRef.current = null;
+            }}
           >
             <Image
               src={image.url}
@@ -204,30 +258,16 @@ const ImgFeatureDetail: React.FC = () => {
               className="object-fit"
               sizes="(max-width: 768px) 100vw, 50vw"
               fill
+              draggable={false}
             />
           </div>
         </div>
       </div>
 
-      <div className="z-20 flex h-full w-8 min-w-8 items-center justify-center bg-green-5">
-        <IconButton
-          size="sm"
-          intent="success"
-          onClick={() =>
-            setPhase((prev) => {
-              if (prev === 2) {
-                setImage(nextImage);
-                setNextImage(getRandomImgUrl(nextImage.index));
-              }
-
-              if (prev === 0) return 2;
-              if (prev === 1) return 2;
-              return (prev + 1) % 3;
-            })
-          }
-        >
-          {phase}
-        </IconButton>
+      <div className="z-20 flex h-full w-8 min-w-8 items-center justify-center border-l border-green-6 bg-green-3">
+        <div className="font-mono text-xs text-white">
+          {lastExitDirection ? `last:${lastExitDirection}` : animationState}
+        </div>
       </div>
     </div>
   );
