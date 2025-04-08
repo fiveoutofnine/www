@@ -79,9 +79,9 @@ const ImgFeatureDetail: React.FC = () => {
       // it's already been slotted in.
       scale = SCALE_FINAL;
       opacity = OPACITY_FINAL;
-      transition = 'transform 400ms ease-in-out, opacity 400ms ease-in';
+      transition = 'transform 300ms ease-in-out, opacity 400ms ease-in';
     } else {
-      transition = 'transform 400ms ease-in-out, opacity 400ms ease-in-out';
+      transition = 'transform 300ms ease-in-out, opacity 400ms ease-in-out';
     }
 
     return {
@@ -107,13 +107,13 @@ const ImgFeatureDetail: React.FC = () => {
     } else if (animationState === 'exiting-left') {
       transform = 'translateX(-110%) rotate(-18deg)';
       opacity = 0;
-      transition = 'transform 400ms ease-out, opacity 400ms ease-out';
+      transition = 'transform 300ms ease-out, opacity 400ms ease-out';
     } else if (animationState === 'exiting-right') {
       transform = 'translateX(110%) rotate(18deg)';
       opacity = 0;
-      transition = 'transform 400ms ease-out, opacity 400ms ease-out';
+      transition = 'transform 300ms ease-out, opacity 400ms ease-out';
     } else if (animationState === 'returning-to-center') {
-      transition = 'transform 400ms ease-out, opacity 400ms ease-out';
+      transition = 'transform 300ms ease-out, opacity 400ms ease-out';
     }
 
     return {
