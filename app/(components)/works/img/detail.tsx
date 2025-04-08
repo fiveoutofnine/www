@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import clsx from 'clsx';
 
@@ -28,65 +28,27 @@ const ImgFeatureDetail: React.FC = () => {
   const [swipeAmount, setSwipeAmount] = useState<number>(0);
   const [lastExitDirection, setLastExitDirection] = useState<'left' | 'right' | null>(null);
 
-  const cardRef = useRef<HTMLDivElement>(null);
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const dragStartTimeRef = useRef<Date | null>(null);
 
-  // Handle animation completion
-  useEffect(() => {
+  const handleCardTransitionEnd = () => {
     if (animationState === 'exiting-left' || animationState === 'exiting-right') {
-      // Save the exit direction
-      setLastExitDirection(animationState === 'exiting-left' ? 'left' : 'right');
+      // Update images after transition ends
+      setImage(nextImage);
+      setNextImage(getRandomImgUrl(nextImage.index));
 
-      // Listen for transition end event on the card element
-      const handleTransitionEnd = () => {
-        // Add a small delay before updating images to allow the next card
-        // to complete its scale-up animation
-        setTimeout(() => {
-          // Update images after transition ends
-          setImage(nextImage);
-          setNextImage(getRandomImgUrl(nextImage.index));
+      // Reset position variables
+      setSwipeAmount(0);
 
-          // Reset position variables
-          setSwipeAmount(0);
-
-          // Request animation frame to ensure DOM updates before returning to idle
-          requestAnimationFrame(() => {
-            setLastExitDirection(null);
-            setAnimationState('idle');
-          });
-        }, 50); // Small delay to allow next card animation to complete
-      };
-
-      const cardElement = cardRef.current;
-      if (cardElement) {
-        cardElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
-
-        // Cleanup listener if component unmounts during animation
-        return () => {
-          cardElement.removeEventListener('transitionend', handleTransitionEnd);
-        };
-      }
-    }
-
-    // Handle returning to center animation
-    if (animationState === 'returning-to-center') {
-      // Listen for transition end event on the card element
-      const handleTransitionEnd = () => {
+      // Request animation frame to ensure DOM updates before returning to idle
+      requestAnimationFrame(() => {
+        setLastExitDirection(null);
         setAnimationState('idle');
-      };
-
-      const cardElement = cardRef.current;
-      if (cardElement) {
-        cardElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
-
-        // Cleanup listener if component unmounts during animation
-        return () => {
-          cardElement.removeEventListener('transitionend', handleTransitionEnd);
-        };
-      }
+      });
+    } else if (animationState === 'returning-to-center') {
+      setAnimationState('idle');
     }
-  }, [animationState, nextImage]);
+  };
 
   // Calculate scale and opacity for the next card based on drag progress
   const getNextCardStyle = () => {
@@ -226,7 +188,6 @@ const ImgFeatureDetail: React.FC = () => {
 
           {/* Current image displayed. */}
           <div
-            ref={cardRef}
             key={`top-image-${image.index}`}
             className={clsx(
               'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
@@ -239,6 +200,7 @@ const ImgFeatureDetail: React.FC = () => {
               ...currentCardStyle,
               transition: animationState === 'swiping' ? 'none' : undefined,
             }}
+            onTransitionEnd={handleCardTransitionEnd}
             onPointerDown={(event) => {
               // Don't swipe during animation.
               if (animationState !== 'idle' || lastExitDirection) return;
