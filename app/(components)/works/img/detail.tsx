@@ -13,7 +13,9 @@ import { getRandomImgUrl } from '@/lib/utils';
 
 type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'returning-to-center';
 
-const SWIPE_THRESHOLD = 100;
+const SWIPE_X_THRESHOLD = 100;
+
+const SWIPE_VELOCITY_THRESHOLD = 0.5;
 
 // -----------------------------------------------------------------------------
 // Component
@@ -28,8 +30,8 @@ const ImgFeatureDetail: React.FC = () => {
   const [swipeAmount, setSwipeAmount] = useState<number>(0);
   const [lastExitDirection, setLastExitDirection] = useState<'left' | 'right' | null>(null);
 
-  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
-  const dragStartTimeRef = useRef<Date | null>(null);
+  const pointerRef = useRef<{ x: number; y: number } | null>(null);
+  const dragTimerRef = useRef<Date | null>(null);
 
   // ---------------------------------------------------------------------------
   // Animation styles
@@ -61,7 +63,7 @@ const ImgFeatureDetail: React.FC = () => {
       // Calculate the scale using an asymptotic function: 1 - e^(-x)
       // This function approaches 1 as x increases but never quite reaches it
       // We scale this behavior to our desired range (minScale to maxSwipingScale)
-      const factor = 1 - Math.exp(-absSwipeAmount / (SWIPE_THRESHOLD * 0.8));
+      const factor = 1 - Math.exp(-absSwipeAmount / (SWIPE_X_THRESHOLD * 0.8));
       const scaleRange = maxSwipingScale - minScale;
 
       scale = minScale + scaleRange * factor;
@@ -85,7 +87,7 @@ const ImgFeatureDetail: React.FC = () => {
     } else if (animationState === 'swiping') {
       // Similar asymptotic approach for opacity
       const absSwipeAmount = Math.abs(swipeAmount);
-      const factor = 1 - Math.exp(-absSwipeAmount / (SWIPE_THRESHOLD * 0.7));
+      const factor = 1 - Math.exp(-absSwipeAmount / (SWIPE_X_THRESHOLD * 0.7));
       const opacityRange = maxSwipingOpacity - minOpacity;
 
       opacity = minOpacity + opacityRange * factor;
@@ -99,6 +101,7 @@ const ImgFeatureDetail: React.FC = () => {
   const getCardStyle = () => {
     let transform = 'translateX(0) rotate(0deg)';
     let opacity = 1;
+    let transition = undefined;
 
     // If we have a last exit direction and we're in idle state but still showing the exit direction
     if (lastExitDirection && animationState === 'idle') {
@@ -115,15 +118,20 @@ const ImgFeatureDetail: React.FC = () => {
         case 'exiting-left':
           transform = 'translateX(-110%) rotate(-18deg)';
           opacity = 0;
+          transition = 'transform 400ms ease-out, opacity 400ms ease-out';
           break;
         case 'exiting-right':
           transform = 'translateX(110%) rotate(18deg)';
           opacity = 0;
+          transition = 'transform 400ms ease-out, opacity 400ms ease-out';
+          break;
+        case 'returning-to-center':
+          transition = 'transform 400ms ease-out, opacity 400ms ease-out';
           break;
       }
     }
 
-    return { transform, opacity };
+    return { transform, opacity, transition };
   };
 
   const { scale, opacity } = getNextCardStyle();
@@ -133,8 +141,8 @@ const ImgFeatureDetail: React.FC = () => {
   // Return
   // ---------------------------------------------------------------------------
 
-  const showLeftGradient = swipeAmount <= -SWIPE_THRESHOLD || animationState === 'exiting-left';
-  const showRightGradient = swipeAmount >= SWIPE_THRESHOLD || animationState === 'exiting-right';
+  const disliked = swipeAmount <= -SWIPE_X_THRESHOLD || animationState === 'exiting-left';
+  const liked = swipeAmount >= SWIPE_X_THRESHOLD || animationState === 'exiting-right';
 
   return (
     <div className="relative flex h-[11.375rem] w-full overflow-hidden bg-gray-3">
@@ -174,27 +182,66 @@ const ImgFeatureDetail: React.FC = () => {
           {/* Current image displayed. */}
           <div
             key={`top-image-${image.index}`}
-            className={clsx(
-              'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
-              (animationState === 'exiting-left' ||
-                animationState === 'exiting-right' ||
-                animationState === 'returning-to-center') &&
-                'duration-[400ms] transition-all ease-out',
-            )}
+            className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
             style={{
-              ...currentCardStyle,
-              transition: animationState === 'swiping' ? 'none' : undefined,
+              opacity: currentCardStyle.opacity,
+              transform: currentCardStyle.transform,
+              transition: currentCardStyle.transition,
+            }}
+            onPointerDown={(e) => {
+              // Don't swipe during animation.
+              if (animationState !== 'idle' || lastExitDirection) return;
+              e.preventDefault();
+
+              // Mark the start of a drag.
+              dragTimerRef.current = new Date();
+              setAnimationState('swiping');
+              pointerRef.current = { x: e.clientX, y: e.clientY };
+              (e.target as HTMLElement).setPointerCapture(e.pointerId);
+            }}
+            onPointerMove={(e) => {
+              if (!pointerRef.current || animationState !== 'swiping') return;
+
+              setSwipeAmount(e.clientX - pointerRef.current.x);
+            }}
+            onPointerUp={() => {
+              if (!pointerRef.current || !dragTimerRef.current || animationState !== 'swiping') {
+                return;
+              }
+
+              // Determine whether or not to complete the swipe.
+              const timeTaken = new Date().getTime() - dragTimerRef.current.getTime();
+              const velocity = Math.abs(swipeAmount) / timeTaken;
+              if (
+                Math.abs(swipeAmount) >= SWIPE_X_THRESHOLD ||
+                velocity > SWIPE_VELOCITY_THRESHOLD
+              ) {
+                setAnimationState(swipeAmount > 0 ? 'exiting-right' : 'exiting-left');
+              } else {
+                setAnimationState('returning-to-center');
+                setSwipeAmount(0);
+              }
+
+              pointerRef.current = null;
+              dragTimerRef.current = null;
+            }}
+            onPointerCancel={() => {
+              setSwipeAmount(0);
+              setAnimationState('idle');
+              pointerRef.current = null;
+              dragTimerRef.current = null;
             }}
             onTransitionEnd={() => {
               if (animationState === 'exiting-left' || animationState === 'exiting-right') {
-                // Update images after transition ends
+                // Update images after transition ends.
                 setImage(nextImage);
                 setNextImage(getRandomImgUrl(nextImage.index));
 
-                // Reset position variables
+                // Reset swipe amount.
                 setSwipeAmount(0);
 
-                // Request animation frame to ensure DOM updates before returning to idle
+                // Request animation frame to ensure DOM updates before
+                // returning to idle.
                 requestAnimationFrame(() => {
                   setLastExitDirection(null);
                   setAnimationState('idle');
@@ -202,51 +249,6 @@ const ImgFeatureDetail: React.FC = () => {
               } else if (animationState === 'returning-to-center') {
                 setAnimationState('idle');
               }
-            }}
-            onPointerDown={(event) => {
-              // Don't swipe during animation.
-              if (animationState !== 'idle' || lastExitDirection) return;
-              event.preventDefault();
-
-              // Mark the start of a drag.
-              dragStartTimeRef.current = new Date();
-              setAnimationState('swiping');
-              pointerStartRef.current = { x: event.clientX, y: event.clientY };
-              (event.target as HTMLElement).setPointerCapture(event.pointerId);
-            }}
-            onPointerMove={(event) => {
-              if (!pointerStartRef.current || animationState !== 'swiping') return;
-
-              setSwipeAmount(event.clientX - pointerStartRef.current.x);
-            }}
-            onPointerUp={() => {
-              if (
-                !pointerStartRef.current ||
-                !dragStartTimeRef.current ||
-                animationState !== 'swiping'
-              )
-                return;
-
-              // Calculate time taken and velocity.
-              const timeTaken = new Date().getTime() - dragStartTimeRef.current.getTime();
-              const velocity = Math.abs(swipeAmount) / timeTaken;
-
-              // If swipe exceeds threshold or is fast enough; return if not.
-              if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.5) {
-                setAnimationState(swipeAmount > 0 ? 'exiting-right' : 'exiting-left');
-              } else {
-                setAnimationState('returning-to-center');
-                setSwipeAmount(0);
-              }
-
-              pointerStartRef.current = null;
-              dragStartTimeRef.current = null;
-            }}
-            onPointerCancel={() => {
-              setSwipeAmount(0);
-              setAnimationState('idle');
-              pointerStartRef.current = null;
-              dragStartTimeRef.current = null;
             }}
           >
             <Image
@@ -261,20 +263,22 @@ const ImgFeatureDetail: React.FC = () => {
         </div>
       </div>
 
-      {/* Left indicator. */}
+      {/* Dislike indicator. */}
       <div
         className={clsx(
-          'pointer-events-none absolute left-0 top-0 z-20 h-full w-8 min-w-8 bg-gradient-to-r from-red-3 to-transparent transition-opacity duration-300',
-          showLeftGradient ? 'opacity-100' : 'opacity-0',
+          'pointer-events-none absolute left-0 top-0 z-20 h-full w-8 min-w-8 bg-gradient-to-r from-red-3 to-transparent transition-opacity duration-200',
+          disliked ? 'opacity-100' : 'opacity-0',
         )}
-      ></div>
-      {/* Right indicator. */}
+        aria-hidden={true}
+      />
+      {/* Like indicator. */}
       <div
         className={clsx(
-          'pointer-events-none absolute right-0 top-0 z-20 h-full w-8 min-w-8 bg-gradient-to-l from-green-3 to-transparent transition-opacity duration-300',
-          showRightGradient ? 'opacity-100' : 'opacity-0',
+          'pointer-events-none absolute right-0 top-0 z-20 h-full w-8 min-w-8 bg-gradient-to-l from-green-3 to-transparent transition-opacity duration-200',
+          liked ? 'opacity-100' : 'opacity-0',
         )}
-      ></div>
+        aria-hidden={true}
+      />
     </div>
   );
 };
