@@ -90,49 +90,35 @@ const ImgFeatureDetail: React.FC = () => {
   };
 
   const getTopStyle = () => {
+    let transform = 'translateX(0) rotate(0deg)';
+    let opacity = 1;
+    let transition = undefined;
+
     if (lastExitDirection && animationState === 'idle') {
-      return {
-        transform:
-          lastExitDirection === 'left'
-            ? 'translateX(-110%) rotate(-18deg)'
-            : 'translateX(110%) rotate(18deg)',
-        opacity: 0,
-        transition: undefined,
-      };
+      transform =
+        lastExitDirection === 'left'
+          ? 'translateX(-110%) rotate(-18deg)'
+          : 'translateX(110%) rotate(18deg)';
+      opacity = 0;
+    } else if (animationState === 'swiping') {
+      transform = `translateX(${swipeAmount}px) rotate(${swipeAmount * 0.05}deg)`;
+    } else if (animationState === 'exiting-left') {
+      transform = 'translateX(-110%) rotate(-18deg)';
+      opacity = 0;
+      transition = 'transform 400ms ease-out, opacity 400ms ease-out';
+    } else if (animationState === 'exiting-right') {
+      transform = 'translateX(110%) rotate(18deg)';
+      opacity = 0;
+      transition = 'transform 400ms ease-out, opacity 400ms ease-out';
+    } else if (animationState === 'returning-to-center') {
+      transition = 'transform 400ms ease-out, opacity 400ms ease-out';
     }
 
-    switch (animationState) {
-      case 'swiping':
-        return {
-          transform: `translateX(${swipeAmount}px) rotate(${swipeAmount * 0.05}deg)`,
-          opacity: 1,
-          transition: undefined,
-        };
-      case 'exiting-left':
-        return {
-          transform: 'translateX(-110%) rotate(-18deg)',
-          opacity: 0,
-          transition: 'transform 400ms ease-out, opacity 400ms ease-out',
-        };
-      case 'exiting-right':
-        return {
-          transform: 'translateX(110%) rotate(18deg)',
-          opacity: 0,
-          transition: 'transform 400ms ease-out, opacity 400ms ease-out',
-        };
-      case 'returning-to-center':
-        return {
-          transform: 'translateX(0) rotate(0deg)',
-          opacity: 1,
-          transition: 'transform 400ms ease-out, opacity 400ms ease-out',
-        };
-      default: // 'idle'
-        return {
-          transform: 'translateX(0) rotate(0deg)',
-          opacity: 1,
-          transition: undefined,
-        };
-    }
+    return {
+      transform,
+      opacity,
+      transition,
+    };
   };
 
   // ---------------------------------------------------------------------------
