@@ -26,7 +26,6 @@ const ImgFeatureDetail: React.FC = () => {
   );
   const [animationState, setAnimationState] = useState<AnimationState>('idle');
   const [swipeAmount, setSwipeAmount] = useState<number>(0);
-  const [dragProgress, setDragProgress] = useState<number>(0);
   const [lastExitDirection, setLastExitDirection] = useState<'left' | 'right' | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -41,19 +40,22 @@ const ImgFeatureDetail: React.FC = () => {
 
       // Listen for transition end event on the card element
       const handleTransitionEnd = () => {
-        // Update images directly after transition ends
-        setImage(nextImage);
-        setNextImage(getRandomImgUrl(nextImage.index));
+        // Add a small delay before updating images to allow the next card
+        // to complete its scale-up animation
+        setTimeout(() => {
+          // Update images after transition ends
+          setImage(nextImage);
+          setNextImage(getRandomImgUrl(nextImage.index));
 
-        // Reset position variables
-        setSwipeAmount(0);
-        setDragProgress(0);
+          // Reset position variables
+          setSwipeAmount(0);
 
-        // Request animation frame to ensure DOM updates before returning to idle
-        requestAnimationFrame(() => {
-          setLastExitDirection(null);
-          setAnimationState('idle');
-        });
+          // Request animation frame to ensure DOM updates before returning to idle
+          requestAnimationFrame(() => {
+            setLastExitDirection(null);
+            setAnimationState('idle');
+          });
+        }, 50); // Small delay to allow next card animation to complete
       };
 
       const cardElement = cardRef.current;
@@ -88,13 +90,60 @@ const ImgFeatureDetail: React.FC = () => {
 
   // Calculate scale and opacity for the next card based on drag progress
   const getNextCardStyle = () => {
-    // Scale from 0.9 to 1.0 as drag progress increases
-    const scale = animationState.startsWith('exiting')
-      ? 1.0 // Fully scale when animation is completing
-      : 0.9 + Math.min(0.1, dragProgress * 0.1);
+    // Start at 0.9 as minimum scale
+    const minScale = 0.9;
+    // Maximum scale during swiping (before exiting animation)
+    const maxSwipingScale = 0.97;
+    // Final scale value
+    const finalScale = 1.0;
 
-    // Opacity from 0.5 to 1 as drag progress increases
-    const opacity = 0.5 + dragProgress * 0.5;
+    let scale = minScale;
+
+    if (animationState.startsWith('exiting')) {
+      // For exiting animations, we set scale to the maximum swiping scale
+      // The actual 1.0 scale is applied in the component style for proper animation
+      scale = maxSwipingScale;
+    } else if (animationState === 'swiping') {
+      // Use an asymptotic function that continuously increases with more movement
+      // but approaches maxSwipingScale asymptotically without ever quite reaching it
+      // This gives a natural feel and ensures the scale is always responding to movement
+
+      // Use absolute swipe amount for the calculation (direction doesn't matter)
+      const absSwipeAmount = Math.abs(swipeAmount);
+
+      // Calculate the scale using an asymptotic function: 1 - e^(-x)
+      // This function approaches 1 as x increases but never quite reaches it
+      // We scale this behavior to our desired range (minScale to maxSwipingScale)
+      const factor = 1 - Math.exp(-absSwipeAmount / (SWIPE_THRESHOLD * 0.8));
+      const scaleRange = maxSwipingScale - minScale;
+
+      scale = minScale + scaleRange * factor;
+
+      // Ensure scale never exceeds maxSwipingScale during swiping
+      scale = Math.min(maxSwipingScale, scale);
+    } else if (lastExitDirection) {
+      // When we have a last exit direction but we're in idle state,
+      // the next card should already be at full scale
+      scale = finalScale;
+    }
+
+    // Create a similar asymptotic function for opacity
+    const minOpacity = 0.5;
+    const maxSwipingOpacity = 0.9;
+
+    let opacity = minOpacity;
+
+    if (animationState.startsWith('exiting') || lastExitDirection) {
+      opacity = 1.0;
+    } else if (animationState === 'swiping') {
+      // Similar asymptotic approach for opacity
+      const absSwipeAmount = Math.abs(swipeAmount);
+      const factor = 1 - Math.exp(-absSwipeAmount / (SWIPE_THRESHOLD * 0.7));
+      const opacityRange = maxSwipingOpacity - minOpacity;
+
+      opacity = minOpacity + opacityRange * factor;
+      opacity = Math.min(maxSwipingOpacity, opacity);
+    }
 
     return { scale, opacity };
   };
@@ -103,16 +152,6 @@ const ImgFeatureDetail: React.FC = () => {
   const getCardStyle = () => {
     let transform = 'translateX(0) rotate(0deg)';
     let opacity = 1;
-    let transition = 'none';
-
-    // Apply transition for exiting and returning animations
-    if (
-      animationState === 'exiting-left' ||
-      animationState === 'exiting-right' ||
-      animationState === 'returning-to-center'
-    ) {
-      transition = 'transform 300ms ease-out, opacity 300ms ease-out';
-    }
 
     // If we have a last exit direction and we're in idle state but still showing the exit direction
     if (lastExitDirection && animationState === 'idle') {
@@ -137,7 +176,7 @@ const ImgFeatureDetail: React.FC = () => {
       }
     }
 
-    return { transform, opacity, transition };
+    return { transform, opacity };
   };
 
   // ---------------------------------------------------------------------------
@@ -166,15 +205,22 @@ const ImgFeatureDetail: React.FC = () => {
         <div className="relative h-full w-full">
           {/* Next card (below) */}
           <div
-            className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
+            className={clsx(
+              'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
+              animationState === 'swiping' ? '' : 'duration-[400ms] transition-all',
+              animationState.startsWith('exiting') ? 'ease-out' : 'ease-in-out',
+            )}
             key={`bottom-image-${nextImage.index}`}
             style={{
-              transform: `scale(${scale})`,
+              transform: animationState.startsWith('exiting')
+                ? 'scale(1)' // Target scale 1.0 for the transition
+                : `scale(${scale})`, // Use calculated scale for other states
               opacity: opacity,
-              transition:
-                animationState === 'swiping'
-                  ? 'none'
-                  : 'transform 300ms ease-in-out, opacity 300ms ease-in-out',
+              // Add a shorter delay to the full scale-up transition when in exiting state
+              // This ensures the next card animates more during the top card's exit
+              transitionDelay: animationState.startsWith('exiting') ? '50ms' : '0ms',
+              // Ensure the transform property is included in the transition
+              transition: animationState === 'swiping' ? 'none' : undefined, // Let CSS classes handle this when not swiping
             }}
           >
             <Image
@@ -190,8 +236,17 @@ const ImgFeatureDetail: React.FC = () => {
           <div
             ref={cardRef}
             key={`top-image-${image.index}`}
-            className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
-            style={currentCardStyle}
+            className={clsx(
+              'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
+              (animationState === 'exiting-left' ||
+                animationState === 'exiting-right' ||
+                animationState === 'returning-to-center') &&
+                'duration-[400ms] transition-all ease-out',
+            )}
+            style={{
+              ...currentCardStyle,
+              transition: animationState === 'swiping' ? 'none' : undefined,
+            }}
             onPointerDown={(event) => {
               // Don't swipe during animation.
               if (animationState !== 'idle' || lastExitDirection) return;
@@ -210,11 +265,6 @@ const ImgFeatureDetail: React.FC = () => {
               // Calculate the displacement.
               const xDelta = event.clientX - pointerStartRef.current.x;
               setSwipeAmount(xDelta);
-
-              // Calculate drag progress as percentage of threshold and clamp it
-              // between 0 and 1.
-              const progress = Math.min(1, Math.abs(xDelta) / SWIPE_THRESHOLD);
-              setDragProgress(progress);
             }}
             onPointerUp={() => {
               if (
@@ -236,7 +286,6 @@ const ImgFeatureDetail: React.FC = () => {
                 // If not swiped far enough, use the returning-to-center state
                 setAnimationState('returning-to-center');
                 setSwipeAmount(0);
-                setDragProgress(0);
               }
 
               pointerStartRef.current = null;
@@ -244,7 +293,6 @@ const ImgFeatureDetail: React.FC = () => {
             }}
             onPointerCancel={() => {
               setSwipeAmount(0);
-              setDragProgress(0);
               setAnimationState('idle');
               pointerStartRef.current = null;
               dragStartTimeRef.current = null;
