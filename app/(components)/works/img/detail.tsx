@@ -17,7 +17,7 @@ const SWIPE_X_THRESHOLD = 100;
 const SWIPE_VELOCITY_THRESHOLD = 0.5;
 
 const SCALE_MIN = 0.9;
-const SCALE_MAX_SWIPING = 0.97;
+const SCALE_MAX_SWIPING = 0.98;
 const SCALE_FINAL = 1.0;
 
 const OPACITY_MIN = 0.5;
@@ -54,13 +54,11 @@ const ImgFeatureDetail: React.FC = () => {
     let scale = SCALE_MIN;
     let opacity = OPACITY_MIN;
     let transition = undefined;
-    let transitionDelay = '0ms';
 
     if (animationState.startsWith('exiting')) {
       scale = SCALE_FINAL;
       opacity = OPACITY_FINAL;
-      transition = 'transform 400ms ease-out, opacity 400ms ease-out';
-      transitionDelay = '50ms';
+      transition = 'transform 150ms ease-out, opacity 300ms ease-out';
     } else if (animationState === 'swiping') {
       const absSwipeAmount = Math.abs(swipeAmount);
 
@@ -81,7 +79,7 @@ const ImgFeatureDetail: React.FC = () => {
       // it's already been slotted in.
       scale = SCALE_FINAL;
       opacity = OPACITY_FINAL;
-      transition = 'transform 400ms ease-in-out, opacity 400ms ease-in-out';
+      transition = 'transform 400ms ease-in-out, opacity 400ms ease-in';
     } else {
       transition = 'transform 400ms ease-in-out, opacity 400ms ease-in-out';
     }
@@ -90,7 +88,6 @@ const ImgFeatureDetail: React.FC = () => {
       transform: `scale(${scale})`,
       opacity,
       transition,
-      transitionDelay,
     };
   };
 
