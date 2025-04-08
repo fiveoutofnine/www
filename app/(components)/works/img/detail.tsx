@@ -192,18 +192,10 @@ const ImgFeatureDetail: React.FC = () => {
 
   return (
     <div className="relative flex h-[11.375rem] w-full overflow-hidden bg-gray-3">
-      {/* Left indicator. */}
-      <div
-        className={clsx(
-          'pointer-events-none absolute left-0 top-0 z-20 h-full w-8 min-w-8 bg-gradient-to-r from-red-3 to-transparent transition-opacity duration-300',
-          showLeftGradient ? 'opacity-100' : 'opacity-0',
-        )}
-      ></div>
-
       {/* Image container. */}
       <div className="relative flex h-full grow items-center justify-center bg-gray-3 p-1">
         <div className="relative h-full w-full">
-          {/* Next card (below) */}
+          {/* Next image to be displayed. */}
           <div
             className={clsx(
               'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
@@ -232,7 +224,7 @@ const ImgFeatureDetail: React.FC = () => {
             />
           </div>
 
-          {/* Current card (top) */}
+          {/* Current image displayed. */}
           <div
             ref={cardRef}
             key={`top-image-${image.index}`}
@@ -250,21 +242,18 @@ const ImgFeatureDetail: React.FC = () => {
             onPointerDown={(event) => {
               // Don't swipe during animation.
               if (animationState !== 'idle' || lastExitDirection) return;
-
               event.preventDefault();
+
               // Mark the start of a drag.
               dragStartTimeRef.current = new Date();
               setAnimationState('swiping');
               pointerStartRef.current = { x: event.clientX, y: event.clientY };
-              // Ensure we maintain correct pointer capture
               (event.target as HTMLElement).setPointerCapture(event.pointerId);
             }}
             onPointerMove={(event) => {
               if (!pointerStartRef.current || animationState !== 'swiping') return;
 
-              // Calculate the displacement.
-              const xDelta = event.clientX - pointerStartRef.current.x;
-              setSwipeAmount(xDelta);
+              setSwipeAmount(event.clientX - pointerStartRef.current.x);
             }}
             onPointerUp={() => {
               if (
@@ -278,12 +267,10 @@ const ImgFeatureDetail: React.FC = () => {
               const timeTaken = new Date().getTime() - dragStartTimeRef.current.getTime();
               const velocity = Math.abs(swipeAmount) / timeTaken;
 
-              // If swipe exceeds threshold or is fast enough.
+              // If swipe exceeds threshold or is fast enough; return if not.
               if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.5) {
-                // Set animation state directly instead of using a separate function
                 setAnimationState(swipeAmount > 0 ? 'exiting-right' : 'exiting-left');
               } else {
-                // If not swiped far enough, use the returning-to-center state
                 setAnimationState('returning-to-center');
                 setSwipeAmount(0);
               }
@@ -310,6 +297,13 @@ const ImgFeatureDetail: React.FC = () => {
         </div>
       </div>
 
+      {/* Left indicator. */}
+      <div
+        className={clsx(
+          'pointer-events-none absolute left-0 top-0 z-20 h-full w-8 min-w-8 bg-gradient-to-r from-red-3 to-transparent transition-opacity duration-300',
+          showLeftGradient ? 'opacity-100' : 'opacity-0',
+        )}
+      ></div>
       {/* Right indicator. */}
       <div
         className={clsx(
