@@ -31,24 +31,9 @@ const ImgFeatureDetail: React.FC = () => {
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const dragStartTimeRef = useRef<Date | null>(null);
 
-  const handleCardTransitionEnd = () => {
-    if (animationState === 'exiting-left' || animationState === 'exiting-right') {
-      // Update images after transition ends
-      setImage(nextImage);
-      setNextImage(getRandomImgUrl(nextImage.index));
-
-      // Reset position variables
-      setSwipeAmount(0);
-
-      // Request animation frame to ensure DOM updates before returning to idle
-      requestAnimationFrame(() => {
-        setLastExitDirection(null);
-        setAnimationState('idle');
-      });
-    } else if (animationState === 'returning-to-center') {
-      setAnimationState('idle');
-    }
-  };
+  // ---------------------------------------------------------------------------
+  // Animation styles
+  // ---------------------------------------------------------------------------
 
   // Calculate scale and opacity for the next card based on drag progress
   const getNextCardStyle = () => {
@@ -141,14 +126,13 @@ const ImgFeatureDetail: React.FC = () => {
     return { transform, opacity };
   };
 
+  const { scale, opacity } = getNextCardStyle();
+  const currentCardStyle = getCardStyle();
+
   // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
-  const { scale, opacity } = getNextCardStyle();
-  const currentCardStyle = getCardStyle();
-
-  // Determine if we should show the left or right gradient indicators
   const showLeftGradient = swipeAmount <= -SWIPE_THRESHOLD || animationState === 'exiting-left';
   const showRightGradient = swipeAmount >= SWIPE_THRESHOLD || animationState === 'exiting-right';
 
@@ -181,7 +165,8 @@ const ImgFeatureDetail: React.FC = () => {
               src={nextImage.url}
               alt={nextImage.url}
               className="object-contain"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="100vw"
+              draggable={false}
               fill
             />
           </div>
@@ -200,7 +185,24 @@ const ImgFeatureDetail: React.FC = () => {
               ...currentCardStyle,
               transition: animationState === 'swiping' ? 'none' : undefined,
             }}
-            onTransitionEnd={handleCardTransitionEnd}
+            onTransitionEnd={() => {
+              if (animationState === 'exiting-left' || animationState === 'exiting-right') {
+                // Update images after transition ends
+                setImage(nextImage);
+                setNextImage(getRandomImgUrl(nextImage.index));
+
+                // Reset position variables
+                setSwipeAmount(0);
+
+                // Request animation frame to ensure DOM updates before returning to idle
+                requestAnimationFrame(() => {
+                  setLastExitDirection(null);
+                  setAnimationState('idle');
+                });
+              } else if (animationState === 'returning-to-center') {
+                setAnimationState('idle');
+              }
+            }}
             onPointerDown={(event) => {
               // Don't swipe during animation.
               if (animationState !== 'idle' || lastExitDirection) return;
@@ -251,9 +253,9 @@ const ImgFeatureDetail: React.FC = () => {
               src={image.url}
               alt={image.url}
               className="object-contain"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              fill
+              sizes="100vw"
               draggable={false}
+              fill
             />
           </div>
         </div>
