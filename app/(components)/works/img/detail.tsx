@@ -13,7 +13,14 @@ import { getRandomImgUrl } from '@/lib/utils';
 const SWIPE_THRESHOLD = 100;
 
 // Animation states
-type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'hidden';
+type AnimationState =
+  | 'idle'
+  | 'swiping'
+  | 'exiting-left'
+  | 'exiting-right'
+  | 'hidden'
+  | 'resetting'
+  | 'returning-to-center'; // New state for incomplete swipes
 
 // -----------------------------------------------------------------------------
 // Component
@@ -26,7 +33,7 @@ const ImgFeatureDetail: React.FC = () => {
   );
   const [animationState, setAnimationState] = useState<AnimationState>('idle');
   const [swipeAmount, setSwipeAmount] = useState<number>(0);
-  const [dragProgress, setDragProgress] = useState<number>(0); // 0-1 for progress toward threshold
+  const [dragProgress, setDragProgress] = useState<number>(0);
   const [lastExitDirection, setLastExitDirection] = useState<'left' | 'right' | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -39,30 +46,59 @@ const ImgFeatureDetail: React.FC = () => {
       // Save the exit direction
       setLastExitDirection(animationState === 'exiting-left' ? 'left' : 'right');
 
-      const timer = setTimeout(() => {
-        // Set to hidden without changing transforms
+      // Listen for transition end event on the card element
+      const handleTransitionEnd = () => {
         setAnimationState('hidden');
+      };
 
-        // Then update image state and reset
-        setTimeout(() => {
-          // Update images
-          setImage(nextImage);
-          setNextImage(getRandomImgUrl(nextImage.index));
+      const cardElement = cardRef.current;
+      if (cardElement) {
+        cardElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
 
-          // Reset state but do it after a frame to prevent visual "snap back"
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              setSwipeAmount(0);
-              setDragProgress(0);
-              // Only now clear the exit direction and return to idle
-              setLastExitDirection(null);
-              setAnimationState('idle');
-            });
-          });
-        }, 50);
-      }, 300);
+        // Cleanup listener if component unmounts during animation
+        return () => {
+          cardElement.removeEventListener('transitionend', handleTransitionEnd);
+        };
+      }
+    }
 
-      return () => clearTimeout(timer);
+    if (animationState === 'hidden') {
+      // Update images
+      setImage(nextImage);
+      setNextImage(getRandomImgUrl(nextImage.index));
+
+      // Move to resetting state
+      setAnimationState('resetting');
+    }
+
+    if (animationState === 'resetting') {
+      // Reset position variables while in resetting state (no transitions applied)
+      setSwipeAmount(0);
+      setDragProgress(0);
+
+      // Request animation frame to ensure DOM updates before returning to idle
+      requestAnimationFrame(() => {
+        setLastExitDirection(null);
+        setAnimationState('idle');
+      });
+    }
+
+    // Handle returning to center animation
+    if (animationState === 'returning-to-center') {
+      // Listen for transition end event on the card element
+      const handleTransitionEnd = () => {
+        setAnimationState('idle');
+      };
+
+      const cardElement = cardRef.current;
+      if (cardElement) {
+        cardElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
+
+        // Cleanup listener if component unmounts during animation
+        return () => {
+          cardElement.removeEventListener('transitionend', handleTransitionEnd);
+        };
+      }
     }
   }, [animationState, nextImage]);
 
@@ -99,11 +135,19 @@ const ImgFeatureDetail: React.FC = () => {
   const getCardStyle = () => {
     let transform = 'translateX(0) rotate(0deg)';
     let opacity = 1;
-    let transition = 'transform 300ms ease-out, opacity 300ms ease-out';
+    let transition = 'none'; // Default to no transition
 
-    // If we have a last exit direction and we're hidden or idle, maintain that position
-    // until we're completely ready to reset
-    if (lastExitDirection && (animationState === 'hidden' || animationState === 'idle')) {
+    // Apply transition for exiting and returning animations
+    if (
+      animationState === 'exiting-left' ||
+      animationState === 'exiting-right' ||
+      animationState === 'returning-to-center'
+    ) {
+      transition = 'transform 300ms ease-out, opacity 300ms ease-out';
+    }
+
+    // If we have a last exit direction and we're hidden or in resetting, maintain that position
+    if (lastExitDirection && (animationState === 'hidden' || animationState === 'resetting')) {
       if (lastExitDirection === 'left') {
         transform = 'translateX(-110%) rotate(-18deg)';
         opacity = 0;
@@ -111,14 +155,12 @@ const ImgFeatureDetail: React.FC = () => {
         transform = 'translateX(110%) rotate(18deg)';
         opacity = 0;
       }
-      transition = 'none'; // No animation during this holding state
     } else {
       switch (animationState) {
         case 'swiping':
           // When swiping left (negative X), rotate counterclockwise (negative angle)
           // When swiping right (positive X), rotate clockwise (positive angle)
           transform = `translateX(${swipeAmount}px) rotate(${swipeAmount * 0.05}deg)`;
-          transition = 'none'; // No transition during active swiping
           break;
 
         case 'exiting-left':
@@ -134,13 +176,14 @@ const ImgFeatureDetail: React.FC = () => {
           break;
 
         case 'hidden':
+        case 'resetting':
           opacity = 0;
           // Position maintained by lastExitDirection check above
           break;
 
         case 'idle':
         default:
-          // Default state handled above with lastExitDirection
+          // Use default transform and opacity
           break;
       }
     }
@@ -164,6 +207,7 @@ const ImgFeatureDetail: React.FC = () => {
           {/* Next card (below) */}
           <div
             className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
+            key={`bottom-image-${nextImage.index}`}
             style={{
               transform: `scale(${scale})`,
               opacity: opacity,
@@ -185,14 +229,15 @@ const ImgFeatureDetail: React.FC = () => {
           {/* Current card (top) */}
           <div
             ref={cardRef}
+            key={`top-image-${image.index}`}
             className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
             style={currentCardStyle}
             onPointerDown={(event) => {
-              // Don't swipe during animation
+              // Don't swipe during animation.
               if (animationState !== 'idle' || lastExitDirection) return;
 
               event.preventDefault();
-              // Mark the start of a drag
+              // Mark the start of a drag.
               dragStartTimeRef.current = new Date();
               setAnimationState('swiping');
               pointerStartRef.current = { x: event.clientX, y: event.clientY };
@@ -202,14 +247,12 @@ const ImgFeatureDetail: React.FC = () => {
             onPointerMove={(event) => {
               if (!pointerStartRef.current || animationState !== 'swiping') return;
 
-              // Calculate the displacement
+              // Calculate the displacement.
               const xDelta = event.clientX - pointerStartRef.current.x;
-
-              // Update the swipe amount
               setSwipeAmount(xDelta);
 
-              // Calculate drag progress as percentage of threshold
-              // Clamp between 0 and 1
+              // Calculate drag progress as percentage of threshold and clamp it
+              // between 0 and 1.
               const progress = Math.min(1, Math.abs(xDelta) / SWIPE_THRESHOLD);
               setDragProgress(progress);
             }}
@@ -221,30 +264,25 @@ const ImgFeatureDetail: React.FC = () => {
               )
                 return;
 
-              // Calculate time taken and velocity
+              // Calculate time taken and velocity.
               const timeTaken = new Date().getTime() - dragStartTimeRef.current.getTime();
               const velocity = Math.abs(swipeAmount) / timeTaken;
 
-              // If swipe exceeds threshold or is fast enough
+              // If swipe exceeds threshold or is fast enough.
               if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.5) {
-                // Determine direction
                 const direction = swipeAmount > 0 ? 'right' : 'left';
-
-                // Start the completion animation
                 completeSwipeAnimation(direction);
               } else {
-                // If not swiped far enough, reset position
+                // If not swiped far enough, use the returning-to-center state
+                setAnimationState('returning-to-center');
                 setSwipeAmount(0);
                 setDragProgress(0);
-                setAnimationState('idle');
               }
 
-              // Clean up
               pointerStartRef.current = null;
               dragStartTimeRef.current = null;
             }}
             onPointerCancel={() => {
-              // Reset on cancel
               setSwipeAmount(0);
               setDragProgress(0);
               setAnimationState('idle');
