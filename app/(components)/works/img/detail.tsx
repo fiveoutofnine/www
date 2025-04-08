@@ -201,7 +201,7 @@ const ImgFeatureDetail: React.FC = () => {
       ></div>
 
       {/* Image container. */}
-      <div className="relative flex h-full grow items-center justify-center bg-gray-3 p-2">
+      <div className="relative flex h-full grow items-center justify-center bg-gray-3 p-1">
         <div className="relative h-full w-full">
           {/* Next card (below) */}
           <div
