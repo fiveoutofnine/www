@@ -77,7 +77,6 @@ const ImgFeatureDetail: React.FC = () => {
       opacity = OPACITY_FINAL;
       transition = 'transform 400ms ease-in-out, opacity 400ms ease-in-out';
     } else {
-      // Idle state.
       transition = 'transform 400ms ease-in-out, opacity 400ms ease-in-out';
     }
 
