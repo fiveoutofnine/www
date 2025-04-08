@@ -13,14 +13,7 @@ import { getRandomImgUrl } from '@/lib/utils';
 const SWIPE_THRESHOLD = 100;
 
 // Animation states
-type AnimationState =
-  | 'idle'
-  | 'swiping'
-  | 'exiting-left'
-  | 'exiting-right'
-  | 'hidden'
-  | 'resetting'
-  | 'returning-to-center'; // New state for incomplete swipes
+type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'returning-to-center'; // State for incomplete swipes
 
 // -----------------------------------------------------------------------------
 // Component
@@ -48,7 +41,19 @@ const ImgFeatureDetail: React.FC = () => {
 
       // Listen for transition end event on the card element
       const handleTransitionEnd = () => {
-        setAnimationState('hidden');
+        // Update images directly after transition ends
+        setImage(nextImage);
+        setNextImage(getRandomImgUrl(nextImage.index));
+
+        // Reset position variables
+        setSwipeAmount(0);
+        setDragProgress(0);
+
+        // Request animation frame to ensure DOM updates before returning to idle
+        requestAnimationFrame(() => {
+          setLastExitDirection(null);
+          setAnimationState('idle');
+        });
       };
 
       const cardElement = cardRef.current;
@@ -60,27 +65,6 @@ const ImgFeatureDetail: React.FC = () => {
           cardElement.removeEventListener('transitionend', handleTransitionEnd);
         };
       }
-    }
-
-    if (animationState === 'hidden') {
-      // Update images
-      setImage(nextImage);
-      setNextImage(getRandomImgUrl(nextImage.index));
-
-      // Move to resetting state
-      setAnimationState('resetting');
-    }
-
-    if (animationState === 'resetting') {
-      // Reset position variables while in resetting state (no transitions applied)
-      setSwipeAmount(0);
-      setDragProgress(0);
-
-      // Request animation frame to ensure DOM updates before returning to idle
-      requestAnimationFrame(() => {
-        setLastExitDirection(null);
-        setAnimationState('idle');
-      });
     }
 
     // Handle returning to center animation
@@ -135,7 +119,7 @@ const ImgFeatureDetail: React.FC = () => {
   const getCardStyle = () => {
     let transform = 'translateX(0) rotate(0deg)';
     let opacity = 1;
-    let transition = 'none'; // Default to no transition
+    let transition = 'none';
 
     // Apply transition for exiting and returning animations
     if (
@@ -146,8 +130,8 @@ const ImgFeatureDetail: React.FC = () => {
       transition = 'transform 300ms ease-out, opacity 300ms ease-out';
     }
 
-    // If we have a last exit direction and we're hidden or in resetting, maintain that position
-    if (lastExitDirection && (animationState === 'hidden' || animationState === 'resetting')) {
+    // If we have a last exit direction and we're in idle state but still showing the exit direction
+    if (lastExitDirection && animationState === 'idle') {
       if (lastExitDirection === 'left') {
         transform = 'translateX(-110%) rotate(-18deg)';
         opacity = 0;
@@ -173,12 +157,6 @@ const ImgFeatureDetail: React.FC = () => {
           // When exiting right, rotate clockwise (positive angle)
           transform = 'translateX(110%) rotate(18deg)';
           opacity = 0;
-          break;
-
-        case 'hidden':
-        case 'resetting':
-          opacity = 0;
-          // Position maintained by lastExitDirection check above
           break;
 
         case 'idle':
@@ -300,13 +278,12 @@ const ImgFeatureDetail: React.FC = () => {
             />
           </div>
         </div>
-      </div>
-
-      <div className="z-20 flex h-full w-8 min-w-8 items-center justify-center border-l border-green-6 bg-green-3">
-        <div className="font-mono text-xs text-white">
+        <div className="absolute bottom-0 left-0 z-30 font-mono text-xs text-white">
           {lastExitDirection ? `last:${lastExitDirection}` : animationState}
         </div>
       </div>
+
+      <div className="z-20 flex h-full w-8 min-w-8 items-center justify-center border-l border-green-6 bg-green-3"></div>
     </div>
   );
 };
