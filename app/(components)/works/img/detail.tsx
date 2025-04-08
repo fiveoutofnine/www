@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 
@@ -39,6 +39,12 @@ const ImgFeatureDetail: React.FC = () => {
 
   const pointerRef = useRef<{ x: number; y: number } | null>(null);
   const dragTimerRef = useRef<Date | null>(null);
+
+  useEffect(() => {
+    if (animationState === 'idle' && lastExitDirection !== null) {
+      requestAnimationFrame(() => setLastExitDirection(null));
+    }
+  }, [animationState, lastExitDirection]);
 
   // ---------------------------------------------------------------------------
   // Animation styles
@@ -157,7 +163,7 @@ const ImgFeatureDetail: React.FC = () => {
             style={topStyle}
             onPointerDown={(e) => {
               // Don't swipe during animation.
-              if (animationState !== 'idle' || lastExitDirection) return;
+              if (animationState !== 'idle') return;
               e.preventDefault();
 
               // Mark the start of a drag.
