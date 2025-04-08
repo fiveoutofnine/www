@@ -180,7 +180,7 @@ const ImgFeatureDetail: React.FC = () => {
             <Image
               src={nextImage.url}
               alt={nextImage.url}
-              className="object-fit"
+              className="object-contain"
               sizes="(max-width: 768px) 100vw, 50vw"
               fill
             />
@@ -253,7 +253,7 @@ const ImgFeatureDetail: React.FC = () => {
             <Image
               src={image.url}
               alt={image.url}
-              className="object-fit"
+              className="object-contain"
               sizes="(max-width: 768px) 100vw, 50vw"
               fill
               draggable={false}
