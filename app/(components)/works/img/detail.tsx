@@ -16,12 +16,12 @@ type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'r
 const SWIPE_X_THRESHOLD = 100;
 const SWIPE_VELOCITY_THRESHOLD = 0.5;
 
-const SCALE_MIN = 0.9;
+const SCALE_MIN = 0.88;
 const SCALE_MAX_SWIPING = 0.98;
 const SCALE_FINAL = 1.0;
 
-const OPACITY_MIN = 0.5;
-const OPACITY_MAX_SWIPING = 0.9;
+const OPACITY_MIN = 0.25;
+const OPACITY_MAX_SWIPING = 0.85;
 const OPACITY_FINAL = 1.0;
 
 // -----------------------------------------------------------------------------
