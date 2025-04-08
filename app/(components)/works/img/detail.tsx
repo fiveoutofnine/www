@@ -182,7 +182,10 @@ const ImgFeatureDetail: React.FC = () => {
               // Determine whether or not to complete the swipe.
               const timeTaken = new Date().getTime() - dragTimerRef.current.getTime();
               const velocity = Math.abs(swipeAmount) / timeTaken;
-              if (
+
+              if (Math.abs(swipeAmount) < 5) {
+                setAnimationState('idle');
+              } else if (
                 Math.abs(swipeAmount) >= SWIPE_X_THRESHOLD ||
                 velocity > SWIPE_VELOCITY_THRESHOLD
               ) {
