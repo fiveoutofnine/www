@@ -3,17 +3,17 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
+import clsx from 'clsx';
+
 import { getRandomImgUrl } from '@/lib/utils';
 
 // -----------------------------------------------------------------------------
-// Constants
+// Constants and types
 // -----------------------------------------------------------------------------
 
-// Threshold to dismiss a card
-const SWIPE_THRESHOLD = 100;
+type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'returning-to-center';
 
-// Animation states
-type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'returning-to-center'; // State for incomplete swipes
+const SWIPE_THRESHOLD = 100;
 
 // -----------------------------------------------------------------------------
 // Component
@@ -88,31 +88,15 @@ const ImgFeatureDetail: React.FC = () => {
 
   // Calculate scale and opacity for the next card based on drag progress
   const getNextCardStyle = () => {
-    // Add a stop point at 70% of the scale progress
-    const SCALE_STOP_POINT = 0.7;
-
-    // Scale from 0.9 to 0.97 initially, then to 1.0 only after animation completes
-    const scaleProgress = dragProgress > SCALE_STOP_POINT ? SCALE_STOP_POINT : dragProgress;
+    // Scale from 0.9 to 1.0 as drag progress increases
     const scale = animationState.startsWith('exiting')
       ? 1.0 // Fully scale when animation is completing
-      : 0.9 + scaleProgress * 0.1;
+      : 0.9 + Math.min(0.1, dragProgress * 0.1);
 
     // Opacity from 0.5 to 1 as drag progress increases
     const opacity = 0.5 + dragProgress * 0.5;
 
-    return {
-      scale,
-      opacity,
-    };
-  };
-
-  // Handle swipe animation completion
-  const completeSwipeAnimation = (direction: 'left' | 'right') => {
-    if (direction === 'left') {
-      setAnimationState('exiting-left');
-    } else {
-      setAnimationState('exiting-right');
-    }
+    return { scale, opacity };
   };
 
   // Get styles for current card based on animation state
@@ -132,54 +116,52 @@ const ImgFeatureDetail: React.FC = () => {
 
     // If we have a last exit direction and we're in idle state but still showing the exit direction
     if (lastExitDirection && animationState === 'idle') {
-      if (lastExitDirection === 'left') {
-        transform = 'translateX(-110%) rotate(-18deg)';
-        opacity = 0;
-      } else {
-        transform = 'translateX(110%) rotate(18deg)';
-        opacity = 0;
-      }
+      transform =
+        lastExitDirection === 'left'
+          ? 'translateX(-110%) rotate(-18deg)'
+          : 'translateX(110%) rotate(18deg)';
+      opacity = 0;
     } else {
       switch (animationState) {
         case 'swiping':
-          // When swiping left (negative X), rotate counterclockwise (negative angle)
-          // When swiping right (positive X), rotate clockwise (positive angle)
           transform = `translateX(${swipeAmount}px) rotate(${swipeAmount * 0.05}deg)`;
           break;
-
         case 'exiting-left':
-          // When exiting left, rotate counterclockwise (negative angle)
           transform = 'translateX(-110%) rotate(-18deg)';
           opacity = 0;
           break;
-
         case 'exiting-right':
-          // When exiting right, rotate clockwise (positive angle)
           transform = 'translateX(110%) rotate(18deg)';
           opacity = 0;
-          break;
-
-        case 'idle':
-        default:
-          // Use default transform and opacity
           break;
       }
     }
 
-    return {
-      transform,
-      opacity,
-      transition,
-    };
+    return { transform, opacity, transition };
   };
+
+  // ---------------------------------------------------------------------------
+  // Return
+  // ---------------------------------------------------------------------------
 
   const { scale, opacity } = getNextCardStyle();
   const currentCardStyle = getCardStyle();
 
-  return (
-    <div className="flex h-[11.375rem] w-full overflow-hidden bg-black">
-      <div className="h-full w-8 min-w-8 border-r border-red-6 bg-red-3" />
+  // Determine if we should show the left or right gradient indicators
+  const showLeftGradient = swipeAmount <= -SWIPE_THRESHOLD || animationState === 'exiting-left';
+  const showRightGradient = swipeAmount >= SWIPE_THRESHOLD || animationState === 'exiting-right';
 
+  return (
+    <div className="relative flex h-[11.375rem] w-full overflow-hidden bg-gray-3">
+      {/* Left indicator. */}
+      <div
+        className={clsx(
+          'pointer-events-none absolute left-0 top-0 z-20 h-full w-8 min-w-8 bg-gradient-to-r from-red-3 to-transparent transition-opacity duration-300',
+          showLeftGradient ? 'opacity-100' : 'opacity-0',
+        )}
+      ></div>
+
+      {/* Image container. */}
       <div className="relative flex h-full grow items-center justify-center bg-gray-3 p-2">
         <div className="relative h-full w-full">
           {/* Next card (below) */}
@@ -248,8 +230,8 @@ const ImgFeatureDetail: React.FC = () => {
 
               // If swipe exceeds threshold or is fast enough.
               if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.5) {
-                const direction = swipeAmount > 0 ? 'right' : 'left';
-                completeSwipeAnimation(direction);
+                // Set animation state directly instead of using a separate function
+                setAnimationState(swipeAmount > 0 ? 'exiting-right' : 'exiting-left');
               } else {
                 // If not swiped far enough, use the returning-to-center state
                 setAnimationState('returning-to-center');
@@ -278,12 +260,15 @@ const ImgFeatureDetail: React.FC = () => {
             />
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 z-30 font-mono text-xs text-white">
-          {lastExitDirection ? `last:${lastExitDirection}` : animationState}
-        </div>
       </div>
 
-      <div className="z-20 flex h-full w-8 min-w-8 items-center justify-center border-l border-green-6 bg-green-3"></div>
+      {/* Right indicator. */}
+      <div
+        className={clsx(
+          'pointer-events-none absolute right-0 top-0 z-20 h-full w-8 min-w-8 bg-gradient-to-l from-green-3 to-transparent transition-opacity duration-300',
+          showRightGradient ? 'opacity-100' : 'opacity-0',
+        )}
+      ></div>
     </div>
   );
 };
