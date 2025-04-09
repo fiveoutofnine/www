@@ -101,6 +101,7 @@ const ImgFeatureDetail: React.FC = () => {
     let transform = 'translateX(0) rotate(0deg)';
     let opacity = 1;
     let transition = undefined;
+    let scale = 1;
 
     if (lastExitDirection && animationState === 'idle') {
       transform =
@@ -110,6 +111,8 @@ const ImgFeatureDetail: React.FC = () => {
       opacity = 0;
     } else if (animationState === 'swiping') {
       transform = `translateX(${swipeAmount}px) rotate(${swipeAmount * 0.05}deg)`;
+      scale = 0.99;
+      transition = 'transform 100ms ease-out';
     } else if (animationState === 'exiting-left') {
       transform = 'translateX(-110%) rotate(-18deg)';
       opacity = 0;
@@ -120,10 +123,12 @@ const ImgFeatureDetail: React.FC = () => {
       transition = 'transform 300ms ease-out, opacity 400ms ease-out';
     } else if (animationState === 'returning-to-center') {
       transition = 'transform 300ms ease-out, opacity 400ms ease-out';
+    } else {
+      transition = 'transform 300ms ease-out, opacity 400ms ease-out';
     }
 
     return {
-      transform,
+      transform: `${transform} scale(${scale})`,
       opacity,
       transition,
     };
