@@ -134,10 +134,10 @@ const ImgFeatureDetail: React.FC = () => {
   // ---------------------------------------------------------------------------
 
   const handleSwipeStart = (clientX: number, clientY: number) => {
-    // Don't swipe during animation
+    // Don't swipe during animation.
     if (animationState !== 'idle') return;
 
-    // Mark the start of a drag
+    // Mark the start of a drag.
     dragTimerRef.current = new Date();
     setAnimationState('swiping');
     pointerRef.current = { x: clientX, y: clientY };
@@ -146,7 +146,7 @@ const ImgFeatureDetail: React.FC = () => {
   const handleSwipeMove = (clientX: number) => {
     if (!pointerRef.current || animationState !== 'swiping') return;
 
-    // Only update the horizontal movement
+    // Only update the horizontal movement.
     const deltaX = clientX - pointerRef.current.x;
     setSwipeAmount(deltaX);
   };
@@ -156,7 +156,7 @@ const ImgFeatureDetail: React.FC = () => {
       return;
     }
 
-    // Determine whether or not to complete the swipe
+    // Determine whether or not to complete the swipe.
     const timeTaken = new Date().getTime() - dragTimerRef.current.getTime();
     const velocity = Math.abs(swipeAmount) / timeTaken;
 
@@ -189,8 +189,7 @@ const ImgFeatureDetail: React.FC = () => {
       // Reset swipe amount.
       setSwipeAmount(0);
 
-      // Request animation frame to ensure DOM updates before
-      // returning to idle.
+      // Request animation frame to ensure DOM updates before returning to idle.
       requestAnimationFrame(() => {
         setLastExitDirection(null);
         setAnimationState('idle');
