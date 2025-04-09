@@ -4,8 +4,11 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
+import { ExternalLink, ThumbsUp, X } from 'lucide-react';
 
 import { getRandomImgUrl } from '@/lib/utils';
+
+import { Button, IconButton, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Constants and types
@@ -13,7 +16,7 @@ import { getRandomImgUrl } from '@/lib/utils';
 
 type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'returning-to-center';
 
-const SWIPE_X_THRESHOLD = 100;
+const SWIPE_X_THRESHOLD = 85;
 const SWIPE_VELOCITY_THRESHOLD = 0.5;
 
 const SCALE_MIN = 0.88;
@@ -245,7 +248,7 @@ const ImgFeatureDetail: React.FC = () => {
       };
 
   return (
-    <div className="relative flex h-[11.375rem] w-full overflow-hidden bg-gray-3">
+    <div className="relative flex h-[11.375rem] w-full flex-col overflow-hidden bg-gray-3">
       {/* Image container. */}
       <div className="relative flex h-full grow items-center justify-center bg-gray-3 p-1">
         <div className="relative h-full w-full">
@@ -305,6 +308,47 @@ const ImgFeatureDetail: React.FC = () => {
         )}
         aria-hidden={true}
       />
+
+      <div className="z-30 flex h-10 w-full items-center gap-1 px-2 pb-2 pt-0">
+        <Tooltip side="top" align="start" content="Dislike" triggerProps={{ asChild: true }}>
+          <IconButton
+            size="sm"
+            variant="outline"
+            intent="fail"
+            onClick={() => {
+              setAnimationState('exiting-left');
+              setLastExitDirection('left');
+            }}
+            disabled={animationState !== 'idle'}
+          >
+            <X />
+          </IconButton>
+        </Tooltip>
+        <Button
+          className="grow"
+          size="sm"
+          href={image.url}
+          disabled={animationState !== 'idle'}
+          rightIcon={<ExternalLink />}
+          newTab
+        >
+          View
+        </Button>
+        <Tooltip side="top" align="end" content="Like" triggerProps={{ asChild: true }}>
+          <IconButton
+            size="sm"
+            variant="outline"
+            intent="success"
+            onClick={() => {
+              setAnimationState('exiting-right');
+              setLastExitDirection('right');
+            }}
+            disabled={animationState !== 'idle'}
+          >
+            <ThumbsUp />
+          </IconButton>
+        </Tooltip>
+      </div>
     </div>
   );
 };
