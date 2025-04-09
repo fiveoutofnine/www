@@ -85,9 +85,9 @@ const ImgFeatureDetail: React.FC = () => {
       // it's already been slotted in.
       scale = SCALE_FINAL;
       opacity = OPACITY_FINAL;
-      transition = 'transform 300ms ease-in-out, opacity 400ms ease-in';
+      transition = 'transform 450ms cubic-bezier(0.33, 0.66, 0.33, 1), opacity 500ms ease-in';
     } else {
-      transition = 'transform 300ms ease-in-out, opacity 400ms ease-in-out';
+      transition = 'transform 450ms cubic-bezier(0.33, 0.66, 0.33, 1), opacity 500ms ease-in-out';
     }
 
     return {
@@ -112,19 +112,19 @@ const ImgFeatureDetail: React.FC = () => {
     } else if (animationState === 'swiping') {
       transform = `translateX(${swipeAmount}px) rotate(${swipeAmount * 0.05}deg)`;
       scale = 0.99;
-      transition = 'transform 100ms ease-out';
+      transition = 'transform 150ms ease-out';
     } else if (animationState === 'exiting-left') {
       transform = 'translateX(-110%) rotate(-18deg)';
       opacity = 0;
-      transition = 'transform 300ms ease-out, opacity 400ms ease-out';
+      transition = 'transform 300ms cubic-bezier(0.33, 0.9, 0.5, 1), opacity 400ms ease-out';
     } else if (animationState === 'exiting-right') {
       transform = 'translateX(110%) rotate(18deg)';
       opacity = 0;
-      transition = 'transform 300ms ease-out, opacity 400ms ease-out';
+      transition = 'transform 300ms cubic-bezier(0.33, 0.9, 0.5, 1), opacity 400ms ease-out';
     } else if (animationState === 'returning-to-center') {
-      transition = 'transform 300ms ease-out, opacity 400ms ease-out';
+      transition = 'transform 400ms cubic-bezier(0.25, 0.85, 0.25, 1.03), opacity 500ms ease-out';
     } else {
-      transition = 'transform 300ms ease-out, opacity 400ms ease-out';
+      transition = 'transform 150ms ease-out';
     }
 
     return {
