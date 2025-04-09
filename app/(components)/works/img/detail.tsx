@@ -29,6 +29,7 @@ const OPACITY_FINAL = 1.0;
 // -----------------------------------------------------------------------------
 
 const ImgFeatureDetail: React.FC = () => {
+  const [mounted, setMounted] = useState<boolean>(false);
   const [image, setImage] = useState<ReturnType<typeof getRandomImgUrl>>(getRandomImgUrl());
   const [nextImage, setNextImage] = useState<ReturnType<typeof getRandomImgUrl>>(
     getRandomImgUrl(image.index),
@@ -40,11 +41,16 @@ const ImgFeatureDetail: React.FC = () => {
   const pointerRef = useRef<{ x: number; y: number } | null>(null);
   const dragTimerRef = useRef<Date | null>(null);
 
+  useEffect(() => setMounted(true), []);
+
+  // We need this to sync the state of the swipe to prevent blocking.
   useEffect(() => {
     if (animationState === 'idle' && lastExitDirection !== null) {
       requestAnimationFrame(() => setLastExitDirection(null));
     }
   }, [animationState, lastExitDirection]);
+
+  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
 
   // ---------------------------------------------------------------------------
   // Animation styles
@@ -124,6 +130,77 @@ const ImgFeatureDetail: React.FC = () => {
   };
 
   // ---------------------------------------------------------------------------
+  // Event handlers
+  // ---------------------------------------------------------------------------
+
+  const handleSwipeStart = (clientX: number, clientY: number) => {
+    // Don't swipe during animation
+    if (animationState !== 'idle') return;
+
+    // Mark the start of a drag
+    dragTimerRef.current = new Date();
+    setAnimationState('swiping');
+    pointerRef.current = { x: clientX, y: clientY };
+  };
+
+  const handleSwipeMove = (clientX: number) => {
+    if (!pointerRef.current || animationState !== 'swiping') return;
+
+    // Only update the horizontal movement
+    const deltaX = clientX - pointerRef.current.x;
+    setSwipeAmount(deltaX);
+  };
+
+  const handleSwipeEnd = () => {
+    if (!pointerRef.current || !dragTimerRef.current || animationState !== 'swiping') {
+      return;
+    }
+
+    // Determine whether or not to complete the swipe
+    const timeTaken = new Date().getTime() - dragTimerRef.current.getTime();
+    const velocity = Math.abs(swipeAmount) / timeTaken;
+
+    if (Math.abs(swipeAmount) < 5) {
+      setAnimationState('idle');
+    } else if (Math.abs(swipeAmount) >= SWIPE_X_THRESHOLD || velocity > SWIPE_VELOCITY_THRESHOLD) {
+      setAnimationState(swipeAmount > 0 ? 'exiting-right' : 'exiting-left');
+    } else {
+      setAnimationState('returning-to-center');
+      setSwipeAmount(0);
+    }
+
+    pointerRef.current = null;
+    dragTimerRef.current = null;
+  };
+
+  const handleSwipeCancel = () => {
+    setSwipeAmount(0);
+    setAnimationState('idle');
+    pointerRef.current = null;
+    dragTimerRef.current = null;
+  };
+
+  const handleTransitionEnd = () => {
+    if (animationState === 'exiting-left' || animationState === 'exiting-right') {
+      // Update images after transition ends.
+      setImage(nextImage);
+      setNextImage(getRandomImgUrl(nextImage.index));
+
+      // Reset swipe amount.
+      setSwipeAmount(0);
+
+      // Request animation frame to ensure DOM updates before
+      // returning to idle.
+      requestAnimationFrame(() => {
+        setLastExitDirection(null);
+        setAnimationState('idle');
+      });
+    } else if (animationState === 'returning-to-center') {
+      setAnimationState('idle');
+    }
+  };
+
+  // ---------------------------------------------------------------------------
   // Return
   // ---------------------------------------------------------------------------
 
@@ -131,6 +208,37 @@ const ImgFeatureDetail: React.FC = () => {
   const topStyle = getTopStyle();
   const disliked = swipeAmount <= -SWIPE_X_THRESHOLD || animationState === 'exiting-left';
   const liked = swipeAmount >= SWIPE_X_THRESHOLD || animationState === 'exiting-right';
+
+  // Prepare event handlers based on device type.
+  const swipeEventHandlers = isTouchScreen
+    ? {
+        onTouchStart: (e: React.TouchEvent) => {
+          handleSwipeStart(e.touches[0].clientX, e.touches[0].clientY);
+        },
+        onTouchMove: (e: React.TouchEvent) => {
+          if (animationState === 'swiping') {
+            // Prevent scrolling while swiping.
+            e.preventDefault();
+            handleSwipeMove(e.touches[0].clientX);
+          }
+        },
+        onTouchEnd: handleSwipeEnd,
+        onTouchCancel: handleSwipeCancel,
+        onTransitionEnd: handleTransitionEnd,
+      }
+    : {
+        onPointerDown: (e: React.PointerEvent) => {
+          e.preventDefault();
+          handleSwipeStart(e.clientX, e.clientY);
+          (e.target as HTMLElement).setPointerCapture(e.pointerId);
+        },
+        onPointerMove: (e: React.PointerEvent) => {
+          handleSwipeMove(e.clientX);
+        },
+        onPointerUp: handleSwipeEnd,
+        onPointerCancel: handleSwipeCancel,
+        onTransitionEnd: handleTransitionEnd,
+      };
 
   return (
     <div className="relative flex h-[11.375rem] w-full overflow-hidden bg-gray-3">
@@ -158,118 +266,8 @@ const ImgFeatureDetail: React.FC = () => {
             key={`top-image-${image.index}`}
             className="absolute inset-0 h-full w-full touch-none select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
             style={topStyle}
-            onPointerDown={(e) => {
-              // Don't swipe during animation.
-              if (animationState !== 'idle') return;
-              e.preventDefault();
-
-              // Mark the start of a drag.
-              dragTimerRef.current = new Date();
-              setAnimationState('swiping');
-              pointerRef.current = { x: e.clientX, y: e.clientY };
-              (e.target as HTMLElement).setPointerCapture(e.pointerId);
-            }}
-            onPointerMove={(e) => {
-              if (!pointerRef.current || animationState !== 'swiping') return;
-
-              // Only update the horizontal movement and ignore vertical movement
-              const deltaX = e.clientX - pointerRef.current.x;
-              setSwipeAmount(deltaX);
-            }}
-            onPointerUp={() => {
-              if (!pointerRef.current || !dragTimerRef.current || animationState !== 'swiping') {
-                return;
-              }
-
-              // Determine whether or not to complete the swipe.
-              const timeTaken = new Date().getTime() - dragTimerRef.current.getTime();
-              const velocity = Math.abs(swipeAmount) / timeTaken;
-
-              if (Math.abs(swipeAmount) < 5) {
-                setAnimationState('idle');
-              } else if (
-                Math.abs(swipeAmount) >= SWIPE_X_THRESHOLD ||
-                velocity > SWIPE_VELOCITY_THRESHOLD
-              ) {
-                setAnimationState(swipeAmount > 0 ? 'exiting-right' : 'exiting-left');
-              } else {
-                setAnimationState('returning-to-center');
-                setSwipeAmount(0);
-              }
-
-              pointerRef.current = null;
-              dragTimerRef.current = null;
-            }}
-            onTouchStart={(e) => {
-              // Additional touch handling for mobile
-              if (animationState !== 'idle') return;
-
-              // Mark the start of a drag
-              dragTimerRef.current = new Date();
-              setAnimationState('swiping');
-              pointerRef.current = {
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY,
-              };
-            }}
-            onTouchMove={(e) => {
-              if (!pointerRef.current || animationState !== 'swiping') return;
-              e.preventDefault(); // Prevent scrolling while swiping
-
-              // Only update the horizontal movement
-              const deltaX = e.touches[0].clientX - pointerRef.current.x;
-              setSwipeAmount(deltaX);
-            }}
-            onTouchEnd={() => {
-              if (!pointerRef.current || !dragTimerRef.current || animationState !== 'swiping') {
-                return;
-              }
-
-              // Determine whether or not to complete the swipe
-              const timeTaken = new Date().getTime() - dragTimerRef.current.getTime();
-              const velocity = Math.abs(swipeAmount) / timeTaken;
-
-              if (Math.abs(swipeAmount) < 5) {
-                setAnimationState('idle');
-              } else if (
-                Math.abs(swipeAmount) >= SWIPE_X_THRESHOLD ||
-                velocity > SWIPE_VELOCITY_THRESHOLD
-              ) {
-                setAnimationState(swipeAmount > 0 ? 'exiting-right' : 'exiting-left');
-              } else {
-                setAnimationState('returning-to-center');
-                setSwipeAmount(0);
-              }
-
-              pointerRef.current = null;
-              dragTimerRef.current = null;
-            }}
-            onPointerCancel={() => {
-              setSwipeAmount(0);
-              setAnimationState('idle');
-              pointerRef.current = null;
-              dragTimerRef.current = null;
-            }}
-            onTransitionEnd={() => {
-              if (animationState === 'exiting-left' || animationState === 'exiting-right') {
-                // Update images after transition ends.
-                setImage(nextImage);
-                setNextImage(getRandomImgUrl(nextImage.index));
-
-                // Reset swipe amount.
-                setSwipeAmount(0);
-
-                // Request animation frame to ensure DOM updates before
-                // returning to idle.
-                requestAnimationFrame(() => {
-                  setLastExitDirection(null);
-                  setAnimationState('idle');
-                });
-              } else if (animationState === 'returning-to-center') {
-                setAnimationState('idle');
-              }
-            }}
             draggable
+            {...swipeEventHandlers}
           >
             <Image
               src={image.url}
