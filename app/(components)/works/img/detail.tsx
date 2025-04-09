@@ -263,7 +263,11 @@ const ImgFeatureDetail: React.FC = () => {
           {/* Current image displayed. */}
           <div
             key={`top-image-${image.index}`}
-            className="absolute inset-0 h-full w-full touch-none select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
+            className={clsx(
+              'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
+              animationState === 'swiping' ? 'cursor-grabbing' : 'cursor-grab',
+              'touch-none',
+            )}
             style={topStyle}
             draggable
             {...swipeEventHandlers}
