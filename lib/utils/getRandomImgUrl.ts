@@ -26,7 +26,7 @@ const getRandomImgUrl = (exclude?: number) => {
 
   return {
     url: IMG_URLS[seed % 2],
-    wip: `${BASE_URL}${seed.toString(16).padStart(8, '0')}.jpg`,
+    wip: `${BASE_URL}${Math.min(seed, 999_999_999).toString(10).padStart(9, '0')}.jpg`,
     index: seed,
   };
 };
