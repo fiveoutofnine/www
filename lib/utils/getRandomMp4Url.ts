@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 
 const BASE_URL = 'https://assets.fiveoutofnine.com/mp4/';
-export const NUMBER_OF_VIDEOS = Number(process.env.NEXT_PUBLIC_NUMBER_OF_VIDEOS) ?? 1;
+export const NUMBER_OF_VIDEOS = Number(process.env.NEXT_PUBLIC_NUMBER_OF_VIDEOS ?? '1');
 
 // -----------------------------------------------------------------------------
 // Function
