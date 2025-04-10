@@ -23,7 +23,7 @@ const getRandomMp4Url = (exclude?: number) => {
   if (seed === exclude && NUMBER_OF_VIDEOS > 1) seed = (seed + offset) % NUMBER_OF_VIDEOS;
 
   return {
-    url: `${BASE_URL}${Math.min(seed, 999_999_999).toString(10).padStart(9, '0')}.jpg`,
+    url: `${BASE_URL}${Math.min(seed, 999_999_999).toString(10).padStart(9, '0')}.mp4`,
     index: seed,
   };
 };
