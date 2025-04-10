@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 
 const BASE_URL = 'https://assets.fiveoutofnine.com/webp/';
-const NUMBER_OF_IMAGES = 10;
+const NUMBER_OF_IMAGES = Number(process.env.NEXT_PUBLIC_NUMBER_OF_IMAGES) ?? 1;
 
 // -----------------------------------------------------------------------------
 // Function
