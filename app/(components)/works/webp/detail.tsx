@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Download, ThumbsUp, X } from 'lucide-react';
 
-import { getRandomImgUrl } from '@/lib/utils';
+import { getRandomWebPUrl } from '@/lib/utils';
 
 import { Button, IconButton, Tooltip } from '@/components/ui';
 
@@ -31,11 +31,11 @@ const OPACITY_FINAL = 1.0;
 // Component
 // -----------------------------------------------------------------------------
 
-const ImgFeatureDetail: React.FC = () => {
+const WebPFeatureDetail: React.FC = () => {
   const [mounted, setMounted] = useState<boolean>(false);
-  const [image, setImage] = useState<ReturnType<typeof getRandomImgUrl>>(getRandomImgUrl());
-  const [nextImage, setNextImage] = useState<ReturnType<typeof getRandomImgUrl>>(
-    getRandomImgUrl(image.index),
+  const [image, setImage] = useState<ReturnType<typeof getRandomWebPUrl>>(getRandomWebPUrl());
+  const [nextImage, setNextImage] = useState<ReturnType<typeof getRandomWebPUrl>>(
+    getRandomWebPUrl(image.index),
   );
   const [animationState, setAnimationState] = useState<AnimationState>('idle');
   const [swipeAmount, setSwipeAmount] = useState<number>(0);
@@ -192,7 +192,7 @@ const ImgFeatureDetail: React.FC = () => {
     if (animationState === 'exiting-left' || animationState === 'exiting-right') {
       // Update images after transition ends.
       setImage(nextImage);
-      setNextImage(getRandomImgUrl(nextImage.index));
+      setNextImage(getRandomWebPUrl(nextImage.index));
 
       // Reset swipe amount.
       setSwipeAmount(0);
@@ -359,4 +359,4 @@ const ImgFeatureDetail: React.FC = () => {
   );
 };
 
-export default ImgFeatureDetail;
+export default WebPFeatureDetail;

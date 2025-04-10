@@ -2,10 +2,8 @@
 // Constants
 // -----------------------------------------------------------------------------
 
-const BASE_URL = 'https://assets.fiveoutofnine.com/img/';
-const NUMBER_OF_IMAGES = 2;
-
-const IMG_URLS = ['/static/og/home.png', '/static/og/blog.png'];
+const BASE_URL = 'https://assets.fiveoutofnine.com/webp/';
+const NUMBER_OF_IMAGES = 10;
 
 // -----------------------------------------------------------------------------
 // Function
@@ -17,7 +15,7 @@ const IMG_URLS = ['/static/og/home.png', '/static/og/blog.png'];
  * when there's more than 1 image (i.e. `NUMBER_OF_IMAGES > 1`).
  * @returns The URL of a random image.
  */
-const getRandomImgUrl = (exclude?: number) => {
+const getRandomWebPUrl = (exclude?: number) => {
   let seed = Math.floor(Math.random() * NUMBER_OF_IMAGES);
   const offset = Math.floor(Math.random() * (NUMBER_OF_IMAGES - 1));
 
@@ -25,10 +23,9 @@ const getRandomImgUrl = (exclude?: number) => {
   if (seed === exclude && NUMBER_OF_IMAGES > 1) seed = (seed + offset) % NUMBER_OF_IMAGES;
 
   return {
-    url: IMG_URLS[seed % 2],
-    wip: `${BASE_URL}${Math.min(seed, 999_999_999).toString(10).padStart(9, '0')}.jpg`,
+    url: `${BASE_URL}${Math.min(seed, 999_999_999).toString(10).padStart(9, '0')}.webp`,
     index: seed,
   };
 };
 
-export default getRandomImgUrl;
+export default getRandomWebPUrl;
