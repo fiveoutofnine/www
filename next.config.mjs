@@ -13,6 +13,9 @@ const withMDX = createMDX({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ['assets.fiveoutofnine.com'],
+  },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   webpack(config) {
     config.experiments = { ...config.experiments, topLevelAwait: true };
