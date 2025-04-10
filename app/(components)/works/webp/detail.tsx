@@ -261,7 +261,7 @@ const WebPFeatureDetail: React.FC = () => {
             <Image
               src={nextImage.url}
               alt={nextImage.url}
-              className="object-contain"
+              className="flex items-center justify-center object-contain px-4 text-center text-sm text-gray-11"
               sizes="100vw"
               draggable={false}
               fill
@@ -283,7 +283,7 @@ const WebPFeatureDetail: React.FC = () => {
             <Image
               src={image.url}
               alt={image.url}
-              className="object-contain"
+              className="flex items-center justify-center object-contain px-4 text-center text-sm text-gray-11"
               sizes="100vw"
               draggable={false}
               fill
