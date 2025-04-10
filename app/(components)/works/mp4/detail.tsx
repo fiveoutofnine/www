@@ -240,6 +240,18 @@ const Mp4FeatureDetail: React.FC = () => {
                     )}
                   />
                 </button>
+                <Button
+                  className="pointer-events-auto absolute right-2 top-2 backdrop-blur animate-in fade-in"
+                  size="sm"
+                  variant="outline"
+                  rightIcon={<SkipForward />}
+                  onClick={(e) => {
+                    setMp4(getRandomMp4Url(mp4?.index));
+                    e.stopPropagation();
+                  }}
+                >
+                  Next
+                </Button>
                 {!showControls ? (
                   <Fragment>
                     <Tooltip
@@ -268,20 +280,6 @@ const Mp4FeatureDetail: React.FC = () => {
                       videoRef={videoRef}
                       className={showOverlay ? 'opacity-100' : 'opacity-0'}
                     />
-                    <Tooltip content="Next video" side="left" triggerProps={{ asChild: true }}>
-                      <IconButton
-                        className="pointer-events-auto absolute right-2 top-2 backdrop-blur animate-in fade-in"
-                        size="sm"
-                        variant="outline"
-                        aria-label="Next video"
-                        onClick={(e) => {
-                          setMp4(getRandomMp4Url(mp4?.index));
-                          e.stopPropagation();
-                        }}
-                      >
-                        <SkipForward />
-                      </IconButton>
-                    </Tooltip>
                     <Tooltip content="Show controls" side="left" triggerProps={{ asChild: true }}>
                       <IconButton
                         className="pointer-events-auto absolute bottom-2 right-2 backdrop-blur animate-in fade-in"
