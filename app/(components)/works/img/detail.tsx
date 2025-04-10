@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
-import { ExternalLink, ThumbsUp, X } from 'lucide-react';
+import { Download, ThumbsUp, X } from 'lucide-react';
 
 import { getRandomImgUrl } from '@/lib/utils';
 
@@ -327,12 +327,18 @@ const ImgFeatureDetail: React.FC = () => {
         <Button
           className="grow"
           size="sm"
-          href={image.url}
           disabled={animationState !== 'idle'}
-          rightIcon={<ExternalLink />}
-          newTab
+          rightIcon={<Download />}
+          onClick={() => {
+            const link = document.createElement('a');
+            link.href = image.url;
+            link.download = image.url.split('/').pop() ?? 'image.webp';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }}
         >
-          View
+          Download
         </Button>
         <Tooltip side="top" align="end" content="Like" triggerProps={{ asChild: true }}>
           <IconButton
