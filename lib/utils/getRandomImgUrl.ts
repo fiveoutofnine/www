@@ -19,9 +19,10 @@ const IMG_URLS = ['/static/og/home.png', '/static/og/blog.png'];
  */
 const getRandomImgUrl = (exclude?: number) => {
   let seed = Math.floor(Math.random() * NUMBER_OF_IMAGES);
+  const offset = Math.floor(Math.random() * (NUMBER_OF_IMAGES - 1));
 
-  // Increase the seed by 1 to avoid the exclusion if there's only 1 MP4 video.
-  if (seed === exclude && NUMBER_OF_IMAGES > 1) seed = (seed + 1) % NUMBER_OF_IMAGES;
+  // Increment the seed to avoid the exclusion if there's only 1 photo.
+  if (seed === exclude && NUMBER_OF_IMAGES > 1) seed = (seed + offset) % NUMBER_OF_IMAGES;
 
   return {
     url: IMG_URLS[seed % 2],
