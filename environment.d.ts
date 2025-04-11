@@ -9,6 +9,8 @@ declare global {
       GOOGLE_SHEETS_API_KEY_RUNNING: string;
       // Config
       NEXT_PUBLIC_FIVEOUTOFNINE_ADDRESS: Address;
+      NEXT_PUBLIC_NUMBER_OF_IMAGES: number;
+      NEXT_PUBLIC_NUMBER_OF_VIDEOS: number;
       // Database
       DATABASE_URL: string;
       // Upstash

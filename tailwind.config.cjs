@@ -39,10 +39,13 @@ module.exports = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'bg-pulse': 'bg-pulse 2.5s cubic-bezier(.23,.68,.36,.96)',
+        'border-pulse': 'border-pulse 0.5s ease-in-out',
       },
       fontFamily: {
         sans: ['var(--font-inter)', ...fontFamily.sans],
         mono: ['var(--font-fira-code)', ...fontFamily.mono],
+        'vhs-display': ['var(--font-serpentine)', ...fontFamily.sans],
+        'vhs-mono': ['var(--font-vcr-osd-mono)', ...fontFamily.mono],
       },
       gridTemplateRows: {
         1: 'repeat(1, minmax(0, 1fr))',
@@ -78,6 +81,17 @@ module.exports = {
             outline: '1px solid rgba(0, 0, 0, 0)',
           },
         },
+        'border-pulse': {
+          '0%': {
+            outline: '1px solid rgba(255, 255, 255, 0.3)',
+          },
+          '100%': {
+            outline: '1px solid rgba(255, 255, 255, 0)',
+          },
+        },
+      },
+      transitionDuration: {
+        3000: '3000ms',
       },
       zIndex: {
         base: '0',
