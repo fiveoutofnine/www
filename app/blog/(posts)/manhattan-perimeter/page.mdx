@@ -1,0 +1,10 @@
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+export const metadata = getBlogPageMetadata({
+  slug: "manhattan-perimeter",
+  description: "Running the 33 mile (52km) perimeter of Manhattan.",
+});
+
+<BlogHeader slug="manhattan-perimeter" />
