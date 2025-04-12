@@ -4,11 +4,8 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
-import { Download, ThumbsUp, X } from 'lucide-react';
 
 import { getRandomWebPUrl } from '@/lib/utils';
-
-import { Button, IconButton, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Constants and types
@@ -33,10 +30,9 @@ const OPACITY_FINAL = 1.0;
 
 const WebPFeatureDetail: React.FC = () => {
   const [mounted, setMounted] = useState<boolean>(false);
-  const [image, setImage] = useState<ReturnType<typeof getRandomWebPUrl>>(getRandomWebPUrl());
-  const [nextImage, setNextImage] = useState<ReturnType<typeof getRandomWebPUrl>>(
-    getRandomWebPUrl(image.index),
-  );
+  const [image, setImage] = useState<ReturnType<typeof getRandomWebPUrl> | null>();
+  const [nextImage, setNextImage] =
+    useState<ReturnType<typeof getRandomWebPUrl>>(getRandomWebPUrl());
   const [animationState, setAnimationState] = useState<AnimationState>('idle');
   const [swipeAmount, setSwipeAmount] = useState<number>(0);
   const [lastExitDirection, setLastExitDirection] = useState<'left' | 'right' | null>(null);
@@ -270,7 +266,7 @@ const WebPFeatureDetail: React.FC = () => {
 
           {/* Current image displayed. */}
           <div
-            key={`top-image-${image.index}`}
+            key={`top-image-${image?.index ?? 'null'}`}
             className={clsx(
               'absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
               animationState === 'swiping' ? 'cursor-grabbing' : 'cursor-grab',
@@ -280,14 +276,20 @@ const WebPFeatureDetail: React.FC = () => {
             draggable
             {...swipeEventHandlers}
           >
-            <Image
-              src={image.url}
-              alt={image.url}
-              className="flex items-center justify-center object-contain px-4 text-center text-sm text-gray-11"
-              sizes="100vw"
-              draggable={false}
-              fill
-            />
+            {image ? (
+              <Image
+                src={image.url}
+                alt={image.url}
+                className="flex items-center justify-center object-contain px-4 text-center text-sm text-gray-11"
+                sizes="100vw"
+                draggable={false}
+                fill
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center px-4 text-sm text-gray-11">
+                Swipe left or right.
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -308,53 +310,6 @@ const WebPFeatureDetail: React.FC = () => {
         )}
         aria-hidden={true}
       />
-
-      <div className="z-30 flex h-10 w-full items-center gap-1 px-2 pb-2 pt-0">
-        <Tooltip side="top" align="start" content="Dislike" triggerProps={{ asChild: true }}>
-          <IconButton
-            size="sm"
-            variant="outline"
-            intent="fail"
-            onClick={() => {
-              setAnimationState('exiting-left');
-              setLastExitDirection('left');
-            }}
-            disabled={animationState !== 'idle'}
-          >
-            <X />
-          </IconButton>
-        </Tooltip>
-        <Button
-          className="grow"
-          size="sm"
-          disabled={animationState !== 'idle'}
-          rightIcon={<Download />}
-          onClick={() => {
-            const link = document.createElement('a');
-            link.href = image.url;
-            link.download = image.url.split('/').pop() ?? 'image.webp';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }}
-        >
-          Download
-        </Button>
-        <Tooltip side="top" align="end" content="Like" triggerProps={{ asChild: true }}>
-          <IconButton
-            size="sm"
-            variant="outline"
-            intent="success"
-            onClick={() => {
-              setAnimationState('exiting-right');
-              setLastExitDirection('right');
-            }}
-            disabled={animationState !== 'idle'}
-          >
-            <ThumbsUp />
-          </IconButton>
-        </Tooltip>
-      </div>
     </div>
   );
 };
