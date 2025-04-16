@@ -1,9 +1,10 @@
 import BlogHeader from '@/app/blog/(components)/header';
 
+import InlineAudio from '@/components/templates/inline-audio';
 import { getBlogPageMetadata } from '@/lib/utils';
 
 import { Fosbury1, Fosbury2, Ramanujan1, Ramanujan2 } from './(details)/details';
-import { AudioSample, DetailModal } from './client-components';
+import { DetailModal } from './client-components';
 
 export const metadata = getBlogPageMetadata({
   slug: 'self-taught',
@@ -18,30 +19,30 @@ A list of great self-taught feats/careers.
 
 [Leopold Godowsky](https://en.wikipedia.org/wiki/Leopold_Godowsky) was one of the greatest virtuoso pianists and composers of his time, earning the respect of other greats like Rachmaninoff and Arrau, and Hofmann.
 He composed [many works](https://imslp.org/wiki/List_of_works_by_Leopold_Godowsky), but the most famous are his [_54 Studies on Chopin's Études_](https://en.wikipedia.org/wiki/Studies_on_Chopin%27s_%C3%89tudes), where he augments Chopin's already challenging études with impossibly hard techniques like
-<AudioSample
+<InlineAudio
   audio={{
     name: 'Study No. 4 in A minor after Op. 10 No. 2',
     artist: 'Leopold Godowsky',
     src: 'https://assets.fiveoutofnine.com/godowsky-chopin-study-4.mp3',
     href: 'https://youtu.be/thX5d4cmHAw',
   }}
->countermelodies</AudioSample>,
-<AudioSample
+>countermelodies</InlineAudio>,
+<InlineAudio
   audio={{
     name: 'Study No. 5 in D-flat major after Op. 10 No. 3',
     artist: 'Leopold Godowsky',
     src: 'https://assets.fiveoutofnine.com/godowsky-chopin-study-5.mp3',
     href: 'https://youtu.be/iq6ATpgv1M8',
   }}
->transcriptions for left hand solo</AudioSample>, and
-<AudioSample
+>transcriptions for left hand solo</InlineAudio>, and
+<InlineAudio
   audio={{
     name: "Étude No. 1 in A minor 'Triple Étude, after Chopin'",
     artist: 'Marc-André Hamelin',
     src: 'https://assets.fiveoutofnine.com/hamelin-etude-after-godowsky-chopin-study-50.mp3',
     href: 'https://youtu.be/VecnWFSkjy4',
   }}
->interweaving three études together</AudioSample>.
+>interweaving three études together</InlineAudio>.
 They're known as some of the most technically difficult piano pieces ever written, and only a few pianists have even tried to perform them.
 Classical music typically requires decades of formal training and education, but Godowsky received almost none:
 
@@ -72,7 +73,7 @@ There are many stories and [accounts](https://doi.org/10.2307%2F2301659) of his
 His theory helped form the foundation for other great scientists like [James Clerk Maxwell](https://en.wikipedia.org/wiki/James_Clerk_Maxwell) and [William Thomson](https://en.wikipedia.org/wiki/Lord_Kelvin).
 Green was almost entirely self-taught:
 he only had 1 year of schooling, and much of his advanced math knowledge came after the age of 30 after he became a member of the [Nottingham Subscription Library](https://en.wikipedia.org/wiki/Bromley_House_Library) while working as a miller.
-In fact, he even published his essay privately because he didn't think someone with no formal education could should it to a journal.
+In fact, he even published his essay privately because he didn't think someone with no formal education could publish it to a journal.
 
 ---
 
@@ -111,6 +112,31 @@ Prior to Fosbury, coaches primarily taught the
 >straddle technique</DetailModal>.
 Despite pushback from his coaches and the media, he experimented, refined, and practiced the run-up and jump techniques to minimize the height of athlete's center of gravity throughout the jump and maximize take-off thrust time.
 Fosbury went on to win gold at the 1968 Olympics, and no man or woman has won an Olympic medal without using the Fosbury Flop since 1980.
+
+---
+
+[Mario Parodi](https://en.wikipedia.org/wiki/Mario_Parodi) was an entirely self-taught classical guitarist.
+He formed his musical foundation from pianists in Turkey, where he learned the rubato, tone, and phrasing of the Romantic era.
+Because he wasn't taught guitar the traditional way, he approached the instrument with fearless creativity.
+He arranged and recorded pieces like Liszt&apos;s
+<InlineAudio
+  audio={{
+    name: 'Liebestraum No. 3 for Guitar',
+    artist: 'Mario Parodi',
+    src: 'https://assets.fiveoutofnine.com/parodi-liebestraum-3.mp3',
+    href: 'https://youtu.be/SImwmg6hLBc',
+  }}
+>Liebestraum No. 3</InlineAudio> and Debussy&apos;s
+<InlineAudio
+  audio={{
+    name: 'Clair de Lune for Guitar',
+    artist: 'Mario Parodi',
+    src: 'https://assets.fiveoutofnine.com/parodi-clair-de-lune.mp3',
+    href: 'https://youtu.be/xL4EiJdd9iU',
+  }}
+>Clair de Lune</InlineAudio>,
+works most guitarists wouldn&apos;t attempt due to their pianistic texture and technical demands that extend beyond the guitar&apos;s typical range.
+His recordings showcase both his inventive transcriptions and his expressive interpretations.
 
 ## Motivation
 
