@@ -1,9 +1,10 @@
 import BlogHeader from '@/app/blog/(components)/header';
 
+import InlineAudio from '@/components/templates/inline-audio';
 import { getBlogPageMetadata } from '@/lib/utils';
 
 import { Fosbury1, Fosbury2, Ramanujan1, Ramanujan2 } from './(details)/details';
-import { AudioSample, DetailModal } from './client-components';
+import { DetailModal } from './client-components';
 
 export const metadata = getBlogPageMetadata({
   slug: 'self-taught',
@@ -18,30 +19,30 @@ A list of great self-taught feats/careers.
 
 [Leopold Godowsky](https://en.wikipedia.org/wiki/Leopold_Godowsky) was one of the greatest virtuoso pianists and composers of his time, earning the respect of other greats like Rachmaninoff and Arrau, and Hofmann.
 He composed [many works](https://imslp.org/wiki/List_of_works_by_Leopold_Godowsky), but the most famous are his [_54 Studies on Chopin's Études_](https://en.wikipedia.org/wiki/Studies_on_Chopin%27s_%C3%89tudes), where he augments Chopin's already challenging études with impossibly hard techniques like
-<AudioSample
+<InlineAudio
   audio={{
     name: 'Study No. 4 in A minor after Op. 10 No. 2',
     artist: 'Leopold Godowsky',
     src: 'https://assets.fiveoutofnine.com/godowsky-chopin-study-4.mp3',
     href: 'https://youtu.be/thX5d4cmHAw',
   }}
->countermelodies</AudioSample>,
-<AudioSample
+>countermelodies</InlineAudio>,
+<InlineAudio
   audio={{
     name: 'Study No. 5 in D-flat major after Op. 10 No. 3',
     artist: 'Leopold Godowsky',
     src: 'https://assets.fiveoutofnine.com/godowsky-chopin-study-5.mp3',
     href: 'https://youtu.be/iq6ATpgv1M8',
   }}
->transcriptions for left hand solo</AudioSample>, and
-<AudioSample
+>transcriptions for left hand solo</InlineAudio>, and
+<InlineAudio
   audio={{
     name: "Étude No. 1 in A minor 'Triple Étude, after Chopin'",
     artist: 'Marc-André Hamelin',
     src: 'https://assets.fiveoutofnine.com/hamelin-etude-after-godowsky-chopin-study-50.mp3',
     href: 'https://youtu.be/VecnWFSkjy4',
   }}
->interweaving three études together</AudioSample>.
+>interweaving three études together</InlineAudio>.
 They're known as some of the most technically difficult piano pieces ever written, and only a few pianists have even tried to perform them.
 Classical music typically requires decades of formal training and education, but Godowsky received almost none:
 
