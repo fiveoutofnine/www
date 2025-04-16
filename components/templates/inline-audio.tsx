@@ -2,7 +2,7 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 
-import { CirclePause, CirclePlay, ExternalLink, View } from 'lucide-react';
+import { CirclePause, CirclePlay, ExternalLink } from 'lucide-react';
 
 import { Button, toast } from '@/components/ui';
 
