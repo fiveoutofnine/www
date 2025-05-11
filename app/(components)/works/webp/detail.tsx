@@ -4,8 +4,11 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
+import { RotateCcw, RotateCw } from 'lucide-react';
 
 import { getRandomWebPUrl } from '@/lib/utils';
+
+import { Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Constants and types
@@ -36,6 +39,7 @@ const WebPFeatureDetail: React.FC = () => {
   const [animationState, setAnimationState] = useState<AnimationState>('idle');
   const [swipeAmount, setSwipeAmount] = useState<number>(0);
   const [lastExitDirection, setLastExitDirection] = useState<'left' | 'right' | null>(null);
+  const [polaroidAngle, setPolaroidAngle] = useState<number>(0);
 
   const pointerRef = useRef<{ x: number; y: number } | null>(null);
   const dragTimerRef = useRef<Date | null>(null);
@@ -286,8 +290,59 @@ const WebPFeatureDetail: React.FC = () => {
                 fill
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center px-4 text-sm text-gray-11">
-                Swipe left or right.
+              <div className="relative flex h-full w-full p-2.5">
+                <div
+                  className="flex h-full w-full flex-col justify-between p-2.5 text-white"
+                  style={{
+                    backgroundImage: `linear-gradient(${polaroidAngle}deg, ${[
+                      '#D60026', // red
+                      '#FF8200', // orange
+                      '#FFB500', // yellow
+                      '#78BE20', // green
+                      '#198CD9', // blue
+                    ]
+                      .map((color, index) => `${color} ${index * 20}% ${(index + 1) * 20}%`)
+                      .join(', ')})`,
+                  }}
+                >
+                  <div className="text-4xl font-medium leading-none tracking-tight">
+                    Swipe left
+                    <br />
+                    or right
+                  </div>
+                  <div className="text-lg font-light tracking-tight">
+                    {process.env.NEXT_PUBLIC_NUMBER_OF_IMAGES} images
+                  </div>
+                </div>
+                <div className="absolute bottom-[1.375rem] right-[1.375rem] grid grid-cols-2 gap-2">
+                  {[
+                    {
+                      icon: <RotateCw />,
+                      label: 'Rotate background right',
+                      onClick: () => setPolaroidAngle((prev) => (prev + 15) % 360),
+                    },
+                    {
+                      icon: <RotateCcw />,
+                      label: 'Rotate background left',
+                      onClick: () => setPolaroidAngle((prev) => (prev - 15) % 360),
+                    },
+                  ].map(({ icon, label, onClick }, index) => (
+                    <Tooltip
+                      key={index}
+                      content={label}
+                      align="end"
+                      triggerProps={{ asChild: true }}
+                    >
+                      <button
+                        className="flex size-8 items-center justify-center border border-white bg-white text-black transition-colors hover:bg-transparent hover:text-white"
+                        aria-label={label}
+                        onClick={onClick}
+                      >
+                        <span className="flex size-4 items-center justify-center">{icon}</span>
+                      </button>
+                    </Tooltip>
+                  ))}
+                </div>
               </div>
             )}
           </div>
