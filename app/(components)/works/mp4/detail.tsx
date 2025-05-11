@@ -172,6 +172,7 @@ const Mp4FeatureDetail: React.FC = () => {
               onMouseLeave={!isTouchScreen ? toggleOverlay : undefined}
               onTouchStart={isTouchScreen ? toggleOverlay : undefined}
               ref={videoRef}
+              tabIndex={-1}
               controls={false}
               playsInline
               autoPlay
