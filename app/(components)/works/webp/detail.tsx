@@ -317,14 +317,14 @@ const WebPFeatureDetail: React.FC = () => {
                 <div className="absolute bottom-[1.375rem] right-[1.375rem] grid grid-cols-2 gap-2">
                   {[
                     {
-                      icon: <RotateCw />,
-                      label: 'Rotate background right',
-                      onClick: () => setPolaroidAngle((prev) => (prev + 15) % 360),
-                    },
-                    {
                       icon: <RotateCcw />,
                       label: 'Rotate background left',
                       onClick: () => setPolaroidAngle((prev) => (prev - 15) % 360),
+                    },
+                    {
+                      icon: <RotateCw />,
+                      label: 'Rotate background right',
+                      onClick: () => setPolaroidAngle((prev) => (prev + 15) % 360),
                     },
                   ].map(({ icon, label, onClick }, index) => (
                     <Tooltip
