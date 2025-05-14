@@ -1,0 +1,10 @@
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+export const metadata = getBlogPageMetadata({
+  slug: '1000-days-of-running',
+  description: 'Overview and reflections on running everyday for 1000 days.',
+});
+
+<BlogHeader slug="1000-days-of-running" />

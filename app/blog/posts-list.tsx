@@ -31,7 +31,7 @@ const BlogPostsList: React.FC = () => {
                   {title}
                 </span>
                 <time
-                  className="w-12 min-w-12 pt-1 text-right text-sm leading-4 text-gray-11"
+                  className="w-14 min-w-14 pt-1 text-right text-sm leading-4 text-gray-11"
                   dateTime={date.toISOString()}
                   title={date.toLocaleString('en-US', {
                     month: 'long',
