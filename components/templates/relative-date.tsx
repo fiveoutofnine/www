@@ -51,7 +51,7 @@ const RelativeDate: React.FC<RelativeDateProps> = ({ className, date, type = 'ab
       <span
         className={twMerge(
           clsx(
-            'flex h-5 w-fit items-center rounded border border-gray-7 bg-gray-3 px-1 text-sm font-medium text-gray-11 transition-colors hover:border-gray-8',
+            'flex h-5 w-fit select-text items-center rounded border border-gray-7 bg-gray-3 px-1 text-sm font-medium text-gray-11 transition-colors hover:border-gray-8',
             className,
           ),
         )}
