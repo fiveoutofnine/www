@@ -80,7 +80,7 @@ export const InlineDistance: React.FC<{ m: number }> = ({ m }) => {
         onDoubleClick={reset}
         onKeyDown={handleKeyDown}
       >
-        {Math.round(100 * value) / 100}
+        {value < 1e9 ? Math.round(100 * value) / 100 : value.toExponential(2)}
         {unitName}
       </span>
     </Tooltip>
