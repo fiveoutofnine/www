@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import OverviewBarChart from './bar-chart';
 import { COUNTRIES } from './data';
 import BoringAvatar from 'boring-avatars';
 import clsx from 'clsx';
@@ -22,7 +23,7 @@ interface DistanceUnitIndexState {
   reset: () => void;
 }
 
-const useDistanceUnitIndexStore = create<DistanceUnitIndexState>((set) => ({
+export const useDistanceUnitIndexStore = create<DistanceUnitIndexState>((set) => ({
   index: 0,
   inc: () =>
     set((state: DistanceUnitIndexState) => ({
@@ -137,7 +138,11 @@ export const Overview = () => {
                   const Flag = Flags[country.code as keyof typeof Flags];
 
                   return (
-                    <Tooltip key={country.code} content={country.name}>
+                    <Tooltip
+                      key={country.code}
+                      content={country.name}
+                      triggerProps={{ className: 'rounded-md pr-[2px] -mr-[2px]' }}
+                    >
                       <Flag className="rounded-md border border-gray-7 transition-colors hover:border-gray-8" />
                     </Tooltip>
                   );
@@ -152,7 +157,9 @@ export const Overview = () => {
             <div className="h-full rounded-xl border border-gray-6 bg-gray-2"></div>
             <div className="h-full rounded-xl border border-gray-6 bg-gray-2"></div>
           </div>
-          <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
+          <div className="relative col-span-2 row-span-1 h-full overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
+            <OverviewBarChart />
+          </div>
           <div className="relative col-span-2 row-span-1 flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6">
             <div
               className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-red-9"

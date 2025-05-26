@@ -73,6 +73,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
 
     return [data, totalDays];
   }, [currentDay, currentMonth, currentYear, mileageLogs, unit.scalar]);
+
   // We scale to annualized mileage.
   const total = useMemo(
     () => (365 * mileageLogs.reduce((a, b) => a + unit.scalar * b.value, 0)) / totalDays,
