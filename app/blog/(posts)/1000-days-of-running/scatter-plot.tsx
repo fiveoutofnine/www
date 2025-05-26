@@ -1,21 +1,23 @@
 'use client';
 
-import { useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 
 import { useDistanceUnitIndexStore } from './client-components';
 import { DAILY_RUNNING_MILEAGE } from './data';
+import { Info } from 'lucide-react';
 import {
   ComposedChart,
   Line,
   Tooltip as RechartTooltip,
   ResponsiveContainer,
   Scatter,
-  XAxis,
-  YAxis,
+  ScatterChart,
 } from 'recharts';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
 import { formatValueToPrecision } from '@/lib/utils';
+
+import { Tooltip } from '@/components/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const radixColors = require('@radix-ui/colors');
@@ -53,61 +55,92 @@ const OverviewScatterPlot: React.FC = () => {
     () => `${unit.spaceBefore ? ' ' : ''}${unit.name}`,
     [unit.name, unit.spaceBefore],
   );
-  console.log(data);
+
+  const total = useMemo(() => 7 * (data.reduce((a, b) => a + b.value, 0) / data.length), []);
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
-        <XAxis dataKey="time" axisLine={false} tickLine={false} tickSize={4} hide />
-        <YAxis dataKey="value" axisLine={false} tickLine={false} tickSize={4} hide />
-        <RechartTooltip
-          content={({ active, payload }) => {
-            if (
-              !payload ||
-              payload.length === 0 ||
-              !active ||
-              !payload[0]?.payload?.time ||
-              !payload[0]?.payload?.value
-            ) {
-              return null;
-            }
+    <Fragment>
+      <div
+        key={unit.name}
+        className="absolute left-2 top-2 z-20 animate-bg-pulse text-sm font-medium tracking-tight"
+      >
+        <span className="text-base text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
+        <span className="text-xs text-gray-11">
+          {unitName + '/week '}
+          {unit.description ? (
+            <Tooltip
+              content={unit.description}
+              sideOffset={0}
+              inverted
+              triggerProps={{
+                className:
+                  'rounded-full size-2.5 transition-colors hover:text-gray-12 inline-flex items-center justify-center',
+              }}
+            >
+              <Info className="size-2.5" />
+            </Tooltip>
+          ) : null}
+        </span>
+      </div>
+      <ResponsiveContainer className="absolute left-0 top-0" width="100%" height="100%">
+        <ComposedChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
+          <Scatter
+            dataKey="value"
+            /* @ts-expect-error The type for `Scatter` should be correct. */
+            shape={() => null}
+          />
+          <Line dataKey="ma" stroke={radixColors.blueDark.blue8} dot={false} activeDot={false} />
+        </ComposedChart>
+      </ResponsiveContainer>
+      <ResponsiveContainer className="absolute left-0 top-0" width="100%" height="100%">
+        <ScatterChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
+          <RechartTooltip
+            content={({ active, payload }) => {
+              if (
+                !payload ||
+                payload.length === 0 ||
+                !active ||
+                !payload[0]?.payload?.time ||
+                !payload[0]?.payload?.value
+              ) {
+                return null;
+              }
 
-            return (
-              <div
-                className="items-center rounded border border-gray-6 bg-gray-3 p-2"
-                tabIndex={-1}
-              >
-                <div className="font-medium">
-                  <span className="text-base text-gray-12">
-                    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-                    {/* @ts-ignore */}
-                    {formatValueToPrecision(payload[0].payload.value, 2, false)}
-                  </span>
-                  <span className="text-xs text-gray-11">{unitName}</span>
+              return (
+                <div
+                  className="items-center rounded border border-gray-6 bg-gray-3 p-2"
+                  tabIndex={-1}
+                >
+                  <div className="font-medium">
+                    <span className="text-base text-gray-12">
+                      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                      {/* @ts-ignore */}
+                      {formatValueToPrecision(payload[0].payload.value, 2, false)}
+                    </span>
+                    <span className="text-xs text-gray-11">{unitName}</span>
+                  </div>
+                  <div className="text-xs text-gray-11">
+                    {payload[0].payload.time.toLocaleDateString('en-US', {
+                      day: 'numeric',
+                      month: 'short',
+                      timeZone: 'UTC',
+                      year: 'numeric',
+                    })}
+                  </div>
                 </div>
-                <div className="text-xs text-gray-11">
-                  {payload[0].payload.time.toLocaleDateString('en-US', {
-                    day: 'numeric',
-                    month: 'short',
-                    timeZone: 'UTC',
-                    year: 'numeric',
-                  })}
-                </div>
-              </div>
-            );
-          }}
-        />
-        <Scatter
-          dataKey="value"
-          fill="red"
-          /* @ts-expect-error The type for `Scatter` should be correct. */
-          shape={({ x, y }) => (
-            <circle className="z-10 fill-gray-9/20" cx={x + 4.5} cy={y + 4.5} r="2" />
-          )}
-        />
-        <Line dataKey="ma" stroke={radixColors.blueDark.blue8} dot={false} activeDot={false} />
-      </ComposedChart>
-    </ResponsiveContainer>
+              );
+            }}
+          />
+          <Scatter
+            dataKey="value"
+            /* @ts-expect-error The type for `Scatter` should be correct. */
+            shape={({ x, y }) => (
+              <circle className="z-10 fill-gray-9/20" cx={x + 4.5} cy={y + 4.5} r="2" />
+            )}
+          />
+        </ScatterChart>
+      </ResponsiveContainer>
+    </Fragment>
   );
 };
 
