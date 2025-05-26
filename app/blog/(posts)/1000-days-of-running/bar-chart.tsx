@@ -65,10 +65,10 @@ const OverviewBarChart: React.FC = () => {
 
   return (
     <Fragment>
-      <div className="absolute left-1.5 top-1.5 z-20 text-sm font-medium tracking-tight underline decoration-dotted">
+      <div className="absolute left-1.5 top-1.5 z-20 text-sm font-medium tracking-tight">
         <span className="text-base text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
         <span className="text-xs text-gray-11">
-          {unitName + ' '}
+          {unitName + '/day '}
           {unit.description ? (
             <Tooltip
               content={unit.description}
@@ -91,9 +91,16 @@ const OverviewBarChart: React.FC = () => {
             margin={{ top: -1, left: 0, right: 0, bottom: -1 }}
             barCategoryGap={4}
           >
-            <CartesianGrid />
+            <CartesianGrid verticalPoints={[]} />
             <XAxis dataKey="date" axisLine={false} tickLine={false} tickSize={4} hide />
-            <YAxis axisLine={false} tickCount={3} tickLine={false} tickSize={4} hide />
+            <YAxis
+              axisLine={false}
+              tickCount={3}
+              tickLine={false}
+              tickSize={4}
+              hide
+              domain={[0, (dataMax: number) => (dataMax === 0 ? 1 : dataMax * 1.25)]}
+            />
             <RechartTooltip
               content={({ active, payload, label }) => {
                 const monthName = label
