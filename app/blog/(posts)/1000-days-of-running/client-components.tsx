@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import BoringAvatar from 'boring-avatars';
 import clsx from 'clsx';
 import { create } from 'zustand';
 
@@ -127,20 +128,41 @@ export const Overview = () => {
         {/* We want to ensure the 1×1 items are square:
          * (146px * 3 + 6px * 2) = 450px = 28.125rem */}
         <div className="grid h-[28.125rem] w-[38rem] grid-cols-4 grid-rows-3 gap-1.5">
-          <div className="col-span-1 row-span-2 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
+          <div className="col-span-1 row-span-2 flex h-full flex-col gap-1.5 rounded-xl border border-gray-6 bg-gray-2 p-1.5">
+            <div className="flex grow gap-1">hi</div>
+            <div className="w-full text-center text-base font-medium tracking-tight">
+              21 countries
+            </div>
+          </div>
           <div className="col-span-1 row-span-1 grid h-full grid-rows-2 gap-1.5">
             <div className="h-full rounded-xl border border-gray-6 bg-gray-2"></div>
             <div className="h-full rounded-xl border border-gray-6 bg-gray-2"></div>
           </div>
           <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
-          <div className="col-span-2 row-span-1 flex h-full items-center justify-center rounded-xl border border-gray-6 bg-gradient-to-br from-indigo-500 via-fuchsia-500 to-rose-400 dark:from-indigo-600 dark:via-fuchsia-600 dark:to-rose-500">
-            <span className="text-center text-2xl font-semibold leading-tight tracking-tight">
+          <div className="relative col-span-2 row-span-1 flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6">
+            <div
+              className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-red-9"
+              aria-hidden={true}
+            >
+              <BoringAvatar size={301} name="@cited" variant="marble" square />
+            </div>
+            <span className="z-20 text-center text-2xl font-semibold leading-tight tracking-tight">
               1000 Days of
               <br />
               Running Every Day
             </span>
           </div>
-          <div className="col-span-1 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
+          <div
+            className="col-span-1 row-span-1 flex h-full justify-center rounded-xl border border-gray-6 bg-gray-2 p-1.5 text-base font-medium tracking-tight"
+            style={{
+              // eslint-disable-next-line
+              backgroundImage: "url('/static/blog/1000-days-of-running/pegasus41.webp')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            29 shoes
+          </div>
           <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
           <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
         </div>

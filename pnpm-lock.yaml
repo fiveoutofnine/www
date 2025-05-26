@@ -80,6 +80,9 @@ dependencies:
   '@visx/tooltip':
     specifier: ^3.3.0
     version: 3.3.0(react-dom@18.3.1)(react@18.3.1)
+  boring-avatars:
+    specifier: ^1.11.2
+    version: 1.11.2
   clsx:
     specifier: ^2.1.1
     version: 2.1.1
@@ -6469,6 +6472,10 @@ packages:
 
   /bn.js@5.2.1:
     resolution: {integrity: sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==}
+    dev: false
+
+  /boring-avatars@1.11.2:
+    resolution: {integrity: sha512-3+wkwPeObwS4R37FGXMYViqc4iTrIRj5yzfX9Qy4mnpZ26sX41dGMhsAgmKks1r/uufY1pl4vpgzMWHYfJRb2A==}
     dev: false
 
   /bowser@2.11.0:
