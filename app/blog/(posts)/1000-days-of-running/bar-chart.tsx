@@ -120,7 +120,7 @@ const OverviewBarChart: React.FC = () => {
                         {/* @ts-ignore */}
                         {formatValueToPrecision(payload[0].value, 2, false)}
                       </span>
-                      <span className="text-xs text-gray-11">{`${unit.name}/day`}</span>
+                      <span className="text-xs text-gray-11">{`${unitName}/day`}</span>
                     </div>
                     <div className="text-xs text-gray-11">{`${monthName} ${year}`}</div>
                   </div>

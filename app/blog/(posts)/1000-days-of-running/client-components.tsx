@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import OverviewBarChart from './bar-chart';
 import { COUNTRIES } from './data';
+import OverviewScatterPlot from './scatter-plot';
 import OverviewTotalDistance from './total-distance';
 import BoringAvatar from 'boring-avatars';
 import clsx from 'clsx';
@@ -191,7 +192,9 @@ export const Overview = () => {
           >
             29 shoes
           </div>
-          <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
+          <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2">
+            <OverviewScatterPlot />
+          </div>
           <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
         </div>
       </div>
