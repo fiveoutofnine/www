@@ -65,7 +65,7 @@ const OverviewBarChart: React.FC = () => {
 
   return (
     <Fragment>
-      <div className="absolute left-1.5 top-1.5 z-20 text-sm font-medium tracking-tight">
+      <div className="absolute left-2 top-2 z-20 text-sm font-medium tracking-tight">
         <span className="text-base text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
         <span className="text-xs text-gray-11">
           {unitName + '/day '}
@@ -88,10 +88,9 @@ const OverviewBarChart: React.FC = () => {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
-            margin={{ top: -1, left: 0, right: 0, bottom: -1 }}
+            margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
             barCategoryGap={4}
           >
-            <CartesianGrid verticalPoints={[]} />
             <XAxis dataKey="date" axisLine={false} tickLine={false} tickSize={4} hide />
             <YAxis
               axisLine={false}
@@ -99,7 +98,7 @@ const OverviewBarChart: React.FC = () => {
               tickLine={false}
               tickSize={4}
               hide
-              domain={[0, (dataMax: number) => (dataMax === 0 ? 1 : dataMax * 1.25)]}
+              domain={[0, (dataMax: number) => (dataMax === 0 ? 1 : dataMax * 1.35)]}
             />
             <RechartTooltip
               content={({ active, payload, label }) => {
