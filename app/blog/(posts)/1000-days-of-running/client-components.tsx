@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { COUNTRIES } from './data';
 import BoringAvatar from 'boring-avatars';
 import clsx from 'clsx';
 import Flags from 'country-flag-icons/react/3x2';
@@ -120,18 +121,6 @@ export const Overview = () => {
     };
   }, []);
 
-  const countries = [
-    { code: 'US', name: 'United States' },
-    { code: 'KR', name: 'South Korea' },
-    { code: 'IT', name: 'Italy' },
-    { code: 'ME', name: 'Montenegro' },
-    { code: 'CN', name: 'China' },
-    { code: 'FR', name: 'France' },
-    { code: 'IS', name: 'Iceland' },
-    { code: 'JP', name: 'Japan' },
-    { code: 'GB', name: 'United Kingdom' },
-  ];
-
   return (
     <div
       className="flex max-w-[100vw] items-center justify-center"
@@ -144,7 +133,7 @@ export const Overview = () => {
           <div className="col-span-1 row-span-2 flex h-full flex-col gap-1.5 rounded-xl border border-gray-6 bg-gray-2">
             <div className="grow">
               <div className="grid grid-cols-2 gap-1 p-2">
-                {countries.map((country) => {
+                {COUNTRIES.map((country) => {
                   const Flag = Flags[country.code as keyof typeof Flags];
 
                   return (
@@ -156,7 +145,7 @@ export const Overview = () => {
               </div>
             </div>
             <div className="w-full pb-1.5 text-center text-lg font-medium leading-normal tracking-tight">
-              9 countries
+              {COUNTRIES.length} countries
             </div>
           </div>
           <div className="col-span-1 row-span-1 grid h-full grid-rows-2 gap-1.5">
