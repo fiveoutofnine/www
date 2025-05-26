@@ -4,7 +4,7 @@ import RelativeDate from '@/components/templates/relative-date';
 
 import { getBlogPageMetadata } from '@/lib/utils';
 
-import { InlineDistance as Distance } from './client-components';
+import { InlineDistance as Distance, Overview } from './client-components';
 
 export const metadata = getBlogPageMetadata({
   slug: '1000-days-of-running',
@@ -13,5 +13,7 @@ export const metadata = getBlogPageMetadata({
 
 <BlogHeader slug="1000-days-of-running" />
 
-As of <RelativeDate date={new Date("2025-05-22T13:04:19.099Z")} type="absolute" />, I've ran every day for the last 995 days.
-During that time, I covered <Distance m={18_679_280} /> running and <Distance m={23_876_121} /> in total:
+As of <RelativeDate date={new Date("2025-05-22T13:04:19.099Z")} type="absolute" />, I've ran every day for the last 999 days.
+During that time, I covered <Distance m={18_756_130} /> running and <Distance m={23_969_648} /> in total:
+
+<Overview />
