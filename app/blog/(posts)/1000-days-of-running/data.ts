@@ -49,5 +49,5 @@ export const MONTHLY_MILEAGE: (MileageLog & { days: number })[] = [
   { time: new Date('2025-02-01'), value: 688.38165, days: 28 },
   { time: new Date('2025-03-01'), value: 775.67444, days: 31 },
   { time: new Date('2025-04-01'), value: 595.4449, days: 30 },
-  { time: new Date('2025-05-01'), value: 515.3703, days: 26 },
+  { time: new Date('2025-05-01'), value: 582.458, days: 26 },
 ];

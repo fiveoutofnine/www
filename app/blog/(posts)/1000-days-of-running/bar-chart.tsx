@@ -33,7 +33,7 @@ const OverviewBarChart: React.FC = () => {
       const month = utcDate.getUTCMonth();
       const year = utcDate.getUTCFullYear();
       const daysInMonth =
-        month === 5 && year === 2025
+        month === 4 && year === 2025
           ? 26
           : // `0xeefbb3 = (3 << 22) | (2 << 20) | ... | (0 << 2) | (3 << 0)`
             28 +
