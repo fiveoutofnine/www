@@ -66,7 +66,7 @@ const OverviewScatterPlot: React.FC = () => {
     <Fragment>
       <div
         key={unit.name}
-        className="absolute left-2 top-2 z-20 animate-bg-pulse text-sm font-medium tracking-tight"
+        className="absolute left-2 top-2 z-30 animate-bg-pulse text-sm font-medium tracking-tight"
       >
         <span className="text-base text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
         <span className="text-xs text-gray-11">
@@ -92,7 +92,6 @@ const OverviewScatterPlot: React.FC = () => {
         height="100%"
       >
         <ComposedChart data={data} margin={{ top: -1, left: -1, right: -1, bottom: -1 }}>
-          <CartesianGrid strokeDasharray="3 3" />
           <Scatter
             dataKey="value"
             /* @ts-expect-error The type for `Scatter` should be correct. */
@@ -111,6 +110,7 @@ const OverviewScatterPlot: React.FC = () => {
       </ResponsiveContainer>
       <ResponsiveContainer className="absolute left-0 top-0 z-10" width="100%" height="100%">
         <ScatterChart data={data} margin={{ top: -1, left: -1, right: -1, bottom: -1 }}>
+          <CartesianGrid strokeDasharray="3 3" />
           <RechartTooltip
             content={({ active, payload }) => {
               if (
@@ -125,7 +125,7 @@ const OverviewScatterPlot: React.FC = () => {
 
               return (
                 <div
-                  className="items-center rounded border border-gray-6 bg-gray-3 p-2"
+                  className="z-30 items-center rounded border border-gray-6 bg-gray-3 p-2"
                   tabIndex={-1}
                 >
                   <div className="font-medium">
