@@ -6,6 +6,7 @@ import { useDistanceUnitIndexStore } from './client-components';
 import { DAILY_RUNNING_MILEAGE } from './data';
 import { Info } from 'lucide-react';
 import {
+  CartesianGrid,
   ComposedChart,
   Line,
   Tooltip as RechartTooltip,
@@ -56,7 +57,10 @@ const OverviewScatterPlot: React.FC = () => {
     [unit.name, unit.spaceBefore],
   );
 
-  const total = useMemo(() => 7 * (data.reduce((a, b) => a + b.value, 0) / data.length), []);
+  const total = useMemo(
+    () => 7 * (data.reduce((a, b) => a + b.value, 0) / data.length),
+    [unit.scalar],
+  );
 
   return (
     <Fragment>
@@ -83,7 +87,8 @@ const OverviewScatterPlot: React.FC = () => {
         </span>
       </div>
       <ResponsiveContainer className="absolute left-0 top-0" width="100%" height="100%">
-        <ComposedChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
+        <ComposedChart data={data} margin={{ top: -1, left: -1, right: -1, bottom: -1 }}>
+          <CartesianGrid strokeDasharray="3 3" />
           <Scatter
             dataKey="value"
             /* @ts-expect-error The type for `Scatter` should be correct. */
@@ -93,7 +98,7 @@ const OverviewScatterPlot: React.FC = () => {
         </ComposedChart>
       </ResponsiveContainer>
       <ResponsiveContainer className="absolute left-0 top-0" width="100%" height="100%">
-        <ScatterChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
+        <ScatterChart data={data} margin={{ top: -1, left: -1, right: -1, bottom: -1 }}>
           <RechartTooltip
             content={({ active, payload }) => {
               if (
