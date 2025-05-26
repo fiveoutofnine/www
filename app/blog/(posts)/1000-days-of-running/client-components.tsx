@@ -73,7 +73,11 @@ export const InlineDistance: React.FC<{ m: number }> = ({ m }) => {
       inverted={false}
     >
       <span
-        className="h-5 cursor-pointer rounded-sm text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-9"
+        key={unit.name}
+        className={clsx(
+          'h-5 cursor-pointer rounded-none text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-9',
+          unit.name ? 'animate-bg-pulse' : '',
+        )}
         tabIndex={0}
         role="button"
         onClick={inc}
