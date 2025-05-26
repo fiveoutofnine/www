@@ -62,16 +62,15 @@ const OverviewTotalDistance: React.FC<OverviewTotalDistanceProps> = ({
             ? Math.round(100 * value) / 100
             : value.toExponential(2)}
       </span>
-      <br />
       <span ref={spanRef2} className="text-sm leading-4">
         {unitName} total
       </span>
-      <div
+      <span
         className="leading-2 absolute left-[3px] flex w-2 items-center justify-center font-mono text-[8px] font-normal text-white opacity-50 bg-blend-multiply"
-        style={{ writingMode: 'sideways-lr' }}
+        style={{ writingMode: 'vertical-lr', transform: 'rotate(180deg)' }}
       >
         {`${ranPercentage.toFixed(4)}% ran`}
-      </div>
+      </span>
     </div>
   );
 };
