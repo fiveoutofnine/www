@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import OverviewBarChart from './bar-chart';
 import { COUNTRIES } from './data';
+import OverviewLongestRun from './longest-run';
 import OverviewScatterPlot from './scatter-plot';
 import OverviewTotalDistance from './total-distance';
 import BoringAvatar from 'boring-avatars';
@@ -163,7 +164,9 @@ export const Overview = () => {
             <div className="flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
               <OverviewTotalDistance ranDistance={18_756_130} totalDistance={23_969_648} />
             </div>
-            <div className="h-full rounded-xl border border-gray-6 bg-gray-2"></div>
+            <div className="flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
+              <OverviewLongestRun />
+            </div>
           </div>
           <div className="relative col-span-2 row-span-1 h-full overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
             <OverviewBarChart />
