@@ -86,7 +86,11 @@ const OverviewScatterPlot: React.FC = () => {
           ) : null}
         </span>
       </div>
-      <ResponsiveContainer className="absolute left-0 top-0" width="100%" height="100%">
+      <ResponsiveContainer
+        className="pointer-events-none absolute left-0 top-0 z-20"
+        width="100%"
+        height="100%"
+      >
         <ComposedChart data={data} margin={{ top: -1, left: -1, right: -1, bottom: -1 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <Scatter
@@ -94,10 +98,18 @@ const OverviewScatterPlot: React.FC = () => {
             /* @ts-expect-error The type for `Scatter` should be correct. */
             shape={() => null}
           />
-          <Line dataKey="ma" stroke={radixColors.blueDark.blue8} dot={false} activeDot={false} />
+          <Line
+            className="pointer-events-none"
+            dataKey="ma"
+            stroke={radixColors.blueDark.blue8}
+            strokeWidth={2}
+            dot={false}
+            activeDot={false}
+            type="monotone"
+          />
         </ComposedChart>
       </ResponsiveContainer>
-      <ResponsiveContainer className="absolute left-0 top-0" width="100%" height="100%">
+      <ResponsiveContainer className="absolute left-0 top-0 z-10" width="100%" height="100%">
         <ScatterChart data={data} margin={{ top: -1, left: -1, right: -1, bottom: -1 }}>
           <RechartTooltip
             content={({ active, payload }) => {
@@ -140,7 +152,7 @@ const OverviewScatterPlot: React.FC = () => {
             dataKey="value"
             /* @ts-expect-error The type for `Scatter` should be correct. */
             shape={({ x, y }) => (
-              <circle className="z-10 fill-gray-9/20" cx={x + 4.5} cy={y + 4.5} r="2" />
+              <circle className="fill-gray-9/20" cx={x + 4.5} cy={y + 4.5} r="2" />
             )}
           />
         </ScatterChart>
