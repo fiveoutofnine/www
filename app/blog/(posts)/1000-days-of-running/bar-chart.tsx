@@ -52,7 +52,7 @@ const OverviewBarChart: React.FC = () => {
   }, []);
 
   // We scale to calculate average monthly mileage.
-  const total = useMemo(
+  const average = useMemo(
     () => MONTHLY_MILEAGE.reduce((a, b) => a + unit.scalar * b.value, 0) / totalDays,
     [MONTHLY_MILEAGE, totalDays, unit.scalar],
   );
@@ -68,7 +68,7 @@ const OverviewBarChart: React.FC = () => {
         key={unit.name}
         className="absolute left-2 top-2 z-20 animate-bg-pulse text-sm font-medium tracking-tight"
       >
-        <span className="text-base text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
+        <span className="text-base text-gray-12">{formatValueToPrecision(average, 2, false)}</span>
         <span className="text-xs text-gray-11">
           {unitName + '/day '}
           {unit.description ? (

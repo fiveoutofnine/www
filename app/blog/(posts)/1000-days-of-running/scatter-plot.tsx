@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import { useDistanceUnitIndexStore } from './client-components';
 import { DAILY_RUNNING_MILEAGE } from './data';
 import {
+  //Line,
   Tooltip as RechartTooltip,
   ResponsiveContainer,
   Scatter,
@@ -21,7 +22,7 @@ const OverviewScatterPlot: React.FC = () => {
 
   const unit = LENGTH_UNITS[index];
 
-  const data = useMemo(() => {
+  const scatterData = useMemo(() => {
     return DAILY_RUNNING_MILEAGE.map((d) => {
       const date = d.time;
       const utcDate = new Date(
@@ -35,6 +36,19 @@ const OverviewScatterPlot: React.FC = () => {
     });
   }, [unit.scalar]);
 
+  // Compute moving average of 28 days.
+  /* const lineData = useMemo(() => {
+    return scatterData.map((d, i) => {
+      const start = Math.max(0, i - 28);
+      const end = Math.min(scatterData.length, i + 28);
+      const sum = scatterData.slice(start, end).reduce((a, b) => a + b.value, 0);
+      return {
+        time: d.time,
+        value: sum / 28,
+      };
+    });
+  }, [scatterData]); */
+
   const unitName = useMemo(
     () => `${unit.spaceBefore ? ' ' : ''}${unit.name}`,
     [unit.name, unit.spaceBefore],
@@ -42,7 +56,7 @@ const OverviewScatterPlot: React.FC = () => {
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ScatterChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
+      <ScatterChart data={scatterData} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
         <XAxis dataKey="time" axisLine={false} tickLine={false} tickSize={4} hide />
         <YAxis dataKey="value" axisLine={false} tickLine={false} tickSize={4} hide />
         <RechartTooltip

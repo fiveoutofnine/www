@@ -192,7 +192,7 @@ export const Overview = () => {
           >
             29 shoes
           </div>
-          <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2">
+          <div className="col-span-2 row-span-1 h-full overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
             <OverviewScatterPlot />
           </div>
           <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
