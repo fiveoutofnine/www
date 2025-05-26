@@ -8,7 +8,6 @@ import { Info } from 'lucide-react';
 import {
   Bar,
   BarChart,
-  CartesianGrid,
   Tooltip as RechartTooltip,
   ResponsiveContainer,
   XAxis,
@@ -65,7 +64,10 @@ const OverviewBarChart: React.FC = () => {
 
   return (
     <Fragment>
-      <div className="absolute left-2 top-2 z-20 text-sm font-medium tracking-tight">
+      <div
+        key={unit.name}
+        className="absolute left-2 top-2 z-20 animate-bg-pulse text-sm font-medium tracking-tight"
+      >
         <span className="text-base text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
         <span className="text-xs text-gray-11">
           {unitName + '/day '}

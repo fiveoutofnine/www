@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import OverviewBarChart from './bar-chart';
 import { COUNTRIES } from './data';
+import OverviewTotalDistance from './total-distance';
 import BoringAvatar from 'boring-avatars';
 import clsx from 'clsx';
 import Flags from 'country-flag-icons/react/3x2';
@@ -38,9 +39,9 @@ export const useDistanceUnitIndexStore = create<DistanceUnitIndexState>((set) =>
 
 export const InlineDistance: React.FC<{ m: number }> = ({ m }) => {
   const { index, inc, reset } = useDistanceUnitIndexStore();
+  const spanRef = useRef<HTMLSpanElement>(null);
 
   const unit = LENGTH_UNITS[index];
-  const spanRef = useRef<HTMLSpanElement>(null);
 
   const [value, unitName] = useMemo(
     () => [(unit.scalar * m) / 1000, `${unit.spaceBefore ? ' ' : ''}${unit.name}`],
@@ -95,7 +96,11 @@ export const InlineDistance: React.FC<{ m: number }> = ({ m }) => {
         onDoubleClick={reset}
         onKeyDown={handleKeyDown}
       >
-        {value < 1e9 ? Math.round(100 * value) / 100 : value.toExponential(2)}
+        {value < 1e-3
+          ? value.toExponential(2)
+          : value < 1e9
+            ? Math.round(100 * value) / 100
+            : value.toExponential(2)}
         {unitName}
       </span>
     </Tooltip>
@@ -149,12 +154,14 @@ export const Overview = () => {
                 })}
               </div>
             </div>
-            <div className="w-full pb-1.5 text-center text-lg font-medium leading-normal tracking-tight">
+            <div className="w-full pb-1.5 text-center text-lg font-medium leading-normal tracking-tight text-white">
               {COUNTRIES.length} countries
             </div>
           </div>
           <div className="col-span-1 row-span-1 grid h-full grid-rows-2 gap-1.5">
-            <div className="h-full rounded-xl border border-gray-6 bg-gray-2"></div>
+            <div className="flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
+              <OverviewTotalDistance ranDistance={18_756_130} totalDistance={23_969_648} />
+            </div>
             <div className="h-full rounded-xl border border-gray-6 bg-gray-2"></div>
           </div>
           <div className="relative col-span-2 row-span-1 h-full overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
@@ -167,14 +174,14 @@ export const Overview = () => {
             >
               <BoringAvatar size={301} name="@cited" variant="marble" square />
             </div>
-            <span className="z-20 text-center text-2xl font-semibold leading-tight tracking-tight">
+            <span className="z-20 text-center text-2xl font-semibold leading-tight tracking-tight text-white">
               1000 Days of
               <br />
               Running Every Day
             </span>
           </div>
           <div
-            className="col-span-1 row-span-1 flex h-full justify-center rounded-xl border border-gray-6 bg-gray-2 p-1.5 text-base font-medium tracking-tight"
+            className="col-span-1 row-span-1 flex h-full justify-center rounded-xl border border-gray-6 bg-gray-2 p-1.5 text-base font-medium tracking-tight text-white"
             style={{
               // eslint-disable-next-line
               backgroundImage: "url('/static/blog/1000-days-of-running/pegasus41.webp')",
