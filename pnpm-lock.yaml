@@ -95,6 +95,9 @@ dependencies:
   connectkit:
     specifier: ^1.8.0
     version: 1.8.2(@babel/core@7.26.0)(@tanstack/react-query@5.59.16)(react-dom@18.3.1)(react-is@18.3.1)(react@18.3.1)(viem@2.21.36)(wagmi@2.12.25)
+  country-flag-icons:
+    specifier: ^1.5.19
+    version: 1.5.19
   drizzle-orm:
     specifier: ^0.39.2
     version: 0.39.2(@neondatabase/serverless@0.10.4)(@types/pg@8.11.11)(@types/react@18.3.12)(pg@8.13.1)(react@18.3.1)
@@ -6888,6 +6891,10 @@ packages:
       is-directory: 0.3.1
       js-yaml: 3.14.1
       parse-json: 4.0.0
+    dev: false
+
+  /country-flag-icons@1.5.19:
+    resolution: {integrity: sha512-D/ZkRyj+ywJC6b2IrAN3/tpbReMUqmuRLlcKFoY/o0+EPQN9Ev/e8tV+D3+9scvu/tarxwLErNwS73C3yzxs/g==}
     dev: false
 
   /crc-32@1.2.2:

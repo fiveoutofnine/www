@@ -40,6 +40,7 @@
     "cmdk": "^1.0.0",
     "comma-number": "^2.1.0",
     "connectkit": "^1.8.0",
+    "country-flag-icons": "^1.5.19",
     "drizzle-orm": "^0.39.2",
     "ethereum-blockies-base64": "^1.0.2",
     "framer-motion": "^10.18.0",
