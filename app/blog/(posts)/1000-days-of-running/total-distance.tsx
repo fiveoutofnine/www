@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useDistanceUnitIndexStore } from './client-components';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
-import { formatValueToPrecision } from '@/lib/utils';
 
 // -----------------------------------------------------------------------------
 // Props
