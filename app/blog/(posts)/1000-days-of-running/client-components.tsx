@@ -150,7 +150,7 @@ export const Overview: React.FC = () => {
 
   return (
     <div
-      className="flex max-w-[100vw] items-center justify-center duration-1000 animate-in fade-in zoom-in-75"
+      className="flex max-w-[100vw] items-center justify-center"
       style={{ width: scale * 608, height: scale * 450 }}
     >
       <div style={{ transform: `scale(${scale})` }}>
