@@ -135,12 +135,13 @@ export const Overview: React.FC = () => {
   if (!mounted)
     return (
       <div className="grid aspect-[608/450] w-full grid-cols-4 grid-rows-3 gap-1.5">
-        <div className="col-span-1 row-span-2 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
         <div className="col-span-1 row-span-1 flex h-full flex-col gap-1.5">
           <div className="flex h-full rounded-xl border border-gray-6 bg-gray-2" />
           <div className="flex h-full rounded-xl border border-gray-6 bg-gray-2" />
         </div>
+        <div className="col-span-1 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
         <div className="col-span-2 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+        <div className="col-span-1 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
         <div className="col-span-2 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
         <div className="col-span-1 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
         <div className="col-span-2 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
@@ -157,28 +158,6 @@ export const Overview: React.FC = () => {
         {/* We want to ensure the 1×1 items are square:
          * (146px * 3 + 6px * 2) = 450px = 28.125rem */}
         <div className="grid h-[28.125rem] w-[38rem] grid-cols-4 grid-rows-3 gap-1.5">
-          <div className="col-span-1 row-span-2 flex h-full flex-col gap-1.5 rounded-xl border border-gray-6 bg-gray-2">
-            <div className="grow">
-              <div className="grid grid-cols-2 gap-1 p-2">
-                {COUNTRIES.map((country) => {
-                  const Flag = Flags[country.code as keyof typeof Flags];
-
-                  return (
-                    <Tooltip
-                      key={country.code}
-                      content={country.name}
-                      triggerProps={{ className: 'rounded-md pr-[2px] -mr-[2px]' }}
-                    >
-                      <Flag className="rounded-md border border-gray-7 transition-colors hover:border-gray-8" />
-                    </Tooltip>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="w-full pb-1.5 text-center text-lg font-medium leading-normal tracking-tight text-white">
-              {COUNTRIES.length} countries
-            </div>
-          </div>
           <div className="col-span-1 row-span-1 grid h-full grid-rows-2 gap-1.5">
             <div className="flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
               <OverviewTotalDistance ranDistance={18_779_010} totalDistance={24_001_620} />
@@ -187,8 +166,39 @@ export const Overview: React.FC = () => {
               <OverviewLongestRun />
             </div>
           </div>
+          <div
+            className="col-span-1 row-span-1 flex h-full justify-center rounded-xl border border-gray-6 bg-gray-2 p-1.5 text-base font-medium tracking-tight text-white"
+            style={{
+              // eslint-disable-next-line
+              backgroundImage: "url('/static/blog/1000-days-of-running/pegasus41.webp')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            29 shoes
+          </div>
           <div className="relative col-span-2 row-span-1 h-full overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
             <OverviewBarChart />
+          </div>
+          <div className="col-span-1 row-span-1 flex h-full flex-col justify-between rounded-xl border border-gray-6 bg-gray-2">
+            <div className="grid grid-cols-3 gap-1 px-2 pt-2">
+              {COUNTRIES.map((country) => {
+                const Flag = Flags[country.code as keyof typeof Flags];
+
+                return (
+                  <Tooltip
+                    key={country.code}
+                    content={country.name}
+                    triggerProps={{ className: 'rounded-md pr-[2px] -mr-[2px]' }}
+                  >
+                    <Flag className="rounded-md border border-gray-7 transition-colors hover:border-gray-8" />
+                  </Tooltip>
+                );
+              })}
+            </div>
+            <div className="w-full pb-1.5 text-center text-lg font-medium leading-normal tracking-tight text-white">
+              {COUNTRIES.length} countries
+            </div>
           </div>
           <div className="relative col-span-2 row-span-1 flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6">
             <div
