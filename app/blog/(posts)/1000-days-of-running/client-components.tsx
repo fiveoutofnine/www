@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+import OverviewAreaChart from './area-chart';
 import OverviewBarChart from './bar-chart';
 import { COUNTRIES } from './data';
 import OverviewLongestRun from './longest-run';
@@ -217,7 +218,9 @@ export const Overview: React.FC = () => {
           <div className="relative col-span-2 row-span-1 h-full overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
             <OverviewScatterPlot />
           </div>
-          <div className="col-span-2 row-span-1 h-full rounded-xl border border-gray-6 bg-gray-2"></div>
+          <div className="relative col-span-2 row-span-1 h-full overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
+            <OverviewAreaChart />
+          </div>
         </div>
       </div>
     </div>
