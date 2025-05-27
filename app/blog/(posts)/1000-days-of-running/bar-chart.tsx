@@ -49,7 +49,7 @@ const OverviewBarChart: React.FC = () => {
     });
 
     return [data, totalDays];
-  }, []);
+  }, [unit.scalar]);
 
   // We scale to calculate average monthly mileage.
   const average = useMemo(
