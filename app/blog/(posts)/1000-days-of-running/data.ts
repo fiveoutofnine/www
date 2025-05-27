@@ -49,7 +49,7 @@ export const MONTHLY_MILEAGE: (MileageLog & { days: number })[] = [
   { time: new Date('2025-02-01'), value: 688.38165, days: 28 },
   { time: new Date('2025-03-01'), value: 775.67444, days: 31 },
   { time: new Date('2025-04-01'), value: 595.4449, days: 30 },
-  { time: new Date('2025-05-01'), value: 582.458, days: 26 },
+  { time: new Date('2025-05-01'), value: 614.42725, days: 26 },
 ];
 
 export const DAILY_RUNNING_MILEAGE: MileageLog[] = [
@@ -1056,4 +1056,5 @@ export const DAILY_RUNNING_MILEAGE: MileageLog[] = [
   { time: new Date('2025-05-23'), value: 21.14 },
   { time: new Date('2025-05-24'), value: 17.25 },
   { time: new Date('2025-05-25'), value: 18.22 },
+  { time: new Date('2025-05-26'), value: 22.88 },
 ];

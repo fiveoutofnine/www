@@ -162,7 +162,7 @@ export const Overview = () => {
           </div>
           <div className="col-span-1 row-span-1 grid h-full grid-rows-2 gap-1.5">
             <div className="flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
-              <OverviewTotalDistance ranDistance={18_756_130} totalDistance={23_969_648} />
+              <OverviewTotalDistance ranDistance={18_779_010} totalDistance={24_001_620} />
             </div>
             <div className="flex h-full items-center justify-center overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
               <OverviewLongestRun />
