@@ -3,8 +3,8 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "eslint --fix ."
@@ -43,7 +43,7 @@
     "ethereum-blockies-base64": "^1.0.2",
     "framer-motion": "^10.18.0",
     "lucide-react": "^0.468.0",
-    "next": "^14.2.3",
+    "next": "^15.3.2",
     "pg": "^8.13.1",
     "prism-react-renderer": "^2.3.1",
     "prismjs": "^1.29.0",
