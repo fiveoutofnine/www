@@ -6,6 +6,7 @@ import OverviewAreaChart from './area-chart';
 import OverviewBarChart from './bar-chart';
 import { COUNTRIES } from './data';
 import OverviewLongestRun from './longest-run';
+import OverviewRandomGlobalPath from './random-global-path';
 import OverviewScatterPlot from './scatter-plot';
 import OverviewTotalDistance from './total-distance';
 import BoringAvatar from 'boring-avatars';
@@ -167,7 +168,9 @@ export const Overview: React.FC = () => {
               <OverviewLongestRun />
             </div>
           </div>
-          <div className="col-span-1 row-span-1 flex h-full justify-center rounded-xl border border-gray-6 bg-gray-2 p-1.5 text-base font-medium tracking-tight text-white"></div>
+          <div className="col-span-1 row-span-1 flex h-full justify-center rounded-xl border border-gray-6 bg-gray-2 p-1.5 text-xs font-medium tracking-tight text-white">
+            <OverviewRandomGlobalPath totalDistance={24_001_620} />
+          </div>
           <div className="relative col-span-2 row-span-1 h-full overflow-hidden rounded-xl border border-gray-6 bg-gray-2">
             <OverviewBarChart />
           </div>

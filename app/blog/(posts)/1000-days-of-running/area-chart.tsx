@@ -25,7 +25,10 @@ const OverviewAreaChart: React.FC = () => {
 
   const unit = LENGTH_UNITS[index];
 
-  const sortedData = useMemo(() => DAILY_RUNNING_MILEAGE.toSorted((a, b) => a.value - b.value), []);
+  const sortedData = useMemo(
+    () => [...DAILY_RUNNING_MILEAGE].sort((a, b) => a.value - b.value),
+    [],
+  );
 
   const [data, dataMax] = useMemo(
     () => [
