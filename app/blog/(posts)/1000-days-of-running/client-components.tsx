@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import OverviewBarChart from './bar-chart';
 import { COUNTRIES } from './data';
@@ -109,7 +109,8 @@ export const InlineDistance: React.FC<{ m: number }> = ({ m }) => {
   );
 };
 
-export const Overview = () => {
+export const Overview: React.FC = () => {
+  const [mounted, setMounted] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
 
   useEffect(() => {
@@ -128,6 +129,24 @@ export const Overview = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted)
+    return (
+      <div className="grid aspect-[608/450] w-full grid-cols-4 grid-rows-3 gap-1.5">
+        <div className="col-span-1 row-span-2 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+        <div className="col-span-1 row-span-1 flex h-full flex-col gap-1.5">
+          <div className="flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+          <div className="flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+        </div>
+        <div className="col-span-2 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+        <div className="col-span-2 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+        <div className="col-span-1 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+        <div className="col-span-2 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+        <div className="col-span-2 row-span-1 flex h-full rounded-xl border border-gray-6 bg-gray-2" />
+      </div>
+    );
 
   return (
     <div
