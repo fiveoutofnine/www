@@ -152,12 +152,6 @@ export const CAPITAL_CITIES: City[] = [
     longitude: -66.55,
   },
   {
-    name: 'Cardiff',
-    country: { code: 'GB', name: 'Wales' },
-    latitude: 51.48,
-    longitude: -3.16,
-  },
-  {
     name: 'Castries',
     country: { code: 'LC', name: 'Saint Lucia' },
     latitude: 14.02,
@@ -267,7 +261,7 @@ export const CAPITAL_CITIES: City[] = [
   },
   { name: 'Kuwait City', country: { code: 'KW', name: 'Kuwait' }, latitude: 29.3, longitude: 48.0 },
   {
-    name: 'Kyiv or Kiev',
+    name: 'Kiev',
     country: { code: 'UA', name: 'Ukraine' },
     latitude: 50.3,
     longitude: 30.28,

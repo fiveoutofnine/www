@@ -3,10 +3,11 @@
 import { Fragment, useMemo, useState } from 'react';
 
 import Flags from 'country-flag-icons/react/1x1';
+import { Shuffle } from 'lucide-react';
 
 import { CAPITAL_CITIES } from '@/lib/constants/cities';
 
-import { Button, Tooltip } from '@/components/ui';
+import { IconButton, Tooltip } from '@/components/ui';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -132,7 +133,7 @@ const OverviewRandomGlobalPath: React.FC<OverviewRandomGlobalPathProps> = ({ tot
   });
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="relative flex">
       <div className="hide-scrollbar grow overflow-y-scroll">
         <span className="min-h-fit w-full max-w-full text-wrap">
           <span className="text-xs text-gray-11">That&apos;s roughly</span>
@@ -166,9 +167,15 @@ const OverviewRandomGlobalPath: React.FC<OverviewRandomGlobalPathProps> = ({ tot
           })}
         </span>
       </div>
-      <Button className="w-full" size="sm" onClick={() => setResult(buildPath())}>
-        Randomize
-      </Button>
+      <Tooltip content="Randomize" side="left" triggerProps={{ asChild: true }}>
+        <IconButton
+          className="absolute bottom-0 right-0"
+          size="sm"
+          onClick={() => setResult(buildPath())}
+        >
+          <Shuffle />
+        </IconButton>
+      </Tooltip>
     </div>
   );
 };
