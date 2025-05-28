@@ -60,10 +60,7 @@ const OverviewScatterPlot: React.FC = () => {
     [unit.name, unit.spaceBefore],
   );
 
-  const total = useMemo(
-    () => 7 * (data.reduce((a, b) => a + b.value, 0) / data.length),
-    [unit.scalar],
-  );
+  const total = useMemo(() => 7 * (data.reduce((a, b) => a + b.value, 0) / data.length), [data]);
 
   return (
     <Fragment>

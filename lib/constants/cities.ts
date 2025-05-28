@@ -1,6 +1,5 @@
 import type { City } from '@/lib/types/cities';
 
-/* eslint-disable prettier/prettier */
 export const CAPITAL_CITIES: City[] = [
   {
     name: 'Abu Dhabi',
@@ -360,6 +359,7 @@ export const CAPITAL_CITIES: City[] = [
     latitude: 16.45,
     longitude: 96.2,
   },
+  // eslint-disable-next-line prettier/prettier
   { name: "N'Djamena", country: { code: 'TD', name: 'Chad' }, latitude: 12.1, longitude: 14.59 },
   { name: 'New Delhi', country: { code: 'IN', name: 'India' }, latitude: 28.37, longitude: 77.13 },
   { name: 'Niamey', country: { code: 'NE', name: 'Niger' }, latitude: 13.27, longitude: 2.06 },
@@ -376,6 +376,7 @@ export const CAPITAL_CITIES: City[] = [
     longitude: 57.3,
   },
   {
+    // eslint-disable-next-line prettier/prettier
     name: "Nuku'alofa",
     country: { code: 'TO', name: 'Tonga' },
     latitude: -21.1,
@@ -649,6 +650,7 @@ export const CAPITAL_CITIES: City[] = [
   },
   {
     name: 'Yamoussoukro',
+    // eslint-disable-next-line prettier/prettier
     country: { code: 'CI', name: "Côte d'Ivoire" },
     latitude: -6.49,
     longitude: -5.17,
