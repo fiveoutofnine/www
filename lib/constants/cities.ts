@@ -49,7 +49,7 @@ export const CAPITAL_CITIES: City[] = [
   { name: 'Asmara', country: { code: 'ER', name: 'Eritrea' }, latitude: 15.19, longitude: 38.55 },
   { name: 'Astana', country: { code: 'KZ', name: 'Kazakhstan' }, latitude: 51.1, longitude: 71.3 },
   {
-    name: 'Asuncion',
+    name: 'Asunción',
     country: { code: 'PY', name: 'Paraguay' },
     latitude: -25.1,
     longitude: -57.3,
@@ -85,12 +85,6 @@ export const CAPITAL_CITIES: City[] = [
   },
   { name: 'Beijing', country: { code: 'CN', name: 'China' }, latitude: 39.55, longitude: 116.2 },
   { name: 'Beirut', country: { code: 'LB', name: 'Lebanon' }, latitude: 33.53, longitude: 35.31 },
-  {
-    name: 'Belfast',
-    country: { code: 'GB', name: 'Northern Ireland' },
-    latitude: 54.59,
-    longitude: -5.93,
-  },
   { name: 'Belgrade', country: { code: 'RS', name: 'Serbia' }, latitude: 44.81, longitude: 20.46 },
   { name: 'Belmopan', country: { code: 'BZ', name: 'Belize' }, latitude: 17.18, longitude: -88.3 },
   { name: 'Berlin', country: { code: 'DE', name: 'Germany' }, latitude: 52.3, longitude: 13.25 },
@@ -107,9 +101,9 @@ export const CAPITAL_CITIES: City[] = [
     latitude: 11.45,
     longitude: -15.45,
   },
-  { name: 'Bogota', country: { code: 'CO', name: 'Colombia' }, latitude: 4.34, longitude: -74.0 },
+  { name: 'Bogotá', country: { code: 'CO', name: 'Colombia' }, latitude: 4.34, longitude: -74.0 },
   {
-    name: 'Brasilia',
+    name: 'Brasília',
     country: { code: 'BR', name: 'Brazil' },
     latitude: -15.47,
     longitude: -47.55,
@@ -160,7 +154,7 @@ export const CAPITAL_CITIES: City[] = [
     latitude: 14.02,
     longitude: -60.58,
   },
-  { name: 'Chisinau', country: { code: 'MD', name: 'Moldova' }, latitude: 47.02, longitude: 28.5 },
+  { name: 'Chișinău', country: { code: 'MD', name: 'Moldova' }, latitude: 47.02, longitude: 28.5 },
   { name: 'Conakry', country: { code: 'GN', name: 'Guinea' }, latitude: 9.29, longitude: -13.49 },
   {
     name: 'Copenhagen',
@@ -181,12 +175,6 @@ export const CAPITAL_CITIES: City[] = [
     country: { code: 'TJ', name: 'Tajikistan' },
     latitude: 38.33,
     longitude: 68.48,
-  },
-  {
-    name: 'Edinburgh',
-    country: { code: 'GB', name: 'Scotland' },
-    latitude: 55.95,
-    longitude: -3.18,
   },
   {
     name: 'Freetown',
@@ -280,7 +268,7 @@ export const CAPITAL_CITIES: City[] = [
     latitude: 46.04,
     longitude: 14.33,
   },
-  { name: 'Lome', country: { code: 'TG', name: 'Togo' }, latitude: 6.09, longitude: 1.2 },
+  { name: 'Lomé', country: { code: 'TG', name: 'Togo' }, latitude: 6.09, longitude: 1.2 },
   {
     name: 'London',
     country: { code: 'GB', name: 'United Kingdom' },
@@ -308,7 +296,7 @@ export const CAPITAL_CITIES: City[] = [
     latitude: 3.45,
     longitude: 8.5,
   },
-  { name: 'Male', country: { code: 'MV', name: 'Maldives' }, latitude: 4.0, longitude: 73.28 },
+  { name: 'Malé', country: { code: 'MV', name: 'Maldives' }, latitude: 4.0, longitude: 73.28 },
   {
     name: 'Managua',
     country: { code: 'NI', name: 'Nicaragua' },
@@ -330,10 +318,10 @@ export const CAPITAL_CITIES: City[] = [
   },
   { name: 'Maseru', country: { code: 'LS', name: 'Lesotho' }, latitude: -29.18, longitude: 27.3 },
   {
-    name: 'Melekeok',
-    country: { code: 'PW', name: 'Palau' },
-    latitude: 7.5004,
-    longitude: 134.6243,
+    name: 'Mbabane',
+    country: { code: 'SZ', name: 'Eswatini' },
+    latitude: -26.33,
+    longitude: 31.14,
   },
   {
     name: 'Mexico City',
@@ -364,6 +352,12 @@ export const CAPITAL_CITIES: City[] = [
   },
   { name: "N'Djamena", country: { code: 'TD', name: 'Chad' }, latitude: 12.1, longitude: 14.59 },
   { name: 'New Delhi', country: { code: 'IN', name: 'India' }, latitude: 28.37, longitude: 77.13 },
+  {
+    name: 'Ngerulmud',
+    country: { code: 'PW', name: 'Palau' },
+    latitude: 7.5004,
+    longitude: 134.6243,
+  },
   { name: 'Niamey', country: { code: 'NE', name: 'Niger' }, latitude: 13.27, longitude: 2.06 },
   {
     name: 'Nicosia',
@@ -392,6 +386,12 @@ export const CAPITAL_CITIES: City[] = [
     longitude: -1.3,
   },
   {
+    name: 'Palikir',
+    country: { code: 'FM', name: 'Micronesia' },
+    latitude: 6.92,
+    longitude: 158.16,
+  },
+  {
     name: 'Panama City',
     country: { code: 'PA', name: 'Panama' },
     latitude: 9.0,
@@ -417,12 +417,6 @@ export const CAPITAL_CITIES: City[] = [
     longitude: 19.25,
   },
   {
-    name: 'Port au Prince',
-    country: { code: 'HT', name: 'Haiti' },
-    latitude: 18.4,
-    longitude: -72.2,
-  },
-  {
     name: 'Port Louis',
     country: { code: 'MU', name: 'Mauritius' },
     latitude: -20.16,
@@ -446,7 +440,13 @@ export const CAPITAL_CITIES: City[] = [
     latitude: -17.45,
     longitude: 168.18,
   },
-  { name: 'Porto Novo', country: { code: 'BJ', name: 'Benin' }, latitude: 6.23, longitude: 2.42 },
+  {
+    name: 'Port-au-Prince',
+    country: { code: 'HT', name: 'Haiti' },
+    latitude: 18.4,
+    longitude: -72.2,
+  },
+  { name: 'Porto-Novo', country: { code: 'BJ', name: 'Benin' }, latitude: 6.23, longitude: 2.42 },
   {
     name: 'Prague',
     country: { code: 'CZ', name: 'Czech Republic' },
@@ -495,19 +495,19 @@ export const CAPITAL_CITIES: City[] = [
   { name: 'Rome', country: { code: 'IT', name: 'Italy' }, latitude: 41.54, longitude: 12.29 },
   { name: 'Roseau', country: { code: 'DM', name: 'Dominica' }, latitude: 15.2, longitude: -61.24 },
   {
-    name: 'Saint George',
+    name: "Saint George's",
     country: { code: 'GD', name: 'Grenada' },
     latitude: 32.38,
     longitude: -64.67,
   },
   {
-    name: 'Saint John',
+    name: "Saint John's",
     country: { code: 'AG', name: 'Antigua and Barbuda' },
     latitude: 17.127,
     longitude: -61.846,
   },
   {
-    name: 'San Jose',
+    name: 'San José',
     country: { code: 'CR', name: 'Costa Rica' },
     latitude: 9.55,
     longitude: -84.02,
@@ -524,7 +524,7 @@ export const CAPITAL_CITIES: City[] = [
     latitude: 13.4,
     longitude: -89.1,
   },
-  { name: 'Sana', country: { code: 'YE', name: 'Yemen' }, latitude: 15.35, longitude: 44.2 },
+  { name: 'Sanaa', country: { code: 'YE', name: 'Yemen' }, latitude: 15.35, longitude: 44.2 },
   { name: 'Santiago', country: { code: 'CL', name: 'Chile' }, latitude: -33.24, longitude: -70.4 },
   {
     name: 'Santo Domingo',
@@ -533,8 +533,8 @@ export const CAPITAL_CITIES: City[] = [
     longitude: -69.59,
   },
   {
-    name: 'Sao Tome',
-    country: { code: 'ST', name: 'Sao Tome and Principe' },
+    name: 'São Tomé',
+    country: { code: 'ST', name: 'São Tomé and Principe' },
     latitude: 0.1,
     longitude: 6.39,
   },
@@ -579,7 +579,7 @@ export const CAPITAL_CITIES: City[] = [
   },
   { name: 'Tallinn', country: { code: 'EE', name: 'Estonia' }, latitude: 59.22, longitude: 24.48 },
   {
-    name: 'Tarawa Atoll',
+    name: 'Tarawa',
     country: { code: 'KI', name: 'Kiribati' },
     latitude: 1.3,
     longitude: 173.0,
@@ -622,6 +622,12 @@ export const CAPITAL_CITIES: City[] = [
     latitude: 41.9,
     longitude: 12.45,
   },
+  {
+    name: 'Victoria',
+    country: { code: 'SC', name: 'Seychelles' },
+    latitude: -4.62,
+    longitude: 55.45,
+  },
   { name: 'Vienna', country: { code: 'AT', name: 'Austria' }, latitude: 48.12, longitude: 16.22 },
   { name: 'Vientiane', country: { code: 'LA', name: 'Laos' }, latitude: 17.58, longitude: 102.36 },
   {
@@ -655,7 +661,7 @@ export const CAPITAL_CITIES: City[] = [
     latitude: -6.49,
     longitude: -5.17,
   },
-  { name: 'Yaounde', country: { code: 'CM', name: 'Cameroon' }, latitude: 3.5, longitude: 11.35 },
+  { name: 'Yaoundé', country: { code: 'CM', name: 'Cameroon' }, latitude: 3.5, longitude: 11.35 },
   { name: 'Yerevan', country: { code: 'AM', name: 'Armenia' }, latitude: 40.1, longitude: 44.31 },
   { name: 'Zagreb', country: { code: 'HR', name: 'Croatia' }, latitude: 45.5, longitude: 15.58 },
 ];

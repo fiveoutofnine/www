@@ -16,9 +16,10 @@ import { IconButton, Tooltip } from '@/components/ui';
 type OverviewRandomGlobalPathProps = {
   totalDistance: number;
 };
+
 type PathLeg = {
-  idx: number; // index into CAPITAL_CITIES
-  dist: number; // km from previous city (0 for start)
+  idx: number;
+  dist: number;
 };
 
 type BuildPathResult = {
@@ -70,7 +71,7 @@ const OverviewRandomGlobalPath: React.FC<OverviewRandomGlobalPathProps> = ({ tot
     target: number = totalDistance / 1000,
     tolerance: number = 0.05,
     maxLegs: number = 30,
-    maxAttempts: number = 1_000,
+    maxAttempts: number = 1000,
   ): BuildPathResult {
     const lower = target * (1 - tolerance);
     const upper = target * (1 + tolerance);
@@ -155,7 +156,7 @@ const OverviewRandomGlobalPath: React.FC<OverviewRandomGlobalPathProps> = ({ tot
                   </span>
                 ) : null}
                 {i === 0 ? <span> {d.from.name}</span> : null}
-                <span className="text-gray-11"> -&gt; </span>
+                <span className="text-nowrap text-gray-11"> -&gt; </span>
                 <span className="inline-flex size-3 align-middle">
                   <Tooltip content={d.to.country.name} triggerProps={{ className: 'rounded-sm' }}>
                     <ToFlag className="size-3 rounded-sm border border-gray-7 transition-colors hover:border-gray-8" />
