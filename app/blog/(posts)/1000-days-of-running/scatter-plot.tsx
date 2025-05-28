@@ -29,17 +29,20 @@ const OverviewScatterPlot: React.FC = () => {
   const unit = LENGTH_UNITS[index];
 
   const data = useMemo(() => {
-    const data = DAILY_RUNNING_MILEAGE.map((d) => {
-      const date = d.time;
-      const utcDate = new Date(
-        Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
-      );
+    const data = DAILY_RUNNING_MILEAGE.map(
+      (d) => {
+        const date = d.time;
+        const utcDate = new Date(
+          Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
+        );
 
-      return {
-        time: utcDate,
-        value: unit.scalar * d.value,
-      };
-    });
+        return {
+          time: utcDate,
+          value: unit.scalar * d.value,
+        };
+      },
+      [unit.scalar],
+    );
 
     return data.map(({ time, value }, i) => {
       const last28Total = data.slice(Math.max(0, i - 28), i).reduce((a, b) => a + b.value, 0);

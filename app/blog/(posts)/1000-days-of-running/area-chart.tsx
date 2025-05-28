@@ -43,7 +43,7 @@ const OverviewAreaChart: React.FC = () => {
       ],
       sortedData[sortedData.length - 1].value * unit.scalar,
     ],
-    [unit.scalar],
+    [unit.scalar, sortedData],
   );
 
   const unitName = useMemo(
