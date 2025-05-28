@@ -12,6 +12,7 @@ import OverviewTotalDistance from './total-distance';
 import BoringAvatar from 'boring-avatars';
 import clsx from 'clsx';
 import Flags from 'country-flag-icons/react/3x2';
+import { twMerge } from 'tailwind-merge';
 import { create } from 'zustand';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
@@ -41,7 +42,7 @@ export const useDistanceUnitIndexStore = create<DistanceUnitIndexState>((set) =>
 // Components
 // -----------------------------------------------------------------------------
 
-export const InlineDistance: React.FC<{ m: number }> = ({ m }) => {
+export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ className, m }) => {
   const { index, inc, reset } = useDistanceUnitIndexStore();
   const spanRef = useRef<HTMLSpanElement>(null);
 
@@ -93,7 +94,12 @@ export const InlineDistance: React.FC<{ m: number }> = ({ m }) => {
     >
       <span
         ref={spanRef}
-        className="h-5 cursor-pointer rounded-none text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:outline-none focus:outline-offset-0 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-blue-9"
+        className={twMerge(
+          clsx(
+            'h-5 cursor-pointer rounded-none text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:outline-none focus:outline-offset-0 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-blue-9',
+            className,
+          ),
+        )}
         tabIndex={0}
         role="button"
         onClick={inc}
