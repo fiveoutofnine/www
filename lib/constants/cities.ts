@@ -1,5 +1,6 @@
 import type { City } from '@/lib/types/cities';
 
+// eslint-disable quotes
 export const CAPITAL_CITIES: City[] = [
   {
     name: 'Abu Dhabi',
