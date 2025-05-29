@@ -13,7 +13,7 @@ export const metadata = getBlogPageMetadata({
 
 <BlogHeader slug="1000-days-of-running" />
 
-As of <RelativeDate date={new Date("2025-05-27T03:03:10.000Z")} type="absolute" />, I've ran every day for the last 1000 days.
+As of <RelativeDate date={new Date("2025-05-27T03:03:10.000Z")} type="absolute" />, I&apos;ve ran every day for the last 1000 days.
 During that time, I covered <Distance m={18_779_010} /> running and <Distance m={24_001_620} /> in total:
 
 <Overview />
@@ -36,7 +36,7 @@ Basically, you can offset biological degradation from aging with training volume
 This is what allows distance runners to peak well into their 30s ([Kipchoge&apos;s 2:01:09 WR at 37](https://worldathletics.org/news/report/eliud-kipchoge-world-record-berlin-marathon-2022), [Bekele&apos;s 2:01:41 at 37](https://worldathletics.org/news/report/bekele-berlin-marathon-2019)).
 
 <Callout intent="info">
-  I actually don&apos;t know how true this is anymore because with the [recent uptick](https://www.vox.com/even-better/385283/train-marathon-gen-z) in long-distance running, it seems like fast marathoners are getting younger: [Kiptum's 2:00:35 WR at 23](https://worldathletics.org/competitions/world-athletics-label-road-races/news/chicago-marathon-2023-kiptum-world-record-hassan), [Kiplimo&apos;s 57:31 WR at 21](https://worldathletics.org/competitions/world-athletics-label-road-races/news/jacob-kiplimo-world-half-marathon-record-lisbon).
+  I actually don&apos;t know how true this is anymore because with the [recent uptick](https://www.vox.com/even-better/385283/train-marathon-gen-z) in long-distance running, it seems like fast marathoners are getting younger: [Kiptum&apos;s 2:00:35 WR at 23](https://worldathletics.org/competitions/world-athletics-label-road-races/news/chicago-marathon-2023-kiptum-world-record-hassan), [Kiplimo&apos;s 57:31 WR at 21](https://worldathletics.org/competitions/world-athletics-label-road-races/news/jacob-kiplimo-world-half-marathon-record-lisbon).
   Maybe long-distance running has just never been as competitive as the shorter events because they have a shorter lifespan (probably why many of the greatest marathoners like Kipchoge and Bekele started out as track athletes).
   What I said seems at least partially true, though: as of <RelativeDate className="text-xs h-[1.125rem]" date={new Date(1748472248646)} type="absolute" />, the average age of the [top 100 1500m runners](https://worldathletics.org/records/all-time-toplists/middlelong/1500-metres/all/men/senior) was 25.3 years old vs. 28.4 years for the [top 100 marathoners](https://worldathletics.org/records/all-time-toplists/road-running/marathon/outdoor/men/senior).
   Or maybe I just self-psyoped myself into running <Distance className="text-blue-11 hover:text-blue-12" m={18_779_010} />.
@@ -50,18 +50,61 @@ I think it&apos;s more like: if I was going to start some hobby at the point/age
 
 ## The 1000 days
 
+<Callout intent="info" size="sm">
+  Skip to [Learnings](#learnings) if you don&apos;t care about how to run.
+</Callout>
+
 ### First 6 months (~18%)
+
+<Callout intent="none">
+  Learning how to run, recover, and what mileage to settle on.
+</Callout>
+
+My starting fitness was not great, but it was good enough to be able to power through <Distance m={16_093} />+ in 1 run with effort.
+In the first 6 months, I didn&apos;t really know what I was doing, so I gave myself a very loose goal of just trying to consistently run "a lot."
+I tried to get in a run each day, and I would try to run as far as I could before I started feeling uncomfortable.
+If my legs or knees started feeling uncomfortable, or I felt like I was weirdly dehydrated, I would stop.
+
+Eventually, after a couple weeks, I found that I "naturally" settled on about <Distance m={128_748} />/week because that&apos;s what I ended up running the first month without setting a time/distance/pace goal (averaged <Distance m={128_604} />/week).
+After I got a sense of the mileage my body could handle without getting injured, I tried to aim for that every week.
+I didn&apos;t think at all about heart-rate ("zone 2 training"), pace, doing weekly long runs, interval training, etc.
+The goal each run/week was still very simple: just get used to running far.
+I knew I didn&apos;t even have the foundational fitness to start doing more complex training, and it&apos;d be miserable to try and do harder efforts when the act of running itself was hard.
+
+Maintaining <Distance m={128_748} />/week turned out to be harder than I thought&mdash;I averaged <Distance m={116_014} />/week (9.9% less than the goal) for the next 5 months&mdash;because I had to learn some things:
+- Physically, I had to learn some obvious things like how to properly fuel and recover, as well as less obvious things like how to manage stomach issues (it turns out that basically compressing your stomach 180 times/minute is very hard on the digestive system).
+Fueling/hydrating/recovery was quite simple: just eat enough calories/carbs/protein, make sure to drink water and electrolytes, get enough sleep, and stop when the body tells you to.
+Figuring out what to eat and drink before/during the run was a little trickier, but it wasn&apos;t much harder than just trying different things and seeing what worked.
+- Mentally, I had to learn how to not get bored during the run and keep going until the distance/time goal.
+What ended up working best for me was to count in 100s of seconds.
+For example, if I wanted to run for 91:40, I&apos;d count to 5500 seconds as the sum of 1000, 900, ..., 100 seconds: 16:40 -> 31:40 (+15:00) -> 45:00 (+13:20) -> ... -> 91:40 (+1:40).
+- Logistically, I had to learn to fit a 1-2 hour run in everyday.
+Depending on the schedule, this can be quite tricky, e.g. if there&apos;s some dinners to attend or if I&apos;m traveling.
+It&apos;s not just learning to find time to fit the run in but also to manage energy throughout the day to have enough left over for the run.
 
 ### First year (~37%)
 
+<Callout intent="none">
+  Got a sense of different paces for the half marathon distance.
+</Callout>
+
 ### Second year (~73%)
 
-### 1000 days + future (100%)
+<Callout intent="none">
+  Learned to get faster and increased mileage.
+</Callout>
+
+### 1000 days (100%)
+
+<Callout intent="none">
+  Trained to run faster, shorter distances.
+</Callout>
+
+### Future
 
 ## Learnings
 
 Beyond the stuff I obviously learned directly about running (e.g. how to run, recover, etc.), here&apos;s a list of things I learned that I thought were interesting:
-
 - People seem to think I am more disciplined and have better work ethic after finding out I run every day.
 - Running discipline doesn&apos;t translate at all to other aspects of life.
 - Most people don&apos;t even try when they say they run, and they get way too swamped with preconceptions on what they _should_ learn, self-reflect upon, or gain from running, but you can kind of tell they don&apos;t actually feel it.
