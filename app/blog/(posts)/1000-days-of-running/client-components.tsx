@@ -117,6 +117,106 @@ export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ cl
   );
 };
 
+export const InlinePace: React.FC<{ className?: string; s: number; button?: boolean }> = ({
+  className,
+  s,
+  button = true,
+}) => {
+  const { index, inc, reset } = useDistanceUnitIndexStore();
+  const spanRef = useRef<HTMLSpanElement>(null);
+
+  const unit = LENGTH_UNITS[index];
+
+  const time = useMemo(() => s / unit.scalar, [s, unit.scalar]);
+
+  const timeString = useMemo(() => {
+    if (time < 60) {
+      return time < 1e-3 ? `${time.toExponential(2)}s` : `${time.toFixed(3)}s`;
+    }
+    if (time < 3_600) {
+      // 1 hour
+      return `${Math.floor(time / 60)}:${(time % 60).toFixed(0).toString().padStart(2, '0')}`;
+    }
+    if (time < 360_000) {
+      // 100 hours
+      return `${(time / 3600).toFixed(1)} hours`;
+    }
+    if (time < 86_400_000) {
+      // 1000 days
+      return `${(time / 86_400).toFixed(1)} days`;
+    }
+
+    const years = time / 31_536_000;
+    return years < 1e9 ? `(${years.toExponential(1)})y` : `${years.toFixed(1)}y`;
+  }, [time]);
+
+  useEffect(() => {
+    if (unit.name && spanRef.current) {
+      const element = spanRef.current;
+      element.classList.remove('animate-bg-pulse');
+      void element.offsetWidth;
+      element.classList.add('animate-bg-pulse');
+    }
+  }, [unit.name]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      inc();
+    }
+  };
+
+  if (!button) {
+    return (
+      <span ref={spanRef} className={className}>
+        {timeString}/{unit.name}
+      </span>
+    );
+  }
+
+  return (
+    <Tooltip
+      className="p-0"
+      content={
+        <div className="flex flex-col items-center">
+          {unit.description ? (
+            <div className="w-full px-2 py-1 text-center">{unit.description}</div>
+          ) : null}
+          <div
+            className={clsx(
+              'w-full px-2 py-1 text-center',
+              unit.description ? 'border-t border-gray-6 text-xs text-gray-11' : 'text-xs',
+            )}
+          >
+            Click to change units
+            <br />
+            Double-click to reset
+          </div>
+        </div>
+      }
+      triggerProps={{ asChild: true }}
+      inverted={false}
+    >
+      <span
+        ref={spanRef}
+        className={twMerge(
+          clsx(
+            'h-5 cursor-pointer rounded-none text-gray-11 underline decoration-dotted transition-colors hover:text-gray-12 focus:outline-none focus:outline-offset-0 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-blue-9',
+            className,
+          ),
+        )}
+        tabIndex={0}
+        role="button"
+        onClick={inc}
+        onDoubleClick={reset}
+        onKeyDown={handleKeyDown}
+      >
+        {timeString}/{unit.name}
+      </span>
+    </Tooltip>
+  );
+};
+
 export const Overview: React.FC = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
