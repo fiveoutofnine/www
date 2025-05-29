@@ -137,6 +137,12 @@ export const InlinePace: React.FC<{ className?: string; s: number; button?: bool
       // 1 hour
       return `${Math.floor(time / 60)}:${(time % 60).toFixed(0).toString().padStart(2, '0')}`;
     }
+    if (time < 36_000) {
+      // 10 hours
+      return `${Math.floor(time / 3600)}:${Math.floor((time % 3600) / 60)
+        .toString()
+        .padStart(2, '0')}:${(time % 60).toFixed(0).toString().padStart(2, '0')}`;
+    }
     if (time < 360_000) {
       // 100 hours
       return `${(time / 3600).toFixed(1)} hours`;
