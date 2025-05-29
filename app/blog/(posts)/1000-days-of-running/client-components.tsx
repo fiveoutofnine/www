@@ -223,8 +223,8 @@ export const Overview: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setScale((window.innerWidth - 32) / 608);
+      if (window.outerWidth < 640) {
+        setScale((window.outerWidth - 32) / 608);
       } else {
         setScale(1);
       }
