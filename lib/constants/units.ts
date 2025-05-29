@@ -5,7 +5,7 @@ import type { LengthUnit } from '@/lib/types/units';
  */
 export const LENGTH_UNITS: LengthUnit[] = [
   { name: 'km', scalar: 1 },
-  { name: 'mi', scalar: 1 / 1.609, description: '1.609km' },
+  { name: 'mi', scalar: 1 / 1.609344, description: '1.609344km' },
   { name: 'marathons', scalar: 1 / 42.195, spaceBefore: true, description: '42.195km' },
   { name: 'm', scalar: 1e3 },
   { name: 'mm', scalar: 1e6 },
