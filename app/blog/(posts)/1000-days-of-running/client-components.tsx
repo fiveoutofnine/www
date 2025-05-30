@@ -12,12 +12,14 @@ import OverviewTotalDistance from './total-distance';
 import BoringAvatar from 'boring-avatars';
 import clsx from 'clsx';
 import Flags from 'country-flag-icons/react/3x2';
+import { ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import { create } from 'zustand';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
 
-import { Tooltip } from '@/components/ui';
+import { Button, ButtonGroup, IconButton, toast, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Props
@@ -26,6 +28,7 @@ import { Tooltip } from '@/components/ui';
 interface DistanceUnitIndexState {
   index: number;
   inc: () => void;
+  dec: () => void;
   reset: () => void;
 }
 
@@ -35,6 +38,10 @@ export const useDistanceUnitIndexStore = create<DistanceUnitIndexState>((set) =>
     set((state: DistanceUnitIndexState) => ({
       index: (state.index + 1) % LENGTH_UNITS.length,
     })),
+  dec: () =>
+    set((state: DistanceUnitIndexState) => ({
+      index: (state.index - 1 + LENGTH_UNITS.length) % LENGTH_UNITS.length,
+    })),
   reset: () => set({ index: 0 }),
 }));
 
@@ -43,7 +50,7 @@ export const useDistanceUnitIndexStore = create<DistanceUnitIndexState>((set) =>
 // -----------------------------------------------------------------------------
 
 export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ className, m }) => {
-  const { index, inc, reset } = useDistanceUnitIndexStore();
+  const { index, inc, dec, reset } = useDistanceUnitIndexStore();
   const spanRef = useRef<HTMLSpanElement>(null);
 
   const unit = LENGTH_UNITS[index];
@@ -102,7 +109,31 @@ export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ cl
         )}
         tabIndex={0}
         role="button"
-        onClick={inc}
+        onClick={() => {
+          inc();
+          toast({
+            id: 'update-length-units',
+            title: 'Update length units',
+            intent: 'info',
+            action: (
+              <div className="flex items-center gap-2">
+                <Button variant="outline" intent="info" onClick={reset}>
+                  Reset
+                </Button>
+                <ButtonGroup>
+                  <IconButton variant="primary" intent="info" onClick={dec}>
+                    <ArrowLeft />
+                  </IconButton>
+                  <IconButton variant="primary" intent="info" onClick={inc}>
+                    <ArrowRight />
+                  </IconButton>
+                </ButtonGroup>
+              </div>
+            ),
+            duration: Number.POSITIVE_INFINITY,
+            closeButton: true,
+          });
+        }}
         onDoubleClick={reset}
         onKeyDown={handleKeyDown}
       >
@@ -122,7 +153,7 @@ export const InlinePace: React.FC<{ className?: string; s: number; button?: bool
   s,
   button = true,
 }) => {
-  const { index, inc, reset } = useDistanceUnitIndexStore();
+  const { index, inc, dec, reset } = useDistanceUnitIndexStore();
   const spanRef = useRef<HTMLSpanElement>(null);
 
   const unit = LENGTH_UNITS[index];
@@ -215,7 +246,31 @@ export const InlinePace: React.FC<{ className?: string; s: number; button?: bool
         )}
         tabIndex={0}
         role="button"
-        onClick={inc}
+        onClick={() => {
+          inc();
+          toast({
+            id: 'update-length-units',
+            title: 'Update length units',
+            intent: 'info',
+            action: (
+              <div className="flex items-center gap-2">
+                <Button variant="outline" intent="info" onClick={reset}>
+                  Reset
+                </Button>
+                <ButtonGroup>
+                  <IconButton variant="primary" intent="info" onClick={dec}>
+                    <ArrowLeft />
+                  </IconButton>
+                  <IconButton variant="primary" intent="info" onClick={inc}>
+                    <ArrowRight />
+                  </IconButton>
+                </ButtonGroup>
+              </div>
+            ),
+            duration: Number.POSITIVE_INFINITY,
+            closeButton: true,
+          });
+        }}
         onDoubleClick={reset}
         onKeyDown={handleKeyDown}
       >
