@@ -19,7 +19,7 @@ import { create } from 'zustand';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
 
-import { Button, ButtonGroup, IconButton, toast, Tooltip } from '@/components/ui';
+import { ButtonGroup, IconButton, toast, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,6 +29,7 @@ interface DistanceUnitIndexState {
   index: number;
   inc: () => void;
   dec: () => void;
+  set: (index: number) => void;
   reset: () => void;
 }
 
@@ -42,6 +43,7 @@ export const useDistanceUnitIndexStore = create<DistanceUnitIndexState>((set) =>
     set((state: DistanceUnitIndexState) => ({
       index: (state.index - 1 + LENGTH_UNITS.length) % LENGTH_UNITS.length,
     })),
+  set: (index: number) => set({ index: index % LENGTH_UNITS.length }),
   reset: () => set({ index: 0 }),
 }));
 
@@ -50,7 +52,7 @@ export const useDistanceUnitIndexStore = create<DistanceUnitIndexState>((set) =>
 // -----------------------------------------------------------------------------
 
 export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ className, m }) => {
-  const { index, inc, dec, reset } = useDistanceUnitIndexStore();
+  const { index, inc, dec, set, reset } = useDistanceUnitIndexStore();
   const spanRef = useRef<HTMLSpanElement>(null);
 
   const unit = LENGTH_UNITS[index];
@@ -117,9 +119,14 @@ export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ cl
             intent: 'info',
             action: (
               <div className="flex items-center gap-2">
-                <Button variant="outline" intent="info" onClick={reset}>
-                  Reset
-                </Button>
+                <ButtonGroup>
+                  <IconButton variant="outline" intent="info" onClick={reset}>
+                    km
+                  </IconButton>
+                  <IconButton variant="outline" intent="info" onClick={() => set(1)}>
+                    mi
+                  </IconButton>
+                </ButtonGroup>
                 <ButtonGroup>
                   <IconButton variant="primary" intent="info" onClick={dec}>
                     <ArrowLeft />
@@ -153,7 +160,7 @@ export const InlinePace: React.FC<{ className?: string; s: number; button?: bool
   s,
   button = true,
 }) => {
-  const { index, inc, dec, reset } = useDistanceUnitIndexStore();
+  const { index, inc, dec, set, reset } = useDistanceUnitIndexStore();
   const spanRef = useRef<HTMLSpanElement>(null);
 
   const unit = LENGTH_UNITS[index];
@@ -254,9 +261,14 @@ export const InlinePace: React.FC<{ className?: string; s: number; button?: bool
             intent: 'info',
             action: (
               <div className="flex items-center gap-2">
-                <Button variant="outline" intent="info" onClick={reset}>
-                  Reset
-                </Button>
+                <ButtonGroup>
+                  <IconButton variant="outline" intent="info" onClick={reset}>
+                    km
+                  </IconButton>
+                  <IconButton variant="outline" intent="info" onClick={() => set(1)}>
+                    mi
+                  </IconButton>
+                </ButtonGroup>
                 <ButtonGroup>
                   <IconButton variant="primary" intent="info" onClick={dec}>
                     <ArrowLeft />
