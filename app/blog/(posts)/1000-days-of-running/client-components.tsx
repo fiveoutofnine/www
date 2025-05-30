@@ -138,7 +138,7 @@ export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ cl
               </div>
             ),
             duration: Number.POSITIVE_INFINITY,
-            closeButton: true,
+            hasCloseButton: true,
           });
         }}
         onDoubleClick={reset}
@@ -280,7 +280,7 @@ export const InlinePace: React.FC<{ className?: string; s: number; button?: bool
               </div>
             ),
             duration: Number.POSITIVE_INFINITY,
-            closeButton: true,
+            hasCloseButton: true,
           });
         }}
         onDoubleClick={reset}
