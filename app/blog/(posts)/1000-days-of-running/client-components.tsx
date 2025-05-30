@@ -131,7 +131,9 @@ export const InlinePace: React.FC<{ className?: string; s: number; button?: bool
 
   const timeString = useMemo(() => {
     if (time < 60) {
-      return time < 1e-3 ? `${time.toExponential(2)}s` : `${time.toFixed(3)}s`;
+      return time < 1e-3
+        ? `${time.toExponential(2)}s`
+        : `${time % 1 === 0 ? time : time.toFixed(3)}s`;
     }
     if (time < 3_600) {
       // 1 hour
