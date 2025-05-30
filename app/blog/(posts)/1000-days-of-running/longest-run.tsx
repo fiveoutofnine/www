@@ -28,6 +28,7 @@ const OverviewLongestRun: React.FC = () => {
 
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center gap-0 text-xl font-medium tracking-tight text-white">
+      <span className="text-xs leading-4 text-gray-11">Longest run</span>
       <span ref={spanRef} className="leading-6">
         {value < 1e-3
           ? value.toExponential(2)
