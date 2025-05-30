@@ -28,7 +28,7 @@ type InlineAudioProps = {
 // but we use `<span>` here because we want the children inlined. We also don't
 // implement `disabled` because it's not needed. Correspondingly, there is no
 // option to disable the audio sample in the component API.
-const InlineAudio: React.FC<InlineAudioProps> = ({ audio, children, ...rest }) => {
+const InlineAudio: React.FC<InlineAudioProps> = ({ audio, children }) => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [toastId, setToastId] = useState<string | number>();
@@ -115,7 +115,6 @@ const InlineAudio: React.FC<InlineAudioProps> = ({ audio, children, ...rest }) =
       onClick={onClick}
       onDoubleClick={onDoubleClick}
       onKeyDown={handleKeyDown}
-      {...rest}
     >
       <span className="align-baseline">{children}</span>
       {/* We require a wrapper `<span>` with `select-none` so the text is

@@ -66,6 +66,10 @@ button {
   outline: none;
 }
 
+.recharts-cross {
+  @apply z-50 stroke-gray-9;
+}
+
 .recharts-cartesian-axis-tick-value {
   @apply fill-gray-11;
 }

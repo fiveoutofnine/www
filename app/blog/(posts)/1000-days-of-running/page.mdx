@@ -1,0 +1,169 @@
+import BlogHeader from '@/app/blog/(components)/header';
+
+import RelativeDate from '@/components/templates/relative-date';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+import { InlineDistance as Distance, InlinePace as Pace, Overview } from './client-components';
+
+export const metadata = getBlogPageMetadata({
+  slug: '1000-days-of-running',
+  description: 'Overview and reflections on running everyday for 1000 days.',
+});
+
+<BlogHeader slug="1000-days-of-running" />
+
+As of <RelativeDate date={new Date("2025-05-27T03:03:10.000Z")} type="absolute" />, I&apos;ve ran every day for the last 1000 days.
+During that time, I covered <Distance m={18_779_010} /> running and <Distance m={24_001_620} /> in total:
+
+<Overview />
+
+## Motivation
+
+I was 19 when I started running.
+Up until that point, I had basically 0 athletic experience, apart from occasionally running recreationally.
+I had tried a few times to run properly, but I never managed to be consistent for more than a few weeks.
+
+There wasn&apos;t any particular reason or motivation that pushed me to try running consistently again.
+It probably felt like previous attempts, where I&apos;d run a few times a week for like 4 weeks before fizzling out again&mdash;except this time, I had more freedom around my schedule because I was out of school and living alone.
+
+The main thing I remember being intentional about was realizing that running is a sport I can reach close to my max athletic potential at, despite starting late (by sports standards).
+The same can not be said for many other sports like swimming, soccer, or tennis.
+It obviously helps to have started earlier, but long-distance running relies heavily on having strong foundational aerobic fitness and a large mileage base, which are both things that require a lot of time to build up.
+
+Basically, you can offset biological degradation from aging with training volume;
+90% of being a good long-distance runner is just being super consistent over a long period of time while staying healthy.
+This is what allows distance runners to peak well into their 30s ([Kipchoge&apos;s 2:01:09 WR at 37](https://worldathletics.org/news/report/eliud-kipchoge-world-record-berlin-marathon-2022), [Bekele&apos;s 2:01:41 at 37](https://worldathletics.org/news/report/bekele-berlin-marathon-2019)).
+
+<Callout intent="info">
+  I actually don&apos;t know how true this is anymore because with the [recent uptick](https://www.vox.com/even-better/385283/train-marathon-gen-z) in long-distance running, it seems like fast marathoners are getting younger: [Kiptum&apos;s 2:00:35 WR at 23](https://worldathletics.org/competitions/world-athletics-label-road-races/news/chicago-marathon-2023-kiptum-world-record-hassan), [Kiplimo&apos;s 57:31 WR at 21](https://worldathletics.org/competitions/world-athletics-label-road-races/news/jacob-kiplimo-world-half-marathon-record-lisbon).
+  Maybe long-distance running has just never been as competitive as the shorter events because they have a shorter lifespan (probably why many of the greatest marathoners like Kipchoge and Bekele started out as track athletes).
+  What I said seems at least partially true, though: as of <RelativeDate className="text-xs h-[1.125rem]" date={new Date(1748472248646)} type="absolute" />, the average age of the [top 100 1500m runners](https://worldathletics.org/records/all-time-toplists/middlelong/1500-metres/all/men/senior) was 25.3 years old vs. 28.4 years for the [top 100 marathoners](https://worldathletics.org/records/all-time-toplists/road-running/marathon/outdoor/men/senior).
+  Or maybe I just self-psyoped myself into running <Distance className="text-blue-11 hover:text-blue-12" m={18_779_010} />.
+</Callout>
+
+---
+
+It&apos;s obviously fine to do things for enjoyment, fitness, social purposes, or whatever else, but I didn&apos;t want to get into something intensely knowing I&apos;d be hard-capped no matter how hard I worked.
+That doesn&apos;t mean I won&apos;t want to start doing new things in the future;
+I think it&apos;s more like: if I was going to start some hobby at the point/age I was at, I might as well pick something I can see the most growth and improvement in.
+
+## The 1000 days
+
+<Callout intent="info" size="sm">
+  Skip to [Learnings](#learnings) if you don&apos;t care about how to run.
+</Callout>
+
+### First 6 months (~18%)
+
+<Callout intent="none">
+  Learned how to run long distances, recover, and what mileage to maintain.
+</Callout>
+
+My starting fitness was not great, but it was good enough to be able to power through <Distance m={16_093} />+ in 1 run with effort.
+In the first 6 months, I didn&apos;t really know what I was doing, so I gave myself a very loose goal of just trying to consistently run "a lot."
+I tried to get in a run each day, and I would try to run as far as I could before I started feeling uncomfortable.
+If my legs or knees started feeling uncomfortable, or I felt like I was weirdly dehydrated, I would stop.
+
+Eventually, after a couple weeks, I "naturally" settled on about <Distance m={128_748} />/week because that&apos;s what I ended up running the first month without setting a time/distance/pace goal (averaged <Distance m={128_604} />/week).
+After I got a sense of the mileage my body could handle without getting injured, I tried to aim for that every week.
+I didn&apos;t think at all about heart-rate ("zone 2 training"), pace, doing weekly long runs, interval training, etc.
+The goal each run/week was still very simple: just get used to running far.
+I knew I didn&apos;t even have the foundational fitness to start doing more complex training, and it&apos;d be miserable to try and do harder efforts when the act of running itself was hard.
+
+Maintaining <Distance m={128_748} />/week turned out to be harder than I thought&mdash;I averaged <Distance m={116_014} />/week (9.9% less than the goal) for the next 5 months&mdash;because I had to learn some things:
+- Physically, I had to learn some obvious things like how to properly fuel and recover, as well as less obvious things like how to manage stomach issues (it turns out that basically compressing your stomach 180 times/minute is very hard on the digestive system).
+Fueling/hydrating/recovery was quite simple: just eat enough calories/carbs/protein, make sure to drink water and electrolytes, get enough sleep, and stop when the body tells you to.
+Figuring out what to eat and drink before/during the run was a little trickier, but it wasn&apos;t much harder than just trying different things and seeing what worked.
+- Mentally, I had to learn how to not get bored during the run and keep going until the distance/time goal.
+What ended up working best for me was to count in 100s of seconds.
+For example, if I wanted to run for 91:40, I&apos;d count to 5500 seconds as the sum of 1000, 900, ..., 100 seconds: 16:40 -> 31:40 (+15:00) -> ... -> 91:40 (+1:40).
+- Logistically, I had to learn to fit a 1-2 hour run in everyday.
+Depending on the schedule, this can be quite tricky, e.g. if there&apos;s some dinners to attend or if I&apos;m traveling.
+It&apos;s not just learning to find time to fit the run in but also to manage energy throughout the day to have enough left over for the run.
+
+### First year (~37%)
+
+<Callout intent="none">
+  Got a sense of different paces for the half marathon distance.
+</Callout>
+
+In the 2nd half of the first year, I did pretty much the same thing, except I occasionally time trialed half marathons.
+I was running enough each day that doing a one-off half marathon wasn&apos;t too hard, and I had built up enough running fitness between <Pace s={295} /> and <Pace s={320} /> that I wanted to try running faster.
+I&apos;d try to run a half marathon as fast as I could by starting at ~<Pace s={295} /> and upping the speed as the run progressed.
+After doing this a few times over 1-2 months, I found that <Pace s={256} /> (1:29:59 half marathon) was a pace slightly too fast but probably achievable with a few months of training.
+
+My training at this point was still quite simple and still mostly centered around building the mileage base I lacked, so all I concluded from these runs was that <Pace s={256} /> was a "fast" pace, and <Pace s={295} /> was a "normal" pace.
+I didn&apos;t do any speed-specific work like interval training, except I would sometimes run "fast" for a few minutes here and there.
+On <RelativeDate date={new Date("2023-04-08T12:49:00.000Z")} type="absolute" /> ([day \#221](https://basescan.org/nft/0x555555554F0ef522f41B2C46D941DEB4d731eB65/221)), I ran my first sub-1:30 half marathon in 1:28:57 (<Pace s={253} />).
+
+These time trials were a good way to force me to learn more about fueling and all the preparation required to get the best effort out of myself each time.
+Stuff like carb-loading, pre-race nutrition/hydration, fueling during the run, tapering, etc.
+Also, by loosely having a pace-distance goal (sub-1:30 half marathon) for the first time, I got a much better sense for how the half marathon distance _feels_.
+
+### Second year (~73%)
+
+<Callout intent="none">
+  Learned how to get faster and increased mileage.
+</Callout>
+
+By the end of the first year, I had run <Distance m={6_074_400} /> and built up a pretty good base.
+I was decent at running long distances, like I probably could&apos;ve ran <Distance m={30_000} /> on any given day.
+To give a more concrete and funnier example, [sudolabel](https://x.com/sudolabel) signed up for a <Distance m={50_000} /> [ultramarathon](https://x.com/i/status/1759722871876624849) and joked that I&apos;m the type of person to run a <Distance m={50_000} /> before his race just to say I did it earlier.
+So I did that that afternoon, a few hours later: <Distance m={50_020} /> at <Pace s={277} /> ([day \#375](https://basescan.org/nft/0x555555554F0ef522f41B2C46D941DEB4d731eB65/375)).
+
+Point is: I was good at running far and bad at running fast because I had only focused on running volume during the first year.
+My all-out mile then would&apos;ve probably only been ~<Pace s={20} /> faster than my half marathon pace (should be closer to ~<Pace s={40} />).
+I knew I had to start doing speed work to get faster, so I told this to a few people during SBC 2023 when they asked how my running was going.
+
+Out of everyone I talked to about my running, I distinctly remember [plotchy](https://x.com/plotchy) because after I told him that my half marathon PB at the time was <Pace s={235} />, and running "fast" meant running like <Pace s={225} />, he told me I should be trying to run way faster to get faster given my half marathon pace.
+That didn&apos;t immediately change my training, but it became a pivotal moment because it gave me a clearer idea of how much more I had to push myself in speed sessions to get faster.
+I was also confused at the time about whether I had to work on more specific things like strength, leg turnover, etc., but hearing that simplified the problem of getting faster down to basically just getting more mileage at faster paces.
+
+After that realization and entering my second year of running, I again set a loose goal of just trying to increase my "fast" pace from <Pace s={225} /> to something faster (I also got a bit greedy and decided to try and up my weekly mileage to between <Distance m={136_794} /> and <Distance m={144_841} />).
+I didn&apos;t know how to do that "properly," so I just tried to get more time in at faster paces, whenever I felt like I could do it.
+I guess this kind of worked because I ran a half marathon at <Pace s={225} /> on <RelativeDate date={new Date("2023-12-02T15:36:00.000Z")} type="absolute" /> ([day \#459](https://basescan.org/nft/0x555555554F0ef522f41B2C46D941DEB4d731eB65/459))&mdash;a pace that used to be my "fast" pace 3 months prior.
+
+But the problem with that type of loose training was that I didn&apos;t actually get _faster_.
+My max speed was still super slow, and my pace at shorter distances was still much slower than equivalent paces calculated from my half marathon pace.
+This feels super obvious in hindsight, but this remained unchanged until I started doing interval training and doing some track workouts.
+It took me a bit of time to figure out how to get comfortable deciding what paces, lengths, and reps to do.
+Like many other aspects of running, I just had to try things arbitrarily and see what worked.
+For example, you can imagine doing 12 <Distance m={400} /> reps at slightly-faster-than your <Distance m={5000} /> pace will slowly improve your speed at the <Distance m={5000} /> distance, so you can experiment with different paces and rest amounts.
+
+<Callout>
+  Interval training works because it lets you do targeted work at specific speeds, which trains your body to become more efficient at those speeds.
+  Track workouts work because they let you push as hard as you can, which increases your max speed.
+</Callout>
+
+By the end of the second year, my shorter distances had basically caught up.
+
+### 1000 days (100%) + future
+
+I&apos;m now comfortable with every type of training (interval training, long runs, lactate threshold, easy runs, etc.), so I decide what to run each day based on what my goals are (while maintaining a base weekly mileage of <Distance m={144_841} />).
+Currently, I&apos;m focusing on the <Distance m={5_000} /> distance because it&apos;s what I find fun right now, I want to build up more speed while I&apos;m still young, and I&apos;m kinda close to breaking a huge barrier (14:59, PB is a 15:49).
+
+The long-term goal is still to get good at running the half marathon/marathon distances&mdash;it would be really cool to qualify for the US Olympic Trials (requires a ~<Pace s={196} /> marathon as of 2025).
+
+## Learnings
+
+Beyond the stuff I obviously learned directly about running (e.g. how to run, recover, etc.), here&apos;s a list of things I learned that I thought were interesting:
+- People seem to think I am more disciplined and have better work ethic after finding out I run every day.
+- Running discipline doesn&apos;t translate at all to other aspects of life.
+- Most people don&apos;t even try when they say they run, and they get way too swamped with preconceptions on what they _should_ learn, self-reflect upon, or gain from running, but you can kind of tell they don&apos;t actually feel it.
+In my opinion, it ends up feeling performative and makes the training worse because you don&apos;t learn to properly enjoy and get a feel for running.
+- Long-distance running is very easily impressive to people because most people have tried or run at some point and struggled to catch their breath (even if it&apos;s running just <Distance m={10} /> to catch a traffic light), so they automatically think running far is hard.
+It&apos;s because running is an activity that gets significantly easier with consistency, and most people never push past the initial barrier;
+it&apos;s not nearly as hard as people think.
+This realization formed this mental model of activites that are often much easier than the perception in my head.
+Things like: chess players being geniuses, or Rubik&apos;s cube solvers being geniuses (maybe not anymore).
+- The largest personal growth from running has been it serving as a really strong example of "you can just do things" because I went into the 1000 days with the plan "run <Distance m={128_748} />/week to <Distance m={160_934} />/week for like 10 years, and you can&apos;t be bad," and it seems to be true.
+I don&apos;t think I would&apos;ve believed you if you told me I&apos;d run the times I can run now, even if I "knew" I would if I stuck with it.
+Running has been a really strong example of "plan properly, then execute" working, especially because I felt like running (sports in general) was something I&apos;m "supposed" to be bad at.
+- It&apos;s been surprising to see how densely populated with competition it gets at the highest levels.
+I imagine it&apos;s true for basically every field, but let&apos;s take running as an example.
+Say my 1:14:33 half marathon makes me a [top 0.6% runner](https://runrepeat.com/how-do-you-masure-up-the-runners-percentile-calculator), and there&apos;s [25 million](https://www.statista.com/topics/1743/running-and-jogging) male runners in the United States.
+This means I&apos;m roughly in the top 150,000 runners in the country.
+Then, to qualify for the Olympic Trials (top 250), I&apos;d need to be in the top _0.17%_ of the top 0.6%!
+This feels like an obvious point, but after putting in the work to get to the "top 0.6%," it feels insane thinking about how much more the top 250 runners must&apos;ve put in.
+Even if my estimations and napkin math are way off, the numbers are so surprising to me that the point still stands.

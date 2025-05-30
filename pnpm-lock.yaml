@@ -80,6 +80,9 @@ dependencies:
   '@visx/tooltip':
     specifier: ^3.3.0
     version: 3.3.0(react-dom@18.3.1)(react@18.3.1)
+  boring-avatars:
+    specifier: ^1.11.2
+    version: 1.11.2
   clsx:
     specifier: ^2.1.1
     version: 2.1.1
@@ -92,6 +95,9 @@ dependencies:
   connectkit:
     specifier: ^1.8.0
     version: 1.8.2(@babel/core@7.26.0)(@tanstack/react-query@5.59.16)(react-dom@18.3.1)(react-is@18.3.1)(react@18.3.1)(viem@2.21.36)(wagmi@2.12.25)
+  country-flag-icons:
+    specifier: ^1.5.19
+    version: 1.5.19
   drizzle-orm:
     specifier: ^0.39.2
     version: 0.39.2(@neondatabase/serverless@0.10.4)(@types/pg@8.11.11)(@types/react@18.3.12)(pg@8.13.1)(react@18.3.1)
@@ -164,6 +170,9 @@ dependencies:
   zod:
     specifier: ^3.23.8
     version: 3.23.8
+  zustand:
+    specifier: ^5.0.5
+    version: 5.0.5(@types/react@18.3.12)(react@18.3.1)
 
 devDependencies:
   '@radix-ui/colors':
@@ -6468,6 +6477,10 @@ packages:
     resolution: {integrity: sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==}
     dev: false
 
+  /boring-avatars@1.11.2:
+    resolution: {integrity: sha512-3+wkwPeObwS4R37FGXMYViqc4iTrIRj5yzfX9Qy4mnpZ26sX41dGMhsAgmKks1r/uufY1pl4vpgzMWHYfJRb2A==}
+    dev: false
+
   /bowser@2.11.0:
     resolution: {integrity: sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==}
     dev: false
@@ -6878,6 +6891,10 @@ packages:
       is-directory: 0.3.1
       js-yaml: 3.14.1
       parse-json: 4.0.0
+    dev: false
+
+  /country-flag-icons@1.5.19:
+    resolution: {integrity: sha512-D/ZkRyj+ywJC6b2IrAN3/tpbReMUqmuRLlcKFoY/o0+EPQN9Ev/e8tV+D3+9scvu/tarxwLErNwS73C3yzxs/g==}
     dev: false
 
   /crc-32@1.2.2:
@@ -14076,6 +14093,28 @@ packages:
       '@types/react': 18.3.12
       react: 18.3.1
       use-sync-external-store: 1.2.0(react@18.3.1)
+    dev: false
+
+  /zustand@5.0.5(@types/react@18.3.12)(react@18.3.1):
+    resolution: {integrity: sha512-mILtRfKW9xM47hqxGIxCv12gXusoY/xTSHBYApXozR0HmQv299whhBeeAcRy+KrPPybzosvJBCOmVjq6x12fCg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+    dependencies:
+      '@types/react': 18.3.12
+      react: 18.3.1
     dev: false
 
   /zwitch@2.0.4:
