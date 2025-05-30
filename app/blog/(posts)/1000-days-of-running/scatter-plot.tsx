@@ -29,20 +29,17 @@ const OverviewScatterPlot: React.FC = () => {
   const unit = LENGTH_UNITS[index];
 
   const data = useMemo(() => {
-    const data = DAILY_RUNNING_MILEAGE.map(
-      (d) => {
-        const date = d.time;
-        const utcDate = new Date(
-          Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
-        );
+    const data = DAILY_RUNNING_MILEAGE.map((d) => {
+      const date = d.time;
+      const utcDate = new Date(
+        Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
+      );
 
-        return {
-          time: utcDate,
-          value: unit.scalar * d.value,
-        };
-      },
-      [unit.scalar],
-    );
+      return {
+        time: utcDate,
+        value: d.value,
+      };
+    }, []);
 
     return data.map(({ time, value }, i) => {
       const last28Total = data.slice(Math.max(0, i - 28), i).reduce((a, b) => a + b.value, 0);
@@ -53,7 +50,7 @@ const OverviewScatterPlot: React.FC = () => {
         ma: last28Total / 28,
       };
     });
-  }, [unit.scalar]);
+  }, []);
 
   const unitName = useMemo(
     () => `${unit.spaceBefore ? ' ' : ''}${unit.name}`,
@@ -68,7 +65,9 @@ const OverviewScatterPlot: React.FC = () => {
         key={unit.name}
         className="absolute left-2 top-2 z-30 animate-bg-pulse text-sm font-medium tracking-tight"
       >
-        <span className="text-base text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
+        <span className="text-base text-gray-12">
+          {formatValueToPrecision(unit.scalar * total, 2, false)}
+        </span>
         <span className="text-xs text-gray-11">
           {unitName + '/week '}
           {unit.description ? (
@@ -132,7 +131,7 @@ const OverviewScatterPlot: React.FC = () => {
                     <span className="text-base text-gray-12">
                       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                       {/* @ts-ignore */}
-                      {formatValueToPrecision(payload[0].payload.value, 2, false)}
+                      {formatValueToPrecision(unit.scalar * payload[0].payload.value, 2, false)}
                     </span>
                     <span className="text-xs text-gray-11">{unitName}</span>
                   </div>

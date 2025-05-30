@@ -37,13 +37,13 @@ const OverviewAreaChart: React.FC = () => {
         ...sortedData.map((d, i) => {
           return {
             count: i + 1,
-            value: d.value * unit.scalar,
+            value: d.value,
           };
         }),
       ],
-      sortedData[sortedData.length - 1].value * unit.scalar,
+      sortedData[sortedData.length - 1].value,
     ],
-    [unit.scalar, sortedData],
+    [sortedData],
   );
 
   const unitName = useMemo(
@@ -94,7 +94,7 @@ const OverviewAreaChart: React.FC = () => {
                     <span className="text-gray-11"> runs ≥ </span>
                     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                     {/* @ts-ignore */}
-                    {formatValueToPrecision(payload[0].payload.value, 2, false)}
+                    {formatValueToPrecision(unit.scalar * payload[0].payload.value, 2, false)}
                   </span>
                   <span className="text-xs text-gray-11">{unitName}</span>
                 </div>
