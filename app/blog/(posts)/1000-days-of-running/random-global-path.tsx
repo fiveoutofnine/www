@@ -135,7 +135,7 @@ const OverviewRandomGlobalPath: React.FC<OverviewRandomGlobalPathProps> = ({ tot
 
   return (
     <div className="relative flex">
-      <div className="hide-scrollbar grow overflow-y-scroll">
+      <div className="hide-scrollbar -m-0.5 grow overflow-y-scroll p-0.5">
         <span className="min-h-fit w-full max-w-full text-wrap">
           <span className="text-xs text-gray-11">That&apos;s roughly</span>
           <br />
