@@ -65,6 +65,17 @@ export const BYTEBEAT_SONGS: BytebeatSong[] = [
 
 export const FIVEOUTOFNINE_BYTEBEAT_SONGS: BytebeatSong[] = [
   {
+    id: 'banana',
+    name: '🥽🍌',
+    author: {
+      name: 'fiveoutofnine',
+      link: 'https://x.com/fiveoutofnine',
+    },
+    // eslint-disable-next-line quotes
+    source: `k=t>>10&127,a=k>>4,m=[693,144][a-5],j=a!=6,A=(r,g=29365,b=0)=>((t>>8&3)<3|g>>(k&15)&1)*.784*(t+b*sin(t/400))*2**((r&a>6?14:r)/12)&55,j*A(14,m)+(!!a+!j)*A(18+(a==4)-~~'444222299900202024744'[k-93],m)+2*A(+'466422269664222246642222!!11'[k-44>>1]+12,'倀嗵埵ߵ7'.charCodeAt(a-2),9)`,
+    sampleRate: 8000,
+  },
+  {
     id: 'rocky',
     name: 'Rocky',
     author: {
