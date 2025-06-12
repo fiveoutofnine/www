@@ -35,8 +35,8 @@ export const SHORT_QUOTES = [
   },
   {
     text: 'There are many things that I would like to say to you but I don\'t know how.',
-    wpm: 229.9,
-    time: 3.915,
+    wpm: 247,
+    time: 3.643,
   },
   {
     text: 'I been doin\' this a long time. I ain\'t never said nothin\' to no cop.',
