@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
@@ -8,3 +10,22 @@ export const metadata = getBlogPageMetadata({
 });
 
 <BlogHeader slug="reward-checks" />
+
+About 2 years ago, I learned about [Donald Knuth&apos;s reward checks](https://en.wikipedia.org/wiki/Knuth_reward_check).
+They&apos;re checks awarded by Knuth to people who find errors or make substantial suggestions on his published work, typically worth a "hexadecimal dollar" (denoted `0x$1.00`), or \$2.56.
+The MIT Technology Review [describes](https://www.technologyreview.com/1999/09/01/236540/rewriting-the-bible-in-0s-and-1s) them as "among computerdom&apos;s most prized trophies."
+
+<Image
+  className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden my-0"
+  src="/static/blog/reward-checks/knuth-reward-check.webp"
+  alt="A reward check for $2.56 from Donald Knuth to Tony Lu from the fictional Bank of San Serriffe."
+  width={837}
+  height={397}
+/>
+
+I love stuff like this.
+It speaks to Knuth&apos;s perfectionism and wit, and it&apos;s also just a really fun, unique idea.
+Feels like a representation of his values and sense of humor that you can also feel when reading his work, like [Digital Typography](https://www-cs-faculty.stanford.edu/~knuth/dt.html).
+
+---
+
