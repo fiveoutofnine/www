@@ -603,8 +603,8 @@ const Pixel: React.FC<{
       }
       x={0.5 + x * 23}
       y={0.5 + y * 23}
-      width={width * 24 - width}
-      height={height * 24 - height}
+      width={width * 23}
+      height={height * 23}
     />
   );
 };

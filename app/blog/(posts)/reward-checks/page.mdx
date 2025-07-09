@@ -4,6 +4,8 @@ import BlogHeader from '@/app/blog/(components)/header';
 
 import { getBlogPageMetadata } from '@/lib/utils';
 
+import { PixelArtEncodingSimpleGraphic } from './graphics';
+
 export const metadata = getBlogPageMetadata({
   slug: 'reward-checks',
   description: 'Checks awarded by 5/9 for finding technical, typographical, or historical errors, or making substantial suggestions for his publications.',
@@ -52,5 +54,25 @@ The bank even has a [website](https://www-cs-faculty.stanford.edu/~knuth/boss.ht
 
 Now, obviously, reading about the Bank of Sans Serriffe as "someone in crypto," I found great irony in this: one of the greatest computer scientists ever manually maintains balances on a comically large HTML file with pretend money, when it&apos;s trivially accomplished with blockchains.
 
-Since basically all of my work is public, and I like creating fully on-chain things, I wanted to make my very own **5/9 reward checks**: fully on-chain NFTs that I mint to people who submit fixes/suggestions to my work, alongside $5.\bar{5}\cdot10^{-5}$ ETH.
+Since basically all of my work is public, and I like creating fully on-chain things, I wanted to make my own **5/9 reward checks**: fully on-chain NFTs that I mint to people who submit fixes/suggestions to my work, alongside $5.\bar{5}\cdot10^{-5}$ ETH.
 My reward checks obviously don&apos;t require fictional banks or pretend money :).
+
+## 5/9 Reward Checks
+
+I marinated on this idea for 2 years because I didn&apos;t have any good inspiration for the art, and there wasn&apos;t any urgency to do it.
+Then, one day, as I finished the 9th interval of a 16×400m workout, I visualized the progress in my head:
+
+<div className="w-full flex justify-center">
+  <PixelArtEncodingSimpleGraphic />
+</div>
+
+The green pixels (labeled 0) are completed intervals, and the blue pixels (labeled 1) are a random selection of 5 out of the 9 completed intervals.
+Visualizing the progress and/or time remaining in a run is something I typically do to mentally chunk it up and make it easier for me to finish.
+Usually, it&apos;s something simple like reducing 16 to 4 sets of 4: "25%, 50%, 75%, 100%" feels more digestible than "6.25%, 12.5%, 18.75%, ..., 100%".
+
+In this case, I don&apos;t remember what was going through my mind to conjure up a visualization of 5/9; maybe narcissism or love for myself.
+Either way, it gave me the idea of generating all 3×3 grids, where 5 out of the 9 pixels are highlighted.
+
+### Art
+
+### Submitting
