@@ -3,7 +3,7 @@ export const POSTS: { slug: string; title: string; date: Date }[] = [
   {
     slug: 'reward-checks',
     title: 'Reward Checks',
-    date: new Date('2025-07-08T15:35:35.386Z'),
+    date: new Date('2025-07-10T17:34:12.802Z'),
   },
   {
     slug: '1000-days-of-running',
