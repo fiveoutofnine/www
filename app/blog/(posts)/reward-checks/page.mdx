@@ -1,0 +1,127 @@
+import Image from 'next/image';
+
+import BlogHeader from '@/app/blog/(components)/header';
+
+import { getBlogPageMetadata } from '@/lib/utils';
+
+import { WorkoutVisualizationGraphic } from './graphics';
+
+export const metadata = getBlogPageMetadata({
+  slug: 'reward-checks',
+  description: 'Checks awarded by 5/9 for finding technical, typographical, or historical errors, or making substantial suggestions for his publications.',
+});
+
+<BlogHeader slug="reward-checks" />
+
+About 2 years ago, I learned about [Donald Knuth&apos;s reward checks](https://en.wikipedia.org/wiki/Knuth_reward_check).
+They&apos;re checks awarded by Knuth to people who find errors or make substantial suggestions on his published work, typically worth a "hexadecimal dollar" (denoted `0x$1.00`), or \$2.56.
+The MIT Technology Review [describes](https://www.technologyreview.com/1999/09/01/236540/rewriting-the-bible-in-0s-and-1s) them as "among computerdom&apos;s most prized trophies."
+
+<Image
+  className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden my-0"
+  src="/static/blog/reward-checks/knuth-reward-check.webp"
+  alt="A reward check for $2.56 from Donald Knuth to Tony Lu from the fictional Bank of San Serriffe."
+  width={837}
+  height={397}
+/>
+
+I love stuff like this.
+It speaks to Knuth&apos;s perfectionism and wit, and it&apos;s also just a really fun, unique idea.
+Feels like a representation of his values and sense of humor that you can also feel when reading his work, like [Digital Typography](https://www-cs-faculty.stanford.edu/~knuth/dt.html).
+
+## Bank of San Serriffe
+
+Knuth&apos;s reward checks were real, negotiable checks until he was forced to stop in 2008 because of check fraud:
+
+<Blockquote source={{ label: 'Donald Knuth', url: 'https://www-cs-faculty.stanford.edu/~knuth/news08.html' }}>
+  Leading banks and investment funds have been foundering, because of bad debts and lack of trust; and other, less well-known kinds of fiscal chaos are also on the horizon.
+  For example, due to an unfixable security flaw in the way funds are now transferred electronically, worldwide, **it is no longer safe to write personal checks**.
+</Blockquote>
+
+His solution was to create the fictional Bank of San Serriffe:
+
+<Blockquote source={{ label: 'Donald Knuth', url: 'https://www-cs-faculty.stanford.edu/~knuth/news08.html' }}>
+  After painful deliberation I&apos;ve come up with a new plan, which I hope will be acceptable to all concerned, and perhaps even welcomed as an improvement.
+  Instead of rewarding heroic bug-finders with dollars, I shall henceforth award brownie points, otherwise known as hexadecimal dollars (`0x$`).
+  From now on it will be kudos, not escudos.
+  <br />
+  Instead of writing personal checks, I&apos;ll write personal certificates of deposit to each awardee&apos;s account at the Bank of San Serriffe, which is an offshore institution that has branches in Blefuscu and Elbonia on the planet Pincus. 
+</Blockquote>
+
+The bank even has a [website](https://www-cs-faculty.stanford.edu/~knuth/boss.html) maintaining all account balances.
+
+---
+
+Now, obviously, reading about the Bank of Sans Serriffe as "someone in crypto," I found great irony in this: one of the greatest computer scientists ever manually maintains balances on a comically large HTML file with pretend money, when it&apos;s trivially accomplished with blockchains.
+
+Since basically all of my work is public, and I like creating fully on-chain things, I wanted to make my own **5/9 reward checks**: fully on-chain NFTs that I mint to people who submit fixes/suggestions to my work, alongside $5.\bar{5}\cdot10^{-5}$ ETH.
+My reward checks obviously don&apos;t require fictional banks or pretend money :).
+
+## 5/9 Reward Checks
+
+I marinated on this idea for 2 years because I didn&apos;t have any good inspiration for the design, and there wasn&apos;t any urgency to do it.
+Then, one day, as I finished the 9th interval of a 16×400m workout, I visualized the progress in my head:
+
+<div className="w-full flex justify-center">
+  <WorkoutVisualizationGraphic />
+</div>
+
+The green pixels (labeled 0) are completed intervals, and the blue pixels (labeled 1) are a random selection of 5 out of the 9 completed intervals.
+Visualizing the progress and/or time remaining in a run is something I typically do to mentally chunk it up and make it easier for me to finish.
+Usually, it&apos;s something simple like reducing 16 to 4 sets of 4: "25%, 50%, 75%, 100%" feels more digestible than "6.25%, 12.5%, 18.75%, ..., 100%".
+
+In this case, I don&apos;t remember what was going through my mind to conjure up a visualization of 5/9; maybe narcissism or love for myself.
+Either way, it gave me the idea of generating all 3×3 grids, where 5 out of the 9 pixels are highlighted.
+
+This idea reminded me of Knuth&apos;s reward checks because I thought it&apos;d be a fun and representative way to express myself, just like how Knuth is playful with his.
+The theme and visualization of 5/9 is an obvious reference to my identity, and it&apos;s also something I&apos;ve [sprinkled](https://github.com/fiveoutofnine/555) [throughout](https://x.com/i/status/1770125990317924673) [my](https://x.com/i/status/1770226545581338921) [previous](https://basescan.org/address/0x555555554F0ef522f41B2C46D941DEB4d731eB65) [work](https://x.com/i/status/1938245036749295757) for fun.
+All of this connects nicely to the core idea of this being a [fully on-chain](https://fiveoutofnine.com/blog/on-chain-font) NFT as well.
+
+### Design
+
+I came up with the following as the central element:
+
+<Image
+  className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden mx-auto my-0"
+  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NTUiIGhlaWdodD0iNTU1IiB2aWV3Qm94PSIwIDAgNTU1IDU1NSIgZmlsbD0ibm9uZSI+PHBhdGggaWQ9ImEiIGQ9Ik0yOC42NTggMjguNjU4aDQ5Ny42ODR2NDk3LjY4NEgyOC42NTh6Ii8+PG1hc2sgaWQ9ImIiPjxwYXRoIGQ9Ik0wIDBoNTU1djU1NUgweiIgZmlsbD0iI2ZmZiIvPjx1c2UgaHJlZj0iI2EiIGZpbGw9IiMwMDAiLz48L21hc2s+PHBhdGggZD0iTTAgMGg1NTV2NTU1SDB6IiBmaWxsPSIjMDAwIi8+PHVzZSBocmVmPSIjYSIgZmlsbD0iIzExMSIvPjx1c2UgaHJlZj0iI2EiIHN0cm9rZT0iIzNhM2EzYSIgc3Ryb2tlLXdpZHRoPSI0IiBtYXNrPSJ1cmwoI2IpIi8+PHBhdGggaWQ9ImkiIGQ9Im04NSAzMCAxMTAgNTUtNTUgMTEwLTExMC01NXoiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGlkPSJjIiBkPSJNMjggODVoNDk5IiBzdHJva2U9IiMzYTNhM2EiIHN0cm9rZS1kYXNoYXJyYXk9IjUgNSIvPjx1c2UgaHJlZj0iI2MiIHk9IjU1Ii8+PHBhdGggaWQ9ImQiIGQ9Ik0yOCAxOTVoNDk5IiBzdHJva2U9IiMzYTNhM2EiIHN0cm9rZS13aWR0aD0iMiIvPjx1c2UgaHJlZj0iI2MiIHk9IjE2NSIvPjx1c2UgaHJlZj0iI2MiIHk9IjIyMCIvPjx1c2UgaHJlZj0iI2QiIHk9IjE2NSIvPjx1c2UgaHJlZj0iI2MiIHk9IjMzMCIvPjx1c2UgaHJlZj0iI2MiIHk9IjM4NSIvPjxwYXRoIGlkPSJlIiBkPSJNODUgMjh2NDk5IiBzdHJva2U9IiMzYTNhM2EiIHN0cm9rZS1kYXNoYXJyYXk9IjUgNSIvPjx1c2UgaHJlZj0iI2UiIHg9IjU1Ii8+PHBhdGggaWQ9ImYiIGQ9Ik0xOTUgMjh2NDk5IiBzdHJva2U9IiMzYTNhM2EiIHN0cm9rZS13aWR0aD0iMiIvPjx1c2UgaHJlZj0iI2UiIHg9IjE2NSIvPjx1c2UgaHJlZj0iI2UiIHg9IjIyMCIvPjx1c2UgaHJlZj0iI2YiIHg9IjE2NSIvPjx1c2UgaHJlZj0iI2UiIHg9IjMzMCIvPjx1c2UgaHJlZj0iI2UiIHg9IjM4NSIvPjxnIGZpbGw9IiMyMjIiIHN0cm9rZT0iIzNhM2EzYSI+PHVzZSBocmVmPSIjaSIgeD0iMTEwIi8+PHVzZSBocmVmPSIjaSIgeD0iMjIwIiB5PSI1NSIvPjx1c2UgaHJlZj0iI2kiIHg9IjMzMCIgeT0iMTEwIi8+PHVzZSBocmVmPSIjaSIgeD0iNTUiIHk9IjExMCIvPjx1c2UgaHJlZj0iI2kiIHg9IjE2NSIgeT0iMTY1Ii8+PHVzZSBocmVmPSIjaSIgeD0iMjc1IiB5PSIyMjAiLz48dXNlIGhyZWY9IiNpIiB5PSIyMjAiLz48dXNlIGhyZWY9IiNpIiB4PSIxMTAiIHk9IjI3NSIvPjx1c2UgaHJlZj0iI2kiIHg9IjIyMCIgeT0iMzMwIi8+PC9nPjxnIGZpbGw9IiMwZDI4NDciIHN0cm9rZT0iIzEwNGQ4NyI+PHVzZSBocmVmPSIjaSIgeD0iMTEwIi8+PHVzZSBocmVmPSIjaSIgeD0iMzMwIiB5PSIxMTAiLz48dXNlIGhyZWY9IiNpIiB4PSIxNjUiIHk9IjE2NSIvPjx1c2UgaHJlZj0iI2kiIHk9IjIyMCIvPjx1c2UgaHJlZj0iI2kiIHg9IjIyMCIgeT0iMzMwIi8+PC9nPjwvc3ZnPg=="
+  alt="A sample 5/9 reward check with the pattern `101010101` highlighted."
+  width={555}
+  height={555}
+/>
+
+I&apos;m pretty happy with this.
+There&apos;s ${9\choose5}=126$ ways to fill the 3×3 grid, which provides enough visual variety amongst reward checks, and I think it looks pretty nice.
+Apart from the highlighted pixels, I fit in a couple other references to 5/9:
+- The rotated square is exactly 5/9 of the area of the square containing it.
+  You can tell from the grid lines because
+
+<MathDisplay>
+  $$\frac{(\text{Side of the rotated square})^{2}}{(\text{Side of the container square})^{2}}=\frac{\sqrt{1^{2}+2^{2}}^{2}}{3^{2}}=\frac{\sqrt{5}^{2}}{3^{2}}=\frac{5}{9}$$
+</MathDisplay>
+
+- The image is 555×555 pixels.
+- The grid lines are 55px apart.
+
+---
+
+I was going to just deploy the SVG above as the NFT, but it&apos;s a little too ambiguous.
+Since it&apos;s a "check," I wanted something closer to a card with relevant information displayed.
+When I created [Curta&apos;s Flag NFTs](https://opensea.io/collection/curta), I deliberately designed and [implemented](https://github.com/waterfall-mkt/curta/blob/ae4a9fca354f99e5972b61c3d0b6714339030e78/src/FlagRenderer.sol) them in a generic way to display information related to the NFTs.
+I tested it here and liked the look, so I reused the design and code here:
+
+<Image
+  className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden my-0 p-4"
+  src="/static/blog/reward-checks/fiveoutofnine-reward-check.webp"
+  alt="2 sample 5/9 reward checks side by side."
+  width={2144}
+  height={1648}
+/>
+
+<Callout intent="info">
+  I haven&apos;t deployed the NFT yet, but I will link it here when I do.
+</Callout>
+
+### Submitting
+
+To submit a fix/suggestion, make a PR on any of my repos or DM me on [𝕏](https://x.com/fiveoutofnine) or [Farcaster](https://farcaster.xyz/fiveoutofnine).
+If you want a 5/9 reward check, let me know your Ethereum address :).
