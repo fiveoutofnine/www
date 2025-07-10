@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 
 import clsx from 'clsx';
 
-export const PixelArtEncodingSimpleGraphic: React.FC = () => {
+export const WorkoutVisualizationGraphic: React.FC = () => {
   return (
     <svg
       /* 4 columns: 24 * 4 - 3 */
@@ -13,8 +13,11 @@ export const PixelArtEncodingSimpleGraphic: React.FC = () => {
       xmlns="http://www.w3.org/2000/svg"
       role="figure"
     >
-      <title>Simple pixel art encoding</title>
-      <desc>Naive vs optimized simple pixel art encoding example.</desc>
+      <title>16×400m workout visualization</title>
+      <desc>
+        Visualization of the progress of a 16×400m workout, where 9 of the 16 intervals are
+        completed, and 5 of the 9 intervals are randomly highlighted.
+      </desc>
       {/* Unfinished */}
       <Pixel x={0} y={0} type="gray" />
       <Pixel x={1} y={0} type="gray" />
