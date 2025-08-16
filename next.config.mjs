@@ -20,7 +20,7 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        // Backwards compatibility for the `<iframe>` in
+        // Backlink compatibility for the `<iframe>` in
         // https://rubin.io/bitcoin/2021/12/14/advent-17. :).
         source: '/asset/17',
         destination: '/api/chess/asset/17',
