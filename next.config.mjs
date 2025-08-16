@@ -17,6 +17,15 @@ const nextConfig = {
     domains: ['assets.fiveoutofnine.com'],
   },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  async redirects() {
+    return [
+      {
+        source: '/asset/17',
+        destination: '/api/chess/asset/17',
+        permanent: true,
+      },
+    ];
+  },
   webpack(config) {
     config.experiments = { ...config.experiments, topLevelAwait: true };
     // Copied from: https://github.com/WalletConnect/walletconnect-monorepo/issues/1908#issuecomment-1487801131
