@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { fetchMoveAction } from './action';
 import clsx from 'clsx';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 
 import { CHESS_NFT_FALLBACK } from '@/lib/constants/chess-nfts';
 import type { ChessFeature } from '@/lib/types/chess';
@@ -38,7 +38,12 @@ const ChessFeature: React.FC = () => {
         </svg>
       }
       button={
-        <Button size="sm" href="/chess" rightIcon={<ChevronRight />} disabled>
+        <Button
+          size="sm"
+          href="https://etherscan.io/address/0xb543f9043b387ce5b3d1f0d916e42d8ea2eba2e0#code"
+          rightIcon={<ExternalLink />}
+          newTab
+        >
           Play
         </Button>
       }

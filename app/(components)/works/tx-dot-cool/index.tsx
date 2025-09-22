@@ -29,8 +29,13 @@ const TxDotCoolFeature: React.FC = () => {
         </svg>
       }
       button={
-        <Button size="sm" href="https://tx.cool" rightIcon={<ExternalLink />} newTab>
-          Visit
+        <Button
+          size="sm"
+          href="https://github.com/fiveoutofnine/tx.cool"
+          rightIcon={<ExternalLink />}
+          newTab
+        >
+          Code
         </Button>
       }
       tags={[<CategoryTag key={0} category="Web" />]}
