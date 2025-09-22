@@ -129,11 +129,11 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
     if (!startTime) return;
 
     const setNewWpm = ({ decimals }: { decimals: number }) => {
-      const multipler = 10 ** decimals;
+      const multiplier = 10 ** decimals;
       const currentTimePassed = (Date.now() - startTime.getTime()) / 1000;
       const currentWpm = (12 * numCorrectChars) / currentTimePassed;
 
-      setWpm(Math.round(multipler * currentWpm) / multipler);
+      setWpm(Math.round(multiplier * currentWpm) / multiplier);
     };
 
     setNewWpm({ decimals: 0 });
