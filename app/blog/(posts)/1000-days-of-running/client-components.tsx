@@ -364,7 +364,7 @@ export const Overview: React.FC = () => {
                   <Tooltip
                     key={country.code}
                     content={country.name}
-                    triggerProps={{ className: 'rounded-md pr-[2px] -mr-[2px]' }}
+                    triggerProps={{ className: 'rounded-md' }}
                   >
                     <Flag className="rounded-md border border-gray-7 transition-colors hover:border-gray-8" />
                   </Tooltip>
