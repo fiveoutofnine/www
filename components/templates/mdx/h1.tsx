@@ -26,7 +26,7 @@ const H1: React.FC<JSX.IntrinsicElements['h1']> = ({ children, ...rest }) => {
       <h1 id={id} {...rest}>
         <a
           href={`#${id}`}
-          className="not-prose group mb-4 flex w-fit items-center gap-3 rounded text-3xl font-semibold tracking-tight text-gray-12 no-underline md:gap-4 md:text-4xl"
+          className="not-prose group flex w-fit items-center gap-3 rounded text-3xl font-semibold tracking-tight text-gray-12 no-underline md:gap-4 md:text-4xl"
           onClick={() => {
             navigator.clipboard.writeText(
               `${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://fiveoutofnine.com'}${pathname}#${id}`,
