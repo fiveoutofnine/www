@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { ChevronDown, Play } from 'lucide-react';
 
-import { NUMBER_OF_VIDEOS } from '@/lib/utils/getRandomMp4Url';
+import { NUMBER_OF_VIDEOS } from '@/lib/utils/get-random-mp4-url';
 
 // -----------------------------------------------------------------------------
 // Props

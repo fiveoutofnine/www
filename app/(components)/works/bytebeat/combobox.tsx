@@ -5,7 +5,7 @@ import { Fragment, useState } from 'react';
 import { FileQuestion, ListMusic } from 'lucide-react';
 
 import { BYTEBEAT_SONGS, FIVEOUTOFNINE_BYTEBEAT_SONGS } from '@/lib/constants/bytebeat';
-import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { formatValueToPrecision } from '@/lib/utils';
 
 import { Code } from '@/components/templates/mdx';
