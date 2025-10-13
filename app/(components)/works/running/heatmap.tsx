@@ -274,7 +274,7 @@ const RunningFeatureDetailHeatmap: React.FC<RunningFeatureDetailHeatmapProps> = 
               className="pointer-events-none absolute left-0 top-0 z-50 rounded border border-gray-6 bg-gray-2 px-2 py-1 text-sm text-gray-12 shadow-md transition-colors"
               style={{}}
             >
-              <span className="tabular-nums">{JSON.parse(tooltipData).value}</span>
+              <span>{JSON.parse(tooltipData).value}</span>
               {unit.spaceBefore ? ' ' : ''}
               <span className="text-gray-11">{unit.name} on</span>{' '}
               {new Date(JSON.parse(tooltipData).date).toLocaleDateString('en-US', {

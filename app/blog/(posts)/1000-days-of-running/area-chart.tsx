@@ -53,7 +53,12 @@ const OverviewAreaChart: React.FC = () => {
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={data} margin={{ top: 0, left: 0, right: 0, bottom: 0 }}>
+      <AreaChart
+        data={data}
+        margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
+        tabIndex={-1}
+        className="focus:outline-none"
+      >
         <XAxis
           dataKey="value"
           type="number"
@@ -85,18 +90,18 @@ const OverviewAreaChart: React.FC = () => {
 
             return (
               <div
-                className="z-30 items-center rounded border border-gray-6 bg-gray-3 p-2"
+                className="z-30 items-center rounded-md border border-gray-6 bg-gray-2 p-2 text-sm leading-normal shadow-md animate-in fade-in"
                 tabIndex={-1}
               >
                 <div className="font-medium">
-                  <span className="text-base text-gray-12">
+                  <span className="text-gray-12">
                     {data.length - payload[0].payload.count}
                     <span className="text-gray-11"> runs ≥ </span>
                     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                     {/* @ts-ignore */}
                     {formatValueToPrecision(unit.scalar * payload[0].payload.value, 2, false)}
                   </span>
-                  <span className="text-xs text-gray-11">{unitName}</span>
+                  <span className="text-xs leading-4 text-gray-11">{unitName}</span>
                 </div>
               </div>
             );
@@ -106,7 +111,7 @@ const OverviewAreaChart: React.FC = () => {
           type="monotone"
           dataKey="count"
           fill={radixColors.blueDark.blue3}
-          stroke={radixColors.blueDark.blue8}
+          stroke={radixColors.blueDark.blue9}
           activeDot={{ stroke: radixColors.blueDark.blue11, strokeWidth: 1, r: 3 }}
         />
         {[0.25, 0.5, 0.75, 0.95].map((y) => (

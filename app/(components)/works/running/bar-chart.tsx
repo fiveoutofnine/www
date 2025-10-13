@@ -101,9 +101,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
           inverted
           triggerProps={{ className: 'rounded' }}
         >
-          <span className="text-base tabular-nums text-gray-12">
-            {formatValueToPrecision(total, 2, false)}
-          </span>
+          <span className="text-base text-gray-12">{formatValueToPrecision(total, 2, false)}</span>
         </Tooltip>
         <span className="text-xs text-gray-11">
           {unitName + ' '}
@@ -181,7 +179,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
                   tabIndex={-1}
                 >
                   <div className="font-medium">
-                    <span className="text-base tabular-nums text-gray-12">
+                    <span className="text-base text-gray-12">
                       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                       {/* @ts-ignore */}
                       {formatValueToPrecision(payload[0].value, 2, false)}
