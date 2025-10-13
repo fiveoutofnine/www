@@ -120,7 +120,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
           ) : null}
         </span>
       </span>
-      <div className="mt-0.5 text-xs font-[300] text-gray-11">
+      <div className="mt-0.5 text-xs font-normal text-gray-11">
         {data.length > 0
           ? `${data[0].date.toLocaleDateString('en-US', {
               month: 'short',

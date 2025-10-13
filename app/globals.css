@@ -6,7 +6,7 @@ html,
 body,
 main {
   @apply scroll-pt-28 bg-gray-1 text-gray-12 md:scroll-pt-20;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 * {
@@ -55,7 +55,7 @@ button {
 
 .recharts-text {
   user-select: none;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .recharts-tooltip-cursor {
