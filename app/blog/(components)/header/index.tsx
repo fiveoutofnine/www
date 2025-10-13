@@ -39,7 +39,13 @@ export default async function BlogHeader({ slug }: BlogHeaderProps) {
         <div className="mx-1" role="separator">
           ·
         </div>
-        <Suspense fallback={<span className="animate-in fade-in">0 views</span>}>
+        <Suspense
+          fallback={
+            <span className="animate-in fade-in">
+              <span className="tabular-nums">0</span> views
+            </span>
+          }
+        >
           <BlogViewCount id={encodeURIComponent(slug)} fallbackData={Number(views) || 0} />
         </Suspense>
         <div className="ml-auto" role="separator" />

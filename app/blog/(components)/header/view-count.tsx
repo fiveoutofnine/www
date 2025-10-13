@@ -63,7 +63,7 @@ const BlogViewCountTracker: React.FC<BlogViewCountTrackerProps> = ({
     // We set `key={views}` so the animation is triggered each the time view
     // count changes. Also, don't animate on initial render.
     <span key={views} className={data !== fallbackData ? 'animate-bg-pulse' : ''}>
-      {views} views
+      <span className="tabular-nums">{views}</span> views
     </span>
   );
 };

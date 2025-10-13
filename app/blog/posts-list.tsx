@@ -23,7 +23,7 @@ const BlogPostsList: React.FC = () => {
                 href={`/blog/${slug}`}
               >
                 {firstPostInYear.get(year) === slug ? (
-                  <span className="w-10 min-w-10 pt-1 text-sm font-medium leading-4 text-gray-11 sm:w-12 sm:min-w-12">
+                  <span className="w-10 min-w-10 pt-1 text-sm font-medium tabular-nums leading-4 text-gray-11 sm:w-12 sm:min-w-12">
                     {year}
                   </span>
                 ) : null}
@@ -31,7 +31,7 @@ const BlogPostsList: React.FC = () => {
                   {title}
                 </span>
                 <time
-                  className="w-14 min-w-14 pt-1 text-right text-sm leading-4 text-gray-11"
+                  className="w-14 min-w-14 pt-1 text-right text-sm tabular-nums leading-4 text-gray-11"
                   dateTime={date.toISOString()}
                   title={date.toLocaleString('en-US', {
                     month: 'long',
