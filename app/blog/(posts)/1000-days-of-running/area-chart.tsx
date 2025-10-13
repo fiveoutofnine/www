@@ -95,7 +95,7 @@ const OverviewAreaChart: React.FC = () => {
               >
                 <div className="font-medium">
                   <span className="text-gray-12">
-                    {data.length - payload[0].payload.count}
+                    {(data.length - payload[0].payload.count).toLocaleString()}
                     <span className="text-gray-11"> runs ≥ </span>
                     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                     {/* @ts-ignore */}

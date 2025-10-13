@@ -144,11 +144,12 @@ export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ cl
         onDoubleClick={reset}
         onKeyDown={handleKeyDown}
       >
-        {value < 1e-3
+        {(value < 1e-3
           ? value.toExponential(2)
           : value < 1e9
             ? Math.round(100 * value) / 100
-            : value.toExponential(2)}
+            : value.toExponential(2)
+        ).toLocaleString()}
         {unitName}
       </span>
     </Tooltip>
@@ -383,7 +384,7 @@ export const Overview: React.FC = () => {
               <BoringAvatar size={301} name="@cited" variant="marble" square />
             </div>
             <span className="z-20 text-center text-2xl font-semibold leading-tight tracking-tight text-white">
-              1000 Days of
+              1,000 Days of
               <br />
               Running Every Day
             </span>

@@ -733,7 +733,7 @@ const BytebeatFeatureDetail: React.FC = () => {
                 </IconButton>
               ) : null}
             </div>
-            <Code title={`${new TextEncoder().encode(source).length} bytes`}>
+            <Code title={`${new TextEncoder().encode(source).length.toLocaleString()} bytes`}>
               {source?.length ?? 0}c
             </Code>
           </div>
