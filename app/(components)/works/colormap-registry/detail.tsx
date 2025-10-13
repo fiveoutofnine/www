@@ -4,7 +4,6 @@ import { useCallback, useState } from 'react';
 
 import ColormapRegistryFeatureDetailModal from './modal';
 import { TooltipWithBounds, useTooltip, useTooltipInPortal } from '@visx/tooltip';
-import clsx from 'clsx';
 import { LayoutGroup, motion } from 'framer-motion';
 import { ArrowLeft, CaseLower, CaseUpper, Copy } from 'lucide-react';
 
