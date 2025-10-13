@@ -186,14 +186,14 @@ const ChessFeatureDetail: React.FC = () => {
         <div className="flex justify-between text-[0.5rem] font-medium">
           <div>
             <div className="text-blue-11">User</div>
-            <div className="text-gray-12">
+            <div className="tabular-nums text-gray-12">
               {getPieceNotation(nft.userMove.from)} <span className="text-gray-11">-&gt;</span>{' '}
               {getPieceNotation(nft.userMove.to)}
             </div>
           </div>
           <div className="flex flex-col items-end">
             <div className="text-red-11">Contract</div>
-            <div className="text-gray-12">
+            <div className="tabular-nums text-gray-12">
               {getPieceNotation(nft.contractMove.from)} <span className="text-gray-11">-&gt;</span>{' '}
               {getPieceNotation(nft.contractMove.to)}
             </div>

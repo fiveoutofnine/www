@@ -50,7 +50,6 @@ button {
 
 .recharts-cartesian-grid-vertical > line {
   @apply stroke-gray-6;
-  stroke-dasharray: 2 2;
 }
 
 .recharts-text {
@@ -72,4 +71,8 @@ button {
 
 .recharts-cartesian-axis-tick-value {
   @apply fill-gray-11;
+}
+
+.recharts-surface:focus {
+  outline: none;
 }

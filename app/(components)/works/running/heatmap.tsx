@@ -12,9 +12,6 @@ import { formatValueToPrecision } from '@/lib/utils';
 
 import { Select, Tooltip } from '@/components/ui';
 
-const SQUARE_SIZE = 12;
-const GAP = 2;
-
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
@@ -23,6 +20,13 @@ type RunningFeatureDetailHeatmapProps = {
   runningLogs: MileageLog[];
   unit: LengthUnit;
 };
+
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
+const SQUARE_SIZE = 12;
+const GAP = 2;
 
 // -----------------------------------------------------------------------------
 // Component
@@ -150,10 +154,16 @@ const RunningFeatureDetailHeatmap: React.FC<RunningFeatureDetailHeatmapProps> = 
           <span className="text-xs text-gray-11">
             {`${unit.spaceBefore ? ' ' : ''}${unit.name}`}{' '}
             {unit.description ? (
-              <Tooltip content={unit.description} sideOffset={0}>
-                <span>
-                  <Info className="inline size-2.5" />
-                </span>
+              <Tooltip
+                content={unit.description}
+                sideOffset={0}
+                inverted
+                triggerProps={{
+                  className:
+                    'rounded-full size-2.5 transition-colors hover:text-gray-12 inline-flex items-center justify-center',
+                }}
+              >
+                <Info className="inline size-2.5" />
               </Tooltip>
             ) : null}
           </span>
@@ -261,10 +271,10 @@ const RunningFeatureDetailHeatmap: React.FC<RunningFeatureDetailHeatmapProps> = 
               top={tooltipTop}
               left={tooltipLeft}
               offsetLeft={-SQUARE_SIZE}
-              className="pointer-events-none absolute left-0 top-0 z-50 rounded border border-gray-6 bg-gray-3 px-2 py-1 text-sm text-gray-12 shadow-md transition-colors"
+              className="pointer-events-none absolute left-0 top-0 z-50 rounded border border-gray-6 bg-gray-2 px-2 py-1 text-sm text-gray-12 shadow-md transition-colors"
               style={{}}
             >
-              {JSON.parse(tooltipData).value}
+              <span className="tabular-nums">{JSON.parse(tooltipData).value}</span>
               {unit.spaceBefore ? ' ' : ''}
               <span className="text-gray-11">{unit.name} on</span>{' '}
               {new Date(JSON.parse(tooltipData).date).toLocaleDateString('en-US', {
