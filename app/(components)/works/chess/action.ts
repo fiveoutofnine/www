@@ -2,9 +2,9 @@
 
 import { CHESS_NFT_FALLBACK, CHESS_NFTS } from '@/lib/constants/chess-nfts';
 import { db } from '@/lib/db';
-import type { ChessFeature } from '@/lib/types/chess';
+import type { ChessNFT } from '@/lib/types/chess';
 
-export const fetchMoveAction = async (id: number): Promise<ChessFeature> => {
+export const fetchMoveAction = async (id: number): Promise<ChessNFT> => {
   if (id === 0) return CHESS_NFT_FALLBACK;
 
   const nft = CHESS_NFTS[id];

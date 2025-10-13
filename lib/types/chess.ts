@@ -11,7 +11,7 @@
  * @param contractMove Contract's move.
  * @param boardAfterMove Board's state after both moves.
  */
-export type ChessFeature = {
+export type ChessNFT = {
   animationUrl: string;
   tokenId: number;
   name: string;

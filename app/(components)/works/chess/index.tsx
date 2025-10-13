@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 
 import { CHESS_NFT_FALLBACK } from '@/lib/constants/chess-nfts';
-import type { ChessFeature } from '@/lib/types/chess';
+import type { ChessNFT } from '@/lib/types/chess';
 
 import ChessPiece from '@/components/common/chess-piece';
 import CategoryTag from '@/components/templates/category-tag';
@@ -55,7 +55,7 @@ const ChessFeature: React.FC = () => {
 };
 
 const ChessFeatureDetail: React.FC = () => {
-  const [nft, setNft] = useState<ChessFeature>(CHESS_NFT_FALLBACK);
+  const [nft, setNft] = useState<ChessNFT>(CHESS_NFT_FALLBACK);
 
   const fetchNextMove = async () => {
     // Skip from game 0 to game 3 if end.
