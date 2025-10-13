@@ -40,7 +40,7 @@ export const accordionTriggerChevronStyles = [
   'text-gray-11',
   'transition-transform',
   'duration-200',
-  'group-data-[state=open]:rotate-90',
+  'group-data-[state=open]:-rotate-90',
 ];
 
 export const accordionTriggerContentStyles = ['line-clamp-1', 'grow', 'text-left'];

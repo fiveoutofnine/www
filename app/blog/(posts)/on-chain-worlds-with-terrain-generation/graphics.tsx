@@ -140,7 +140,7 @@ export const PixelArtEncodingSimpleGraphic: React.FC = () => {
         12 rectangles
       </text>
       <text
-        className="fill-gray-12 font-mono text-xs"
+        className="fill-gray-12 font-mono text-xs underline"
         dominantBaseline="middle"
         textAnchor="middle"
         x="161.5"
@@ -210,7 +210,7 @@ export const PixelArtEncodingLayeredGraphic: React.FC = () => {
         5 rectangles
       </text>
       <text
-        className="fill-gray-12 font-mono text-xs"
+        className="fill-gray-12 font-mono text-xs underline"
         dominantBaseline="middle"
         textAnchor="middle"
         x="276.5"
