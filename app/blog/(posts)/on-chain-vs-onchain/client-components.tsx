@@ -15,6 +15,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { twMerge } from 'tailwind-merge';
 import { encodeAbiParameters, hexToBigInt, keccak256 } from 'viem';
 
 import { Button, CodeBlock } from '@/components/ui';
@@ -179,6 +180,7 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
         <div className="flex flex-col items-center gap-1">
           <div className="overflow-hidden rounded-lg border border-gray-6">
             <svg
+              className="select-none"
               width="256"
               height="256"
               viewBox="0 0 600 600"
@@ -259,7 +261,7 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
         <Accordion.Item className="not-prose border-b-0" value="0">
           <Accordion.Trigger className="not-prose group z-10 flex h-10 w-full items-center space-x-2 border-x-0 border-y border-gray-6 bg-gray-3 px-4 text-sm font-medium text-gray-11 transition-colors hover:border-gray-7 hover:bg-gray-4 hover:text-gray-12 focus:outline-none focus-visible:rounded-none focus-visible:outline focus-visible:-outline-offset-[2px] focus-visible:outline-blue-9 focus-visible:ring-0 active:bg-gray-5 data-[state='open']:text-gray-12 md:border-x md:data-[state='closed']:rounded-b-xl">
             <span className="flex size-4 items-center justify-center">
-              <ChevronRight className="transition-transform group-data-[state='open']:rotate-90" />
+              <ChevronRight className="transition-transform group-data-[state='open']:-rotate-90" />
             </span>
             <span>Traits</span>
           </Accordion.Trigger>
@@ -289,15 +291,24 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
 export const MintsGraph: React.FC = () => {
   return (
     <ResponsiveContainer className="mt-2" width="100%" aspect={2}>
-      <LineChart data={MINT_DATA} margin={{ top: 0, left: 0, bottom: -14 }} barCategoryGap={4}>
-        <CartesianGrid />
+      <LineChart
+        className="focus:outline-none"
+        data={MINT_DATA}
+        margin={{ top: 0, left: 0, bottom: -14 }}
+        barCategoryGap={4}
+        tabIndex={-1}
+      >
+        <CartesianGrid className="stroke-gray-6" strokeDasharray="3 3" />
         <XAxis
           dataKey="x"
           type="number"
-          axisLine={false}
           padding={{ left: 0, right: 0 }}
           domain={[0, 259_200]}
-          tick={{ fontSize: 12, strokeWidth: 0 }}
+          tick={{
+            className: 'tabular-nums select-none fill-gray-11',
+            fontSize: 12,
+            strokeWidth: 0,
+          }}
           ticks={[
             0, 21_600, 43_200, 64_800, 86_400, 108_000, 129_600, 151_200, 172_800, 194_400, 216_000,
             237_600, 259_200,
@@ -308,11 +319,14 @@ export const MintsGraph: React.FC = () => {
         />
         <YAxis
           orientation="right"
-          axisLine={false}
           padding={{ top: 0, bottom: 0 }}
           width={32}
           domain={[0, 850]}
-          tick={{ fontSize: 12, strokeWidth: 0 }}
+          tick={{
+            className: 'tabular-nums select-none fill-gray-11',
+            fontSize: 12,
+            strokeWidth: 0,
+          }}
           tickCount={6}
           tickLine={false}
           tickSize={4}
@@ -327,24 +341,58 @@ export const MintsGraph: React.FC = () => {
               (label % 60).toString().padStart(2, '0'),
             ];
 
-            return payload && active && payload.length > 0 && payload[0].value ? (
+            const hasData = payload && active && payload.length > 0 && payload[0].value;
+            const stats = [
+              {
+                label: 'On-chain',
+                value: hasData ? payload[0].value : 'N/A',
+                className: 'text-blue-11',
+              },
+              {
+                label: 'Onchain',
+                value: hasData ? payload[1].value : 'N/A',
+                className: 'text-red-11',
+              },
+            ];
+
+            return hasData ? (
               <div
-                className="flex flex-col items-start gap-1 rounded border border-gray-6 bg-gray-3 p-2"
+                className="z-[50] flex min-w-[8rem] max-w-[12rem] flex-col overflow-hidden rounded-md border border-gray-6 bg-gray-2 text-sm font-normal leading-normal text-gray-12 shadow-md animate-in fade-in"
                 tabIndex={-1}
               >
-                <div className="w-full font-medium leading-5 text-gray-12">
-                  Mints <span className="text-gray-11">+</span>
-                  {hour}
-                  <span className="text-gray-11">:</span>
-                  {minute}
-                  <span className="text-gray-11">:</span>
-                  {second}
+                <div className="flex w-full items-center p-2">
+                  <span>
+                    Mint <span className="text-gray-11">+</span>
+                    {hour}
+                    <span className="text-gray-11">:</span>
+                    {minute}
+                    <span className="text-gray-11">:</span>
+                    {second}
+                  </span>
                 </div>
-                <div className="grid w-full grid-cols-2 gap-y-0.5 text-sm leading-[1.125rem]">
-                  <div className="text-blue-11">On-chain</div>
-                  <div className="text-right font-mono text-gray-12">{payload[0].value}</div>
-                  <div className="text-red-11">Onchain</div>
-                  <div className="text-right font-mono text-gray-12">{payload[1].value}</div>
+                <hr
+                  className="border-0.5 not-prose w-full border-gray-6"
+                  role="separator"
+                  aria-hidden
+                />
+                <div className="flex w-full p-2 text-xs leading-4">
+                  <div className="flex w-full flex-col gap-1">
+                    {stats.map(({ label, className }, i) => (
+                      <span
+                        key={`stat-label-${i}`}
+                        className={twMerge(clsx('h-4 text-right text-gray-11', className))}
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex w-full flex-col gap-1">
+                    {stats.map(({ value }, i) => (
+                      <span key={`stat-value-${i}`} className="ml-2 h-4 text-right font-mono">
+                        {Number(value).toLocaleString()}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ) : null;
@@ -355,13 +403,17 @@ export const MintsGraph: React.FC = () => {
           dataKey="y1"
           dot={false}
           activeDot={{ stroke: radixColors.blueDark.blue11, strokeWidth: 1 }}
-          stroke={radixColors.blueDark.blue8}
+          stroke={radixColors.blueDark.blue9}
+          type="monotone"
+          strokeWidth={2}
         />
         <Line
           dataKey="y2"
           dot={false}
           activeDot={{ stroke: radixColors.redDark.red11, strokeWidth: 1 }}
-          stroke={radixColors.redDark.red8}
+          stroke={radixColors.redDark.red9}
+          type="monotone"
+          strokeWidth={2}
         />
       </LineChart>
     </ResponsiveContainer>
