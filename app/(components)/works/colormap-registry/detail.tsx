@@ -214,7 +214,7 @@ const ColormapRegistryFeatureDetail: React.FC = () => {
                           key={Math.random()} // Needed for bounds to update correctly
                           left={tooltipLeft}
                           top={65} // `(border_offset) + (tooltip_height + colormap_height) / 2 = -2 + (12 + 110) / 2`.
-                          className="pointer-events-none absolute left-0 top-0 z-10 flex h-6 flex-col items-center justify-center gap-0.5 rounded px-1.5 font-mono text-xs font-medium transition-colors"
+                          className="pointer-events-none absolute left-0 top-0 z-10 flex h-6 flex-col items-center justify-center gap-0.5 rounded-md px-1.5 font-mono text-xs font-medium transition-colors"
                           style={{
                             background: tooltipColorHex,
                             color: tooltipColorIsDark ? '#fff' : '#000',

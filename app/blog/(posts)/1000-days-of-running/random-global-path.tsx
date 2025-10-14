@@ -7,6 +7,7 @@ import { Shuffle } from 'lucide-react';
 
 import { CAPITAL_CITIES } from '@/lib/constants/cities';
 
+import ClickableTooltip from '@/components/templates/clickable-tooltip';
 import { IconButton, Tooltip } from '@/components/ui';
 
 // ---------------------------------------------------------------------------
@@ -147,20 +148,23 @@ const OverviewRandomGlobalPath: React.FC<OverviewRandomGlobalPathProps> = ({ tot
               <Fragment key={i}>
                 {i === 0 ? (
                   <span className="inline-flex size-3 align-middle">
-                    <Tooltip
+                    <ClickableTooltip
                       content={d.from.country.name}
                       triggerProps={{ className: 'rounded-sm' }}
                     >
                       <FromFlag className="size-3 rounded-sm border border-gray-7 transition-colors hover:border-gray-8" />
-                    </Tooltip>
+                    </ClickableTooltip>
                   </span>
                 ) : null}
                 {i === 0 ? <span> {d.from.name}</span> : null}
                 <span className="text-nowrap text-gray-11"> -&gt; </span>
                 <span className="inline-flex size-3 align-middle">
-                  <Tooltip content={d.to.country.name} triggerProps={{ className: 'rounded-sm' }}>
+                  <ClickableTooltip
+                    content={d.to.country.name}
+                    triggerProps={{ className: 'rounded-sm' }}
+                  >
                     <ToFlag className="size-3 rounded-sm border border-gray-7 transition-colors hover:border-gray-8" />
-                  </Tooltip>
+                  </ClickableTooltip>
                 </span>
                 <span> {d.to.name}</span>
               </Fragment>

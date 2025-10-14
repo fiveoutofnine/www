@@ -8,7 +8,8 @@ import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
 import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { formatValueToPrecision } from '@/lib/utils';
 
-import { Badge, CodeBlock, Drawer, Tooltip } from '@/components/ui';
+import Vocab from '@/components/templates/vocab';
+import { Badge, CodeBlock, Drawer } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Props
@@ -43,34 +44,7 @@ export const OnChainMusicFeatureDetailModal: React.FC<OnChainMusicFeatureDetailM
       >
         <Drawer.Title>{data.name}</Drawer.Title>
         <Drawer.Description>
-          The deployed contract to{' '}
-          <Tooltip
-            content={
-              <span>
-                The audio can be generated from the contract and played back as a WAV file with 0
-                dependencies (e.g. no JavaScript or browser necessary). See{' '}
-                <a
-                  className="font-medium text-blue-9 hover:underline"
-                  href="https://github.com/fiveoutofnine/555/blob/c9d9af91c2cc4494e35addec2dfe11c5d3ae1e3b/script/GenerateAudioOutput.s.sol"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  this script
-                </a>
-                .
-              </span>
-            }
-            side="bottom"
-            inverted
-            inPortal
-            triggerProps={{
-              className:
-                'text-gray-11 rounded-sm underline decoration-dotted transition-colors hover:text-gray-12 data-[state="instant-open"]:text-gray-12 data-[state="delayed-open"]:text-gray-12',
-            }}
-          >
-            read the audio file from
-          </Tooltip>
-          .
+          The deployed contract to <Vocab word="on-chain music script">this script</Vocab>.
         </Drawer.Description>
         <OnChainMusicFeatureDetailModalCodeBlock data={data} isSmallScreen={isSmallScreen} />
         <Drawer.Footer className="flex flex-wrap items-center gap-1 sm:justify-start">

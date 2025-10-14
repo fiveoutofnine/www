@@ -31,14 +31,18 @@ const BytebeatFeatureCombobox: React.FC<BytebeatFeatureComboboxProps> = ({ value
   if (!isSmallScreen) {
     return (
       <Popover.Root open={open && !isSmallScreen} onOpenChange={setOpen}>
-        <Tooltip content="Browse music" side="bottom" align="end" triggerProps={{ asChild: true }}>
+        <Tooltip content="Browse music" side="bottom" triggerProps={{ asChild: true }}>
           <Popover.Trigger asChild>
             <IconButton size="sm">
               <ListMusic />
             </IconButton>
           </Popover.Trigger>
         </Tooltip>
-        <Popover.Content className="w-[16rem] rounded-lg p-0">
+        <Popover.Content
+          className="w-[16rem] rounded-lg p-0"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          onCloseAutoFocus={(e) => e.preventDefault()}
+        >
           <BytebeatFeatureComboboxInternal value={value} onSelect={onSelect} />
         </Popover.Content>
       </Popover.Root>
@@ -47,14 +51,18 @@ const BytebeatFeatureCombobox: React.FC<BytebeatFeatureComboboxProps> = ({ value
 
   return (
     <Drawer.Root open={open && isSmallScreen} onOpenChange={setOpen}>
-      <Tooltip content="Browse music" side="bottom" align="end" triggerProps={{ asChild: true }}>
+      <Tooltip content="Browse music" side="bottom" triggerProps={{ asChild: true }}>
         <Drawer.Trigger asChild>
           <IconButton size="sm" aria-label="Browse music">
             <ListMusic />
           </IconButton>
         </Drawer.Trigger>
       </Tooltip>
-      <Drawer.Content className="[&_[drawer-content]]:p-0">
+      <Drawer.Content
+        className="[&_[drawer-content]]:p-0"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={(e) => e.preventDefault()}
+      >
         <BytebeatFeatureComboboxInternal value={value} onSelect={onSelect} />
       </Drawer.Content>
     </Drawer.Root>

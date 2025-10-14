@@ -19,6 +19,7 @@ import { create } from 'zustand';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
 
+import ClickableTooltip from '@/components/templates/clickable-tooltip';
 import { ButtonGroup, IconButton, toast, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
@@ -362,13 +363,13 @@ export const Overview: React.FC = () => {
                 const Flag = Flags[country.code as keyof typeof Flags];
 
                 return (
-                  <Tooltip
+                  <ClickableTooltip
                     key={country.code}
                     content={country.name}
                     triggerProps={{ className: 'rounded-md' }}
                   >
                     <Flag className="rounded-md border border-gray-7 transition-colors hover:border-gray-8" />
-                  </Tooltip>
+                  </ClickableTooltip>
                 );
               })}
             </div>
@@ -384,7 +385,7 @@ export const Overview: React.FC = () => {
               <BoringAvatar size={301} name="@cited" variant="marble" square />
             </div>
             <span className="z-20 text-center text-2xl font-semibold leading-tight tracking-tight text-white">
-              1,000 Days of
+              1000 Days of
               <br />
               Running Every Day
             </span>
