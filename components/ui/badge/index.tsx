@@ -18,7 +18,7 @@ const Badge: React.FC<BadgeProps> = ({
 }) => (
   <span
     className={twMerge(clsx(badgeVariants({ size, variant, intent, type }), className))}
-    data-length-one={children?.toString().length === 1 ?? false}
+    data-length-one={children?.toString().length === 1}
     data-size={size}
     data-variant={variant}
     {...rest}

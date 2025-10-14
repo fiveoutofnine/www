@@ -175,7 +175,7 @@ export const PerlinNoiseTestScriptAccordion: React.FC<{ children?: React.ReactNo
         <Accordion.Item className="not-prose border-b-0" value="0">
           <Accordion.Trigger className="not-prose group z-10 flex h-10 w-full items-center space-x-2 border-x-0 border-y border-gray-6 bg-gray-3 px-4 text-sm font-medium text-gray-11 transition-colors hover:border-gray-7 hover:bg-gray-4 hover:text-gray-12 focus:outline-none focus-visible:rounded-none focus-visible:outline focus-visible:-outline-offset-[2px] focus-visible:outline-blue-9 focus-visible:ring-0 active:bg-gray-5 data-[state='open']:text-gray-12 md:border-x md:data-[state='closed']:rounded-b-xl">
             <span className="flex size-4 items-center justify-center">
-              <ChevronRight className="transition-transform group-data-[state='open']:rotate-90" />
+              <ChevronRight className="transition-transform group-data-[state='open']:-rotate-90" />
             </span>
             <span>Sample output</span>
           </Accordion.Trigger>

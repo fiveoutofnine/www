@@ -27,9 +27,18 @@ import { Badge, Button, Dropdown, IconButton, toast, Tooltip } from '@/component
  */
 /* eslint-disable prettier/prettier */
 const FIVEOUTOFNINE_MESSAGES = [
-  { content: 'what\'s up I\'m 5/9', txHash: '0x6f4760c765e4c8be8f770e8a7e76310cd4ddda401a4eda6f4dac93ec768f8d76' },
-  { content: 'send me messages', txHash: '0x2ea7a28b99903556811918fdf84104b72d0d572910220cfef78bb56de6470e41' },
-  { content: 'or ETH', txHash: '0x4f1f8421221336e5a62bf2687f9db85c49bee06a3a25b1a6e3e79c72bb02caec' },
+  {
+    content: 'what\'s up I\'m 5/9',
+    txHash: '0x6f4760c765e4c8be8f770e8a7e76310cd4ddda401a4eda6f4dac93ec768f8d76',
+  },
+  {
+    content: 'send me messages',
+    txHash: '0x2ea7a28b99903556811918fdf84104b72d0d572910220cfef78bb56de6470e41',
+  },
+  {
+    content: 'or ETH',
+    txHash: '0x4f1f8421221336e5a62bf2687f9db85c49bee06a3a25b1a6e3e79c72bb02caec',
+  },
 ];
 
 // -----------------------------------------------------------------------------
@@ -50,13 +59,10 @@ const TxDotCoolFeatureDetail: React.FC = () => {
   const { isLoading } = useWaitForTransactionReceipt({ hash: data });
 
   // Scroll messages into view on load and set mounted.
-  useEffect(
-    () => {
-      setMounted(true);
-      messagesEndRef.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    },
-    [],
-  );
+  useEffect(() => {
+    setMounted(true);
+    messagesEndRef.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, []);
 
   // Default to `etherscan.io` for block explorer.
   const blockExplorer =
@@ -129,7 +135,12 @@ const TxDotCoolFeatureDetail: React.FC = () => {
             {address && mounted ? (
               // Only display if address is connected.
               <Dropdown.Root>
-                <Tooltip content="Switch chains" align='start' triggerProps={{ asChild: true }} inverted>
+                <Tooltip
+                  content="Switch chains"
+                  align="start"
+                  triggerProps={{ asChild: true }}
+                  inverted
+                >
                   <Dropdown.Trigger asChild>
                     <IconButton
                       size="sm"
@@ -142,7 +153,7 @@ const TxDotCoolFeatureDetail: React.FC = () => {
                     </IconButton>
                   </Dropdown.Trigger>
                 </Tooltip>
-                <Dropdown.Content className="w-52">
+                <Dropdown.Content className="w-52" onCloseAutoFocus={(e) => e.preventDefault()}>
                   <Dropdown.Group>
                     <Dropdown.Label>Send message on</Dropdown.Label>
                     {chains

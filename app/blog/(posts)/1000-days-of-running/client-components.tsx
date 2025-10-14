@@ -19,6 +19,7 @@ import { create } from 'zustand';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
 
+import ClickableTooltip from '@/components/templates/clickable-tooltip';
 import { ButtonGroup, IconButton, toast, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
@@ -144,11 +145,12 @@ export const InlineDistance: React.FC<{ className?: string; m: number }> = ({ cl
         onDoubleClick={reset}
         onKeyDown={handleKeyDown}
       >
-        {value < 1e-3
+        {(value < 1e-3
           ? value.toExponential(2)
           : value < 1e9
             ? Math.round(100 * value) / 100
-            : value.toExponential(2)}
+            : value.toExponential(2)
+        ).toLocaleString()}
         {unitName}
       </span>
     </Tooltip>
@@ -361,13 +363,13 @@ export const Overview: React.FC = () => {
                 const Flag = Flags[country.code as keyof typeof Flags];
 
                 return (
-                  <Tooltip
+                  <ClickableTooltip
                     key={country.code}
                     content={country.name}
                     triggerProps={{ className: 'rounded-md' }}
                   >
                     <Flag className="rounded-md border border-gray-7 transition-colors hover:border-gray-8" />
-                  </Tooltip>
+                  </ClickableTooltip>
                 );
               })}
             </div>

@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority';
 export const hoverCardArrowVariants = cva(['animate-in', 'fade-in-50', 'shadow-md'], {
   variants: {
     inverted: {
-      true: ['fill-gray-12'],
+      true: ['fill-white'],
       false: ['fill-gray-3', 'stroke-2', 'stroke-gray-6'],
     },
   },
@@ -28,8 +28,8 @@ export const hoverCardVariants = cva(
   {
     variants: {
       inverted: {
-        true: ['bg-gray-12', 'text-gray-1'],
-        false: ['bg-gray-3', 'text-gray-12', 'border', 'border-gray-6'],
+        true: ['bg-white', 'text-black'],
+        false: ['bg-gray-2', 'text-gray-12', 'border', 'border-gray-6'],
       },
     },
   },

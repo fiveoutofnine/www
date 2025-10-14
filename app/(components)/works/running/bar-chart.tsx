@@ -38,8 +38,8 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
   unit,
   lastUpdated,
 }) => {
-  // 20.43 is a precomputed value to fit the width when the unit is set to km.
-  const [yAxisWidth, setYAxisWidth] = useState<number>(20.43);
+  // 20.27 is a precomputed value to fit the width when the unit is set to km.
+  const [yAxisWidth, setYAxisWidth] = useState<number>(20.27);
 
   const currentDate = lastUpdated ? new Date(lastUpdated) : new Date();
   const currentDay = currentDate.getUTCDate();
@@ -89,7 +89,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
   // calculated automatically.
   useEffect(() => {
     const yAxis = document.getElementsByClassName('recharts-cartesian-axis recharts-yAxis')[0];
-    setYAxisWidth(yAxis ? (yAxis as SVGGraphicsElement)?.getBoundingClientRect().width + 4 : 20.43);
+    setYAxisWidth(yAxis ? (yAxis as SVGGraphicsElement)?.getBoundingClientRect().width : 20.27);
   }, [data]);
 
   return (
@@ -120,7 +120,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
           ) : null}
         </span>
       </span>
-      <div className="mt-0.5 text-xs font-[300] text-gray-11">
+      <div className="mt-0.5 text-xs font-normal text-gray-11">
         {data.length > 0
           ? `${data[0].date.toLocaleDateString('en-US', {
               month: 'short',
@@ -132,23 +132,35 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
           : 'No data'}
       </div>
       <ResponsiveContainer className="mt-2" width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 0, left: 0, bottom: -14 }} barCategoryGap={4}>
-          <CartesianGrid />
+        <BarChart
+          data={data}
+          className="focus:outline-none"
+          margin={{ top: 0, left: 0, bottom: -14 }}
+          barCategoryGap={4}
+          tabIndex={-1}
+        >
+          <CartesianGrid className="stroke-gray-6" strokeDasharray="3 3" />
           <XAxis
             dataKey="date"
-            axisLine={false}
             padding={{ left: 0, right: 0 }}
-            tick={{ fontSize: 12, strokeWidth: 0 }}
+            tick={{
+              className: 'tabular-nums select-none fill-gray-11',
+              fontSize: 12,
+              strokeWidth: 0,
+            }}
             tickFormatter={(date) => 'JFMAMJJASOND'.charAt(date.getUTCMonth())}
             tickLine={false}
             tickSize={4}
           />
           <YAxis
             orientation="right"
-            axisLine={false}
             padding={{ top: 0, bottom: 0 }}
             width={yAxisWidth}
-            tick={{ fontSize: 12, strokeWidth: 0 }}
+            tick={{
+              className: 'tabular-nums select-none fill-gray-11',
+              fontSize: 12,
+              strokeWidth: 0,
+            }}
             tickCount={3}
             tickFormatter={(value) => formatValueToPrecision(value, 1, true)}
             tickLine={false}
@@ -163,7 +175,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
 
               return payload && active && payload.length > 0 && payload[0].value ? (
                 <div
-                  className="items-center rounded border border-gray-6 bg-gray-3 p-2"
+                  className="items-center rounded-md border border-gray-6 bg-gray-2 p-2 leading-normal shadow-md animate-in fade-in"
                   tabIndex={-1}
                 >
                   <div className="font-medium">
@@ -172,9 +184,9 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
                       {/* @ts-ignore */}
                       {formatValueToPrecision(payload[0].value, 2, false)}
                     </span>
-                    <span className="text-xs text-gray-11">{`${unitName}/day`}</span>
+                    <span className="text-xs leading-4 text-gray-11">{`${unitName}/day`}</span>
                   </div>
-                  <div className="text-xs text-gray-11">{`${monthName} ${year}`}</div>
+                  <div className="text-xs leading-4 text-gray-11">{`${monthName} ${year}`}</div>
                 </div>
               ) : null;
             }}

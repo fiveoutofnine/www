@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 
 import { CHESS_NFT_FALLBACK } from '@/lib/constants/chess-nfts';
-import type { ChessFeature } from '@/lib/types/chess';
+import type { ChessNFT } from '@/lib/types/chess';
 
 import ChessPiece from '@/components/common/chess-piece';
 import CategoryTag from '@/components/templates/category-tag';
@@ -55,7 +55,7 @@ const ChessFeature: React.FC = () => {
 };
 
 const ChessFeatureDetail: React.FC = () => {
-  const [nft, setNft] = useState<ChessFeature>(CHESS_NFT_FALLBACK);
+  const [nft, setNft] = useState<ChessNFT>(CHESS_NFT_FALLBACK);
 
   const fetchNextMove = async () => {
     // Skip from game 0 to game 3 if end.
@@ -186,14 +186,14 @@ const ChessFeatureDetail: React.FC = () => {
         <div className="flex justify-between text-[0.5rem] font-medium">
           <div>
             <div className="text-blue-11">User</div>
-            <div className="text-gray-12">
+            <div className="tabular-nums text-gray-12">
               {getPieceNotation(nft.userMove.from)} <span className="text-gray-11">-&gt;</span>{' '}
               {getPieceNotation(nft.userMove.to)}
             </div>
           </div>
           <div className="flex flex-col items-end">
             <div className="text-red-11">Contract</div>
-            <div className="text-gray-12">
+            <div className="tabular-nums text-gray-12">
               {getPieceNotation(nft.contractMove.from)} <span className="text-gray-11">-&gt;</span>{' '}
               {getPieceNotation(nft.contractMove.to)}
             </div>

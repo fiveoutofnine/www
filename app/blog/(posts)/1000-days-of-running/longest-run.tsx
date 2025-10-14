@@ -30,11 +30,12 @@ const OverviewLongestRun: React.FC = () => {
     <div className="relative flex h-full w-full flex-col items-center justify-center gap-0 text-xl font-medium tracking-tight text-white">
       <span className="text-xs leading-4 text-gray-11">Longest run</span>
       <span ref={spanRef} className="leading-6">
-        {value < 1e-3
+        {(value < 1e-3
           ? value.toExponential(2)
           : value < 1e9
             ? Math.round(100 * value) / 100
-            : value.toExponential(2)}
+            : value.toExponential(2)
+        ).toLocaleString()}
       </span>
       <span className="text-xs leading-4 text-gray-11">
         <InlinePace s={rawTime / rawValue} button={false} />

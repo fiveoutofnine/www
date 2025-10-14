@@ -43,4 +43,5 @@ export const switchThumbStyles = [
   'data-[state=checked]:bg-white',
   'data-[state=unchecked]:bg-gray-9',
   'group-disabled:bg-gray-7',
+  'group-disabled:data-[state=checked]:bg-blue-7',
 ];

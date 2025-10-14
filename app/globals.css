@@ -6,7 +6,7 @@ html,
 body,
 main {
   @apply scroll-pt-28 bg-gray-1 text-gray-12 md:scroll-pt-20;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 * {
@@ -50,12 +50,11 @@ button {
 
 .recharts-cartesian-grid-vertical > line {
   @apply stroke-gray-6;
-  stroke-dasharray: 2 2;
 }
 
 .recharts-text {
   user-select: none;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .recharts-tooltip-cursor {
@@ -72,4 +71,8 @@ button {
 
 .recharts-cartesian-axis-tick-value {
   @apply fill-gray-11;
+}
+
+.recharts-surface:focus {
+  outline: none;
 }

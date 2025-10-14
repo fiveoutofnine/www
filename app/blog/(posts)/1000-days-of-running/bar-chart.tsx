@@ -90,8 +90,10 @@ const OverviewBarChart: React.FC = () => {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
-            margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
+            className="focus:outline-none"
+            margin={{ top: -1, left: 0, right: 0, bottom: -1 }}
             barCategoryGap={4}
+            tabIndex={-1}
           >
             <XAxis dataKey="date" axisLine={false} tickLine={false} tickSize={4} hide />
             <YAxis
@@ -111,7 +113,7 @@ const OverviewBarChart: React.FC = () => {
 
                 return payload && active && payload.length > 0 && payload[0].value ? (
                   <div
-                    className="items-center rounded border border-gray-6 bg-gray-3 p-2"
+                    className="items-center rounded-md border border-gray-6 bg-gray-2 p-2 leading-normal shadow-md animate-in fade-in"
                     tabIndex={-1}
                   >
                     <div className="font-medium">
@@ -122,7 +124,7 @@ const OverviewBarChart: React.FC = () => {
                       </span>
                       <span className="text-xs text-gray-11">{`${unitName}/day`}</span>
                     </div>
-                    <div className="text-xs text-gray-11">{`${monthName} ${year}`}</div>
+                    <div className="text-xs leading-4 text-gray-11">{`${monthName} ${year}`}</div>
                   </div>
                 ) : null;
               }}

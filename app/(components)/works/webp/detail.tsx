@@ -310,27 +310,31 @@ const WebPFeatureDetail: React.FC = () => {
                     <br />
                     or right
                   </div>
-                  <div className="text-lg font-light tracking-tight">
-                    {process.env.NEXT_PUBLIC_NUMBER_OF_IMAGES} images
+                  <div className="text-lg font-normal tracking-tight">
+                    {process.env.NEXT_PUBLIC_NUMBER_OF_IMAGES.toLocaleString()} images
                   </div>
                 </div>
                 <div className="absolute bottom-[1.375rem] right-[1.375rem] grid grid-cols-2 gap-2">
-                  {[
-                    {
-                      icon: <RotateCcw />,
-                      label: 'Rotate background left',
-                      onClick: () => setPolaroidAngle((prev) => (prev - 15) % 360),
-                    },
-                    {
-                      icon: <RotateCw />,
-                      label: 'Rotate background right',
-                      onClick: () => setPolaroidAngle((prev) => (prev + 15) % 360),
-                    },
-                  ].map(({ icon, label, onClick }, index) => (
+                  {(
+                    [
+                      {
+                        icon: <RotateCcw />,
+                        label: 'Rotate background left',
+                        align: undefined,
+                        onClick: () => setPolaroidAngle((prev) => (prev - 15) % 360),
+                      },
+                      {
+                        icon: <RotateCw />,
+                        label: 'Rotate background right',
+                        align: 'end',
+                        onClick: () => setPolaroidAngle((prev) => (prev + 15) % 360),
+                      },
+                    ] as const
+                  ).map(({ icon, label, align, onClick }, index) => (
                     <Tooltip
                       key={index}
                       content={label}
-                      align="end"
+                      align={align}
                       triggerProps={{ asChild: true }}
                     >
                       <button

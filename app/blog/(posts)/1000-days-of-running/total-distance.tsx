@@ -58,11 +58,12 @@ const OverviewTotalDistance: React.FC<OverviewTotalDistanceProps> = ({
       }}
     >
       <span ref={spanRef1} className="leading-6">
-        {value < 1e-3
+        {(value < 1e-3
           ? value.toExponential(2)
           : value < 1e9
             ? Math.round(100 * value) / 100
-            : value.toExponential(2)}
+            : value.toExponential(2)
+        ).toLocaleString()}
       </span>
       <span ref={spanRef2} className="text-sm leading-4">
         {unitName} total

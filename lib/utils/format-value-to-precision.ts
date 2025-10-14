@@ -11,7 +11,7 @@ const formatValueToPrecision = (
   if (value >= 1e4) return `${(value / 1e3).toPrecision(decimals + 1)}k`;
   if (value < 1 / 10 ** decimals)
     return toExponential ? value.toExponential(decimals) : value.toPrecision(decimals);
-  return (Math.round(value * 10 ** decimals) / 10 ** decimals).toString();
+  return (Math.round(value * 10 ** decimals) / 10 ** decimals).toLocaleString();
 };
 
 export default formatValueToPrecision;

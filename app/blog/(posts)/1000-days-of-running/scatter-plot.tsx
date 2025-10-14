@@ -90,7 +90,12 @@ const OverviewScatterPlot: React.FC = () => {
         width="100%"
         height="100%"
       >
-        <ComposedChart data={data} margin={{ top: -1, left: -1, right: -1, bottom: -1 }}>
+        <ComposedChart
+          className="focus:outline-none"
+          data={data}
+          margin={{ top: -1, left: -1, right: -1, bottom: -1 }}
+          tabIndex={-1}
+        >
           <Scatter
             dataKey="value"
             /* @ts-expect-error The type for `Scatter` should be correct. */
@@ -99,7 +104,7 @@ const OverviewScatterPlot: React.FC = () => {
           <Line
             className="pointer-events-none"
             dataKey="ma"
-            stroke={radixColors.blueDark.blue8}
+            stroke={radixColors.blueDark.blue9}
             strokeWidth={2}
             dot={false}
             activeDot={false}
@@ -108,8 +113,13 @@ const OverviewScatterPlot: React.FC = () => {
         </ComposedChart>
       </ResponsiveContainer>
       <ResponsiveContainer className="absolute left-0 top-0 z-10" width="100%" height="100%">
-        <ScatterChart data={data} margin={{ top: -1, left: -1, right: -1, bottom: -1 }}>
-          <CartesianGrid strokeDasharray="3 3" />
+        <ScatterChart
+          className="focus:outline-none"
+          data={data}
+          margin={{ top: -1, left: -1, right: -1, bottom: -1 }}
+          tabIndex={-1}
+        >
+          <CartesianGrid className="stroke-gray-6" strokeDasharray="3 3" />
           <RechartTooltip
             content={({ active, payload }) => {
               if (
@@ -124,7 +134,7 @@ const OverviewScatterPlot: React.FC = () => {
 
               return (
                 <div
-                  className="z-30 items-center rounded border border-gray-6 bg-gray-3 p-2"
+                  className="z-30 items-center rounded-md border border-gray-6 bg-gray-2 p-2 leading-normal shadow-md animate-in fade-in"
                   tabIndex={-1}
                 >
                   <div className="font-medium">
@@ -135,7 +145,7 @@ const OverviewScatterPlot: React.FC = () => {
                     </span>
                     <span className="text-xs text-gray-11">{unitName}</span>
                   </div>
-                  <div className="text-xs text-gray-11">
+                  <div className="text-xs leading-4 text-gray-11">
                     {payload[0].payload.time.toLocaleDateString('en-US', {
                       day: 'numeric',
                       month: 'short',

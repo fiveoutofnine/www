@@ -230,7 +230,7 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
           {/* WPM */}
           <div>
             <div className="text-[0.625rem] text-gray-11">WPM</div>
-            <div className="text-xs text-gray-12">{wpm ?? '–'}</div>
+            <div className="text-xs text-gray-12">{wpm?.toLocaleString() ?? '–'}</div>
             <div className="flex items-center space-x-1">
               <FiveoutofnineAvatar size={12} />
               <div
@@ -243,7 +243,7 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
                     : 'text-gray-11',
                 )}
               >
-                {quote.wpm}
+                {quote.wpm.toLocaleString()}
               </div>
             </div>
           </div>
@@ -316,7 +316,9 @@ const TypingFeatureDetailTimer: React.FC<{
   return (
     <div>
       <div className="text-[0.625rem] text-gray-11">Time</div>
-      <div className="text-xs text-gray-12">{timePassed ? `${timePassed}s` : '–'}</div>
+      <div className="text-xs text-gray-12">
+        {timePassed ? `${timePassed.toLocaleString()}s` : '–'}
+      </div>
       <div className="flex items-center space-x-1">
         <FiveoutofnineAvatar size={12} />
         <div
@@ -329,7 +331,7 @@ const TypingFeatureDetailTimer: React.FC<{
               : 'text-gray-11',
           )}
         >
-          {fiveoutofnineTime}s
+          {fiveoutofnineTime.toLocaleString()}s
         </div>
       </div>
     </div>

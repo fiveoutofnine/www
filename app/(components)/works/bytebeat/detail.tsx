@@ -301,8 +301,6 @@ const BytebeatFeatureDetail: React.FC = () => {
   });
   const [, setDrawBuffer] = useState([]);
   const [scrollTop, setScrollTop] = useState<number>(0);
-  const [scrollIsAtLeft, setScrollIsAtLeft] = useState<boolean>(true);
-  const [scrollIsAtRight, setScrollIsAtRight] = useState<boolean>(false);
   const codeBlockRef = useRef<HTMLDivElement | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const nodeRef = useRef<AudioWorkletNode | null>(null);
@@ -590,16 +588,6 @@ const BytebeatFeatureDetail: React.FC = () => {
   // Miscellaneous
   // ---------------------------------------------------------------------------
 
-  const handleStatusScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const target = event.target as HTMLDivElement;
-    const scrollLeft = target.scrollLeft;
-    const scrollWidth = target.scrollWidth;
-    const clientWidth = target.clientWidth;
-
-    setScrollIsAtLeft(scrollLeft === 0);
-    setScrollIsAtRight(scrollWidth - scrollLeft === clientWidth);
-  };
-
   const copyErrorToClipboard = () => {
     if (!errorCopied) {
       setErrorCopied(true);
@@ -703,7 +691,12 @@ const BytebeatFeatureDetail: React.FC = () => {
                   'hide-scrollbar flex h-full w-full grow items-center overflow-y-hidden overflow-x-scroll text-nowrap pr-2',
                   isTouchScreen && error.length > 0 ? 'pl-1' : 'pl-2',
                 )}
-                onScroll={handleStatusScroll}
+                style={{
+                  WebkitMaskImage:
+                    'linear-gradient(to right, transparent, black 0.5rem, black calc(100% - 0.5rem), transparent)',
+                  maskImage:
+                    'linear-gradient(to right, transparent, black 0.5rem, black calc(100% - 0.5rem), transparent)',
+                }}
               >
                 {!initialized || !nodeRef.current ? (
                   <span className="animate-pulse font-mono text-xs text-green-11">
@@ -719,23 +712,6 @@ const BytebeatFeatureDetail: React.FC = () => {
                   </span>
                 )}
               </div>
-              {/* Left gradient to hide overflow */}
-              <div
-                className={clsx(
-                  'pointer-events-none absolute bottom-0 z-[10] h-8 w-4 bg-gradient-to-r from-gray-2 transition-opacity',
-                  scrollIsAtLeft ? 'opacity-0' : 'opacity-100',
-                  isTouchScreen ? 'left-7' : 'left-0',
-                )}
-                aria-hidden={true}
-              />
-              {/* Right gradient to hide overflow */}
-              <div
-                className={clsx(
-                  'pointer-events-none absolute bottom-0 right-0 z-[10] h-8 w-4 bg-gradient-to-l from-gray-2 transition-opacity',
-                  scrollIsAtRight ? 'opacity-0' : 'opacity-100',
-                )}
-                aria-hidden={true}
-              />
               {error.length > 0 ? (
                 <IconButton
                   className={clsx(
@@ -757,7 +733,7 @@ const BytebeatFeatureDetail: React.FC = () => {
                 </IconButton>
               ) : null}
             </div>
-            <Code title={`${new TextEncoder().encode(source).length} bytes`}>
+            <Code title={`${new TextEncoder().encode(source).length.toLocaleString()} bytes`}>
               {source?.length ?? 0}c
             </Code>
           </div>
