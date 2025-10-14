@@ -7,7 +7,7 @@ import { Slot } from '@radix-ui/react-slot';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const Button = forwardRef(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
@@ -21,8 +21,8 @@ const Button = forwardRef(
       newTab = false,
       children,
       ...rest
-    }: ButtonProps,
-    ref: React.ForwardedRef<HTMLButtonElement>,
+    },
+    ref,
   ) => {
     const props = {
       className: twMerge(

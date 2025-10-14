@@ -38,7 +38,7 @@ const BytebeatFeatureCombobox: React.FC<BytebeatFeatureComboboxProps> = ({ value
             </IconButton>
           </Popover.Trigger>
         </Tooltip>
-        <Popover.Content className="w-[16rem] rounded-md p-0">
+        <Popover.Content className="w-[16rem] rounded-lg p-0">
           <BytebeatFeatureComboboxInternal value={value} onSelect={onSelect} />
         </Popover.Content>
       </Popover.Root>

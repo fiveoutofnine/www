@@ -11,7 +11,7 @@ export type BadgeVariantProps = VariantProps<typeof badgeVariants>;
 // Component props
 // -----------------------------------------------------------------------------
 
-export type BadgeProps = JSX.IntrinsicElements['span'] &
+export type BadgeProps = React.HTMLAttributes<HTMLSpanElement> &
   Omit<BadgeVariantProps, 'variant' | 'intent'> &
   (
     | {

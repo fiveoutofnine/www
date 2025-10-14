@@ -92,7 +92,11 @@ const FormLabel = forwardRef<HTMLLabelElement, FormLabelProps>(({ className, ...
     <label
       ref={ref}
       className={twMerge(
-        clsx('mb-1 text-xs leading-4 text-gray-12', error ? 'text-red-11' : '', className),
+        clsx(
+          'mb-1 text-xs font-medium leading-4 text-gray-12',
+          error ? 'text-red-11' : '',
+          className,
+        ),
       )}
       htmlFor={formItemId}
       {...rest}
@@ -113,7 +117,7 @@ const FormMessage = forwardRef<HTMLParagraphElement, FormMessageProps>(
       <p
         ref={ref}
         id={formMessageId}
-        className={twMerge(clsx('mt-1 text-xs text-red-11', className))}
+        className={twMerge(clsx('mt-1 text-xs', error ? 'text-red-11' : 'text-gray-11', className))}
         {...rest}
       >
         {body}
