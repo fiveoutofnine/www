@@ -183,12 +183,12 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
   })();
 
   return (
-    <div className="grid w-full grid-cols-1">
+    <div className="-mx-4 grid min-w-full grid-cols-1 md:mx-0">
       <div
         className={twMerge(
           clsx(
-            'grid w-full items-center justify-evenly gap-4 border border-gray-6 bg-gray-2 py-8',
-            code.length > 0 ? 'rounded-t-xl border-b-0' : 'rounded-xl',
+            'grid w-full items-center justify-evenly gap-4 border-y border-gray-6 bg-gray-2 py-8 md:border-x',
+            code.length > 0 ? 'border-b-0 md:rounded-t-xl' : 'md:rounded-xl',
             className,
           ),
         )}

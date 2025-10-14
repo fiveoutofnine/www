@@ -32,7 +32,7 @@ const DesignComponentsDisplayAccordion: React.FC<DesignComponentsDisplayAccordio
       collapsible
     >
       <Accordion.Item value="source-code">
-        <Accordion.Trigger className="group z-10 flex h-10 w-full items-center space-x-2 border border-gray-6 bg-gray-3 px-4 text-sm font-medium text-gray-11 transition-colors hover:border-gray-7 hover:bg-gray-4 hover:text-gray-12 focus:outline-none focus-visible:rounded-none focus-visible:outline focus-visible:-outline-offset-[2px] focus-visible:outline-blue-9 focus-visible:ring-0 active:bg-gray-5 data-[state='closed']:rounded-b-xl data-[state='open']:text-gray-12">
+        <Accordion.Trigger className="group z-10 flex h-10 w-full items-center space-x-2 border-y border-gray-6 bg-gray-3 px-4 text-sm font-medium text-gray-11 transition-colors hover:border-gray-7 hover:bg-gray-4 hover:text-gray-12 focus:outline-none focus-visible:rounded-none focus-visible:outline focus-visible:-outline-offset-[2px] focus-visible:outline-blue-9 focus-visible:ring-0 active:bg-gray-5 data-[state='open']:text-gray-12 md:border-x md:data-[state='closed']:rounded-b-xl">
           <span className="flex size-4 items-center justify-center">
             <ChevronRight className="transition-transform group-data-[state='open']:-rotate-90" />
           </span>
@@ -44,10 +44,11 @@ const DesignComponentsDisplayAccordion: React.FC<DesignComponentsDisplayAccordio
             // We need the following classes to override the default styles from
             // our `<Article />` MDX component.
             // Container
-            '[&_[code-block-container]]:mx-0 [&_[code-block-container]]:rounded-b-xl [&_[code-block-container]]:border-x',
-            'md:[&_[code-block-container]]:mx-0 md:[&_[code-block-container]]:rounded-t-none',
+            '[&_[code-block-container]]:mx-0 [&_[code-block-container]]:rounded-none [&_[code-block-container]]:border-x-0',
+            'md:[&_[code-block-container]]:rounded-b-xl md:[&_[code-block-container]]:border-x',
             // Pre
-            '[&_[code-block-pre]]:rounded-none [&_[code-block-pre]]:rounded-b-[0.6875rem]',
+            '[&_[code-block-pre]]:rounded-none [&_[code-block-pre]]:rounded-b-none',
+            'md:[&_[code-block-pre]]:rounded-b-[0.6875rem]',
           )}
         >
           <CodeBlock
