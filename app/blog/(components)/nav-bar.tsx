@@ -27,11 +27,11 @@ const BlogNavBar: React.FC = () => {
   );
   const heightProgress = useTransform(() => 48);
   const opacityProgress = useTransform(() => 1);
-  const marginBottomProgress = useTransform(() => -24);
+  const marginBottomProgress = useTransform(() => -32);
   const translateYProgress = useTransform(() => -48 * (1 - scrollProgress.get()));
 
   // If there is no post found, return early with a spacer.
-  if (!post) return <div className="mb-6 md:hidden" aria-hidden={true} />;
+  if (!post) return <div className="mb-4 md:hidden" aria-hidden={true} />;
 
   return (
     <motion.div
@@ -52,7 +52,15 @@ const BlogNavBar: React.FC = () => {
         <ArrowLeft />
       </IconButton>
       <div className="hide-scrollbar relative grow overflow-x-scroll">
-        <div className="hide-scrollbar flex h-8 grow flex-col justify-center gap-0.5 overflow-x-scroll text-nowrap px-4">
+        <div
+          className="hide-scrollbar flex h-8 grow flex-col justify-center gap-0.5 overflow-x-scroll text-nowrap px-4"
+          style={{
+            WebkitMaskImage:
+              'linear-gradient(to right, transparent, black 1rem, black calc(100% - 1rem), transparent)',
+            maskImage:
+              'linear-gradient(to right, transparent, black 1rem, black calc(100% - 1rem), transparent)',
+          }}
+        >
           {date ? (
             <time
               className="sticky left-0 text-[10px] leading-3 text-gray-11"
@@ -75,16 +83,6 @@ const BlogNavBar: React.FC = () => {
             <div className="h-full w-4 min-w-4" aria-hidden={true} />
           </div>
         </div>
-        {/* Left gradient to hide overflow */}
-        <div
-          className="pointer-events-none absolute left-0 top-0 h-8 w-4 bg-gradient-to-r from-black"
-          aria-hidden={true}
-        />
-        {/* Right gradient to hide overflow */}
-        <div
-          className="pointer-events-none absolute right-0 top-0 h-8 w-4 bg-gradient-to-l from-black"
-          aria-hidden={true}
-        />
       </div>
       <IconButton
         className="min-w-8"

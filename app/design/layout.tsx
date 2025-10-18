@@ -57,13 +57,6 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    // Note: `pb-6` overrides `pb-4` on small devices. `<DesignNavBar />` has a
-    // `mb-6` when displayed on small screens, so the ``margin'' above/below the
-    // article content is symmetrical. We do this instead of `py-6` to correctly
-    // position `<DesignNavBar />`, as well as the article content on small
-    // screens. This positioning issue is not present on larger screens so we
-    // have a breakpoint to reset it. For similar reasons, the `x`-padding is
-    // set to 0 on small devices is set to 0.
     <ContainerLayout className="relative flex max-w-[90rem] flex-col space-x-0 px-0 pb-6 pt-0 md:flex-row md:space-x-16">
       <DesignNavBar />
       <Article fullBleedCodeBlocks={false}>
