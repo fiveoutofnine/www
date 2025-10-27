@@ -2,6 +2,8 @@ import Image from 'next/image';
 
 import BlogHeader from '@/app/blog/(components)/header';
 
+import { GraphicButtonGroup } from './client-components';
+
 import { getBlogPageMetadata } from '@/lib/utils';
 
 export const metadata = getBlogPageMetadata({
@@ -20,3 +22,5 @@ A 55²-digit prime shaped as the [Electric Capital](https://electriccapital.com/
   width={2048}
   height={2048}
 />
+
+<GraphicButtonGroup />
