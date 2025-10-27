@@ -41,8 +41,7 @@ export const GraphicButtonGroup: React.FC = () => {
         variant="outline"
         rightIcon={<Download />}
         onClick={async () => {
-          const IMAGE_URL =
-            'https://assets.fiveoutofnine.com/55%C2%B2%205%3A9%20%3C%3E%20Electric%20(no%20label).png';
+          const IMAGE_URL = '/static/blog/electric-prime/image.png';
 
           try {
             saveAs(IMAGE_URL, '5/9 ⚭ Electric 55²-Digit Prime.png');
