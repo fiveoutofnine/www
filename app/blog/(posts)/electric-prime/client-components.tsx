@@ -1,5 +1,6 @@
 'use client';
 
+import { saveAs } from 'file-saver';
 import { Copy, Download, ExternalLink } from 'lucide-react';
 
 import { Button, toast } from '@/components/ui';
@@ -44,22 +45,8 @@ export const GraphicButtonGroup: React.FC = () => {
             'https://assets.fiveoutofnine.com/55%C2%B2%205%3A9%20%3C%3E%20Electric%20(no%20label).png';
 
           try {
-            const response = await fetch(IMAGE_URL);
-            const blob = await response.blob();
-
-            const objectURL = URL.createObjectURL(blob);
-
-            const a = document.createElement('a');
-            a.href = objectURL;
-            a.download = '5/9 ⚭ Electric 55²-Digit Prime.png';
-
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            URL.revokeObjectURL(objectURL);
+            saveAs(IMAGE_URL, '5/9 ⚭ Electric 55²-Digit Prime.png');
           } catch (error) {
-            console.error(error);
             window.open(IMAGE_URL);
           }
         }}
