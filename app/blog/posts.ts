@@ -2,7 +2,7 @@ export const POSTS: { slug: string; title: string; date: Date }[] = [
   // 2025
   {
     slug: 'electric-prime',
-    title: '⁵⁄₉ ⚭ Electric 55²-Digit Prime',
+    title: '5/9 ⚭ Electric 55²-Digit Prime',
     date: new Date('2025-10-27T13:21:39.345Z'),
   },
   {
