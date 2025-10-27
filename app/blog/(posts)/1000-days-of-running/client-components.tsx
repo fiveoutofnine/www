@@ -11,7 +11,7 @@ import OverviewScatterPlot from './scatter-plot';
 import OverviewTotalDistance from './total-distance';
 import BoringAvatar from 'boring-avatars';
 import clsx from 'clsx';
-import Flags from 'country-flag-icons/react/3x2';
+import * as Flags from 'country-flag-icons/react/3x2';
 import { ArrowRight } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';

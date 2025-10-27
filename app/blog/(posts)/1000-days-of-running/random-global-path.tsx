@@ -2,7 +2,7 @@
 
 import { Fragment, useMemo, useState } from 'react';
 
-import Flags from 'country-flag-icons/react/1x1';
+import * as Flags from 'country-flag-icons/react/1x1';
 import { Shuffle } from 'lucide-react';
 
 import { CAPITAL_CITIES } from '@/lib/constants/cities';
