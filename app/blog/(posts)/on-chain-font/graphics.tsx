@@ -19,7 +19,7 @@ export const NFTGraphic: React.FC<{ address?: Address }> = ({ address }) => {
         x="50%"
         y="125"
         textAnchor="middle"
-        dominantBaseline="bottom"
+        dominantBaseline="auto"
       >
         fiveoutofnine
       </text>
