@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import BlogHeader from '@/app/blog/(components)/header';
-
+import RelativeDate from '@/components/templates/relative-date';
 import { getBlogPageMetadata } from '@/lib/utils';
 
 import { WorkoutVisualizationGraphic } from './graphics';
@@ -54,7 +54,7 @@ The bank even has a [website](https://www-cs-faculty.stanford.edu/~knuth/boss.ht
 
 Now, obviously, reading about the Bank of San Serriffe as "someone in crypto," I found great irony in this: one of the greatest computer scientists ever manually maintains balances on a comically large HTML file with pretend money, when it&apos;s trivially accomplished with blockchains.
 
-Since basically all of my work is public, and I like creating fully on-chain things, I wanted to make my own **5/9 reward checks**: fully on-chain NFTs that I mint to people who submit fixes/suggestions to my work, alongside $5.\bar{5}\cdot10^{-5}$ ETH.
+Since basically all of my work is public, and I like creating fully on-chain things, I wanted to make my own **5/9 reward checks**: [fully on-chain](https://basescan.org/address/0x55555555FA0c10adaD7C89b702dC2f128a69e6e7) NFTs that I mint to people who submit fixes/suggestions to my work, alongside $5.\bar{5}\cdot10^{-5}$ ETH.
 My reward checks obviously don&apos;t require fictional banks or pretend money :).
 
 ## 5/9 Reward Checks
@@ -107,7 +107,7 @@ Apart from the highlighted pixels, I fit in a couple other references to 5/9:
 I was going to just deploy the SVG above as the NFT, but it&apos;s a little too ambiguous.
 Since it&apos;s a "check," I wanted something closer to a card with relevant information displayed.
 When I created [Curta&apos;s Flag NFTs](https://opensea.io/collection/curta), I deliberately designed and [implemented](https://github.com/waterfall-mkt/curta/blob/ae4a9fca354f99e5972b61c3d0b6714339030e78/src/FlagRenderer.sol) them in a generic way to display information related to the NFTs.
-I tested it here and liked the look, so I reused the design and code here:
+I tested it here and liked the look, so I reused the design and [code](https://github.com/fiveoutofnine/reward-checks):
 
 <Image
   className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden my-0 p-4"
@@ -118,10 +118,22 @@ I tested it here and liked the look, so I reused the design and code here:
 />
 
 <Callout intent="info">
-  I haven&apos;t deployed the NFT yet, but I will link it here when I do.
+  The NFT is deployed at [`0x55555555FA0c10adaD7C89b702dC2f128a69e6e7`](https://basescan.org/address/0x55555555FA0c10adaD7C89b702dC2f128a69e6e7).
 </Callout>
+
+---
+
+In an extreme act of irony, I maintained the "Bank of 5/9" in my Apple Notes app because I procrastinated on making the NFT until <RelativeDate date={new Date(1768870481000)} type="absolute" />, 193 days, 7 hours, 20 minutes, and 28 seconds after this blog post was originally published:
+
+<Image
+  className="border border-gray-6 rounded-xl bg-gray-2 overflow-hidden my-0"
+  src="/static/blog/reward-checks/apple-notes-bank-of-fiveoutofnine.webp"
+  alt="A screenshot of the Apple Notes app with the 'Bank of 5/9' open."
+  width={1179}
+  height={888}
+/>
 
 ### Submitting
 
-To submit a fix/suggestion, make a PR on any of my repos or DM me on [𝕏](https://x.com/fiveoutofnine) or [Farcaster](https://farcaster.xyz/fiveoutofnine).
+To submit a fix/suggestion, make a PR on any of my repos or DM me on [𝕏](https://x.com/fiveoutofnine).
 If you want a 5/9 reward check, let me know your Ethereum address :).
