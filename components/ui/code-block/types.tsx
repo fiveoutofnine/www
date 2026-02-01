@@ -51,6 +51,6 @@ export type CodeBlockProps = Omit<React.HTMLAttributes<HTMLPreElement>, 'childre
       value: CodeBlockLanguage;
       onChange: (value: CodeBlockLanguage) => void;
     };
-    containerProps?: React.HTMLAttributes<HTMLDivElement>;
+    containerProps?: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> };
     children: string;
   };
