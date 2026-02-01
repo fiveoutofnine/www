@@ -2,8 +2,6 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 
-import { useIsTouchScreen } from '@/lib/hooks';
-
 import VHSNoise from './vhs-noise';
 import VHSOverlay from './vhs-overlay';
 import clsx from 'clsx';
@@ -23,6 +21,7 @@ import {
   VolumeOff,
 } from 'lucide-react';
 
+import { useIsTouchScreen } from '@/lib/hooks';
 import { getRandomMp4Url } from '@/lib/utils';
 
 import { Button, ButtonGroup, IconButton, Tooltip } from '@/components/ui';
@@ -60,7 +59,10 @@ const Mp4FeatureDetail: React.FC = () => {
     // Create and preload the VHS loading sound.
     const loadingAudio = new Audio(VHS_LOADING_SOUND_URL);
     loadingAudio.preload = 'auto';
-    loadingAudio.addEventListener('canplaythrough', () => vhsLoadingSoundRef.current = loadingAudio);
+    loadingAudio.addEventListener(
+      'canplaythrough',
+      () => (vhsLoadingSoundRef.current = loadingAudio),
+    );
     loadingAudio.load();
 
     return () => {
@@ -81,7 +83,7 @@ const Mp4FeatureDetail: React.FC = () => {
     // Create and preload the VHS eject sound.
     const ejectAudio = new Audio(VHS_EJECT_SOUND_URL);
     ejectAudio.preload = 'auto';
-    ejectAudio.addEventListener('canplaythrough', () => vhsEjectSoundRef.current = ejectAudio);
+    ejectAudio.addEventListener('canplaythrough', () => (vhsEjectSoundRef.current = ejectAudio));
     ejectAudio.load();
 
     setTimeout(() => setInitialized(2), 1900); // Blue.

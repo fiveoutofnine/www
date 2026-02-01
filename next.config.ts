@@ -4,7 +4,7 @@ import createMDX from '@next/mdx';
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [{ hostname: 'assets.fiveoutofnine.com' },],
+    remotePatterns: [{ hostname: 'assets.fiveoutofnine.com' }],
   },
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   redirects: async () => [

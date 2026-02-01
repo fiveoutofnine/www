@@ -23,9 +23,9 @@ type ColormapRegistryFeatureDetailModalProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const ColormapRegistryFeatureDetailModal: React.FC<ColormapRegistryFeatureDetailModalProps> = ({
-  data,
-}) => {
+export const ColormapRegistryFeatureDetailModal: React.FC<
+  ColormapRegistryFeatureDetailModalProps
+> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);
   const isSmallScreen = useMediaQuery('(max-width: 768px)'); // `md` breakpoint.
 

@@ -5,7 +5,11 @@ import { twMerge } from 'tailwind-merge';
 // Component
 // -----------------------------------------------------------------------------
 
-const GridRoot: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, children, ...rest }) => {
+const GridRoot: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  className,
+  children,
+  ...rest
+}) => {
   return (
     <div
       className={twMerge(
@@ -22,7 +26,11 @@ const GridRoot: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, c
   );
 };
 
-const GridCell: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, children, ...rest }) => {
+const GridCell: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  className,
+  children,
+  ...rest
+}) => {
   return (
     <div
       className={twMerge(clsx('border-b border-r border-gray-6 p-3', className))}

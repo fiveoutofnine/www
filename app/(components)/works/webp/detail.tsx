@@ -45,7 +45,6 @@ const WebPFeatureDetail: React.FC = () => {
   const dragTimerRef = useRef<Date | null>(null);
   const isTouchScreen = useIsTouchScreen();
 
-
   // We need this to sync the state of the swipe to prevent blocking.
   useEffect(() => {
     if (animationState === 'idle' && lastExitDirection !== null) {

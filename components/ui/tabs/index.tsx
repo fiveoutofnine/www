@@ -56,8 +56,19 @@ const TabsTrigger = forwardRef(
 
     // Destructure props. `asChild` is false-y here, but we destructure it out
     // because we don't want to pass it in if the trigger has an `href` prop.
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    const { className, icon, stat, href, newTab, children, asChild: _asChild, type, ...rest } = props;
+
+    const {
+      className,
+      icon,
+      stat,
+      href,
+      newTab,
+      children,
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      asChild,
+      type,
+      ...rest
+    } = props;
 
     if (href) {
       return (

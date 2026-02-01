@@ -11,6 +11,6 @@ const getServerSnapshot = () => false;
  */
 const useIsTouchScreen = () => {
   return useSyncExternalStore(emptySubscribe, getSnapshot, getServerSnapshot);
-}
+};
 
 export default useIsTouchScreen;

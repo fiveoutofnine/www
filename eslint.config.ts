@@ -1,8 +1,8 @@
 import js from '@eslint/js';
-import { defineConfig } from 'eslint/config';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
-import prettier from 'eslint-config-prettier/flat';
+import prettier from 'eslint-plugin-prettier/recommended';
+import { defineConfig } from 'eslint/config';
 
 const eslintConfig = defineConfig([
   ...nextVitals,

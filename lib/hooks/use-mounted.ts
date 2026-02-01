@@ -11,6 +11,6 @@ const getServerSnapshot = () => false;
  */
 const useMounted = () => {
   return useSyncExternalStore(emptySubscribe, getSnapshot, getServerSnapshot);
-}
+};
 
 export default useMounted;
