@@ -47,7 +47,9 @@ const WebPFeatureDetail: React.FC = () => {
   // Initialize `nextImage` on the client to avoid hydration mismatch from
   // `Math.random()` in `getRandomWebPUrl`.
   useEffect(() => {
-    setNextImage((prev) => prev ?? getRandomWebPUrl());
+    requestAnimationFrame(() => {
+      setNextImage((prev) => prev ?? getRandomWebPUrl());
+    });
   }, []);
 
   // We need this to sync the state of the swipe to prevent blocking.
