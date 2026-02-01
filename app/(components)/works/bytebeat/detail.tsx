@@ -382,6 +382,7 @@ const BytebeatFeatureDetail: React.FC = () => {
 
         URL.revokeObjectURL(url);
         setInitialized(true);
+        // eslint-disable-next-line react-hooks/immutability
         startVisualization();
       } catch (error) {
         if (process.env.NODE_ENV !== 'production') {
@@ -397,7 +398,6 @@ const BytebeatFeatureDetail: React.FC = () => {
       if (nodeRef.current) nodeRef.current.disconnect();
       if (audioContextRef.current) audioContextRef.current.close();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Call `initializeProcessor` after the node is created and connected.
