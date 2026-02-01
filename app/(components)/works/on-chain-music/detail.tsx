@@ -43,6 +43,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
   // Play audio when the source changes.
   useEffect(() => {
     if (audioRef.current && audioSrc) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPlaying(true);
       audioRef.current.play();
       setReplayable(true);
@@ -227,7 +228,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           >
             <IconButton
               size="sm"
-              onClick={audioRef.current ? togglePlay : undefined}
+              onClick={audioSrc ? togglePlay : undefined}
               disabled={!audioSrc}
               aria-label={audioSrc && playing ? 'Pause' : 'Play'}
             >
@@ -296,6 +297,7 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
 }> = ({ data, audioRef, setReplayable, onAudioEnd }) => {
   const [progress, setProgress] = useState<number>(0);
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [duration, setDuration] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressControls = useAnimation();
   const progressBackgroundControls = useAnimation();
@@ -310,6 +312,7 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
       if (audioRef.current) {
         const { currentTime: time, duration } = audioRef.current;
         setProgress(Math.min(100 * (time / duration), 100));
+        setDuration(duration);
         if (time >= duration) onAudioEnd?.();
       }
     }, 50);
@@ -402,7 +405,7 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
     });
   };
 
-  let timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
+  let timeElapsed = (progress / 100) * duration;
   if (Number.isNaN(timeElapsed)) timeElapsed = 0;
 
   return (

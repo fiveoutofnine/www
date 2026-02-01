@@ -17,6 +17,7 @@ import { Badge, Command, Drawer, IconButton, Popover, Tooltip } from '@/componen
 
 type BytebeatFeatureComboboxProps = {
   value: (typeof BYTEBEAT_SONGS)[0] | null;
+  // eslint-disable-next-line no-unused-vars
   onSelect?: (song: (typeof BYTEBEAT_SONGS)[0]) => void;
 };
 

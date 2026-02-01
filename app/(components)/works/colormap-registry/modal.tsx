@@ -15,7 +15,7 @@ import { Badge, CodeBlock, Dialog, Drawer, IconButton, Tooltip } from '@/compone
 // Props
 // -----------------------------------------------------------------------------
 
-type ColormapRegistryFeatureDetailModal = {
+type ColormapRegistryFeatureDetailModalProps = {
   data: (typeof COLORMAPS)[number];
 };
 
@@ -23,7 +23,7 @@ type ColormapRegistryFeatureDetailModal = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const ColormapRegistryFeatureDetailModal: React.FC<ColormapRegistryFeatureDetailModal> = ({
+export const ColormapRegistryFeatureDetailModal: React.FC<ColormapRegistryFeatureDetailModalProps> = ({
   data,
 }) => {
   const [open, setOpen] = useState<boolean>(false);

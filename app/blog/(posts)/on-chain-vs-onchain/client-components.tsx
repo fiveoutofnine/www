@@ -33,7 +33,6 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
   const HEADS_LEFT = '|[({';
   const HEADS_RIGHT = '|])}';
   const EYES = '"#$\'*+-.0=OTX^oxz';
-  // eslint-disable-next-line quotes
   const HATS = " !#$%&'*+-.=@^~";
   const ARMS_LEFT = '/<~J2';
   const ARMS_RIGHT = '\\>~L7';

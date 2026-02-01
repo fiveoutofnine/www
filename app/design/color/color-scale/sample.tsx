@@ -49,7 +49,7 @@ const ColorScaleSample: React.FC<ColorScaleSampleProps> = ({ scale, index, color
             });
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
-          } catch (err) {
+          } catch {
             toast({ title: 'Failed to copy to clipboard', description: color, intent: 'fail' });
           }
         }}

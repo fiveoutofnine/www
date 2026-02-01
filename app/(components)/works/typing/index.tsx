@@ -24,6 +24,7 @@ const TypingFeature: React.FC = () => {
       }
       tags={[<CategoryTag key={0} category="Web" />]}
     >
+      {/* eslint-disable-next-line react-hooks/purity */}
       <TypingFeatureDetail seed={Math.random()} />
     </FeatureDisplay>
   );

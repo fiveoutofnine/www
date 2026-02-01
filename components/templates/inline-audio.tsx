@@ -31,6 +31,7 @@ type InlineAudioProps = {
 const InlineAudio: React.FC<InlineAudioProps> = ({ audio, children }) => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
   const [toastId, setToastId] = useState<string | number>();
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -42,6 +43,7 @@ const InlineAudio: React.FC<InlineAudioProps> = ({ audio, children }) => {
       if (audioRef.current) {
         const { currentTime: time, duration } = audioRef.current;
         setProgress(Math.min(100 * (time / duration), 100));
+        setDuration(duration || 0);
         if (time >= duration) {
           if (audioRef.current) audioRef.current.currentTime = 0;
           // Dismiss any existing toast with the same ID.
@@ -55,7 +57,7 @@ const InlineAudio: React.FC<InlineAudioProps> = ({ audio, children }) => {
     return () => clearInterval(interval);
   }, [audioRef, id]);
 
-  let timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
+  let timeElapsed = (progress / 100) * duration;
   if (Number.isNaN(timeElapsed)) timeElapsed = 0;
 
   const onClick = () => {

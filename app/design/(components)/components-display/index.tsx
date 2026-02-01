@@ -151,8 +151,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
           singleQuote: true,
           parser: 'babel',
         });
-        // eslint-disable-next-line no-unused-vars
-      } catch (e) {
+      } catch {
         return source;
       }
     }
@@ -178,8 +177,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
       )
         .replace('</DesignComponentsDisplay>;', '</DesignComponentsDisplay>')
         .trim();
-      // eslint-disable-next-line no-unused-vars
-    } catch (e) {
+    } catch {
       return '';
     }
   })();

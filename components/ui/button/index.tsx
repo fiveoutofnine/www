@@ -42,7 +42,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     // Destructure `ref` from `props: React.ButtonHTMLAttributes<HTMLButtonElement>`,
     // so the remaining props are type-compatible with `<Link />` for the
     // `<Slot />` component to merge in.
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const { ref: _, ...restWithoutRef } = props;
 
     if (href && !disabled) {
