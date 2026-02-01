@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { RotateCcw, RotateCw } from 'lucide-react';
 
+import { useIsTouchScreen } from '@/lib/hooks';
 import { getRandomWebPUrl } from '@/lib/utils';
 
 import { Tooltip } from '@/components/ui';
@@ -32,10 +33,8 @@ const OPACITY_FINAL = 1.0;
 // -----------------------------------------------------------------------------
 
 const WebPFeatureDetail: React.FC = () => {
-  const [mounted, setMounted] = useState<boolean>(false);
   const [image, setImage] = useState<ReturnType<typeof getRandomWebPUrl> | null>();
-  const [nextImage, setNextImage] =
-    useState<ReturnType<typeof getRandomWebPUrl>>(getRandomWebPUrl());
+  const [nextImage, setNextImage] = useState<ReturnType<typeof getRandomWebPUrl> | null>(null);
   const [animationState, setAnimationState] = useState<AnimationState>('idle');
   const [swipeAmount, setSwipeAmount] = useState<number>(0);
   const [lastExitDirection, setLastExitDirection] = useState<'left' | 'right' | null>(null);
@@ -43,8 +42,15 @@ const WebPFeatureDetail: React.FC = () => {
 
   const pointerRef = useRef<{ x: number; y: number } | null>(null);
   const dragTimerRef = useRef<Date | null>(null);
+  const isTouchScreen = useIsTouchScreen();
 
-  useEffect(() => setMounted(true), []);
+  // Initialize `nextImage` on the client to avoid hydration mismatch from
+  // `Math.random()` in `getRandomWebPUrl`.
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      setNextImage((prev) => prev ?? getRandomWebPUrl());
+    });
+  }, []);
 
   // We need this to sync the state of the swipe to prevent blocking.
   useEffect(() => {
@@ -52,8 +58,6 @@ const WebPFeatureDetail: React.FC = () => {
       requestAnimationFrame(() => setLastExitDirection(null));
     }
   }, [animationState, lastExitDirection]);
-
-  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
 
   // ---------------------------------------------------------------------------
   // Animation styles
@@ -192,7 +196,7 @@ const WebPFeatureDetail: React.FC = () => {
     if (animationState === 'exiting-left' || animationState === 'exiting-right') {
       // Update images after transition ends.
       setImage(nextImage);
-      setNextImage(getRandomWebPUrl(nextImage.index));
+      setNextImage(getRandomWebPUrl(nextImage?.index));
 
       // Reset swipe amount.
       setSwipeAmount(0);
@@ -253,20 +257,22 @@ const WebPFeatureDetail: React.FC = () => {
       <div className="relative flex h-full grow items-center justify-center bg-gray-3 p-1">
         <div className="relative h-full w-full">
           {/* Next image to be displayed. */}
-          <div
-            className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
-            key={`bottom-image-${nextImage.index}`}
-            style={bottomStyle}
-          >
-            <Image
-              src={nextImage.url}
-              alt={nextImage.url}
-              className="flex items-center justify-center object-contain px-4 text-center text-sm text-gray-11"
-              sizes="100vw"
-              draggable={false}
-              fill
-            />
-          </div>
+          {nextImage ? (
+            <div
+              className="absolute inset-0 h-full w-full select-none overflow-hidden rounded-lg border border-gray-6 bg-black"
+              key={`bottom-image-${nextImage.index}`}
+              style={bottomStyle}
+            >
+              <Image
+                src={nextImage.url}
+                alt={nextImage.url}
+                className="flex items-center justify-center object-contain px-4 text-center text-sm text-gray-11"
+                sizes="100vw"
+                draggable={false}
+                fill
+              />
+            </div>
+          ) : null}
 
           {/* Current image displayed. */}
           <div

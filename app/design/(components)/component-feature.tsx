@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import clsx from 'clsx';
 import { ArrowRight } from 'lucide-react';
+
+import { useIsTouchScreen } from '@/lib/hooks';
 
 import { IconButton } from '@/components/ui';
 
@@ -26,11 +26,7 @@ export const ComponentFeature: React.FC<ComponentFeatureProps> = ({
   href,
   children,
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => setIsMounted(true), []);
-
-  const isMobile = isMounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
+  const isMobile = useIsTouchScreen();
 
   return (
     <div

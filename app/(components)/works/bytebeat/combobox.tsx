@@ -5,10 +5,10 @@ import { Fragment, useState } from 'react';
 import { FileQuestion, ListMusic } from 'lucide-react';
 
 import { BYTEBEAT_SONGS, FIVEOUTOFNINE_BYTEBEAT_SONGS } from '@/lib/constants/bytebeat';
-import { useMediaQuery } from '@/lib/hooks/use-media-query';
+import { useMediaQuery } from '@/lib/hooks';
 import { formatValueToPrecision } from '@/lib/utils';
 
-import { Code } from '@/components/templates/mdx';
+import { Code } from '@/components/mdx';
 import { Badge, Command, Drawer, IconButton, Popover, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
@@ -17,6 +17,7 @@ import { Badge, Command, Drawer, IconButton, Popover, Tooltip } from '@/componen
 
 type BytebeatFeatureComboboxProps = {
   value: (typeof BYTEBEAT_SONGS)[0] | null;
+  // eslint-disable-next-line no-unused-vars
   onSelect?: (song: (typeof BYTEBEAT_SONGS)[0]) => void;
 };
 

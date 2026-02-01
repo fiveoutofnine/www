@@ -13,6 +13,8 @@ import {
   useWaitForTransactionReceipt,
 } from 'wagmi';
 
+import { useMounted } from '@/lib/hooks';
+
 import ChainIcon from '@/components/common/chain-icon';
 import { Badge, Button, Dropdown, IconButton, toast, Tooltip } from '@/components/ui';
 
@@ -25,10 +27,9 @@ import { Badge, Button, Dropdown, IconButton, toast, Tooltip } from '@/component
  * [`0xA85572Cd96f1643458f17340b6f0D6549Af482F5`](https://etherscan.io/address/0xA85572Cd96f1643458f17340b6f0D6549Af482F5)
  * (fiveoutofnine.eth) signed to itself on Ethereum.
  */
-/* eslint-disable prettier/prettier */
 const FIVEOUTOFNINE_MESSAGES = [
   {
-    content: 'what\'s up I\'m 5/9',
+    content: "what's up I'm 5/9",
     txHash: '0x6f4760c765e4c8be8f770e8a7e76310cd4ddda401a4eda6f4dac93ec768f8d76',
   },
   {
@@ -46,7 +47,6 @@ const FIVEOUTOFNINE_MESSAGES = [
 // -----------------------------------------------------------------------------
 
 const TxDotCoolFeatureDetail: React.FC = () => {
-  const [mounted, setMounted] = useState<boolean>(false);
   const [userMessage, setUserInput] = useState<string>('');
   const { address } = useAccount();
   const chainId = useChainId();
@@ -58,9 +58,10 @@ const TxDotCoolFeatureDetail: React.FC = () => {
 
   const { isLoading } = useWaitForTransactionReceipt({ hash: data });
 
-  // Scroll messages into view on load and set mounted.
+  const mounted = useMounted();
+
+  // Scroll messages into view on load.
   useEffect(() => {
-    setMounted(true);
     messagesEndRef.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }, []);
 

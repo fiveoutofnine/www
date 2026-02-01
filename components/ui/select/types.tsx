@@ -11,9 +11,9 @@ export type SelectVariantProps = VariantProps<typeof selectVariants>;
 // Component props
 // -----------------------------------------------------------------------------
 
-export type SelectItemProps = JSX.IntrinsicElements['option'];
+export type SelectItemProps = React.OptionHTMLAttributes<HTMLOptionElement>;
 
-export type SelectProps = Omit<JSX.IntrinsicElements['select'], 'size'> &
+export type SelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> &
   Omit<SelectVariantProps, 'variant' | 'intent'> &
   (
     | {

@@ -20,7 +20,7 @@ import { encodeAbiParameters, hexToBigInt, keccak256 } from 'viem';
 
 import { Button, CodeBlock } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) => {
@@ -33,7 +33,6 @@ export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) =>
   const HEADS_LEFT = '|[({';
   const HEADS_RIGHT = '|])}';
   const EYES = '"#$\'*+-.0=OTX^oxz';
-  // eslint-disable-next-line quotes
   const HATS = " !#$%&'*+-.=@^~";
   const ARMS_LEFT = '/<~J2';
   const ARMS_RIGHT = '\\>~L7';
@@ -333,12 +332,13 @@ export const MintsGraph: React.FC = () => {
         />
         <RechartTooltip
           content={({ active, payload, label }) => {
+            const numLabel = Number(label);
             const [hour, minute, second] = [
-              Math.round(label / 3600).toString(),
-              Math.round((label % 3600) / 60)
+              Math.round(numLabel / 3600).toString(),
+              Math.round((numLabel % 3600) / 60)
                 .toString()
                 .padStart(2, '0'),
-              (label % 60).toString().padStart(2, '0'),
+              (numLabel % 60).toString().padStart(2, '0'),
             ];
 
             const hasData = payload && active && payload.length > 0 && payload[0].value;

@@ -6,7 +6,7 @@ import { Link } from 'lucide-react';
 
 import { toast } from '@/components/ui';
 
-const H3: React.FC<JSX.IntrinsicElements['h3']> = ({ children, ...rest }) => {
+const H1: React.FC<React.HtmlHTMLAttributes<HTMLHeadingElement>> = ({ children, ...rest }) => {
   const pathname = usePathname();
 
   const stringChildren: string[] = (
@@ -23,10 +23,10 @@ const H3: React.FC<JSX.IntrinsicElements['h3']> = ({ children, ...rest }) => {
       .trim();
 
     return (
-      <h3 id={id} {...rest}>
+      <h1 id={id} {...rest}>
         <a
           href={`#${id}`}
-          className="not-prose group flex w-fit items-center gap-2 rounded text-lg font-semibold tracking-tight text-gray-12 no-underline md:text-xl"
+          className="not-prose group flex w-fit items-center gap-3 rounded text-3xl font-semibold tracking-tight text-gray-12 no-underline md:gap-4 md:text-4xl"
           onClick={() => {
             navigator.clipboard.writeText(
               `${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://fiveoutofnine.com'}${pathname}#${id}`,
@@ -38,14 +38,14 @@ const H3: React.FC<JSX.IntrinsicElements['h3']> = ({ children, ...rest }) => {
             });
           }}
         >
-          <span>{children}</span>
-          <Link className="hidden size-4 text-gray-11 animate-in fade-in-50 group-hover:flex group-focus-visible:flex" />
+          {children}
+          <Link className="hidden size-5 text-gray-11 animate-in fade-in-50 group-hover:flex group-focus-visible:flex md:size-6" />
         </a>
-      </h3>
+      </h1>
     );
   }
 
-  return <h3 {...rest}>{children}</h3>;
+  return <h1 {...rest}>{children}</h1>;
 };
 
-export default H3;
+export default H1;

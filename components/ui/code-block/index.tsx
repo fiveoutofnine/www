@@ -24,13 +24,21 @@ import { twMerge } from 'tailwind-merge';
 
 // Add support for additional languages.
 (typeof global === 'undefined' ? window : global).Prism = Prism;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('prismjs/components/prism-javascript');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('prismjs/components/prism-typescript');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('prismjs/components/prism-jsx');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('prismjs/components/prism-tsx');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('prismjs/components/prism-solidity');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('prismjs/components/prism-python');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('prismjs/components/prism-bash');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('prismjs/components/prism-diff');
 
 const CodeBlock: React.FC<CodeBlockProps> = ({

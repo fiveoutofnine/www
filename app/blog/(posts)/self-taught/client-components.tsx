@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { View } from 'lucide-react';
 
-import { Article } from '@/components/templates/mdx';
+import { Article } from '@/components/mdx';
 import { Drawer } from '@/components/ui';
 
 // -----------------------------------------------------------------------------

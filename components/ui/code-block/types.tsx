@@ -38,11 +38,11 @@ export type CodeBlockLanguage =
   | 'diff'
   | 'none';
 
-export type CodeBlockProps = Omit<JSX.IntrinsicElements['pre'], 'children'> &
+export type CodeBlockProps = Omit<React.HTMLAttributes<HTMLPreElement>, 'children'> &
   CodeBlockVariantProps & {
     fileName?: string;
     language?: CodeBlockLanguage;
-    logo?: React.FC<JSX.IntrinsicElements['svg']>;
+    logo?: React.FC<React.SVGProps<SVGSVGElement>>;
     highlightLines?: number[];
     showLineNumbers?: boolean;
     breakLines?: boolean;
@@ -51,6 +51,6 @@ export type CodeBlockProps = Omit<JSX.IntrinsicElements['pre'], 'children'> &
       value: CodeBlockLanguage;
       onChange: (value: CodeBlockLanguage) => void;
     };
-    containerProps?: JSX.IntrinsicElements['div'];
+    containerProps?: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> };
     children: string;
   };

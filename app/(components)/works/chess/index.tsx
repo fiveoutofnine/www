@@ -161,7 +161,7 @@ const ChessFeatureDetail: React.FC = () => {
                             ? 'bg-red-3'
                             : nft.contractMove.to === index
                               ? 'bg-red-9'
-                              : (2709 >> index % 12) & 1
+                              : (2709 >> (index % 12)) & 1
                                 ? 'bg-gray-9'
                                 : 'bg-gray-4',
                   )}

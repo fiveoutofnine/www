@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
           if (metadataMatch) {
             description = metadataMatch[1];
           }
-        } catch (error) {
+        } catch {
           // Silently fail if file can't be read or metadata not found.
         }
 

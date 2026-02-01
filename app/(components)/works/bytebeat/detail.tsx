@@ -8,10 +8,10 @@ import { Check, ChevronFirst, Copy, Pause, Play } from 'lucide-react';
 
 import { BYTEBEAT_SONGS } from '@/lib/constants/bytebeat';
 
-import { Code } from '@/components/templates/mdx';
+import { Code } from '@/components/mdx';
 import { ButtonGroup, CodeBlock, IconButton, Input, toast, Tooltip } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 // -----------------------------------------------------------------------------
@@ -382,6 +382,7 @@ const BytebeatFeatureDetail: React.FC = () => {
 
         URL.revokeObjectURL(url);
         setInitialized(true);
+        // eslint-disable-next-line react-hooks/immutability
         startVisualization();
       } catch (error) {
         if (process.env.NODE_ENV !== 'production') {
@@ -397,7 +398,6 @@ const BytebeatFeatureDetail: React.FC = () => {
       if (nodeRef.current) nodeRef.current.disconnect();
       if (audioContextRef.current) audioContextRef.current.close();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Call `initializeProcessor` after the node is created and connected.

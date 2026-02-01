@@ -87,7 +87,11 @@ const DropdownItem = forwardRef<React.ElementRef<typeof DropdownPrimitive.Item>,
       ) : (
         <Fragment>
           <span dropdown-item-content="">{children}</span>
-          {icon ? <span className={clsx(dropdownItemIconContainerStyles)}>{icon}</span> : null}
+          {icon ? (
+            <span className={clsx(dropdownItemIconContainerStyles)} dropdown-item-icon="">
+              {icon}
+            </span>
+          ) : null}
         </Fragment>
       )}
     </DropdownPrimitive.Item>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { ChevronRight, RotateCw } from 'lucide-react';
@@ -38,6 +38,7 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const lastCharTypedRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const caretRef = useRef<HTMLDivElement>(null);
 
   const textWords = useMemo(() => quote.text.split(' '), [quote.text]);
   const lastWord = useMemo(() => textWords[textWords.length - 1], [textWords]);
@@ -151,18 +152,24 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
     return () => clearInterval(interval);
   }, [startTime, endTime, typed.length, numCorrectChars]);
 
-  // Identify nodes for rendering the user caret.
-  const wrapperNode = wrapperRef.current?.getBoundingClientRect();
-  const lastCharTypedNode = lastCharTypedRef.current?.getBoundingClientRect();
+  // // Identify nodes for rendering the user caret via a layout effect.
+  useLayoutEffect(() => {
+    const wrapperNode = wrapperRef.current?.getBoundingClientRect();
+    const lastCharTypedNode = lastCharTypedRef.current?.getBoundingClientRect();
 
-  const userCaretLeft =
-    wrapperNode && lastCharTypedNode && typed.length > 0
-      ? lastCharTypedNode.left - wrapperNode.left + lastCharTypedNode.width
-      : 0;
-  const userCaretTop =
-    wrapperNode && lastCharTypedNode && typed.length > 0
-      ? lastCharTypedNode.top - wrapperNode.top
-      : 2;
+    const userCaretLeft =
+      wrapperNode && lastCharTypedNode && typed.length > 0
+        ? lastCharTypedNode.left - wrapperNode.left + lastCharTypedNode.width
+        : 0;
+    const userCaretTop =
+      wrapperNode && lastCharTypedNode && typed.length > 0
+        ? lastCharTypedNode.top - wrapperNode.top
+        : 2;
+
+    if (caretRef.current) {
+      caretRef.current.style.transform = `translate(${userCaretLeft}px, ${userCaretTop}px)`;
+    }
+  }, [typed]);
 
   return (
     <div className="flex h-full w-full flex-col justify-between space-y-2 bg-gray-3 p-2">
@@ -201,10 +208,10 @@ const TypingFeatureDetail: React.FC<TypingFeatureDetailProps> = ({ seed }) => {
 
         {/* User caret */}
         <div
+          ref={caretRef}
           className="absolute left-0 top-0 transition-all"
           style={{
             opacity: !endTime && inputIsFocused ? 100 : 0,
-            transform: `translate(${userCaretLeft}px, ${userCaretTop}px)`,
           }}
         >
           <div className="h-4 w-[1.5px] animate-pulse rounded-full bg-gray-11" />
@@ -292,6 +299,7 @@ const TypingFeatureDetailTimer: React.FC<{
   // Timer to update the time passed.
   useEffect(() => {
     if (!startTime) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTimePassed(undefined);
       return;
     }

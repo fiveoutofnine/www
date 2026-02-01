@@ -18,6 +18,7 @@ import { twMerge } from 'tailwind-merge';
 import { create } from 'zustand';
 
 import { LENGTH_UNITS } from '@/lib/constants/units';
+import { useMounted } from '@/lib/hooks';
 
 import ClickableTooltip from '@/components/templates/clickable-tooltip';
 import { ButtonGroup, IconButton, toast, Tooltip } from '@/components/ui';
@@ -30,6 +31,7 @@ interface DistanceUnitIndexState {
   index: number;
   inc: () => void;
   dec: () => void;
+  // eslint-disable-next-line no-unused-vars
   set: (index: number) => void;
   reset: () => void;
 }
@@ -295,7 +297,7 @@ export const InlinePace: React.FC<{ className?: string; s: number; button?: bool
 };
 
 export const Overview: React.FC = () => {
-  const [mounted, setMounted] = useState<boolean>(false);
+  const mounted = useMounted();
   const [scale, setScale] = useState<number>(1);
 
   useEffect(() => {
@@ -314,8 +316,6 @@ export const Overview: React.FC = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  useEffect(() => setMounted(true), []);
 
   if (!mounted)
     return (
@@ -393,7 +393,6 @@ export const Overview: React.FC = () => {
           <div
             className="col-span-1 row-span-1 flex h-full justify-center rounded-xl border border-gray-6 bg-gray-2 p-1.5 text-base font-medium tracking-tight text-white"
             style={{
-              // eslint-disable-next-line
               backgroundImage: "url('/static/blog/1000-days-of-running/pegasus41.webp')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',

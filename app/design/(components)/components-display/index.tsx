@@ -7,7 +7,7 @@ import prettier from 'prettier';
 import { twMerge } from 'tailwind-merge';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
-import { ToastButton } from '@/components/templates/mdx';
+import { ToastButton } from '@/components/mdx';
 import {
   Badge,
   Button,
@@ -47,7 +47,7 @@ const COMPONENT_NAMES = [
 // Props
 // -----------------------------------------------------------------------------
 
-type DesignComponentsDisplayProps = JSX.IntrinsicElements['div'] &
+type DesignComponentsDisplayProps = React.HTMLAttributes<HTMLDivElement> &
   Pick<CodeBlockProps, 'highlightLines'> & {
     showSource?: boolean;
     source?: string;
@@ -114,7 +114,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
     componentName = componentName || 'Unknown';
 
     // Construct string of props.
-    const propString = Object.entries(node.props)
+    const propString = Object.entries(node.props as Record<string, unknown>)
       .map((prop) => {
         if (prop[0] === 'children') {
           children = prop[1] as React.ReactNode;
@@ -151,7 +151,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
           singleQuote: true,
           parser: 'babel',
         });
-      } catch (e) {
+      } catch {
         return source;
       }
     }
@@ -177,7 +177,7 @@ const DesignComponentsDisplay: React.FC<DesignComponentsDisplayProps> = async ({
       )
         .replace('</DesignComponentsDisplay>;', '</DesignComponentsDisplay>')
         .trim();
-    } catch (e) {
+    } catch {
       return '';
     }
   })();

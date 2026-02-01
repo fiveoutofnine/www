@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
+
+import { useIsTouchScreen } from '@/lib/hooks';
 
 import { Popover, Tooltip } from '@/components/ui';
 import type { TooltipProps } from '@/components/ui/tooltip/types';
@@ -25,11 +25,7 @@ const ClickableTooltip: React.FC<ClickableTooltipProps> = ({
   children,
   ...rest
 }) => {
-  const [mounted, setMounted] = useState<boolean>(false);
-
-  useEffect(() => setMounted(true), []);
-
-  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
+  const isTouchScreen = useIsTouchScreen();
 
   if (isTouchScreen) {
     return (

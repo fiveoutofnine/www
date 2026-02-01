@@ -43,7 +43,9 @@ const RelativeDate: React.FC<RelativeDateProps> = ({
               hour: 'numeric',
               minute: 'numeric',
             })}
-            <ReactTimeago className="text-xs leading-4 text-gray-11" date={date} />
+            <span className="text-xs leading-4 text-gray-11">
+              <ReactTimeago date={date} />
+            </span>
           </div>
         ) : (
           new Date(date).toLocaleString('en-US', {

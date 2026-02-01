@@ -101,7 +101,7 @@ To view the full list of supported languages, see `CodeBlockLanguage` in [`@/com
     language="tsx"
     fileName="button.tsx"
     showLineNumbers={false}
-    children="const Button: React.FC<JSX.IntrinsicElements['button']> = ({ children, ...rest }) => <button {...rest}>{children}<button>;"
+    children="const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, ...rest }) => <button {...rest}>{children}<button>;"
   />
   <CodeBlock
     language="sol"

@@ -95,7 +95,13 @@ const RunningFeatureDetail: React.FC<RunningFeatureDetailProps> = ({
           ),
         },
       ].map(({ className, value, children }) => (
-        <Tabs.Content className="p-0" key={value} value={value} tabIndex={-1} asChild>
+        /* TODO: v4 migration: reference variable. */
+        <Tabs.Content
+          className="p-0 focus-visible:rounded-br-[11px]"
+          key={value}
+          value={value}
+          asChild
+        >
           <div className={clsx('flex h-full grow flex-col overflow-hidden bg-gray-3', className)}>
             {children}
           </div>

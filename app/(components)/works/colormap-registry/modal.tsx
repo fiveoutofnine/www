@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Fingerprint } from 'lucide-react';
 
 import { COLORMAPS } from '@/lib/constants/colormaps';
-import { useMediaQuery } from '@/lib/hooks/use-media-query';
+import { useMediaQuery } from '@/lib/hooks';
 
 import Vocab from '@/components/templates/vocab';
 import { Badge, CodeBlock, Dialog, Drawer, IconButton, Tooltip } from '@/components/ui';
@@ -15,7 +15,7 @@ import { Badge, CodeBlock, Dialog, Drawer, IconButton, Tooltip } from '@/compone
 // Props
 // -----------------------------------------------------------------------------
 
-type ColormapRegistryFeatureDetailModal = {
+type ColormapRegistryFeatureDetailModalProps = {
   data: (typeof COLORMAPS)[number];
 };
 
@@ -23,9 +23,9 @@ type ColormapRegistryFeatureDetailModal = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const ColormapRegistryFeatureDetailModal: React.FC<ColormapRegistryFeatureDetailModal> = ({
-  data,
-}) => {
+export const ColormapRegistryFeatureDetailModal: React.FC<
+  ColormapRegistryFeatureDetailModalProps
+> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);
   const isSmallScreen = useMediaQuery('(max-width: 768px)'); // `md` breakpoint.
 

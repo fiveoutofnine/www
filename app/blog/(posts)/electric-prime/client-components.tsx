@@ -45,7 +45,7 @@ export const GraphicButtonGroup: React.FC = () => {
 
           try {
             saveAs(IMAGE_URL, '5/9 ⚭ Electric 55²-Digit Prime.png');
-          } catch (error) {
+          } catch {
             window.open(IMAGE_URL);
           }
         }}

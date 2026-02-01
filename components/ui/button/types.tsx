@@ -11,9 +11,9 @@ export type ButtonVariantProps = VariantProps<typeof buttonVariants>;
 // Component props
 // -----------------------------------------------------------------------------
 
-export type ButtonGroupProps = JSX.IntrinsicElements['div'];
+export type ButtonGroupProps = React.HTMLAttributes<HTMLDivElement>;
 
-export type ButtonProps = JSX.IntrinsicElements['button'] &
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   Omit<ButtonVariantProps, 'variant' | 'intent'> &
   (
     | {

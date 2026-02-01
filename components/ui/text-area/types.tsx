@@ -11,4 +11,5 @@ type TextAreaVariantProps = VariantProps<typeof textAreaVariants>;
 // Component props
 // -----------------------------------------------------------------------------
 
-export type TextAreaProps = JSX.IntrinsicElements['textarea'] & TextAreaVariantProps;
+export type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> &
+  TextAreaVariantProps;

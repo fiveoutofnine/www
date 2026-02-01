@@ -2,7 +2,7 @@
 
 import { Check, CircleDot, Code, GitMerge, GitPullRequestArrow } from 'lucide-react';
 
-import { A, Code as MDXCode } from '@/components/templates/mdx';
+import { A, Code as MDXCode } from '@/components/mdx';
 import { CodeBlock, Tabs } from '@/components/ui';
 
 export const TabsHorizontalDemo: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {
@@ -23,9 +23,18 @@ export const TabsHorizontalDemo: React.FC<{ disabled?: boolean }> = ({ disabled 
           Tab 3
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="1">Content 1</Tabs.Content>
-      <Tabs.Content value="2">Content 2</Tabs.Content>
-      <Tabs.Content value="3">Content 3</Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-b-[7px]" value="1">
+        Content 1
+      </Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-b-[7px]" value="2">
+        Content 2
+      </Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-b-[7px]" value="3">
+        Content 3
+      </Tabs.Content>
     </Tabs.Root>
   );
 };
@@ -48,9 +57,18 @@ export const TabsVerticalDemo: React.FC<{ disabled?: boolean }> = ({ disabled = 
           Tab 3
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="1">Content 1</Tabs.Content>
-      <Tabs.Content value="2">Content 2</Tabs.Content>
-      <Tabs.Content value="3">Content 3</Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-r-[7px]" value="1">
+        Content 1
+      </Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-r-[7px]" value="2">
+        Content 2
+      </Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-r-[7px]" value="3">
+        Content 3
+      </Tabs.Content>
     </Tabs.Root>
   );
 };
@@ -73,7 +91,8 @@ export const TabsIconStatDemo: React.FC = () => {
           Pull requests
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content className="p-0" value="1">
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="p-0 focus-visible:rounded-b-[7px]" value="1">
         <CodeBlock
           className="max-h-full overflow-y-scroll border-0"
           language="sol"
@@ -83,7 +102,8 @@ export const TabsIconStatDemo: React.FC = () => {
           {FIVEFIVEFIVE_SCRIPT}
         </CodeBlock>
       </Tabs.Content>
-      <Tabs.Content value="2" asChild>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-r-[7px]" value="2" asChild>
         <div className="flex items-center justify-center">
           <div className="flex max-w-80 grow flex-col items-center rounded-xl border border-gray-6 py-8">
             <div className="flex size-10 items-center justify-center rounded-full border border-gray-6 bg-gray-3 text-gray-11">
@@ -104,7 +124,8 @@ export const TabsIconStatDemo: React.FC = () => {
           </div>
         </div>
       </Tabs.Content>
-      <Tabs.Content className="p-0" value="3" asChild>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="p-0 focus-visible:rounded-r-[7px]" value="3" asChild>
         <div className="flex flex-col p-0">
           <div className="flex h-fit w-full gap-2.5 border-b border-gray-6 bg-gray-3 px-5 py-3">
             <div className="mt-0.5 flex size-4 items-center justify-center text-[#ab7df8]">
@@ -152,8 +173,14 @@ export const TabsLinkDemo: React.FC = () => {
           Tab 2 (new tab)
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="1">Content 1</Tabs.Content>
-      <Tabs.Content value="2">Content 2</Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-b-[7px]" value="1">
+        Content 1
+      </Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-b-[7px]" value="2">
+        Content 2
+      </Tabs.Content>
     </Tabs.Root>
   );
 };

@@ -5,7 +5,7 @@ import BlogViewCount from './view-count';
 
 import redis from '@/lib/services/redis';
 
-import { H1 } from '@/components/templates/mdx';
+import { H1 } from '@/components/mdx';
 import RelativeDate from '@/components/templates/relative-date';
 
 import { POSTS } from '@/app/blog/posts';

@@ -48,7 +48,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
 
   // Calculate the average distance per day for each month.
   const [data, totalDays] = useMemo(() => {
-    let totalDays = 0;
+    let total = 0;
     const data = mileageLogs.map((d) => {
       const date = d.time;
       const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
@@ -63,7 +63,8 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
             ((0xeefbb3 >> (month << 1)) & 3) +
             // Add 1 if it's a leap year and the month is February.
             ((year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)) && month === 1 ? 1 : 0);
-      totalDays += daysInMonth;
+      // eslint-disable-next-line react-hooks/immutability -- Local accumulator within useMemo
+      total += daysInMonth;
 
       return {
         date: utcDate,
@@ -71,7 +72,7 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
       };
     });
 
-    return [data, totalDays];
+    return [data, total];
   }, [currentDay, currentMonth, currentYear, mileageLogs, unit.scalar]);
 
   // We scale to annualized mileage.
@@ -168,10 +169,11 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
           />
           <RechartTooltip
             content={({ active, payload, label }) => {
-              const monthName = label
-                ? label.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })
+              const date = label ? new Date(label) : null;
+              const monthName = date
+                ? date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })
                 : '';
-              const year = label ? label.getUTCFullYear() : 0;
+              const year = date ? date.getUTCFullYear() : 0;
 
               return payload && active && payload.length > 0 && payload[0].value ? (
                 <div
@@ -193,7 +195,6 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
           />
           <Bar
             dataKey="value"
-            /* @ts-expect-error The type for `Bar` should be correct. */
             shape={({ x, y, width, height }) => (
               <path
                 className="fill-blue-9"

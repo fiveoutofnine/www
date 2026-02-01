@@ -100,7 +100,7 @@ export const buttonVariants = cva(
         none: [
           // Primary
           'data-[variant=primary]:bg-gray-4',
-          'data-[variant=primary]:text-white',
+          'data-[variant=primary]:text-gray-12',
           'data-[variant=primary]:border-gray-7',
           'data-[variant=primary]:hover:border-gray-8',
           'data-[variant=primary]:active:bg-gray-5',
@@ -278,4 +278,4 @@ export const buttonVariants = cva(
 // Button Group
 // -----------------------------------------------------------------------------
 
-export const buttonGroupStyles = ['button--group', 'group', 'flex', '-space-x-[1px]'];
+export const buttonGroupStyles = ['button--group', 'group', 'flex', '-space-x-px'];

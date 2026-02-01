@@ -22,7 +22,7 @@ import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
 
 import { ButtonGroup, IconButton, Table, toast, Tooltip } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 // -----------------------------------------------------------------------------
@@ -43,6 +43,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
   // Play audio when the source changes.
   useEffect(() => {
     if (audioRef.current && audioSrc) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPlaying(true);
       audioRef.current.play();
       setReplayable(true);
@@ -227,7 +228,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
           >
             <IconButton
               size="sm"
-              onClick={audioRef.current ? togglePlay : undefined}
+              onClick={audioSrc ? togglePlay : undefined}
               disabled={!audioSrc}
               aria-label={audioSrc && playing ? 'Pause' : 'Play'}
             >
@@ -290,12 +291,13 @@ const OnChainMusicFeatureDetail: React.FC = () => {
 
 const OnChainMusicFeatureDetailProgressMeter: React.FC<{
   data: (typeof ON_CHAIN_SONGS)[number];
-  audioRef: React.RefObject<HTMLAudioElement>;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   setReplayable?: React.Dispatch<React.SetStateAction<boolean>>;
   onAudioEnd?: () => void;
 }> = ({ data, audioRef, setReplayable, onAudioEnd }) => {
   const [progress, setProgress] = useState<number>(0);
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [duration, setDuration] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressControls = useAnimation();
   const progressBackgroundControls = useAnimation();
@@ -310,6 +312,7 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
       if (audioRef.current) {
         const { currentTime: time, duration } = audioRef.current;
         setProgress(Math.min(100 * (time / duration), 100));
+        setDuration(duration);
         if (time >= duration) onAudioEnd?.();
       }
     }, 50);
@@ -402,7 +405,7 @@ const OnChainMusicFeatureDetailProgressMeter: React.FC<{
     });
   };
 
-  let timeElapsed = (progress / 100) * (audioRef.current?.duration ?? 0);
+  let timeElapsed = (progress / 100) * duration;
   if (Number.isNaN(timeElapsed)) timeElapsed = 0;
 
   return (

@@ -1,6 +1,3 @@
-/* eslint-disable */
-
-/* prettier-ignore */
 import type { City } from '@/lib/types/cities';
 
 export const CAPITAL_CITIES: City[] = [

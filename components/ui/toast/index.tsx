@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import { Button } from '..';
 import {
   toastCloseButtonVariants,
@@ -16,6 +14,8 @@ import clsx from 'clsx';
 import { X } from 'lucide-react';
 import { Toaster as ToasterSonner, toast as toastSonner } from 'sonner';
 import { twMerge } from 'tailwind-merge';
+
+import { useIsTouchScreen } from '@/lib/hooks';
 
 // -----------------------------------------------------------------------------
 // Component
@@ -85,11 +85,7 @@ const toast: ToastFactoryProps & ToastFactoryComposition = ({
 };
 
 const ToastCloseButton: React.FC<ToastCloseButtonProps> = ({ id, intent }) => {
-  const [mounted, setMounted] = useState<boolean>(false);
-
-  useEffect(() => setMounted(true), []);
-
-  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
+  const isTouchScreen = useIsTouchScreen();
 
   return (
     <button

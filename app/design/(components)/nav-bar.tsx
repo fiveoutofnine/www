@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { ChevronRight, Menu, X } from 'lucide-react';
 
 import { DESIGN_COMPONENT_PAGES, DESIGN_PAGES } from '@/lib/constants/site';
-import { useMediaQuery } from '@/lib/hooks/use-media-query';
+import { useMediaQuery } from '@/lib/hooks';
 
 import { Button, Drawer, IconButton } from '@/components/ui';
 

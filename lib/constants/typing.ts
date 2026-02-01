@@ -1,7 +1,6 @@
 /**
  * Random quotes that 5/9 typed pretty fast.
  */
-/* eslint-disable prettier/prettier */
 export const SHORT_QUOTES = [
   {
     text: 'pnpm build',
@@ -9,7 +8,7 @@ export const SHORT_QUOTES = [
     time: 0.308,
   },
   {
-    text: 'They don\'t know that we know they know we know.',
+    text: "They don't know that we know they know we know.",
     wpm: 291.2,
     time: 1.94,
   },
@@ -19,7 +18,7 @@ export const SHORT_QUOTES = [
     time: 1.631,
   },
   {
-    text: 'You don\'t know what\'s in store, but you know what you\'re here for.',
+    text: "You don't know what's in store, but you know what you're here for.",
     wpm: 266.5,
     time: 2.972,
   },
@@ -34,17 +33,17 @@ export const SHORT_QUOTES = [
     time: 0.321,
   },
   {
-    text: 'There are many things that I would like to say to you but I don\'t know how.',
+    text: "There are many things that I would like to say to you but I don't know how.",
     wpm: 247,
     time: 3.643,
   },
   {
-    text: 'I been doin\' this a long time. I ain\'t never said nothin\' to no cop.',
+    text: "I been doin' this a long time. I ain't never said nothin' to no cop.",
     wpm: 207.1,
     time: 3.94,
   },
   {
-    text: 'There is something about yourself that you don\'t know.',
+    text: "There is something about yourself that you don't know.",
     wpm: 252.2,
     time: 2.569,
   },
@@ -64,7 +63,7 @@ export const SHORT_QUOTES = [
     time: 3.154,
   },
   {
-    text: 'I\'m sure there are things you know that you don\'t even know you know.',
+    text: "I'm sure there are things you know that you don't even know you know.",
     wpm: 254.9,
     time: 3.248,
   },

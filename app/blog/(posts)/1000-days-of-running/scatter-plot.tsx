@@ -20,7 +20,7 @@ import { formatValueToPrecision } from '@/lib/utils';
 
 import { Tooltip } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 const OverviewScatterPlot: React.FC = () => {
@@ -96,11 +96,7 @@ const OverviewScatterPlot: React.FC = () => {
           margin={{ top: -1, left: -1, right: -1, bottom: -1 }}
           tabIndex={-1}
         >
-          <Scatter
-            dataKey="value"
-            /* @ts-expect-error The type for `Scatter` should be correct. */
-            shape={() => null}
-          />
+          <Scatter dataKey="value" shape={() => null} />
           <Line
             className="pointer-events-none"
             dataKey="ma"
@@ -159,8 +155,7 @@ const OverviewScatterPlot: React.FC = () => {
           />
           <Scatter
             dataKey="value"
-            /* @ts-expect-error The type for `Scatter` should be correct. */
-            shape={({ x, y }) => (
+            shape={({ x = 0, y = 0 }) => (
               <circle className="fill-gray-9/20" cx={x + 4.5} cy={y + 4.5} r="2" />
             )}
           />

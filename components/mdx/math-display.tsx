@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const MathDisplay: React.FC<JSX.IntrinsicElements['div']> = ({ className, ...rest }) => {
+const MathDisplay: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => {
   return (
     <div
       className={twMerge(

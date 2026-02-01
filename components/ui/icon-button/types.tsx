@@ -11,7 +11,7 @@ export type IconButtonVariantProps = VariantProps<typeof iconButtonVariants>;
 // Component props
 // -----------------------------------------------------------------------------
 
-export type IconButtonProps = JSX.IntrinsicElements['button'] &
+export type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   Omit<IconButtonVariantProps, 'variant' | 'intent'> &
   (
     | {

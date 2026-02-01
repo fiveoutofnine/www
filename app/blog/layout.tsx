@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 
-import Frame from './(components)/frame';
 import BlogNavBar from './(components)/nav-bar';
 import 'katex/dist/katex.min.css';
 
 import ContainerLayout from '@/components/layouts/container';
-import { Article } from '@/components/templates/mdx';
+import { Article } from '@/components/mdx';
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -66,7 +65,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <ContainerLayout className="relative flex max-w-3xl flex-col px-0 pb-6 pt-0">
       <BlogNavBar />
       <Article fullBleedCodeBlocks>{children}</Article>
-      <Frame />
     </ContainerLayout>
   );
 }

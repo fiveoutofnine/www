@@ -22,7 +22,6 @@ const publicClient = createPublicClient({
 // API
 // -----------------------------------------------------------------------------
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = validateQuery(idSchema, await params);
 
@@ -65,7 +64,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
         animation_url: tokenURIParsed.animation_url,
         attributes: tokenURIParsed.attributes,
       };
-    } catch (err) {
+    } catch {
       return NextResponse.json(
         { name: 'Not found', message: 'Token is nonexistent.' },
         { status: 404 },

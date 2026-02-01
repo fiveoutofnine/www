@@ -128,7 +128,7 @@ export const dropdownRadioItemStyles = [
   'data-[disabled]:text-gray-11',
 ];
 
-export const dropdownSeparatorStyles = ['-mx-1', 'my-1', 'h-px', 'bg-gray-6'];
+export const dropdownSeparatorStyles = ['-mx-1', 'my-1', 'border-t', 'border-gray-6'];
 
 export const dropdownSubContentStyles = [
   'text-gray-12',

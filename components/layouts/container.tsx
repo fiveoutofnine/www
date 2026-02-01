@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 // Props
 // -----------------------------------------------------------------------------
 
-type ContainerLayoutProps = JSX.IntrinsicElements['div'] & {
+type ContainerLayoutProps = React.HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode;
 };
 

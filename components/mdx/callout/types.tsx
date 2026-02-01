@@ -12,6 +12,6 @@ export type CalloutVariantProps = VariantProps<typeof calloutVariants>;
 // ---------------------------------------–-------------------------------------
 
 export type CalloutProps = CalloutVariantProps &
-  JSX.IntrinsicElements['div'] & {
+  React.HTMLAttributes<HTMLDivElement> & {
     icon?: React.FC<React.SVGProps<SVGSVGElement>>;
   };

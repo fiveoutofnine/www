@@ -25,7 +25,7 @@ const OverviewBarChart: React.FC = () => {
   const unit = LENGTH_UNITS[index];
 
   const [data, totalDays] = useMemo(() => {
-    let totalDays = 0;
+    let total = 0;
     const data = MONTHLY_MILEAGE.map((d) => {
       const date = d.time;
       const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
@@ -40,7 +40,8 @@ const OverviewBarChart: React.FC = () => {
             ((0xeefbb3 >> (month << 1)) & 3) +
             // Add 1 if it's a leap year and the month is February.
             ((year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)) && month === 1 ? 1 : 0);
-      totalDays += daysInMonth;
+      // eslint-disable-next-line react-hooks/immutability
+      total += daysInMonth;
 
       return {
         date: utcDate,
@@ -48,7 +49,7 @@ const OverviewBarChart: React.FC = () => {
       };
     });
 
-    return [data, totalDays];
+    return [data, total];
   }, [unit.scalar]);
 
   // We scale to calculate average monthly mileage.
@@ -106,10 +107,11 @@ const OverviewBarChart: React.FC = () => {
             />
             <RechartTooltip
               content={({ active, payload, label }) => {
-                const monthName = label
-                  ? label.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })
+                const date = label ? new Date(label) : null;
+                const monthName = date
+                  ? date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })
                   : '';
-                const year = label ? label.getUTCFullYear() : 0;
+                const year = date ? date.getUTCFullYear() : 0;
 
                 return payload && active && payload.length > 0 && payload[0].value ? (
                   <div
@@ -131,7 +133,6 @@ const OverviewBarChart: React.FC = () => {
             />
             <Bar
               dataKey="value"
-              /* @ts-expect-error The type for `Bar` should be correct. */
               shape={({ x, y, width, height }) => (
                 <path
                   className="fill-blue-9"

@@ -56,7 +56,7 @@ export const selectIconContainerVariants = cva(
       },
       intent: {
         none: [
-          'peer-data-[variant=primary]:text-white',
+          'peer-data-[variant=primary]:text-gray-12',
           'peer-data-[variant=secondary]:text-gray-11',
           'peer-data-[variant=outline]:text-gray-11',
           'peer-data-[variant=ghost]:text-gray-11',

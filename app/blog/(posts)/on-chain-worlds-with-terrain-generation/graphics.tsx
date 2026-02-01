@@ -1,5 +1,3 @@
-'use server';
-
 import Image from 'next/image';
 import React, { Fragment } from 'react';
 
@@ -8,7 +6,7 @@ import { createPublicClient, http } from 'viem';
 import { base } from 'viem/chains';
 
 import LogoIcon from '@/components/common/logo-icon';
-import { A } from '@/components/templates/mdx';
+import { A } from '@/components/mdx';
 
 // -----------------------------------------------------------------------------
 // Client
@@ -28,7 +26,7 @@ type GolfBase2NFTProps = {
   fallback?: string;
 };
 
-type TerrainTileProps = JSX.IntrinsicElements['svg'] & {
+type TerrainTileProps = React.SVGProps<SVGSVGElement> & {
   terrain:
     | 'Boreal Forest'
     | 'Desert'

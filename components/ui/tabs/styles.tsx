@@ -4,15 +4,18 @@ export const tabsContentStyles = [
   'text-sm',
   'p-3',
   'focus:outline-none',
-  'focus-visible:rounded-sm',
+  'focus-visible:rounded-none',
   'focus-visible:ring-2',
   'focus-visible:ring-blue-9',
+  'focus-visible:ring-inset',
 ];
 
 export const tabsListStyles = [
   'hide-scrollbar',
   'flex',
   'border-gray-6',
+  'focus:outline-none',
+  'focus:ring-0',
   'data-[orientation=horizontal]:h-11',
   'data-[orientation=horizontal]:items-center',
   'data-[orientation=horizontal]:border-b',

@@ -1,4 +1,4 @@
-export const BishopPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const BishopPiece: React.FC<React.SVGProps<SVGSVGElement>> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -20,7 +20,7 @@ export const BishopPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className,
   );
 };
 
-export const KingPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const KingPiece: React.FC<React.SVGProps<SVGSVGElement>> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -42,7 +42,7 @@ export const KingPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, .
   );
 };
 
-export const KnightPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const KnightPiece: React.FC<React.SVGProps<SVGSVGElement>> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -64,7 +64,7 @@ export const KnightPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className,
   );
 };
 
-export const PawnPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const PawnPiece: React.FC<React.SVGProps<SVGSVGElement>> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -86,7 +86,7 @@ export const PawnPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, .
   );
 };
 
-export const QueenPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const QueenPiece: React.FC<React.SVGProps<SVGSVGElement>> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"
@@ -108,7 +108,7 @@ export const QueenPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, 
   );
 };
 
-export const RookPiece: React.FC<JSX.IntrinsicElements['svg']> = ({ className, ...rest }) => {
+export const RookPiece: React.FC<React.SVGProps<SVGSVGElement>> = ({ className, ...rest }) => {
   return (
     <svg
       width="24"

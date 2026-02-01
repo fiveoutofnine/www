@@ -4,7 +4,8 @@ import LocalFont from 'next/font/local';
 
 import './globals.css';
 import Web3Provider from './web3-provider';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
+import { SpeedInsights as VercelSpeedInsights } from '@vercel/speed-insights/next';
 import clsx from 'clsx';
 
 import NavBar from '@/components/common/nav-bar';
@@ -100,9 +101,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <NavBar />
           <main className="relative flex grow flex-col">{children}</main>
         </Web3Provider>
+        <Toaster />
       </body>
-      <Toaster />
-      <Analytics />
+      <VercelAnalytics />
+      <VercelSpeedInsights />
     </html>
   );
 }

@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import { Quote } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
-import { A } from '@/components/templates/mdx';
+import { A } from '@/components/mdx';
 
 const Blockquote: React.FC<
-  JSX.IntrinsicElements['blockquote'] & { source?: { url?: string; label?: string } }
+  React.HTMLAttributes<HTMLQuoteElement> & { source?: { url?: string; label?: string } }
 > = ({ className, source, children, ...rest }) => {
   return (
     <blockquote

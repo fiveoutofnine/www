@@ -56,8 +56,19 @@ const TabsTrigger = forwardRef(
 
     // Destructure props. `asChild` is false-y here, but we destructure it out
     // because we don't want to pass it in if the trigger has an `href` prop.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { className, icon, stat, href, newTab, children, asChild, type, ...rest } = props;
+
+    const {
+      className,
+      icon,
+      stat,
+      href,
+      newTab,
+      children,
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      asChild,
+      type,
+      ...rest
+    } = props;
 
     if (href) {
       return (
@@ -74,8 +85,12 @@ const TabsTrigger = forwardRef(
             {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
             <span className={clsx(tabsTriggerContentStyles)}>
-              {icon ? <span className={clsx(tabsTriggerIconStyles)}>{icon}</span> : null}
-              <span>{children}</span>
+              {icon ? (
+                <span className={clsx(tabsTriggerIconStyles)} tab-trigger-left-icon="">
+                  {icon}
+                </span>
+              ) : null}
+              <span tab-trigger-content="">{children}</span>
               {stat !== undefined ? (
                 <Badge
                   className={clsx(tabsTriggerStatStyles)}
@@ -83,6 +98,7 @@ const TabsTrigger = forwardRef(
                   variant="secondary"
                   intent="none"
                   type="number"
+                  tab-trigger-stat=""
                 >
                   {stat}
                 </Badge>
@@ -101,8 +117,12 @@ const TabsTrigger = forwardRef(
         {...rest}
       >
         <span className={clsx(tabsTriggerContentStyles)}>
-          {icon ? <span className={clsx(tabsTriggerIconStyles)}>{icon}</span> : null}
-          <span className="group-data-[orientation=vertical]:mr-auto" tab-content-trigger="">
+          {icon ? (
+            <span className={clsx(tabsTriggerIconStyles)} tab-trigger-left-icon="">
+              {icon}
+            </span>
+          ) : null}
+          <span className="group-data-[orientation=vertical]:mr-auto" tab-trigger-content="">
             {children}
           </span>
           {stat !== undefined ? (
@@ -112,6 +132,7 @@ const TabsTrigger = forwardRef(
               variant="secondary"
               intent="none"
               type="number"
+              tab-trigger-stat=""
             >
               {stat}
             </Badge>

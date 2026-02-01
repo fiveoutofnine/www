@@ -1,8 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line
 const radixColors = require('@radix-ui/colors');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line
 const { fontFamily } = require('tailwindcss/defaultTheme');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line
 const { createPlugin } = require('windy-radix-palette');
 
 // -----------------------------------------------------------------------------
@@ -102,11 +102,17 @@ module.exports = {
     },
   },
   plugins: [
+    // eslint-disable-next-line
     require('@tailwindcss/aspect-ratio'),
+    // eslint-disable-next-line
     require('@tailwindcss/typography'),
+    // eslint-disable-next-line
     require('tailwindcss-percentage-width'),
+    // eslint-disable-next-line
     require('tailwindcss-animate'),
     colors.plugin,
   ],
-  presets: [require('windy-radix-typography')],
+  presets: [
+    // eslint-disable-next-line
+    require('windy-radix-typography')],
 };

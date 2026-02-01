@@ -11,7 +11,7 @@ type InputVariantProps = VariantProps<typeof inputVariants>;
 // Component props
 // -----------------------------------------------------------------------------
 
-export type InputProps = Omit<JSX.IntrinsicElements['input'], 'size'> &
+export type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> &
   InputVariantProps &
   (
     | {
@@ -33,6 +33,6 @@ export type InputProps = Omit<JSX.IntrinsicElements['input'], 'size'> &
         rightIcon?: undefined;
       }
   ) & {
-    containerProps?: JSX.IntrinsicElements['div'];
+    containerProps?: React.HTMLAttributes<HTMLDivElement>;
     containerized?: boolean;
   };
