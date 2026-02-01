@@ -26,7 +26,7 @@ const colors = createPlugin({
 // -----------------------------------------------------------------------------
 
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
