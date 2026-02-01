@@ -169,10 +169,11 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
           />
           <RechartTooltip
             content={({ active, payload, label }) => {
-              const monthName = label
-                ? label.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })
+              const date = label ? new Date(label) : null;
+              const monthName = date
+                ? date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })
                 : '';
-              const year = label ? label.getUTCFullYear() : 0;
+              const year = date ? date.getUTCFullYear() : 0;
 
               return payload && active && payload.length > 0 && payload[0].value ? (
                 <div
@@ -194,7 +195,6 @@ const RunningFeatureDetailBarChart: React.FC<RunningFeatureDetailBarChartProps> 
           />
           <Bar
             dataKey="value"
-            /* @ts-expect-error The type for `Bar` should be correct. */
             shape={({ x, y, width, height }) => (
               <path
                 className="fill-blue-9"

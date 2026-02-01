@@ -98,7 +98,6 @@ const OverviewScatterPlot: React.FC = () => {
         >
           <Scatter
             dataKey="value"
-            /* @ts-expect-error The type for `Scatter` should be correct. */
             shape={() => null}
           />
           <Line
@@ -159,8 +158,7 @@ const OverviewScatterPlot: React.FC = () => {
           />
           <Scatter
             dataKey="value"
-            /* @ts-expect-error The type for `Scatter` should be correct. */
-            shape={({ x, y }) => (
+            shape={({ x = 0, y = 0 }) => (
               <circle className="fill-gray-9/20" cx={x + 4.5} cy={y + 4.5} r="2" />
             )}
           />

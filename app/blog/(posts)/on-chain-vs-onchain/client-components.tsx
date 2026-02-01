@@ -332,12 +332,13 @@ export const MintsGraph: React.FC = () => {
         />
         <RechartTooltip
           content={({ active, payload, label }) => {
+            const numLabel = Number(label);
             const [hour, minute, second] = [
-              Math.round(label / 3600).toString(),
-              Math.round((label % 3600) / 60)
+              Math.round(numLabel / 3600).toString(),
+              Math.round((numLabel % 3600) / 60)
                 .toString()
                 .padStart(2, '0'),
-              (label % 60).toString().padStart(2, '0'),
+              (numLabel % 60).toString().padStart(2, '0'),
             ];
 
             const hasData = payload && active && payload.length > 0 && payload[0].value;
