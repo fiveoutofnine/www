@@ -11,7 +11,7 @@ import { BYTEBEAT_SONGS } from '@/lib/constants/bytebeat';
 import { Code } from '@/components/templates/mdx';
 import { ButtonGroup, CodeBlock, IconButton, Input, toast, Tooltip } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 // -----------------------------------------------------------------------------

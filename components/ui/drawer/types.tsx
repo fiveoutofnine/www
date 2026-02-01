@@ -7,16 +7,16 @@ import { Drawer as DrawerPrimitive } from 'vaul';
 export type DrawerCloseProps = React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Close>;
 
 export type DrawerContentProps = React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
-  contentContainerProps?: JSX.IntrinsicElements['div'];
+  contentContainerProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
 export type DrawerDescriptionProps = React.ComponentPropsWithoutRef<
   typeof DrawerPrimitive.Description
 >;
 
-export type DrawerFooterProps = JSX.IntrinsicElements['div'];
+export type DrawerFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
-export type DrawerHeaderProps = JSX.IntrinsicElements['div'];
+export type DrawerHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export type DrawerOverlayProps = React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>;
 

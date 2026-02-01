@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server';
 // Colors and fonts
 // -----------------------------------------------------------------------------
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 const ORANGE_2 = radixColors.orangeDark.orange2;

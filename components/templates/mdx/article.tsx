@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 // Props
 // -----------------------------------------------------------------------------
 
-type ArticleProps = JSX.IntrinsicElements['article'] & {
+type ArticleProps = React.HTMLAttributes<HTMLDivElement> & {
   fullBleedCodeBlocks?: boolean;
 };
 

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const Code: React.FC<JSX.IntrinsicElements['code']> = ({ className, ...rest }) => {
+const Code: React.FC<React.HTMLAttributes<HTMLModElement>> = ({ className, ...rest }) => {
   return (
     <code
       className={twMerge(

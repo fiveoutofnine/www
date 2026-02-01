@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 
 /**
  * React hook that returns a boolean value indicating whether the current
@@ -8,21 +8,18 @@ import { useEffect, useState } from 'react';
  * given media query string `query`.
  */
 export const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState<boolean>(false);
+  const subscribe = useCallback(
+    (callback: () => void) => {
+      const media = window.matchMedia(query);
+      media.addEventListener('change', callback);
+      return () => media.removeEventListener('change', callback);
+    },
+    [query],
+  );
 
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-
-    const listener = () => {
-      setMatches(media.matches);
-    };
-
-    media.addEventListener('change', listener);
-    return () => media.removeEventListener('change', listener);
-  }, [matches, query]);
-
-  return matches;
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
 };

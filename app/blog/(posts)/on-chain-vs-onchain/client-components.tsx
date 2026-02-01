@@ -20,7 +20,7 @@ import { encodeAbiParameters, hexToBigInt, keccak256 } from 'viem';
 
 import { Button, CodeBlock } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 export const HyphenNFT: React.FC<{ defaultSeed: bigint }> = ({ defaultSeed }) => {

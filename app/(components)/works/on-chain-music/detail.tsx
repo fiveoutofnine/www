@@ -22,7 +22,7 @@ import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
 
 import { ButtonGroup, IconButton, Table, toast, Tooltip } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 // -----------------------------------------------------------------------------
@@ -290,7 +290,7 @@ const OnChainMusicFeatureDetail: React.FC = () => {
 
 const OnChainMusicFeatureDetailProgressMeter: React.FC<{
   data: (typeof ON_CHAIN_SONGS)[number];
-  audioRef: React.RefObject<HTMLAudioElement>;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   setReplayable?: React.Dispatch<React.SetStateAction<boolean>>;
   onAudioEnd?: () => void;
 }> = ({ data, audioRef, setReplayable, onAudioEnd }) => {

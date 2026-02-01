@@ -25,7 +25,7 @@ import { getRandomMp4Url } from '@/lib/utils';
 
 import { Button, ButtonGroup, IconButton, Tooltip } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 // The audio clip to be played when the VHS loading sequence is initialized.
 const VHS_LOADING_SOUND_URL = 'https://assets.fiveoutofnine.com/vhs-loading.mp3';
@@ -451,7 +451,7 @@ const Mp4FeatureDetail: React.FC = () => {
 
 const Mp4FeatureDetailProgressText: React.FC<{
   className?: string;
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
 }> = ({ className = '', videoRef }) => {
   const [progress, setProgress] = useState<number>(0);
 
@@ -498,7 +498,7 @@ const Mp4FeatureDetailProgressText: React.FC<{
 
 const Mp4FeatureDetailProgressMeter: React.FC<{
   data: ReturnType<typeof getRandomMp4Url>;
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
 }> = ({ data, videoRef }) => {
   const [progress, setProgress] = useState<number>(0);
   const [expanded, setExpanded] = useState<boolean>(false);

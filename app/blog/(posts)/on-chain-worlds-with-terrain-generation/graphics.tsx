@@ -28,7 +28,7 @@ type GolfBase2NFTProps = {
   fallback?: string;
 };
 
-type TerrainTileProps = JSX.IntrinsicElements['svg'] & {
+type TerrainTileProps = React.SVGProps<SVGSVGElement> & {
   terrain:
     | 'Boreal Forest'
     | 'Desert'

@@ -71,7 +71,6 @@ export const FIVEOUTOFNINE_BYTEBEAT_SONGS: BytebeatSong[] = [
       name: 'fiveoutofnine',
       link: 'https://x.com/fiveoutofnine',
     },
-    // eslint-disable-next-line quotes
     source: `k=t>>10&127,a=k>>4,m=[693,144][a-5],j=a!=6,A=(r,g=29365,b=0)=>((t>>8&3)<3|g>>(k&15)&1)*.784*(t+b*sin(t/400))*2**((r&a>6?14:r)/12)&55,j*A(14,m)+(!!a+!j)*A(18+(a==4)-~~'444222299900202024744'[k-93],m)+2*A(+'466422269664222246642222!!11'[k-44>>1]+12,'倀嗵埵ߵ7'.charCodeAt(a-2),9)`,
     sampleRate: 8000,
   },
@@ -95,7 +94,6 @@ export const FIVEOUTOFNINE_BYTEBEAT_SONGS: BytebeatSong[] = [
       link: 'https://x.com/fiveoutofnine',
     },
     source:
-      // eslint-disable-next-line quotes
       `c='charCodeAt',u=(t>>18)%3,r=(t)=>t&256?t&255:256-(t&255),a=30*t*2**(("%'(*,(,,+'++*&**%'(*,(,1/,(,////"[c](t>>11&31)+[0,12,7,19][t>>16&3])/12-6),x=30*t*2**(("%,%,%,%,%,%,(/(/,3,3(0,3"[c](8*(t>>17&1?2:t>>15&1)+(t>>12&7)))/12-7),y=a*2,z=y*2,r(a)/(5-(u>1))+(u>0)/5*r(y)+(u>1)*(r(z)/5+r(x)/4)`,
     sampleRate: 8000,
     original: 'https://github.com/fiveoutofnine/curta-paradigm-2023',

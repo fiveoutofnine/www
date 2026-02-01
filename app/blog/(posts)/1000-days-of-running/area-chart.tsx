@@ -17,7 +17,7 @@ import {
 import { LENGTH_UNITS } from '@/lib/constants/units';
 import { formatValueToPrecision } from '@/lib/utils';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 const OverviewAreaChart: React.FC = () => {

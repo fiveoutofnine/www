@@ -22,10 +22,10 @@ export type FormItemContextValue = {
 
 export type FormControlProps = React.ComponentPropsWithoutRef<typeof Slot>;
 
-export type FormDescriptionProps = JSX.IntrinsicElements['p'];
+export type FormDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
 
-export type FormItemProps = JSX.IntrinsicElements['div'];
+export type FormItemProps = React.HTMLAttributes<HTMLDivElement>;
 
-export type FormLabelProps = JSX.IntrinsicElements['label'];
+export type FormLabelProps = React.LabelHTMLAttributes<HTMLLabelElement>;
 
-export type FormMessageProps = JSX.IntrinsicElements['p'];
+export type FormMessageProps = React.HTMLAttributes<HTMLParagraphElement>;

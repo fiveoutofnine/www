@@ -43,6 +43,7 @@ export async function GET(request: NextRequest) {
           if (metadataMatch) {
             description = metadataMatch[1];
           }
+          // eslint-disable-next-line no-unused-vars
         } catch (error) {
           // Silently fail if file can't be read or metadata not found.
         }

@@ -15,9 +15,9 @@ export type DialogDescriptionProps = React.ComponentPropsWithoutRef<
   typeof DialogPrimitive.Description
 >;
 
-export type DialogFooterProps = JSX.IntrinsicElements['div'];
+export type DialogFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
-export type DialogHeaderProps = JSX.IntrinsicElements['div'];
+export type DialogHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export type DialogOverlayProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>;
 

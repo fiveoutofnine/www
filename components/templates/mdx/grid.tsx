@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 // Component
 // -----------------------------------------------------------------------------
 
-const GridRoot: React.FC<JSX.IntrinsicElements['div']> = ({ className, children, ...rest }) => {
+const GridRoot: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, children, ...rest }) => {
   return (
     <div
       className={twMerge(
@@ -22,7 +22,7 @@ const GridRoot: React.FC<JSX.IntrinsicElements['div']> = ({ className, children,
   );
 };
 
-const GridCell: React.FC<JSX.IntrinsicElements['div']> = ({ className, children, ...rest }) => {
+const GridCell: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, children, ...rest }) => {
   return (
     <div
       className={twMerge(clsx('border-b border-r border-gray-6 p-3', className))}
@@ -34,7 +34,7 @@ const GridCell: React.FC<JSX.IntrinsicElements['div']> = ({ className, children,
   );
 };
 
-const GridCellTitle: React.FC<JSX.IntrinsicElements['div']> = ({
+const GridCellTitle: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className,
   children,
   ...rest

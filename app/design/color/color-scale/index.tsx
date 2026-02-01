@@ -1,6 +1,6 @@
 import ColorScaleSample from './sample';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 // -----------------------------------------------------------------------------

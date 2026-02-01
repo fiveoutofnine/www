@@ -20,7 +20,7 @@ import { formatValueToPrecision } from '@/lib/utils';
 
 import { Tooltip } from '@/components/ui';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 const OverviewScatterPlot: React.FC = () => {

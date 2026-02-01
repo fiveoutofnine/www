@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const A: React.FC<JSX.IntrinsicElements['a']> = ({ href, children, ...rest }) => {
+const A: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({ href, children, ...rest }) => {
   if (href && (href.startsWith('/') || href.startsWith('#'))) {
     return (
       <Link

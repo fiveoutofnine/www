@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 
   if (incr) {
     // Hash IP.
-    const ip = request.ip;
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
 
     // Update visitor count if `ip` is defined.
     let visitors = 0;

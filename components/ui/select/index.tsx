@@ -44,8 +44,8 @@ const Select = forwardRef(
           size={selectSize}
           data-variant={variant}
           data-disabled={disabled}
-          aria-disabled={disabled}
-          disabled={disabled}
+          aria-disabled={Boolean(disabled)}
+          disabled={Boolean(disabled)}
           ref={ref}
           select-content=""
           {...rest}

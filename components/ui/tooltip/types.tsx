@@ -20,8 +20,8 @@ export type TooltipProps = Omit<
     // Root props
     defaultOpen?: boolean;
     open?: boolean;
-    onOpenChange?: (open: boolean) => void;
     noDelay?: boolean;
+    onOpenChange?: (open: boolean) => void;
     // Remaining props
     content: React.ReactNode;
     triggerProps?: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>;

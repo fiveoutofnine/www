@@ -6,7 +6,7 @@ import { Link } from 'lucide-react';
 
 import { toast } from '@/components/ui';
 
-const H1: React.FC<JSX.IntrinsicElements['h1']> = ({ children, ...rest }) => {
+const H1: React.FC<React.HtmlHTMLAttributes<HTMLHeadingElement>> = ({ children, ...rest }) => {
   const pathname = usePathname();
 
   const stringChildren: string[] = (
