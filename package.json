@@ -66,7 +66,7 @@
     "viem": "^2.21.36",
     "wagmi": "^2.12.25",
     "zod": "^3.23.8",
-    "zustand": "^5.0.5"
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
