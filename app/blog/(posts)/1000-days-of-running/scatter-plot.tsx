@@ -96,10 +96,7 @@ const OverviewScatterPlot: React.FC = () => {
           margin={{ top: -1, left: -1, right: -1, bottom: -1 }}
           tabIndex={-1}
         >
-          <Scatter
-            dataKey="value"
-            shape={() => null}
-          />
+          <Scatter dataKey="value" shape={() => null} />
           <Line
             className="pointer-events-none"
             dataKey="ma"

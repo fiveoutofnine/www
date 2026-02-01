@@ -13,8 +13,14 @@ const DesignTabsFeature: React.FC = () => {
         <Tabs.Trigger value="1">Tab 1</Tabs.Trigger>
         <Tabs.Trigger value="2">Tab 2</Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="1">five out of nine</Tabs.Content>
-      <Tabs.Content value="2">five ninths</Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-b-[7px]" value="1">
+        five out of nine
+      </Tabs.Content>
+      {/* TODO: v4 migration: reference variable. */}
+      <Tabs.Content className="focus-visible:rounded-b-[7px]" value="2">
+        five ninths
+      </Tabs.Content>
     </Tabs.Root>
   );
 };

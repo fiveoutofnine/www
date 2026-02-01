@@ -85,8 +85,12 @@ const TabsTrigger = forwardRef(
             {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
             <span className={clsx(tabsTriggerContentStyles)}>
-              {icon ? <span className={clsx(tabsTriggerIconStyles)}>{icon}</span> : null}
-              <span>{children}</span>
+              {icon ? (
+                <span className={clsx(tabsTriggerIconStyles)} tab-trigger-left-icon="">
+                  {icon}
+                </span>
+              ) : null}
+              <span tab-trigger-content="">{children}</span>
               {stat !== undefined ? (
                 <Badge
                   className={clsx(tabsTriggerStatStyles)}
@@ -94,6 +98,7 @@ const TabsTrigger = forwardRef(
                   variant="secondary"
                   intent="none"
                   type="number"
+                  tab-trigger-stat=""
                 >
                   {stat}
                 </Badge>
@@ -112,8 +117,12 @@ const TabsTrigger = forwardRef(
         {...rest}
       >
         <span className={clsx(tabsTriggerContentStyles)}>
-          {icon ? <span className={clsx(tabsTriggerIconStyles)}>{icon}</span> : null}
-          <span className="group-data-[orientation=vertical]:mr-auto" tab-content-trigger="">
+          {icon ? (
+            <span className={clsx(tabsTriggerIconStyles)} tab-trigger-left-icon="">
+              {icon}
+            </span>
+          ) : null}
+          <span className="group-data-[orientation=vertical]:mr-auto" tab-trigger-content="">
             {children}
           </span>
           {stat !== undefined ? (
@@ -123,6 +132,7 @@ const TabsTrigger = forwardRef(
               variant="secondary"
               intent="none"
               type="number"
+              tab-trigger-stat=""
             >
               {stat}
             </Badge>
