@@ -6,7 +6,7 @@ import { createPublicClient, http } from 'viem';
 import { base } from 'viem/chains';
 
 import LogoIcon from '@/components/common/logo-icon';
-import { A } from '@/components/templates/mdx';
+import { A } from '@/components/mdx';
 
 // -----------------------------------------------------------------------------
 // Client

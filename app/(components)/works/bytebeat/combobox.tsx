@@ -8,7 +8,7 @@ import { BYTEBEAT_SONGS, FIVEOUTOFNINE_BYTEBEAT_SONGS } from '@/lib/constants/by
 import { useMediaQuery } from '@/lib/hooks';
 import { formatValueToPrecision } from '@/lib/utils';
 
-import { Code } from '@/components/templates/mdx';
+import { Code } from '@/components/mdx';
 import { Badge, Command, Drawer, IconButton, Popover, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------

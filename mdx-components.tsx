@@ -14,7 +14,7 @@ import {
   MathDisplay,
   P,
   ToastButton,
-} from '@/components/templates/mdx';
+} from '@/components/mdx';
 import { CodeBlock } from '@/components/ui';
 import type { CodeBlockLanguage, CodeBlockProps } from '@/components/ui/code-block/types';
 

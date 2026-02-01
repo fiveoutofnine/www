@@ -4,7 +4,7 @@ import BlogNavBar from './(components)/nav-bar';
 import 'katex/dist/katex.min.css';
 
 import ContainerLayout from '@/components/layouts/container';
-import { Article } from '@/components/templates/mdx';
+import { Article } from '@/components/mdx';
 
 // -----------------------------------------------------------------------------
 // Metadata

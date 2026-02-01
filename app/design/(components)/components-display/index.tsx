@@ -7,7 +7,7 @@ import prettier from 'prettier';
 import { twMerge } from 'tailwind-merge';
 
 import FiveoutofnineAvatar from '@/components/common/fiveoutofnine-avatar';
-import { ToastButton } from '@/components/templates/mdx';
+import { ToastButton } from '@/components/mdx';
 import {
   Badge,
   Button,

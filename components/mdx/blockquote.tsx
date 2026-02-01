@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { Quote } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
-import { A } from '@/components/templates/mdx';
+import { A } from '@/components/mdx';
 
 const Blockquote: React.FC<
   React.HTMLAttributes<HTMLQuoteElement> & { source?: { url?: string; label?: string } }

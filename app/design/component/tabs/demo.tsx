@@ -2,7 +2,7 @@
 
 import { Check, CircleDot, Code, GitMerge, GitPullRequestArrow } from 'lucide-react';
 
-import { A, Code as MDXCode } from '@/components/templates/mdx';
+import { A, Code as MDXCode } from '@/components/mdx';
 import { CodeBlock, Tabs } from '@/components/ui';
 
 export const TabsHorizontalDemo: React.FC<{ disabled?: boolean }> = ({ disabled = false }) => {

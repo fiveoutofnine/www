@@ -8,7 +8,7 @@ import { Check, ChevronFirst, Copy, Pause, Play } from 'lucide-react';
 
 import { BYTEBEAT_SONGS } from '@/lib/constants/bytebeat';
 
-import { Code } from '@/components/templates/mdx';
+import { Code } from '@/components/mdx';
 import { ButtonGroup, CodeBlock, IconButton, Input, toast, Tooltip } from '@/components/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
