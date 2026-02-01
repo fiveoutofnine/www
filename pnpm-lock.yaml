@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@farcaster/frame-sdk':
-        specifier: ^0.0.22
-        version: 0.0.22(typescript@5.9.3)(zod@3.25.76)
       '@mdx-js/loader':
         specifier: ^3.1.1
         version: 3.1.1
@@ -940,12 +937,6 @@ packages:
   '@ethereumjs/util@8.1.0':
     resolution: {integrity: sha512-zQ0IqbdX8FZ9aw11vP+dZkKDkS+kgIvQPHnSAXzP9pLu+Rfu3D3XEeLbicvoXJTYnhZiPmsZUxgdzXwNKxRPbA==}
     engines: {node: '>=14'}
-
-  '@farcaster/frame-core@0.0.21':
-    resolution: {integrity: sha512-VugoKVo7R/CV3hIHDd+4XDvV1rhSQ8CzXdr/DGzUmp9AeUDvKi+igUE/Ofb85BfK19qHWz0Rx239VdPEE7ZxMg==}
-
-  '@farcaster/frame-sdk@0.0.22':
-    resolution: {integrity: sha512-SeErhH85chPTz00fbRfRyHMeYTnedjOTTno8gNr+2qfcGC2lisukYaY9nY1so2SM7R3J3bQ8xVo35gq8AUI36Q==}
 
   '@floating-ui/core@1.7.3':
     resolution: {integrity: sha512-sGnvb5dmrJaKEZ+LDIpguvdX3bDlEllmv4/ClQ9awcmCZrlx5jQyyMWFM5kBI+EyNOCDDiKk8il0zeuX3Zlg/w==}
@@ -2783,9 +2774,6 @@ packages:
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
-  comlink@4.4.2:
-    resolution: {integrity: sha512-OxGdvBmJuNKSCMO4NTl1L47VRp6xn2wG4F/2hYzB6tiCb709otOxtEYCSvK80PtjODfXXZu8ds+Nw5kVCjqd2g==}
-
   comma-number@2.1.0:
     resolution: {integrity: sha512-fRcu1c+4yFLFp3tgranEkKPPWRlnkWQXr4p0KBL0WW9Kd2wmbKAoQ2R4rluFm4ubXCtXGybEaFB7r6YgPOnahQ==}
 
@@ -4392,14 +4380,6 @@ packages:
   own-keys@1.0.1:
     resolution: {integrity: sha512-qFOyK5PjiWZd+QQIh+1jhdb9LpxTF0qs7Pm8o5QHYZ0M3vKqSqzsZaEB6oWlxZ+q2sJBMI/Ktgd2N5ZwQoRHfg==}
     engines: {node: '>= 0.4'}
-
-  ox@0.4.4:
-    resolution: {integrity: sha512-oJPEeCDs9iNiPs6J0rTx+Y0KGeCGyCAA3zo94yZhm8G5WpOxrwUtn2Ie/Y8IyARSqqY/j9JTKA3Fc1xs1DvFnw==}
-    peerDependencies:
-      typescript: '>=5.4.0'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   ox@0.6.7:
     resolution: {integrity: sha512-17Gk/eFsFRAZ80p5eKqv89a57uXjd3NgIf1CaXojATPBuujVc/fQSVhBeAU9JCRB+k7J50WQAyWTxK19T9GgbA==}
@@ -6393,23 +6373,6 @@ snapshots:
       '@ethereumjs/rlp': 4.0.1
       ethereum-cryptography: 2.2.1
       micro-ftch: 0.3.1
-
-  '@farcaster/frame-core@0.0.21(typescript@5.9.3)':
-    dependencies:
-      ox: 0.4.4(typescript@5.9.3)(zod@3.25.76)
-      zod: 3.25.76
-    transitivePeerDependencies:
-      - typescript
-
-  '@farcaster/frame-sdk@0.0.22(typescript@5.9.3)(zod@3.25.76)':
-    dependencies:
-      '@farcaster/frame-core': 0.0.21(typescript@5.9.3)
-      comlink: 4.4.2
-      eventemitter3: 5.0.1
-      ox: 0.4.4(typescript@5.9.3)(zod@3.25.76)
-    transitivePeerDependencies:
-      - typescript
-      - zod
 
   '@floating-ui/core@1.7.3':
     dependencies:
@@ -9111,8 +9074,6 @@ snapshots:
 
   color-name@1.1.4: {}
 
-  comlink@4.4.2: {}
-
   comma-number@2.1.0: {}
 
   comma-separated-tokens@2.0.3: {}
@@ -11129,20 +11090,6 @@ snapshots:
       get-intrinsic: 1.3.0
       object-keys: 1.1.1
       safe-push-apply: 1.0.0
-
-  ox@0.4.4(typescript@5.9.3)(zod@3.25.76):
-    dependencies:
-      '@adraffy/ens-normalize': 1.11.1
-      '@noble/curves': 1.9.7
-      '@noble/hashes': 1.8.0
-      '@scure/bip32': 1.7.0
-      '@scure/bip39': 1.6.0
-      abitype: 1.1.1(typescript@5.9.3)(zod@3.25.76)
-      eventemitter3: 5.0.1
-    optionalDependencies:
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - zod
 
   ox@0.6.7(typescript@5.9.3)(zod@3.25.76):
     dependencies:
