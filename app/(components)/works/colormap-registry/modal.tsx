@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Fingerprint } from 'lucide-react';
 
 import { COLORMAPS } from '@/lib/constants/colormaps';
-import { useMediaQuery } from '@/lib/hooks/use-media-query';
+import { useMediaQuery } from '@/lib/hooks';
 
 import Vocab from '@/components/templates/vocab';
 import { Badge, CodeBlock, Dialog, Drawer, IconButton, Tooltip } from '@/components/ui';

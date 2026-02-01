@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { IconButton, Select, toast } from '..';
 import { codeBlockActionsVariants } from './styles';
 import type { CodeBlockActionsProps, CodeBlockLanguage } from './types';
 import { Check, Copy } from 'lucide-react';
+
+import { useIsTouchScreen } from '@/lib/hooks';
 
 // -----------------------------------------------------------------------------
 // Component
@@ -13,11 +15,8 @@ import { Check, Copy } from 'lucide-react';
 
 const CodeBlockActions: React.FC<CodeBlockActionsProps> = ({ code, switcher, inHeader }) => {
   const [copied, setCopied] = useState<boolean>(false);
-  const [mounted, setMounted] = useState<boolean>(false);
 
-  useEffect(() => setMounted(true), []);
-
-  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
+  const isTouchScreen = useIsTouchScreen();
 
   const copyToClipboard = () => {
     if (!copied) {

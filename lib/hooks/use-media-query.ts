@@ -7,7 +7,7 @@ import { useCallback, useSyncExternalStore } from 'react';
  * @returns Boolean value indicating whether the current window matches the
  * given media query string `query`.
  */
-export const useMediaQuery = (query: string) => {
+const useMediaQuery = (query: string) => {
   const subscribe = useCallback(
     (callback: () => void) => {
       const media = window.matchMedia(query);
@@ -23,3 +23,5 @@ export const useMediaQuery = (query: string) => {
     () => false,
   );
 };
+
+export default useMediaQuery;

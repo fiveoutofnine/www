@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { RotateCcw, RotateCw } from 'lucide-react';
 
+import { useIsTouchScreen } from '@/lib/hooks';
 import { getRandomWebPUrl } from '@/lib/utils';
 
 import { Tooltip } from '@/components/ui';
@@ -32,7 +33,6 @@ const OPACITY_FINAL = 1.0;
 // -----------------------------------------------------------------------------
 
 const WebPFeatureDetail: React.FC = () => {
-  const [mounted, setMounted] = useState<boolean>(false);
   const [image, setImage] = useState<ReturnType<typeof getRandomWebPUrl> | null>();
   const [nextImage, setNextImage] =
     useState<ReturnType<typeof getRandomWebPUrl>>(getRandomWebPUrl());
@@ -43,8 +43,8 @@ const WebPFeatureDetail: React.FC = () => {
 
   const pointerRef = useRef<{ x: number; y: number } | null>(null);
   const dragTimerRef = useRef<Date | null>(null);
+  const isTouchScreen = useIsTouchScreen();
 
-  useEffect(() => setMounted(true), []);
 
   // We need this to sync the state of the swipe to prevent blocking.
   useEffect(() => {
@@ -52,8 +52,6 @@ const WebPFeatureDetail: React.FC = () => {
       requestAnimationFrame(() => setLastExitDirection(null));
     }
   }, [animationState, lastExitDirection]);
-
-  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
 
   // ---------------------------------------------------------------------------
   // Animation styles

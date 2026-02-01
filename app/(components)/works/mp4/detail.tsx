@@ -2,6 +2,8 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 
+import { useIsTouchScreen } from '@/lib/hooks';
+
 import VHSNoise from './vhs-noise';
 import VHSOverlay from './vhs-overlay';
 import clsx from 'clsx';
@@ -37,7 +39,7 @@ const VHS_EJECT_SOUND_URL = 'https://assets.fiveoutofnine.com/vhs-eject.mp3';
 // -----------------------------------------------------------------------------
 
 const Mp4FeatureDetail: React.FC = () => {
-  const [mounted, setMounted] = useState<boolean>(false);
+  const isTouchScreen = useIsTouchScreen();
   const [mp4, setMp4] = useState<ReturnType<typeof getRandomMp4Url>>();
   const [initialized, setInitialized] = useState<number>(0);
   const [ejecting, setEjecting] = useState<boolean>(false);
@@ -45,8 +47,8 @@ const Mp4FeatureDetail: React.FC = () => {
   const [muted, setMuted] = useState<boolean>(false);
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
   const [showControls, setShowControls] = useState<boolean>(true);
-  const [vhsLoadingSound, setVhsLoadingSound] = useState<HTMLAudioElement | null>(null);
-  const [vhsEjectSound, setVhsEjectSound] = useState<HTMLAudioElement | null>(null);
+  const vhsLoadingSoundRef = useRef<HTMLAudioElement | null>(null);
+  const vhsEjectSoundRef = useRef<HTMLAudioElement | null>(null);
   const [overlayUiClicked, setOverlayUiClicked] = useState<{
     play: number;
     rewind: number;
@@ -55,12 +57,10 @@ const Mp4FeatureDetail: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    setMounted(true);
-
     // Create and preload the VHS loading sound.
     const loadingAudio = new Audio(VHS_LOADING_SOUND_URL);
     loadingAudio.preload = 'auto';
-    loadingAudio.addEventListener('canplaythrough', () => setVhsLoadingSound(loadingAudio));
+    loadingAudio.addEventListener('canplaythrough', () => vhsLoadingSoundRef.current = loadingAudio);
     loadingAudio.load();
 
     return () => {
@@ -69,21 +69,19 @@ const Mp4FeatureDetail: React.FC = () => {
     };
   }, []);
 
-  const isTouchScreen = mounted ? /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) : false;
-
   const initialize = () => {
     setInitialized(1); // Static.
 
     // Play the VHS loading sound.
-    if (vhsLoadingSound) {
-      vhsLoadingSound.currentTime = 0;
-      vhsLoadingSound.play();
+    if (vhsLoadingSoundRef.current) {
+      vhsLoadingSoundRef.current.currentTime = 0;
+      vhsLoadingSoundRef.current.play();
     }
 
     // Create and preload the VHS eject sound.
     const ejectAudio = new Audio(VHS_EJECT_SOUND_URL);
     ejectAudio.preload = 'auto';
-    ejectAudio.addEventListener('canplaythrough', () => setVhsEjectSound(ejectAudio));
+    ejectAudio.addEventListener('canplaythrough', () => vhsEjectSoundRef.current = ejectAudio);
     ejectAudio.load();
 
     setTimeout(() => setInitialized(2), 1900); // Blue.
@@ -97,9 +95,9 @@ const Mp4FeatureDetail: React.FC = () => {
   const eject = () => {
     setEjecting(true);
 
-    if (vhsEjectSound) {
-      vhsEjectSound.currentTime = 0;
-      vhsEjectSound.play();
+    if (vhsEjectSoundRef.current) {
+      vhsEjectSoundRef.current.currentTime = 0;
+      vhsEjectSoundRef.current.play();
     }
 
     setMp4(undefined);
@@ -359,7 +357,7 @@ const Mp4FeatureDetail: React.FC = () => {
           >
             <IconButton
               size="sm"
-              onClick={videoRef.current ? togglePlay : undefined}
+              onClick={mp4 ? togglePlay : undefined}
               disabled={!mp4}
               aria-label={mp4 && playing ? 'Pause' : 'Play'}
             >
@@ -388,7 +386,7 @@ const Mp4FeatureDetail: React.FC = () => {
         >
           <IconButton
             size="sm"
-            onClick={videoRef.current ? toggleMuted : undefined}
+            onClick={mp4 ? toggleMuted : undefined}
             disabled={!mp4}
             aria-label={!mp4 || muted ? 'Unmute' : 'Mute'}
           >
@@ -454,6 +452,7 @@ const Mp4FeatureDetailProgressText: React.FC<{
   videoRef: React.RefObject<HTMLVideoElement | null>;
 }> = ({ className = '', videoRef }) => {
   const [progress, setProgress] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
 
   // Update the time elapsed.
   useEffect(() => {
@@ -462,6 +461,7 @@ const Mp4FeatureDetailProgressText: React.FC<{
         const { currentTime: time, duration } = videoRef.current;
         if (!isNaN(duration) && isFinite(duration)) {
           setProgress(time);
+          setDuration(duration);
         }
       }
     };
@@ -471,8 +471,6 @@ const Mp4FeatureDetailProgressText: React.FC<{
 
     return () => clearInterval(interval);
   }, [videoRef]);
-
-  const duration = videoRef.current?.duration ?? 0;
 
   return (
     <div
@@ -502,6 +500,7 @@ const Mp4FeatureDetailProgressMeter: React.FC<{
 }> = ({ data, videoRef }) => {
   const [progress, setProgress] = useState<number>(0);
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [duration, setDuration] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressControls = useAnimation();
   const progressBackgroundControls = useAnimation();
@@ -516,6 +515,7 @@ const Mp4FeatureDetailProgressMeter: React.FC<{
       if (videoRef.current) {
         const { currentTime: time, duration } = videoRef.current;
         setProgress(Math.min(100 * (time / duration), 100));
+        setDuration(duration);
       }
     };
 
@@ -608,7 +608,7 @@ const Mp4FeatureDetailProgressMeter: React.FC<{
     });
   };
 
-  let timeElapsed = (progress / 100) * (videoRef.current?.duration ?? 0);
+  let timeElapsed = (progress / 100) * duration;
   if (Number.isNaN(timeElapsed)) timeElapsed = 0;
 
   return (

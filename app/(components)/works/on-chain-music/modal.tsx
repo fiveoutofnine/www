@@ -5,7 +5,7 @@ import { useState } from 'react';
 import clsx from 'clsx';
 
 import { ON_CHAIN_SONGS } from '@/lib/constants/on-chain-music';
-import { useMediaQuery } from '@/lib/hooks/use-media-query';
+import { useMediaQuery } from '@/lib/hooks';
 import { formatValueToPrecision } from '@/lib/utils';
 
 import Vocab from '@/components/templates/vocab';
