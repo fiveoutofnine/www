@@ -100,8 +100,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <NavBar />
           <main className="relative flex grow flex-col">{children}</main>
         </Web3Provider>
+        <Toaster />
       </body>
-      <Toaster />
       <Analytics />
     </html>
   );
