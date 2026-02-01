@@ -90,7 +90,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "jiti": "^2.6.1",
     "postcss": "^8.4.47",
-    "prettier": "^3.3.3",
+    "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.14",
     "tailwindcss-animate": "^1.0.7",
