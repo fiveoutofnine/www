@@ -59,7 +59,7 @@
     "remark-math": "^6.0.0",
     "sonner": "^2.0.7",
     "swr": "^2.4.0",
-    "tailwind-merge": "^2.5.4",
+    "tailwind-merge": "^3.4.0",
     "vaul": "^1.1.2",
     "viem": "^2.45.1",
     "wagmi": "^2.12.25",
@@ -71,7 +71,7 @@
     "@radix-ui/colors": "^3.0.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/typography": "^0.5.15",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/comma-number": "^2.1.2",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^25.2.0",
@@ -90,13 +90,11 @@
     "jiti": "^2.6.1",
     "postcss": "^8.4.47",
     "prettier": "^3.8.1",
-    "prettier-plugin-tailwindcss": "^0.5.14",
-    "tailwindcss": "^3.4.14",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4.1.18",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-percentage-width": "^1.0.3",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "windy-radix-palette": "2.0.0-beta.7",
-    "windy-radix-typography": "1.0.0-beta.0"
+    "typescript": "^5.9.3"
   }
 }
