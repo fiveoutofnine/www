@@ -3,6 +3,7 @@ import {
   BytebeatFeature,
   ChessFeature,
   ColormapRegistryFeature,
+  GraphicDesignFeature,
   Mp4Feature,
   OnChainMusicFeature,
   RunningFeature,
@@ -27,6 +28,7 @@ export default function Page() {
         <BytebeatFeature />
         <Mp4Feature />
         <WebPFeature />
+        <GraphicDesignFeature />
       </div>
     </ContainerLayout>
   );

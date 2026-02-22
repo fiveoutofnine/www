@@ -1,4 +1,5 @@
 export { default as ChessFeature } from './chess';
+export { default as GraphicDesignFeature } from './graphic-design';
 export { default as TxDotCoolFeature } from './tx-dot-cool';
 export { default as TypingFeature } from './typing';
 export { default as RunningFeature } from './running';
