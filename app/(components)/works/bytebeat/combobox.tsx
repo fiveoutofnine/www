@@ -2,14 +2,14 @@
 
 import { Fragment, useState } from 'react';
 
-import { FileQuestion, ListMusic } from 'lucide-react';
+import { Check, FileQuestion, ListMusic } from 'lucide-react';
 
 import { BYTEBEAT_SONGS, FIVEOUTOFNINE_BYTEBEAT_SONGS } from '@/lib/constants/bytebeat';
 import { useMediaQuery } from '@/lib/hooks';
 import { formatValueToPrecision } from '@/lib/utils';
 
 import { Code } from '@/components/mdx';
-import { Badge, Command, Drawer, IconButton, Popover, Tooltip } from '@/components/ui';
+import { Command, Drawer, IconButton, Popover, Tooltip } from '@/components/ui';
 
 // -----------------------------------------------------------------------------
 // Props
@@ -109,7 +109,7 @@ const BytebeatFeatureComboboxInternal: React.FC<BytebeatFeatureComboboxProps> = 
                 /* We form a composite `value` identifier w/ the author's name
                  * and the song's name, so that we can search for songs via the
                  * authors' names too. */
-                value={`${song.author.name}:${song.name}`}
+                value={`${song.id}_${song.author.name}:${song.name}`}
                 onSelect={() => onSelect?.(song)}
               >
                 <BytebeatFeatureComboboxInternalItem song={song} selected={selected} />
@@ -129,7 +129,7 @@ const BytebeatFeatureComboboxInternal: React.FC<BytebeatFeatureComboboxProps> = 
                 /* We form a composite `value` identifier w/ the author's name
                  * and the song's name, so that we can search for songs via the
                  * authors' names too. */
-                value={`${song.author.name}:${song.name}`}
+                value={`${song.id}_${song.author.name}:${song.name}`}
                 onSelect={() => onSelect?.(song)}
               >
                 <BytebeatFeatureComboboxInternalItem song={song} selected={selected} />
@@ -152,7 +152,7 @@ const BytebeatFeatureComboboxInternalItem: React.FC<{
         <span className="overflow-hidden text-ellipsis text-nowrap text-sm font-medium leading-5">
           {song.original ? (
             <a
-              className="w-fit p-0.5 text-blue-9 hover:underline"
+              className="w-fit text-blue-9 hover:underline"
               href={song.original}
               target="_blank"
               rel="noopener noreferrer"
@@ -168,7 +168,7 @@ const BytebeatFeatureComboboxInternalItem: React.FC<{
         <span className="flex items-center gap-1 overflow-hidden text-ellipsis text-xs font-normal leading-4 text-gray-11">
           {song.author.link ? (
             <a
-              className="w-fit p-0.5 underline decoration-dotted transition-colors hover:text-gray-12"
+              className="w-fit whitespace-nowrap underline decoration-dotted transition-colors hover:text-gray-12"
               href={song.author.link}
               target="_blank"
               rel="noopener noreferrer"
@@ -178,7 +178,7 @@ const BytebeatFeatureComboboxInternalItem: React.FC<{
               {song.author.name}
             </a>
           ) : (
-            <div className="w-fit">{song.author.name}</div>
+            <div className="w-fit whitespace-nowrap">{song.author.name}</div>
           )}
           <span className="flex items-center gap-0.5 overflow-hidden text-ellipsis">
             <Code
@@ -194,9 +194,9 @@ const BytebeatFeatureComboboxInternalItem: React.FC<{
         </span>
       </div>
       {selected ? (
-        <Badge className="min-w-fit" variant="outline" intent="info">
-          Selected
-        </Badge>
+        <span className="flex h-9 items-start pt-0.5">
+          <Check className="mb-auto size-4" />
+        </span>
       ) : null}
     </Fragment>
   );
