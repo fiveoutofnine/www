@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { AUDIO_PROCESSOR_CODE, AUDIO_PROCESSOR_NAME } from './audio-processor';
 import BytebeatFeatureCombobox from './combobox';
 import clsx from 'clsx';
 import { Check, ChevronFirst, Copy, Pause, Play } from 'lucide-react';
@@ -11,275 +12,34 @@ import { BYTEBEAT_SONGS } from '@/lib/constants/bytebeat';
 import { Code } from '@/components/mdx';
 import { ButtonGroup, CodeBlock, IconButton, Input, toast, Tooltip } from '@/components/ui';
 
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
+const AUDIO_CONTEXT_SAMPLE_RATE = 8000;
+const MAX_AUTOMATIC_RECOVERY_ATTEMPTS = 3;
+const PROCESSOR_HEALTH_CHECK_INTERVAL_MS = 2000;
+const PROCESSOR_HEALTH_MISSES_BEFORE_RECOVERY = 2;
+const PROCESSOR_RECOVERY_BACKOFF_MS = 250;
+const PROCESSOR_RECOVERY_RESET_MS = 5000;
+const PROCESSOR_REPORTS_PER_SECOND = 15;
+const PROCESSOR_STALL_TIMEOUT_MS = 3000;
+const SOURCE_UPDATE_DELAY_MS = 150;
+const VISUALIZATION_FRAMES_PER_SECOND = 30;
+
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const radixColors = require('@radix-ui/colors');
 
 // -----------------------------------------------------------------------------
-// Audio processor code
+// Types
 // -----------------------------------------------------------------------------
 
-const AUDIO_PROCESSOR_CODE = `// Modified from https://github.com/SthephanShinkufag/bytebeat-composer
-class BytebeatFeatureAudioProcessor extends AudioWorkletProcessor {
-  constructor(...args) {
-    super(...args);
-    this.audioSample = 0;
-    this.byteSample = 0;
-    this.errorDisplayed = true;
-    this.func = null;
-    this.getValues = (funcValue, ch) => (this.lastByteValue[ch] = funcValue & 255) / 127.5 - 1;
-    this.isPlaying = false;
-    this.playbackSpeed = 1;
-    this.lastByteValue = [null, null];
-    this.lastFuncValue = [null, null];
-    this.lastTime = -1;
-    this.outValue = [0, 0];
-    this.sampleRate = 8000;
-    this.sampleRatio = 1;
-    Object.seal(this);
-    BytebeatFeatureAudioProcessor.deleteGlobals();
-    BytebeatFeatureAudioProcessor.freezeGlobals();
-    this.port.addEventListener('message', (e) => this.receiveData(e.data));
-    this.port.start();
-  }
-
-  static deleteGlobals() {
-    for (let i = 0; i < 26; ++i) {
-      delete globalThis[String.fromCharCode(65 + i)];
-      delete globalThis[String.fromCharCode(97 + i)];
-    }
-    for (const name in globalThis) {
-      if (Object.prototype.hasOwnProperty.call(globalThis, name)) {
-        delete globalThis[name];
-      }
-    }
-  }
-
-  static freezeGlobals() {
-    Object.getOwnPropertyNames(globalThis).forEach((name) => {
-      const prop = globalThis[name];
-      const type = typeof prop;
-      if ((type === 'object' || type === 'function') && name !== 'globalThis') {
-        Object.freeze(prop);
-      }
-      if (type === 'function' && Object.prototype.hasOwnProperty.call(prop, 'prototype')) {
-        Object.freeze(prop.prototype);
-      }
-      Object.defineProperty(globalThis, name, { writable: false, configurable: false });
-    });
-  }
-
-  static getErrorMessage(err, time) {
-    const when = time === null ? 'compilation' : 't=' + time;
-    if (!(err instanceof Error)) {
-      return \`\${when} thrown: \${typeof err === 'string' ? err : JSON.stringify(err)}\`;
-    }
-    const { message, lineNumber, columnNumber } = err;
-    return \`\${when} error: \${typeof message === 'string' ? message : JSON.stringify(message)}\${
-      typeof lineNumber === 'number' && typeof columnNumber === 'number'
-        ? \` (at line \${lineNumber - 3}, character \${+columnNumber})\`
-        : ''
-    }\`;
-  }
-
-  process(inputs, [chData]) {
-    const chDataLength = chData[0].length;
-    if (!chDataLength || !this.isPlaying) return true;
-
-    let time = this.sampleRatio * this.audioSample;
-    let { byteSample } = this;
-    const drawBuffer = [];
-    const isDiagram = true;
-    for (let i = 0; i < chDataLength; ++i) {
-      time += this.sampleRatio;
-      const currentTime = Math.floor(time);
-      if (this.lastTime !== currentTime) {
-        let funcValue;
-        const currentSample = Math.floor(byteSample);
-        try {
-          funcValue = this.func(currentSample);
-        } catch (err) {
-          if (this.errorDisplayed) {
-            this.errorDisplayed = false;
-            this.sendData({
-              error: {
-                message: BytebeatFeatureAudioProcessor.getErrorMessage(err, currentSample),
-                isRuntime: true,
-              }
-            });
-          }
-          funcValue = NaN;
-        }
-        funcValue = Array.isArray(funcValue)
-          ? [funcValue[0], funcValue[1]]
-          : [funcValue, funcValue];
-        let hasValue = false;
-        let ch = 2;
-        while (ch--) {
-          try {
-            funcValue[ch] = +funcValue[ch];
-          } catch (err) {
-            funcValue[ch] = NaN;
-          }
-          if (isDiagram) {
-            if (!isNaN(funcValue[ch])) {
-              this.outValue[ch] = this.getValues(funcValue[ch], ch);
-            } else {
-              this.lastByteValue[ch] = NaN;
-            }
-            hasValue = true;
-            continue;
-          }
-          if (funcValue[ch] === this.lastFuncValue[ch]) {
-            continue;
-          } else if (!isNaN(funcValue[ch])) {
-            this.outValue[ch] = this.getValues(funcValue[ch], ch);
-            hasValue = true;
-          } else if (!isNaN(this.lastFuncValue[ch])) {
-            this.lastByteValue[ch] = NaN;
-            hasValue = true;
-          }
-        }
-        if (hasValue) {
-          drawBuffer.push({ t: currentSample, value: [...this.lastByteValue] });
-        }
-        byteSample += currentTime - this.lastTime;
-        this.lastFuncValue = funcValue;
-        this.lastTime = currentTime;
-      }
-      chData[0][i] = this.outValue[0];
-      chData[1][i] = this.outValue[1];
-    }
-    if (Math.abs(byteSample) > Number.MAX_SAFE_INTEGER) {
-      this.resetTime();
-      return true;
-    }
-    this.audioSample += chDataLength;
-    let isSend = false;
-    const data = {};
-    if (byteSample !== this.byteSample) {
-      isSend = true;
-      data.byteSample = this.byteSample = byteSample;
-    }
-    if (drawBuffer.length) {
-      isSend = true;
-      data.drawBuffer = drawBuffer;
-    }
-    if (isSend) {
-      this.sendData(data);
-    }
-    return true;
-  }
-
-  receiveData(data) {
-    if (data.function === 'setFunction') {
-      this.setFunction(data.codeText ?? '');
-    }
-    if (data.function === 'resetTime') {
-      this.resetTime();
-    }
-    if (data.byteSample !== undefined) {
-      this.byteSample = +data.byteSample || 0;
-      this.resetValues();
-    }
-    if (data.errorDisplayed === true) {
-      this.errorDisplayed = true;
-    }
-    if (data.isPlaying !== undefined) {
-      this.isPlaying = data.isPlaying;
-    }
-    if (data.playbackSpeed !== undefined) {
-      const sampleRatio = this.sampleRatio / this.playbackSpeed;
-      this.playbackSpeed = data.playbackSpeed;
-      this.setSampleRatio(sampleRatio);
-    }
-    if (data.mode !== undefined) {
-      this.mode = data.mode;
-      switch (data.mode) {
-        case 'Bytebeat':
-          this.getValues = (funcValue, ch) => (this.lastByteValue[ch] = funcValue & 255) / 127.5 - 1;
-          break;
-        default:
-          this.getValues = (funcValue, ch) => (this.lastByteValue[ch] = NaN);
-      }
-    }
-    if (data.setFunction !== undefined) {
-      this.setFunction(data.setFunction);
-    }
-    if (data.resetTime === true) {
-      this.resetTime();
-    }
-    if (data.sampleRate !== undefined) {
-      this.sampleRate = data.sampleRate;
-    }
-    if (data.sampleRatio !== undefined) {
-      this.setSampleRatio(data.sampleRatio);
-    }
-  }
-
-  sendData(data) {
-    this.port.postMessage(data);
-  }
-
-  resetTime() {
-    this.byteSample = 0;
-    this.resetValues();
-    this.sendData({ byteSample: 0 });
-  }
-
-  resetValues() {
-    this.audioSample = 0;
-    this.lastByteValue = this.lastFuncValue = [null, null];
-    this.lastTime = -1;
-    this.outValue = [0, 0];
-  }
-
-  setFunction(codeText) {
-    const params = Object.getOwnPropertyNames(Math);
-    const values = params.map((k) => Math[k]);
-    params.push('int', 'window');
-    values.push(Math.floor, globalThis);
-    BytebeatFeatureAudioProcessor.deleteGlobals();
-    let isCompiled = false;
-    const oldFunc = this.func;
-    try {
-      codeText = codeText
-        .trim()
-        .replace(
-          /^eval\\(unescape\\(escape(?:\`|\\('|\\("|\\(\`)(.*?)(?:\`|'\\)|"\\)|\`\\)).replace\\(\\/u\\(\\.\\.\\)\\/g,["'\`]\\$1%["'\`]\\)\\)\\)$/,
-          (match, m1) => unescape(escape(m1).replace(/u(..)/g, '$1%')),
-        );
-      this.func = new Function(...params, 't', \`return 0,\n\${codeText || 0};\`).bind(
-        globalThis,
-        ...values,
-      );
-      isCompiled = true;
-      this.func(0);
-    } catch (err) {
-      if (!isCompiled) {
-        this.func = oldFunc;
-      }
-      this.errorDisplayed = false;
-      this.sendData({
-        error: {
-          message: BytebeatFeatureAudioProcessor.getErrorMessage(err, isCompiled ? 0 : null),
-          isCompiled,
-        },
-        updateUrl: isCompiled,
-      });
-      return;
-    }
-    this.errorDisplayed = false;
-    this.sendData({ error: { message: '', isCompiled }, updateUrl: true });
-  }
-
-  setSampleRatio(sampleRatio) {
-    const timeOffset = Math.floor(this.sampleRatio * this.audioSample) - this.lastTime;
-    this.sampleRatio = sampleRatio * this.playbackSpeed;
-    this.lastTime = Math.floor(this.sampleRatio * this.audioSample) - timeOffset;
-  }
-}
-
-registerProcessor('bytebeat-feature-processor', BytebeatFeatureAudioProcessor);`;
+type BytebeatProcessorMessage = {
+  byteSample?: number;
+  error?: {
+    message?: string;
+  };
+};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -291,24 +51,42 @@ const BytebeatFeatureDetail: React.FC = () => {
   const [song, setSong] = useState<(typeof BYTEBEAT_SONGS)[0] | null>(BYTEBEAT_SONGS[0]);
   const [sampleRate, setSampleRate] = useState<string>(String(BYTEBEAT_SONGS[0].sampleRate));
   const [playing, setPlaying] = useState<boolean>(false);
-  const [time, setTime] = useState<number>(0);
+  const [transitioningPlayback, setTransitioningPlayback] = useState<boolean>(false);
   const [initialized, setInitialized] = useState<boolean>(false);
+  const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [errorCopied, setErrorCopied] = useState<boolean>(false);
   const [canvasSize, setCanvasSize] = useState<{ width: number; height: number }>({
     width: 0,
     height: 110,
   });
-  const [, setDrawBuffer] = useState([]);
   const [scrollTop, setScrollTop] = useState<number>(0);
   const codeBlockRef = useRef<HTMLDivElement | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const nodeRef = useRef<AudioWorkletNode | null>(null);
   const analyzerRef = useRef<AnalyserNode | null>(null);
+  const initializeAudioRef = useRef<() => Promise<boolean>>(async () => false);
+  const initializationPromiseRef = useRef<Promise<boolean> | null>(null);
+  const audioGenerationRef = useRef<number>(0);
+  const disposedRef = useRef<boolean>(false);
+  const sourceRef = useRef<string>(BYTEBEAT_SONGS[0].source);
+  const sampleRateRef = useRef<number>(BYTEBEAT_SONGS[0].sampleRate);
+  const playingRef = useRef<boolean>(false);
+  const timeRef = useRef<number>(0);
+  const hasStartedRef = useRef<boolean>(false);
+  const lastProcessorMessageRef = useRef<number>(0);
+  const processorHealthMissesRef = useRef<number>(0);
+  const automaticRecoveryAttemptsRef = useRef<number>(0);
+  const lastAutomaticRecoveryRef = useRef<number>(0);
+  const automaticRecoveryTimeoutRef = useRef<number | null>(null);
+  const playbackTransitionRef = useRef<boolean>(false);
+  const sourceUpdateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const animationFrameRef = useRef(null);
-  const waveformDataRef = useRef([]);
+  const timeElementRef = useRef<HTMLSpanElement | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const lastVisualizationFrameRef = useRef<number>(0);
+  const waveformDataRef = useRef<Uint8Array<ArrayBuffer> | null>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -337,159 +115,469 @@ const BytebeatFeatureDetail: React.FC = () => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    const initialize = async () => {
-      try {
-        // Create a `AudioContext`.
-        audioContextRef.current = new AudioContext({ sampleRate: 8000 });
-        analyzerRef.current = audioContextRef.current.createAnalyser();
-        analyzerRef.current.fftSize = 2048;
+    disposedRef.current = false;
 
-        // Create a URL blob containing the audio processor code to create a
-        // `AudioWorkletNode` w/.
-        const blob = new Blob([AUDIO_PROCESSOR_CODE], { type: 'application/javascript' });
-        const url = URL.createObjectURL(blob);
-        await audioContextRef.current.audioWorklet.addModule(url);
-        nodeRef.current = new window.AudioWorkletNode(
-          audioContextRef.current,
-          'bytebeat-feature-processor',
-          {
-            numberOfInputs: 0,
-            numberOfOutputs: 1,
-            outputChannelCount: [2],
-          },
-        );
-
-        nodeRef.current.port.onmessage = (event) => {
-          if (event.data.byteSample !== undefined) {
-            setTime(event.data.byteSample);
-          }
-          if (event.data.error && event.data.error.isCompiled) {
-            setError(event.data.error.message ?? '');
-          }
-          if (event.data.drawBuffer) {
-            // Store up to 4096 samples for the visualization's draw buffer.
-            setDrawBuffer((prevBuffer) => {
-              const newBuffer = prevBuffer.concat(event.data.drawBuffer).slice(-4096);
-              waveformDataRef.current = newBuffer;
-
-              return newBuffer;
-            });
-          }
-        };
-
-        nodeRef.current.connect(analyzerRef.current);
-        analyzerRef.current.connect(audioContextRef.current.destination);
-
-        URL.revokeObjectURL(url);
-        setInitialized(true);
-        // eslint-disable-next-line react-hooks/immutability
-        startVisualization();
-      } catch (error) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.error('Error initializing `AudioWorklet`:', error);
+    const closeAudioGraph = async (
+      context: AudioContext | null,
+      node: AudioWorkletNode | null,
+      analyzer: AnalyserNode | null,
+    ) => {
+      if (node) {
+        node.onprocessorerror = null;
+        node.port.onmessage = null;
+        try {
+          node.port.close();
+        } catch {
+          // Closing an already-detached worklet port is harmless.
+        }
+        try {
+          node.disconnect();
+        } catch {
+          // The node may already have been disconnected by the browser.
+        }
+      }
+      if (analyzer) {
+        try {
+          analyzer.disconnect();
+        } catch {
+          // The analyzer may already have been disconnected with its context.
+        }
+      }
+      if (context) {
+        context.onstatechange = null;
+        if (context.state !== 'closed') {
+          await context.close().catch(() => undefined);
         }
       }
     };
 
-    // Initialize the audio context, worklet, and processor.
-    initialize();
+    const queueAutomaticRecovery = (message: string) => {
+      if (disposedRef.current || automaticRecoveryTimeoutRef.current !== null) return;
+
+      const recoveryAttempt = ++automaticRecoveryAttemptsRef.current;
+      lastAutomaticRecoveryRef.current = performance.now();
+      processorHealthMissesRef.current = 0;
+      stopVisualization();
+      setInitialized(false);
+
+      if (recoveryAttempt > MAX_AUTOMATIC_RECOVERY_ATTEMPTS) {
+        const context = audioContextRef.current;
+        const node = nodeRef.current;
+        const analyzer = analyzerRef.current;
+        audioContextRef.current = null;
+        nodeRef.current = null;
+        analyzerRef.current = null;
+        playingRef.current = false;
+        setPlaying(false);
+        setError('The audio processor stopped repeatedly. Tap Play to reconnect.');
+        void closeAudioGraph(context, node, analyzer);
+        return;
+      }
+
+      setError(message);
+      automaticRecoveryTimeoutRef.current = window.setTimeout(
+        () => {
+          automaticRecoveryTimeoutRef.current = null;
+          if (disposedRef.current) return;
+          if (document.hidden) {
+            const context = audioContextRef.current;
+            const node = nodeRef.current;
+            const analyzer = analyzerRef.current;
+            audioContextRef.current = null;
+            nodeRef.current = null;
+            analyzerRef.current = null;
+            playingRef.current = false;
+            setPlaying(false);
+            setError('Audio paused while this page was hidden. Tap Play to reconnect.');
+            void closeAudioGraph(context, node, analyzer);
+            return;
+          }
+          void initializeAudioRef.current();
+        },
+        PROCESSOR_RECOVERY_BACKOFF_MS * 2 ** (recoveryAttempt - 1),
+      );
+    };
+
+    const initializeAudio = (): Promise<boolean> => {
+      if (disposedRef.current) return Promise.resolve(false);
+      if (initializationPromiseRef.current) return initializationPromiseRef.current;
+
+      const initializationPromise = (async () => {
+        const generation = ++audioGenerationRef.current;
+        const previousContext = audioContextRef.current;
+        const previousNode = nodeRef.current;
+        const previousAnalyzer = analyzerRef.current;
+
+        audioContextRef.current = null;
+        nodeRef.current = null;
+        analyzerRef.current = null;
+        setInitialized(false);
+        stopVisualization();
+        await closeAudioGraph(previousContext, previousNode, previousAnalyzer);
+
+        if (disposedRef.current || generation !== audioGenerationRef.current) return false;
+
+        let context: AudioContext | null = null;
+        let node: AudioWorkletNode | null = null;
+        let analyzer: AnalyserNode | null = null;
+        let moduleUrl: string | null = null;
+        let ready = false;
+
+        try {
+          try {
+            context = new AudioContext({
+              latencyHint: 'balanced',
+              sampleRate: AUDIO_CONTEXT_SAMPLE_RATE,
+            });
+          } catch {
+            // Some mobile browsers reject non-hardware sample rates.
+            context = new AudioContext({ latencyHint: 'balanced' });
+          }
+
+          const blob = new Blob([AUDIO_PROCESSOR_CODE], { type: 'application/javascript' });
+          moduleUrl = URL.createObjectURL(blob);
+          await context.audioWorklet.addModule(moduleUrl);
+
+          if (disposedRef.current || generation !== audioGenerationRef.current) return false;
+
+          analyzer = context.createAnalyser();
+          analyzer.fftSize = 2048;
+          analyzer.smoothingTimeConstant = 0;
+          node = new window.AudioWorkletNode(context, AUDIO_PROCESSOR_NAME, {
+            numberOfInputs: 0,
+            numberOfOutputs: 1,
+            outputChannelCount: [1],
+          });
+
+          node.port.onmessage = (event: MessageEvent<BytebeatProcessorMessage>) => {
+            if (disposedRef.current || nodeRef.current !== node) return;
+            const messageTime = performance.now();
+            lastProcessorMessageRef.current = messageTime;
+            processorHealthMissesRef.current = 0;
+            if (
+              automaticRecoveryAttemptsRef.current > 0 &&
+              messageTime - lastAutomaticRecoveryRef.current >= PROCESSOR_RECOVERY_RESET_MS
+            ) {
+              automaticRecoveryAttemptsRef.current = 0;
+            }
+
+            if (typeof event.data.byteSample === 'number') {
+              const nextTime = Math.trunc(event.data.byteSample);
+              timeRef.current = nextTime;
+              if (timeElementRef.current) timeElementRef.current.textContent = String(nextTime);
+
+              const nextHasStarted = nextTime !== 0;
+              if (hasStartedRef.current !== nextHasStarted) {
+                hasStartedRef.current = nextHasStarted;
+                setHasStarted(nextHasStarted);
+              }
+            }
+            if (event.data.error) {
+              setError(event.data.error.message ?? '');
+            }
+          };
+          node.onprocessorerror = () => {
+            if (disposedRef.current || nodeRef.current !== node) return;
+
+            queueAutomaticRecovery('The audio processor stopped unexpectedly. Reconnecting…');
+          };
+          context.onstatechange = () => {
+            if (disposedRef.current || audioContextRef.current !== context) return;
+
+            if (context?.state === 'running' && playingRef.current) {
+              startVisualization();
+            } else {
+              stopVisualization();
+            }
+            if (context?.state === 'closed') {
+              queueAutomaticRecovery('The audio context closed unexpectedly. Reconnecting…');
+            }
+          };
+
+          node.connect(analyzer);
+          analyzer.connect(context.destination);
+          audioContextRef.current = context;
+          nodeRef.current = node;
+          analyzerRef.current = analyzer;
+
+          if (sourceUpdateTimeoutRef.current) {
+            clearTimeout(sourceUpdateTimeoutRef.current);
+            sourceUpdateTimeoutRef.current = null;
+          }
+          node.port.postMessage({
+            setFunction: sourceRef.current,
+            sampleRatio: sampleRateRef.current / context.sampleRate,
+            reportInterval: Math.max(
+              128,
+              Math.round(context.sampleRate / PROCESSOR_REPORTS_PER_SECOND),
+            ),
+            byteSample: timeRef.current,
+            isPlaying: playingRef.current,
+          });
+          lastProcessorMessageRef.current = performance.now();
+
+          setInitialized(true);
+
+          if (playingRef.current) {
+            try {
+              if (context.state !== 'running') await context.resume();
+            } catch {
+              // A fresh context can require another user gesture on mobile.
+            }
+
+            if (context.state === 'running') {
+              startVisualization();
+            } else {
+              playingRef.current = false;
+              setPlaying(false);
+              node.port.postMessage({ isPlaying: false });
+            }
+          }
+
+          ready = true;
+          return true;
+        } catch (initializationError) {
+          if (!disposedRef.current && generation === audioGenerationRef.current) {
+            audioContextRef.current = null;
+            nodeRef.current = null;
+            analyzerRef.current = null;
+            playingRef.current = false;
+            setPlaying(false);
+            setInitialized(false);
+            setError('The audio processor could not start. Tap Play to try again.');
+          }
+          if (process.env.NODE_ENV !== 'production') {
+            console.error('Error initializing `AudioWorklet`:', initializationError);
+          }
+          return false;
+        } finally {
+          if (moduleUrl) URL.revokeObjectURL(moduleUrl);
+          if (!ready) await closeAudioGraph(context, node, analyzer);
+        }
+      })();
+
+      initializationPromiseRef.current = initializationPromise;
+      const clearInitializationPromise = () => {
+        if (initializationPromiseRef.current === initializationPromise) {
+          initializationPromiseRef.current = null;
+        }
+      };
+      void initializationPromise.then(clearInitializationPromise, clearInitializationPromise);
+
+      return initializationPromise;
+    };
+
+    initializeAudioRef.current = initializeAudio;
+    void initializeAudio();
+
+    const resumeAfterInterruption = async () => {
+      if (disposedRef.current || document.hidden || !playingRef.current) return;
+
+      const context = audioContextRef.current;
+      if (!context || context.state === 'closed') {
+        void initializeAudioRef.current();
+        return;
+      }
+
+      try {
+        if (context.state !== 'running') await context.resume();
+      } catch {
+        queueAutomaticRecovery('Audio could not resume after an interruption. Reconnecting…');
+        return;
+      }
+
+      if (audioContextRef.current === context && context.state === 'running') {
+        nodeRef.current?.port.postMessage({ isPlaying: true });
+        lastProcessorMessageRef.current = performance.now();
+        processorHealthMissesRef.current = 0;
+        startVisualization();
+      } else if (audioContextRef.current === context) {
+        queueAutomaticRecovery('Audio remained interrupted. Reconnecting…');
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopVisualization();
+      } else {
+        void resumeAfterInterruption();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pageshow', resumeAfterInterruption);
+    const healthCheckInterval = window.setInterval(() => {
+      const context = audioContextRef.current;
+      if (
+        disposedRef.current ||
+        document.hidden ||
+        !playingRef.current ||
+        context?.state !== 'running'
+      ) {
+        return;
+      }
+      if (performance.now() - lastProcessorMessageRef.current > PROCESSOR_STALL_TIMEOUT_MS) {
+        ++processorHealthMissesRef.current;
+        if (processorHealthMissesRef.current >= PROCESSOR_HEALTH_MISSES_BEFORE_RECOVERY) {
+          queueAutomaticRecovery('The audio processor stopped responding. Reconnecting…');
+        }
+      } else {
+        processorHealthMissesRef.current = 0;
+      }
+    }, PROCESSOR_HEALTH_CHECK_INTERVAL_MS);
 
     return () => {
-      if (nodeRef.current) nodeRef.current.disconnect();
-      if (audioContextRef.current) audioContextRef.current.close();
+      disposedRef.current = true;
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- Invalidate pending async setup.
+      ++audioGenerationRef.current;
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pageshow', resumeAfterInterruption);
+      window.clearInterval(healthCheckInterval);
+      if (automaticRecoveryTimeoutRef.current !== null) {
+        window.clearTimeout(automaticRecoveryTimeoutRef.current);
+        automaticRecoveryTimeoutRef.current = null;
+      }
+      if (sourceUpdateTimeoutRef.current) clearTimeout(sourceUpdateTimeoutRef.current);
+      sourceUpdateTimeoutRef.current = null;
+      initializationPromiseRef.current = null;
+      initializeAudioRef.current = async () => false;
+      stopVisualization();
+
+      const context = audioContextRef.current;
+      const node = nodeRef.current;
+      const analyzer = analyzerRef.current;
+      audioContextRef.current = null;
+      nodeRef.current = null;
+      analyzerRef.current = null;
+      void closeAudioGraph(context, node, analyzer);
     };
   }, []);
-
-  // Call `initializeProcessor` after the node is created and connected.
-  useEffect(() => {
-    const initializeProcessor = () => {
-      if (!nodeRef.current) return;
-
-      // First set the initial function
-      nodeRef.current.port.postMessage({
-        function: 'setFunction',
-        codeText: source,
-      });
-
-      // Then set up other parameters
-      nodeRef.current.port.postMessage({
-        sampleRate: 8000,
-        playbackSpeed: 1,
-      });
-    };
-
-    if (initialized && nodeRef.current) initializeProcessor();
-  }, [initialized, source]);
 
   // ---------------------------------------------------------------------------
   // Audio processor message posting
   // ---------------------------------------------------------------------------
 
   const handlePlay = async () => {
-    if (!initialized || !nodeRef.current) return;
+    if (playbackTransitionRef.current) return;
+
+    playbackTransitionRef.current = true;
+    setTransitioningPlayback(true);
+    let context = audioContextRef.current;
 
     try {
-      // Resume audio context if needed.
-      if (audioContextRef.current?.state === 'suspended') {
-        await audioContextRef.current.resume();
+      if (automaticRecoveryTimeoutRef.current !== null) {
+        window.clearTimeout(automaticRecoveryTimeoutRef.current);
+        automaticRecoveryTimeoutRef.current = null;
+        playingRef.current = false;
+        setPlaying(false);
+        await initializeAudioRef.current();
+        context = audioContextRef.current;
       }
+      automaticRecoveryAttemptsRef.current = 0;
+      processorHealthMissesRef.current = 0;
 
-      // Toggle playback state.
-      nodeRef.current.port.postMessage({ isPlaying: !playing });
-      setPlaying(!playing);
-    } catch (error) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Error during playback:', error);
+      let node = nodeRef.current;
+      if (!context || !node || context.state === 'closed') {
+        if (!(await initializeAudioRef.current())) return;
+        context = audioContextRef.current;
+        node = nodeRef.current;
       }
+      if (!context || !node) return;
+
+      const isInterrupted = playingRef.current && context.state !== 'running';
+      const nextPlaying = isInterrupted || !playingRef.current;
+
+      if (nextPlaying) {
+        playingRef.current = true;
+        if (context.state !== 'running') await context.resume();
+
+        if (context.state !== 'running') {
+          playingRef.current = false;
+          if (!(await initializeAudioRef.current())) return;
+          context = audioContextRef.current;
+          node = nodeRef.current;
+          if (!context || !node) return;
+          playingRef.current = true;
+          if (context.state !== 'running') await context.resume();
+        }
+        if (context.state !== 'running') throw new Error('Audio context did not resume.');
+
+        node.port.postMessage({ isPlaying: true });
+        lastProcessorMessageRef.current = performance.now();
+        setPlaying(true);
+        startVisualization();
+      } else {
+        playingRef.current = false;
+        node.port.postMessage({ isPlaying: false });
+        setPlaying(false);
+        stopVisualization();
+        if (context.state === 'running') await context.suspend();
+      }
+    } catch (playbackError) {
+      playingRef.current = false;
+      setPlaying(false);
+      stopVisualization();
+      await initializeAudioRef.current();
+      setError('Audio playback was interrupted. Tap Play to reconnect.');
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Error during playback:', playbackError);
+      }
+    } finally {
+      playbackTransitionRef.current = false;
+      if (!disposedRef.current) setTransitioningPlayback(false);
     }
   };
 
   const resetPlay = () => {
-    if (!initialized || !nodeRef.current) return;
+    timeRef.current = 0;
+    if (timeElementRef.current) timeElementRef.current.textContent = '0';
+    if (hasStartedRef.current) {
+      hasStartedRef.current = false;
+      setHasStarted(false);
+    }
+    clearVisualization();
 
     try {
-      // Toggle playback state.
-      nodeRef.current.port.postMessage({ function: 'resetTime' });
-      setTime(0);
-    } catch (error) {
+      nodeRef.current?.port.postMessage({ resetTime: true });
+    } catch (playbackError) {
       if (process.env.NODE_ENV !== 'production') {
-        console.error('Error during playback:', error);
+        console.error('Error during playback:', playbackError);
       }
     }
   };
 
   const handleSourceChange = (newSource: string, nullifySong?: boolean) => {
-    // Always apply the changes locally first.
+    sourceRef.current = newSource;
     setSource(newSource);
-    if (!initialized || !nodeRef.current) return;
-
-    // Post the new function to the audio processor.
-    nodeRef.current.port.postMessage({
-      function: 'setFunction',
-      codeText: newSource,
-    });
-
-    // Nullify song if `nullifySong`.
     if (nullifySong) setSong(null);
+
+    if (sourceUpdateTimeoutRef.current) clearTimeout(sourceUpdateTimeoutRef.current);
+    sourceUpdateTimeoutRef.current = null;
+
+    const postSource = () => {
+      sourceUpdateTimeoutRef.current = null;
+      nodeRef.current?.port.postMessage({ setFunction: sourceRef.current });
+    };
+
+    if (nullifySong) {
+      sourceUpdateTimeoutRef.current = setTimeout(postSource, SOURCE_UPDATE_DELAY_MS);
+    } else {
+      postSource();
+    }
   };
 
   const handleSampleRateChange = (newSampleRate: string, nullifySong?: boolean) => {
-    // Always apply the changes locally first.
     setSampleRate(newSampleRate);
-    if (!initialized || !nodeRef.current) return;
-
-    // Parse the sample rate.
-    let sampleRate = Number(newSampleRate);
-    if (Number.isNaN(sampleRate) || sampleRate < 0) sampleRate = 8000;
-
-    // Post the new sample rate to the audio processor.
-    nodeRef.current.port.postMessage({
-      sampleRate,
-      sampleRatio: sampleRate / (audioContextRef.current?.sampleRate ?? 1),
-    });
-
-    // Nullify song if `nullifySong`.
     if (nullifySong) setSong(null);
+
+    let nextSampleRate = Number(newSampleRate);
+    if (!Number.isFinite(nextSampleRate) || nextSampleRate <= 0) nextSampleRate = 8000;
+    sampleRateRef.current = nextSampleRate;
+
+    const context = audioContextRef.current;
+    if (context && nodeRef.current) {
+      nodeRef.current.port.postMessage({ sampleRatio: nextSampleRate / context.sampleRate });
+    }
   };
 
   const handleSongChange = (song: (typeof BYTEBEAT_SONGS)[0]) => {
@@ -509,79 +597,80 @@ const BytebeatFeatureDetail: React.FC = () => {
 
   // Keep canvas size updated.
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
     const updateCanvasSize = () => {
-      if (containerRef.current) {
-        setCanvasSize({ width: containerRef.current.offsetWidth, height: 110 });
-      }
+      setCanvasSize({ width: container.offsetWidth, height: 110 });
     };
 
     updateCanvasSize();
-
-    window.addEventListener('resize', updateCanvasSize);
-    return () => window.removeEventListener('resize', updateCanvasSize);
+    const resizeObserver = new ResizeObserver(updateCanvasSize);
+    resizeObserver.observe(container);
+    return () => resizeObserver.disconnect();
   }, []);
 
-  const startVisualization = () => {
-    if (!canvasRef.current || !analyzerRef.current) return;
-
+  const clearVisualization = () => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const context = canvas?.getContext('2d');
+    if (!canvas || !context) return;
 
-    const draw = () => {
-      // @ts-expect-error We're just requesting an animation frame for the
-      // sound visualization here.
-      animationFrameRef.current = requestAnimationFrame(draw);
+    context.fillStyle = 'black';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  };
 
-      // Clear canvas.
-      ctx.fillStyle = 'black';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const stopVisualization = () => {
+    if (animationFrameRef.current !== null) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+    lastVisualizationFrameRef.current = 0;
+  };
 
-      const currentBuffer = waveformDataRef.current as { t: number; value: [number, number] }[];
+  const startVisualization = () => {
+    if (animationFrameRef.current !== null || !playingRef.current || document.hidden) return;
 
-      if (currentBuffer && currentBuffer.length > 0) {
-        ctx.beginPath();
-        ctx.strokeStyle = radixColors.blueDark.blue9;
-        ctx.lineWidth = 1;
-
-        // Draw the waveform.
-        for (let i = 0; i < currentBuffer.length; ++i) {
-          // Get the time value to draw left to right.
-          const t = currentBuffer[i].t % 4096;
-          const x = (t / 4096) * canvas.width;
-          const sample = currentBuffer[i] as { t: number; value: [number, number] };
-
-          if (sample && sample.value && !isNaN(sample.value[0]) && !isNaN(sample.value[1])) {
-            // Average the 2 channels' values.
-            const value = (sample.value[0] + sample.value[1]) / 2;
-            const y = canvas.height * (1 - value / 255);
-            // End the stroke if we've reached the end.
-            if (t === 0) {
-              ctx.stroke();
-              ctx.beginPath();
-              ctx.strokeStyle = radixColors.blueDark.blue9;
-              ctx.lineWidth = 1;
-            } else {
-              ctx.lineTo(x, y);
-            }
-          }
-        }
-
-        ctx.stroke();
-
-        // Draw scanning cursor.
-        const cursorT = currentBuffer[currentBuffer.length - 1].t % 4096;
-        const cursorX = (cursorT / 4096) * canvas.width;
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(cursorX, 0);
-        ctx.lineTo(cursorX, canvas.height);
-        ctx.stroke();
+    const draw = (frameTime: number) => {
+      if (!playingRef.current || document.hidden) {
+        animationFrameRef.current = null;
+        return;
       }
+
+      animationFrameRef.current = requestAnimationFrame(draw);
+      if (frameTime - lastVisualizationFrameRef.current < 1000 / VISUALIZATION_FRAMES_PER_SECOND) {
+        return;
+      }
+      lastVisualizationFrameRef.current = frameTime;
+
+      const analyzer = analyzerRef.current;
+      const canvas = canvasRef.current;
+      const context = canvas?.getContext('2d');
+      if (!analyzer || !canvas || !context || canvas.width === 0) return;
+
+      if (!waveformDataRef.current || waveformDataRef.current.length !== analyzer.fftSize) {
+        waveformDataRef.current = new Uint8Array(analyzer.fftSize);
+      }
+      analyzer.getByteTimeDomainData(waveformDataRef.current);
+
+      context.fillStyle = 'black';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.beginPath();
+      context.strokeStyle = radixColors.blueDark.blue9;
+      context.lineWidth = 1;
+
+      const pointCount = Math.min(canvas.width, waveformDataRef.current.length);
+      const sampleStep = waveformDataRef.current.length / pointCount;
+      const pointSpan = Math.max(pointCount - 1, 1);
+      for (let x = 0; x < pointCount; ++x) {
+        const value = waveformDataRef.current[Math.floor(x * sampleStep)] / 255;
+        const y = value * canvas.height;
+        if (x === 0) context.moveTo(0, y);
+        else context.lineTo((x / pointSpan) * canvas.width, y);
+      }
+      context.stroke();
     };
 
-    draw();
+    animationFrameRef.current = requestAnimationFrame(draw);
   };
 
   // ---------------------------------------------------------------------------
@@ -628,7 +717,7 @@ const BytebeatFeatureDetail: React.FC = () => {
               <IconButton
                 size="sm"
                 onClick={resetPlay}
-                disabled={!initialized || !nodeRef.current || time === 0}
+                disabled={!initialized || !nodeRef.current || !hasStarted}
                 aria-label="Reset"
               >
                 <ChevronFirst />
@@ -642,7 +731,7 @@ const BytebeatFeatureDetail: React.FC = () => {
               <IconButton
                 size="sm"
                 onClick={handlePlay}
-                disabled={!initialized || !nodeRef.current}
+                disabled={!mounted || transitioningPlayback}
                 aria-label={playing ? 'Pause' : 'Play'}
               >
                 {playing ? (
@@ -665,7 +754,7 @@ const BytebeatFeatureDetail: React.FC = () => {
             value={sampleRate}
             onChange={(e) => handleSampleRateChange(e.target.value, true)}
             placeholder="8000"
-            disabled={!initialized || !nodeRef.current}
+            disabled={!initialized}
             aria-label="Sample rate"
           />
           <BytebeatFeatureCombobox value={song} onSelect={handleSongChange} />
@@ -698,17 +787,17 @@ const BytebeatFeatureDetail: React.FC = () => {
                     'linear-gradient(to right, transparent, black 0.5rem, black calc(100% - 0.5rem), transparent)',
                 }}
               >
-                {!initialized || !nodeRef.current ? (
+                {error.length > 0 ? (
+                  <span className="font-mono text-xs text-red-11">{error}</span>
+                ) : !initialized || !nodeRef.current ? (
                   <span className="animate-pulse font-mono text-xs text-green-11">
                     Initializing processor...
                   </span>
-                ) : error.length > 0 ? (
-                  <span className="font-mono text-xs text-red-11">{error}</span>
                 ) : (
                   <span className="font-mono text-xs text-gray-12 animate-in fade-in">
                     <span>t</span>
                     <span className="text-gray-11">=</span>
-                    <span>{time}</span>
+                    <span ref={timeElementRef}>{timeRef.current}</span>
                   </span>
                 )}
               </div>

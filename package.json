@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:bytebeat": "tsx --test 'app/(components)/works/bytebeat/audio-processor.test.ts'"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
