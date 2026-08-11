@@ -31,7 +31,13 @@ const OPACITY_FINAL = 1.0;
 // Types
 // -----------------------------------------------------------------------------
 
-type AnimationState = 'idle' | 'swiping' | 'exiting-left' | 'exiting-right' | 'returning-to-center';
+type AnimationState =
+  | 'idle'
+  | 'swiping'
+  | 'waiting-for-next'
+  | 'exiting-left'
+  | 'exiting-right'
+  | 'returning-to-center';
 
 type CarouselCard = {
   id: number;
@@ -68,6 +74,7 @@ const WebPFeatureDetail: React.FC = () => {
   const animationStateRef = useRef<AnimationState>('idle');
   const activeGestureRef = useRef<ActiveGesture | null>(null);
   const latestSwipeRef = useRef({ deltaX: 0, timestamp: 0 });
+  const pendingExitRef = useRef<'exiting-left' | 'exiting-right' | null>(null);
 
   // Initialize the next card on the client to avoid a hydration mismatch from
   // `Math.random()` in `getRandomWebPUrl`.
@@ -100,6 +107,7 @@ const WebPFeatureDetail: React.FC = () => {
       // A swipe cannot normally begin before this card is ready, but recover
       // the outgoing card if an image disappears during the transition.
       if (!promotedCard?.ready || !promotedCard.image) {
+        pendingExitRef.current = null;
         latestSwipeRef.current = { deltaX: 0, timestamp: 0 };
         animationStateRef.current = 'returning-to-center';
         setSwipeAmount(0);
@@ -118,6 +126,7 @@ const WebPFeatureDetail: React.FC = () => {
       ];
 
       cardsRef.current = nextCards;
+      pendingExitRef.current = null;
       latestSwipeRef.current = { deltaX: 0, timestamp: 0 };
       animationStateRef.current = 'idle';
       setCards(nextCards);
@@ -127,6 +136,7 @@ const WebPFeatureDetail: React.FC = () => {
     }
 
     if (expectedState === 'returning-to-center') {
+      pendingExitRef.current = null;
       latestSwipeRef.current = { deltaX: 0, timestamp: 0 };
       animationStateRef.current = 'idle';
       setSwipeAmount(0);
@@ -140,8 +150,9 @@ const WebPFeatureDetail: React.FC = () => {
     const handleInterruption = () => {
       const activeState = animationStateRef.current;
 
-      if (activeState === 'swiping') {
+      if (activeState === 'swiping' || activeState === 'waiting-for-next') {
         activeGestureRef.current = null;
+        pendingExitRef.current = null;
         latestSwipeRef.current = { deltaX: 0, timestamp: 0 };
         animationStateRef.current = 'idle';
         setSwipeAmount(0);
@@ -171,15 +182,17 @@ const WebPFeatureDetail: React.FC = () => {
   // Transition events can be skipped when the browser loses a frame or the
   // page changes visibility, so always keep a bounded completion path.
   useEffect(() => {
-    if (animationState === 'swiping') {
+    if (animationState === 'swiping' || animationState === 'waiting-for-next') {
       const timeout = window.setTimeout(() => {
-        if (animationStateRef.current !== 'swiping') return;
+        if (animationStateRef.current !== animationState) return;
 
+        const shouldReturnToCenter = Math.abs(latestSwipeRef.current.deltaX) >= 5;
         activeGestureRef.current = null;
+        pendingExitRef.current = null;
         latestSwipeRef.current = { deltaX: 0, timestamp: 0 };
-        animationStateRef.current = 'idle';
+        animationStateRef.current = shouldReturnToCenter ? 'returning-to-center' : 'idle';
         setSwipeAmount(0);
-        setAnimationState('idle');
+        setAnimationState(animationStateRef.current);
       }, GESTURE_FALLBACK_MS);
 
       return () => window.clearTimeout(timeout);
@@ -240,7 +253,7 @@ const WebPFeatureDetail: React.FC = () => {
     let transition = 'none';
     let scale = 1;
 
-    if (animationState === 'swiping') {
+    if (animationState === 'swiping' || animationState === 'waiting-for-next') {
       transform = `translateX(${swipeAmount}px) rotate(${swipeAmount * 0.05}deg)`;
       scale = 0.99;
       transition = 'none';
@@ -272,7 +285,6 @@ const WebPFeatureDetail: React.FC = () => {
       !event.isPrimary ||
       (event.pointerType === 'mouse' && event.button !== 0) ||
       animationStateRef.current !== 'idle' ||
-      !cardsRef.current[1]?.ready ||
       (event.target instanceof Element &&
         event.target.closest(
           'button, a, input, select, textarea, [role="button"], [contenteditable="true"]',
@@ -295,6 +307,7 @@ const WebPFeatureDetail: React.FC = () => {
       startTimestamp: event.timeStamp,
     };
     latestSwipeRef.current = { deltaX: 0, timestamp: event.timeStamp };
+    pendingExitRef.current = null;
     animationStateRef.current = 'swiping';
     setSwipeAmount(0);
     setAnimationState('swiping');
@@ -325,15 +338,25 @@ const WebPFeatureDetail: React.FC = () => {
     activeGestureRef.current = null;
 
     if (Math.abs(deltaX) < 5) {
+      pendingExitRef.current = null;
       latestSwipeRef.current = { deltaX: 0, timestamp: 0 };
       animationStateRef.current = 'idle';
       setSwipeAmount(0);
       setAnimationState('idle');
     } else if (Math.abs(deltaX) >= SWIPE_X_THRESHOLD || velocity > SWIPE_VELOCITY_THRESHOLD) {
-      animationStateRef.current = deltaX > 0 ? 'exiting-right' : 'exiting-left';
+      const exitState = deltaX > 0 ? 'exiting-right' : 'exiting-left';
       setSwipeAmount(deltaX);
-      setAnimationState(animationStateRef.current);
+
+      if (cardsRef.current[1]?.ready) {
+        animationStateRef.current = exitState;
+        setAnimationState(exitState);
+      } else {
+        pendingExitRef.current = exitState;
+        animationStateRef.current = 'waiting-for-next';
+        setAnimationState('waiting-for-next');
+      }
     } else {
+      pendingExitRef.current = null;
       animationStateRef.current = 'returning-to-center';
       setSwipeAmount(0);
       setAnimationState('returning-to-center');
@@ -350,6 +373,7 @@ const WebPFeatureDetail: React.FC = () => {
 
     const shouldReturnToCenter = Math.abs(latestSwipeRef.current.deltaX) >= 5;
     activeGestureRef.current = null;
+    pendingExitRef.current = null;
     latestSwipeRef.current = { deltaX: 0, timestamp: 0 };
     animationStateRef.current = shouldReturnToCenter ? 'returning-to-center' : 'idle';
     setSwipeAmount(0);
@@ -371,6 +395,17 @@ const WebPFeatureDetail: React.FC = () => {
     );
     cardsRef.current = nextCards;
     setCards(nextCards);
+
+    const pendingExit = pendingExitRef.current;
+    if (
+      pendingExit &&
+      animationStateRef.current === 'waiting-for-next' &&
+      cardsRef.current[1]?.id === cardId
+    ) {
+      pendingExitRef.current = null;
+      animationStateRef.current = pendingExit;
+      setAnimationState(pendingExit);
+    }
   };
 
   // ---------------------------------------------------------------------------
@@ -394,7 +429,12 @@ const WebPFeatureDetail: React.FC = () => {
                 key={card.id}
                 className={clsx(
                   'absolute inset-0 h-full w-full touch-none select-none overflow-hidden rounded-lg border border-gray-6 bg-black',
-                  isTopCard && (animationState === 'swiping' ? 'cursor-grabbing' : 'cursor-grab'),
+                  isTopCard &&
+                    (animationState === 'swiping'
+                      ? 'cursor-grabbing'
+                      : animationState === 'waiting-for-next'
+                        ? 'cursor-wait'
+                        : 'cursor-grab'),
                 )}
                 style={{
                   ...(isTopCard ? topStyle : getBottomStyle(card.ready)),
